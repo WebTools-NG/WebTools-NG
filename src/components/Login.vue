@@ -4,6 +4,13 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-5-tablet is-4-desktop is-4-widescreen">
+        <b-notification
+            type="is-info"
+            has-icon
+            icon-pack="fas"
+            aria-close-label="Close notification">
+            Sign in with plex.tv <br> Use your regular Plex credentials
+        </b-notification>
           <form action="" class="box">
             <div class="field">
               <label for="" class="label">Username</label>
