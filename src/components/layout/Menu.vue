@@ -16,14 +16,20 @@ import '@fortawesome/fontawesome-free/css/all.css'
             return { 
                 menu: [
                     {
+                        href: { path: '/home' },
+                        title: 'Home',
+                        icon: 'fa fa-home'
+                    },
+                    {
                         header: true,
                         title: 'Tools',
                         hiddenOnCollapse: true
                     },
                     {
-                        href: { path: '/home' },
-                        title: 'Home',
-                        icon: 'fa fa-home'
+                        href: { path: '/export' },
+                        title: 'Export',
+                        icon: 'fas fa-file-export'
+                        
                     },
                     {
                         href: { path: '/' },
