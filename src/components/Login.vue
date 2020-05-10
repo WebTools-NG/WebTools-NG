@@ -24,7 +24,7 @@
             <div class="field">
               <label for="" class="label">Password</label>
               <div class="control has-icons-left">
-                <input type="password" placeholder="1234" class="input is-dark" v-model="input.password" required>
+                <input type="password" placeholder="1234" class="input is-dark" v-model="input.password" v-on:keyup.enter="login()" required>
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>
