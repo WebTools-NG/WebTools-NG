@@ -1,43 +1,37 @@
 <template>
-  <div>
+<!--   <div>
     <h1>Login Page</h1>
     <input type="text" name="username" v-model="input.username" placeholder="Username">
     <input type="password" name="password" v-model="input.password" placeholder="Password">
     <button type="button" v-on:click="login()">Login</button>
-  </div>
+  </div> -->
 
-<!-- <section class="hero is-primary is-fullheight">
+<section class="hero is-dark is-fullheight">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+        <div class="column is-5-tablet is-4-desktop is-4-widescreen">
           <form action="" class="box">
             <div class="field">
-              <label for="" class="label">Email</label>
+              <label for="" class="label">Username</label>
               <div class="control has-icons-left">
-                <input type="email" placeholder="e.g. bobsmith@gmail.com" class="input" required>
+                <input type="text" placeholder="admin" class="input is-dark" v-model="input.username" required>
                 <span class="icon is-small is-left">
-                  <i class="fa fa-envelope"></i>
+                  <i class="fa fa-user"></i>
                 </span>
               </div>
             </div>
             <div class="field">
               <label for="" class="label">Password</label>
               <div class="control has-icons-left">
-                <input type="password" placeholder="*******" class="input" required>
+                <input type="password" placeholder="1234" class="input is-dark" v-model="input.password" required>
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>
               </div>
             </div>
             <div class="field">
-              <label for="" class="checkbox">
-                <input type="checkbox">
-               Remember me
-              </label>
-            </div>
-            <div class="field">
-              <button class="button is-success">
+              <button type="button" class="button is-success" v-on:click="login()">
                 Login
               </button>
             </div>
@@ -46,7 +40,7 @@
       </div>
     </div>
   </div>
-</section> -->
+</section>
 
 </template>
 

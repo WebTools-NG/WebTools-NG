@@ -1,14 +1,17 @@
 <template>
   <div id="app">
 
+    <div id="auth_login" v-if="isAuth == false">
+      <router-view></router-view>
+    </div>
 
-    <div id="content" :class="{ collapsed: isCollapsed }">
+    <div id="content" :class="{ collapsed: isCollapsed }" v-if="isAuth">
       <Header></Header>
       <div>
         <router-view></router-view>
       </div>
     </div>
-    <div id="side-menu">
+    <div id="side-menu" v-if="isAuth">
         <Menu @e-iscollapsed='setCollapsed'></Menu>
     </div>
   </div>
@@ -18,6 +21,8 @@
 
 import Menu from './components/layout/Menu';
 import Header from './components/layout/Header';
+import store from './store'
+
 
 
 export default {
@@ -25,6 +30,7 @@ export default {
   data(){
     return {
       isCollapsed: false,
+      store
     }
   },
   components:{
@@ -41,6 +47,10 @@ export default {
      width: {
       type: String,
       default: '250px'
+    }
+  }, computed: {
+    isAuth () {
+      return this.$store.state.authenticated
     }
   }
   }

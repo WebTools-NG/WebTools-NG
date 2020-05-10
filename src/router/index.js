@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
-import store from '../store/index.js'
+import Store from '../store/index.js'
 Vue.use(VueRouter)
 
   const router = new VueRouter({
@@ -11,7 +11,7 @@ Vue.use(VueRouter)
     routes: [
   {
     path: '/',
-    name: "home",
+    name: "/",
     component: Home,
     meta: {requiresAuth: true}
   },
@@ -30,7 +30,7 @@ Vue.use(VueRouter)
 ]});
 
 router.beforeEach( (to,from,next) => {
-  let routerAuthCheck = store.state.authenticated;
+  let routerAuthCheck = Store.state.authenticated;
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if(routerAuthCheck){
