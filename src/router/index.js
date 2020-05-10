@@ -3,14 +3,17 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import store from '../store/index.js'
-
 Vue.use(VueRouter)
-  const routes = [
+
+  const router = new VueRouter({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [
   {
     path: '/',
-    redirect: {
-      name: "login"
-    }
+    name: "home",
+    component: Home,
+    meta: {requiresAuth: true}
   },
   {
     path: '/login',
@@ -22,20 +25,26 @@ Vue.use(VueRouter)
     path: '/home',
     name: "home",
     component: Home,
-    beforeRouteEnter: (to, from, next) => {
-      if(store.state.authenticated == false) {
-        next(false);
-        //Dont go to route
-      } else {
-          next();
-          //Allow to route
-      }
-    }
+    meta: {requiresAuth: true}
   }
-]
+]});
 
-const router = new VueRouter({
-  routes
-})
+router.beforeEach( (to,from,next) => {
+  let routerAuthCheck = store.state.authenticated;
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if(routerAuthCheck){
+      next();
+    } else {
+      router.replace('/login')
+    }
+
+  } else {
+    //allows routing
+    next();
+  }
+});
+
+
 
 export default router

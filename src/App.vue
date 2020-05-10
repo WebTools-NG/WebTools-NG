@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+
+
     <div id="content" :class="{ collapsed: isCollapsed }">
       <Header></Header>
       <div>
@@ -22,7 +24,7 @@ export default {
   name: "app",
   data(){
     return {
-      isCollapsed: false
+      isCollapsed: false,
     }
   },
   components:{

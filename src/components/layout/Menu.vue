@@ -21,7 +21,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
                         hiddenOnCollapse: true
                     },
                     {
-                        href: { path: '/' },
+                        href: { path: '/home' },
                         title: 'Home',
                         icon: 'fa fa-home'
                     },
