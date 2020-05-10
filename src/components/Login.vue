@@ -1,11 +1,4 @@
 <template>
-<!--   <div>
-    <h1>Login Page</h1>
-    <input type="text" name="username" v-model="input.username" placeholder="Username">
-    <input type="password" name="password" v-model="input.password" placeholder="Password">
-    <button type="button" v-on:click="login()">Login</button>
-  </div> -->
-
 <section class="hero is-dark is-fullheight">
   <div class="hero-body">
     <div class="container">
@@ -62,7 +55,15 @@ export default {
         this.$router.replace({name: "home"});
       } else {
         console.log("The username or password is wrong")
+        this.danger();
       }
+    },
+    danger(){
+       this.$buefy.toast.open({
+                    duration: 3000,
+                    message: `Wrong username or password`,
+                    type: 'is-danger'
+                })
     }
   }
 }
