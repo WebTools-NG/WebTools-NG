@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
+import Export from '../components/Export.vue'
 import Store from '../store/index.js'
 Vue.use(VueRouter)
 
@@ -25,6 +26,12 @@ Vue.use(VueRouter)
     path: '/home',
     name: "home",
     component: Home,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/export',
+    name: "export",
+    component: Export,
     meta: {requiresAuth: true}
   }
 ]});

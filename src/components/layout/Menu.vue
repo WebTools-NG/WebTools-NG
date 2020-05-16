@@ -3,7 +3,6 @@
   :menu="menu"
   :collapsed="collapsed"
   @toggle-collapse="onToggleCollapse"
-  @item-click="onItemClick"
  />
 </template>
 
@@ -120,15 +119,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
                 console.log(collapsed)
 
               },
-              onItemClick(event, item) {
-                      console.log('onItemClick')
-                             console.log(event)
-                      console.log(item)
-
-              }
-
-        },
-        
+        },  
     }
 </script>
 
