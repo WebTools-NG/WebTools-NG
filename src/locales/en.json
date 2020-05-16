@@ -1,0 +1,15 @@
+{
+  "Common": {
+    "AppName": "WebTools-NG"
+  },
+  "Home": {
+    "Name": "Home",
+    "Title": "Welcome to @:Common.AppName",
+    "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
+    "Modules": "Tool Modules currently available are:"
+  },
+  "ET": {
+    "Name": "ExportTool",
+    "Description": "@:ET.Name allows you to export some information about the medias in your libraries"
+  }  
+}

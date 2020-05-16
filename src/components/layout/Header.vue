@@ -9,7 +9,7 @@
             </div>
             <div class="">
                 <div id="title" >
-                <p id="top_title" class="title is-size-3">WebTools-NG</p>
+                <p id="top_title" class="title is-size-3">{{ $t("Common.AppName") }}</p>
                 </div>
             </div>
         </div>

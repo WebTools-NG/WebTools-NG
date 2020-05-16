@@ -1,17 +1,25 @@
 <template>
   <section class="section">
-    <h1 class="title is-2">Welcome to WebTools</h1>
-    <h2 class="subtitle">WebTools is a tool that enables the use of tool modules to help with Plex Server management.</h2>
+    <h1 class="title is-2">{{ $t("Home.Title") }}</h1>    
+    <h2 class="subtitle">{{ $t("Home.About") }}</h2>
     <br>
-    <h1 class="title">Tool Modules currently available are:</h1>
-    <h3 class="title is-4">Export</h3>
-    <h4 class="subtitle is-5">Export allows you to export some information about a plex server and files it contains</h4>
+    <h1 class="title">{{ $t("Home.Modules") }}</h1>
+    <h3 class="title is-4">{{ $t("ET.Name") }}</h3>
+    <h4 class="subtitle is-5">{{ $t("ET.Description") }}</h4>
+    <div class="locale-changer">
+      <select v-model="$i18n.locale">
+        <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
+      </select>
+    </div>
   </section>
 </template>
 
 <script>
 export default {
-  name: 'home'
+  name: 'locale-changer',
+  data () {
+    return { langs: ['en', 'da'] }
+  }
 }
 </script>
 

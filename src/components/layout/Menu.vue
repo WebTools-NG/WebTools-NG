@@ -31,36 +31,6 @@ import '@fortawesome/fontawesome-free/css/all.css'
                         
                     },
                     {
-                        href: { path: '/' },
-                        title: 'Subtitles',
-                        icon: 'fas fa-closed-captioning'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'Logs',
-                        icon: 'fas fa-clipboard-list'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'UAS',
-                        icon: 'fas fa-box-open'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'FindMedia',
-                        icon: 'fas fa-photo-video'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'Playlists',
-                        icon: 'fas fa-list'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'Techinfo',
-                        icon: 'fas fa-stethoscope'
-                    }, 
-                    {
                         header: true,
                         title: 'Options',
                         hiddenOnCollapse: true
