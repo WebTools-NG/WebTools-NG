@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Export from '../components/Export.vue'
+import Language from '../components/Language.vue'
 import Store from '../store/index.js'
 Vue.use(VueRouter)
 
@@ -32,6 +33,12 @@ Vue.use(VueRouter)
     path: '/export',
     name: "export",
     component: Export,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/language',
+    name: "language",
+    component: Language,
     meta: {requiresAuth: true}
   }
 ]});

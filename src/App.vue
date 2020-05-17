@@ -58,7 +58,7 @@ export default {
 
 <style>
 #content.collapsed {
-  padding-left: 62px;
+  padding-left: 50px;
 }
 #content {
   padding-left: 250px;

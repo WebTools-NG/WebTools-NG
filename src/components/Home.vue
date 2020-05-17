@@ -6,11 +6,6 @@
     <h1 class="title">{{ $t("Home.Modules") }}</h1>
     <h3 class="title is-4">{{ $t("ET.Name") }}</h3>
     <h4 class="subtitle is-5">{{ $t("ET.Description") }}</h4>
-    <div class="locale-changer">
-      <select v-model="$i18n.locale">
-        <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
-      </select>
-    </div>
   </section>
 </template>
 

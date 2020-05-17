@@ -2,13 +2,17 @@
   "Common": {
     "AppName": "WebTools-NG"
   },
-  "Home": {
-    "Title": "Velkommen til @:Common.AppName",
-    "About": "@:Common.AppName er et værktøj, som kan hjælpe med at administrere en Plex Media Server.",
-    "Modules": "Tool Moduler som er tilgængelige er:"
-  },
   "ET": {
-    "Name": "ExportTool",
-    "Description": "@:ET.Name gør det muligt at eksportere information vedr. de medias du har i dine biblioteker"
-  }  
+    "Description": "@:ET.Name gør det muligt at eksportere information vedr. de medias du har i dine biblioteker",
+    "Name": "ExportTool"
+  },
+  "Home": {
+    "About": "@:Common.AppName er et værktøj, som kan hjælpe med at administrere en Plex Media Server.",
+    "Modules": "Tool Moduler som er tilgængelige er:",
+    "Title": "Velkommen til @:Common.AppName"
+  },
+  "Language": {
+    "Description": "@:Language.Name module gør det muligt at skifte sprog",
+    "Name": "Sprog"
+  }
 }

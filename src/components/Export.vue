@@ -1,7 +1,7 @@
 <template>
   <section class="section">
-    <h1 class="title is-2">Welcome to Export</h1>
-    <h2 class="subtitle">Export can export stuff</h2>
+    <h1 class="title is-2">{{ $t("ET.Name") }}</h1>    
+    <h2 class="subtitle">{{ $t("ET.Description") }}</h2>
     <br>
   </section>
 </template>
