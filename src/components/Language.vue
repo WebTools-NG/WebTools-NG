@@ -1,7 +1,7 @@
 <template>
   <section class="section">
-    <h1 class="title is-2">{{ $t("Language.Name") }}</h1>    
-    <h2 class="subtitle">{{ $t("Language.Description") }}</h2>
+    <h1 class="title is-2">{{ $t("Common.Language.Name") }}</h1>    
+    <h2 class="subtitle">{{ $t("Common.Language.Description") }}</h2>
     <br>
     <div class="control has-icons-left">
     <div class="locale-changer select is-dark is-medium" >

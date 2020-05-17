@@ -1,19 +1,21 @@
 {
   "Common": {
-    "AppName": "WebTools-NG"
+    "AppName": "WebTools-NG",    
+    "Home": {
+      "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
+      "Modules": "Tool Modules currently available are:",
+      "Name": "Home",
+      "Title": "Welcome to @:Common.AppName"
+    },
+    "Language": {
+      "Description": "@:Common.Language.Name allows you to change language of the app",
+      "Name": "Language"
+    }    
   },
-  "ET": {
-    "Description": "@:ET.Name allows you to export some information about the medias in your libraries",
-    "Name": "ExportTool"
-  },
-  "Home": {
-    "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
-    "Modules": "Tool Modules currently available are:",
-    "Name": "Home",
-    "Title": "Welcome to @:Common.AppName"
-  },
-  "Language": {
-    "Description": "@:Language.Name allows you to change language of the app",
-    "Name": "Language"
+  "Modules": {
+    "ET": {
+      "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
+      "Name": "ExportTool"
+    }
   }
 }
