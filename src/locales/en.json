@@ -10,7 +10,11 @@
     "Language": {
       "Description": "@:Common.Language.Name allows you to change language of the app",
       "Name": "Language"
-    }    
+    },
+    "About": {
+      "About": "About"
+    }
+
   },
   "Modules": {
     "ET": {
