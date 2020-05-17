@@ -10,6 +10,15 @@
         "Language": {
             "Description": "@:Common.Language.Name allows you to change language of the app",
             "Name": "Language"
+        },
+        "Login": {
+            "SignIn": "Sign in with plex.tv",
+            "UseCred": "Use your regular Plex credentials",
+            "Note": "3.Party Auth is not supported!",
+            "Username": "Username",
+            "UsernamePrompt": "Enter your plex.tv Username",
+            "Password": "Password",
+            "PasswordPrompt": "Enter your plex.tv password"
         }
     },
     "Modules": {
