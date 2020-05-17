@@ -11,10 +11,6 @@
 
 <script>
 export default {
-  name: 'locale-changer',
-  data () {
-    return { langs: ['en', 'da'] }
-  }
 }
 </script>
 

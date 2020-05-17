@@ -17,11 +17,20 @@
 </template>
 
 <script>
+
 export default {
   name: 'locale-changer',
   data () {
-    return { langs: ['en', 'da'] }
-  }
+    return { langs: [] }
+  },
+   mounted() {
+    this.importAll(require.context('../locales', true, /\.json$/));
+  },
+    methods: {
+    importAll(r) {
+      r.keys().forEach(key => (this.langs.push(key.slice(2,4))));
+    },
+}
 }
 </script>
 
