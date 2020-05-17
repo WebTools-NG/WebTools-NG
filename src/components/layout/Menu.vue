@@ -36,7 +36,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
                         hiddenOnCollapse: true
                     },
                     {
-                        href: { path: '/' },
+                        href: { path: '/language' },
                         title: 'Language',
                         icon: 'fas fa-language'
                     },
