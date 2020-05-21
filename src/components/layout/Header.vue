@@ -18,15 +18,21 @@
 
              <div class="container is-vcentered is-pulled-right">
                 <div class="select is-dark is-pulled-right">
-                <select>
-                    <option>Select dropdown</option>
-                    <option>With options</option>
-                    <option>Loooooooong server name</option>
-
-                </select>
+                <b-select placeholder="Select Server"
+                @input="assignTag">
+                <option
+                    v-for="option in pserver"
+                    :value="option.clientIdentifier"
+                    :key="option.clientIdentifier"
+                    v-on:change="onchange()"
+                    >
+                    {{ option.name }}
+                </option>
+            </b-select>
                 </div>
                  
-                <b-button  id="sync-button" @click="clickMe" type="is-warning" icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
+                <b-button  id="sync-button" @click="fetchServers" type="is-warning" 
+                icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
                 </b-button>
 
                 </div>
@@ -38,7 +44,34 @@
 <script>
 
 
+
+
 export default {
+    methods: {
+        fetchServers(){
+            console.log("fetching servers")
+            this.$store.dispatch('getPlexServers');
+        },
+        assignTag: function (selected) {
+            this.selected = selected;
+            this.$store.commit("UPDATE_SELECTED_SERVER", selected);
+
+            
+        },
+        onChange(event) {
+              console.log(event.target.selected);
+              console.log("hello")
+          }
+    },
+    created(){
+        console.log("menu created")
+        this.$store.dispatch('getPlexServers');
+    },
+    computed: {
+        pserver(){
+        return this.$store.getters.plexServers
+        }
+    }
 
 }
 </script>

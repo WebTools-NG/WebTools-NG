@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist';
+import servers from './modules/servers/index'
 
 Vue.use(Vuex)
 
@@ -23,10 +24,15 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    getAuthToken: state => {
+      return state.authToken
+    }
   },
   actions: {
   },
   modules: {
+    servers
+
   },
   plugins: [vuexLocal.plugin]
 })
