@@ -31,10 +31,14 @@ const actions = {
         })
           .then((response) => {
             commit('UPDATE_PLEX_SERVERS', response.data)
-          });
-
-  }
-};
+          })
+          .catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data)
+                console.log(error.response.status)
+                alert(error.response.data.error)
+          }
+});
 
 const getters = {
     plexServers: state => state.plexServers
