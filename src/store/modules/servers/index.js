@@ -33,12 +33,18 @@ const actions = {
             commit('UPDATE_PLEX_SERVERS', response.data)
           })
           .catch(function (error) {
-            if (error.response) {
+            if (error.response) {                  
                 console.log(error.response.data)
                 console.log(error.response.status)
                 alert(error.response.data.error)
-          }
-});
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log('Error', error.message);
+     }    
+   });
+  }
+};
 
 const getters = {
     plexServers: state => state.plexServers
