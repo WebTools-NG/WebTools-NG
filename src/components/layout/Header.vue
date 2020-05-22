@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import store from '../../store';
 
 
 
@@ -50,17 +51,14 @@ export default {
     methods: {
         fetchServers(){
             console.log("fetching servers")
-            this.$store.dispatch('getPlexServers');
+            this.$store.dispatch('getPlexServers', store.getters.getAuthToken);
         },
         assignTag: function (selected) {
             this.selected = selected;
             this.$store.commit("UPDATE_SELECTED_SERVER", selected);
-
-            
         },
         onChange(event) {
               console.log(event.target.selected);
-              console.log("hello")
           }
     },
     created(){
