@@ -17,7 +17,7 @@
             <div class="level-right">
                 <div class="level-item">
                     <figure class="image is-48x48" id="avatar">
-                        <img id="avatar" src="https://bulma.io/images/placeholders/128x128.png">
+                        <img id="avatar" :src="getAvatar()">
                     </figure>
                 </div>
 
@@ -62,22 +62,20 @@ export default {
         },
         onChange(event) {
               console.log(event.target.selected);
-          }
+          },
+          getAvatar(){
+                return this.$store.getters.getAvatar
+           }
     },
     created(){
         console.log("menu created")
         this.$store.dispatch('fetchPlexServers');
-
     },
     computed: {
         pserver(){
         return this.$store.getters.getPlexServers
-        },
-        userAvatar(){
-        return this.$store.getters.getAvatar
         }
     }
-
 }
 </script>
 
