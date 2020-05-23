@@ -5,11 +5,11 @@
             "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
             "Modules": "Tool Modules currently available are:",
             "Name": "Home",
-            "Title": "Velkommen til @:Common.AppName"
+            "Title": "Welcome to @:Common.AppName"
         },
         "Language": {
-            "Description": "@:Common.Language.Name lader dig skifte sprog",
-            "Name": "Sprog"
+            "Description": "@:Common.Language.Name allows you to change language of the app",
+            "Name": "Language"
         }
     },
     "Modules": {

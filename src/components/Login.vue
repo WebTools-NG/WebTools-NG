@@ -9,22 +9,22 @@
             has-icon
             icon-pack="fas"
             aria-close-label="Close notification">
-            Sign in with plex.tv <br> Use your regular Plex credentials
+            {{ $t("Common.Login.SignIn") }} <br> {{ $t("Common.Login.UseCred") }} <br> {{ $t("Common.Login.Note") }}
         </b-notification>
           <form action="" class="box">
             <div class="field">
-              <label for="" class="label">Username</label>
+              <label for="" class="label">{{ $t("Common.Login.Username") }}</label>
               <div class="control has-icons-left">
-                <input type="text" placeholder="admin" class="input is-dark" v-model="input.username" required>
+                <input type="text" v-bind:placeholder="$t('Common.Login.UsernamePrompt')" class="input is-dark" v-model="input.username" required>
                 <span class="icon is-small is-left">
                   <i class="fa fa-user"></i>
                 </span>
               </div>
             </div>
             <div class="field">
-              <label for="" class="label">Password</label>
+              <label for="" class="label">{{ $t("Common.Login.Password") }}</label>
               <div class="control has-icons-left">
-                <input type="password" placeholder="1234" class="input is-dark" v-model="input.password" v-on:keyup.enter="newLogin()" required>
+                <input type="password" v-bind:placeholder="$t('Common.Login.PasswordPrompt')" class="input is-dark" v-model="input.password" v-on:keyup.enter="loginToPlex()" required>                
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>

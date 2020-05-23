@@ -1,20 +1,30 @@
 {
-  "Common": {
-    "AppName": "WebTools-NG",
-    "SelServer": "Select Server"
-  },
-  "ET": {
-    "Description": "@:ET.Name allows you to export some information about the medias in your libraries",
-    "Name": "ExportTool"
-  },
-  "Home": {
-    "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
-    "Modules": "Tool Modules currently available are:",
-    "Name": "Home",
-    "Title": "Welcome to @:Common.AppName"
-  },
-  "Language": {
-    "Description": "@:Language.Name allows you to change language of the app",
-    "Name": "Language"
-  }
+    "Common": {
+        "AppName": "WebTools-NG",
+        "Home": {
+            "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
+            "Modules": "Tool Modules currently available are:",
+            "Name": "Home",
+            "Title": "Welcome to @:Common.AppName"
+        },
+        "Language": {
+            "Description": "@:Common.Language.Name allows you to change language of the app",
+            "Name": "Language"
+        },
+        "Login": {
+            "SignIn": "Sign in with plex.tv",
+            "UseCred": "Use your regular Plex credentials",
+            "Note": "3.Party Auth is not supported!",
+            "Username": "Username",
+            "UsernamePrompt": "Enter your plex.tv Username",
+            "Password": "Password",
+            "PasswordPrompt": "Enter your plex.tv password"
+        }
+    },
+    "Modules": {
+        "ET": {
+            "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
+            "Name": "ExportTool"
+        }
+    }
 }
