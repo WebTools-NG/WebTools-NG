@@ -45,7 +45,7 @@ Vue.use(VueRouter)
 ]});
 
 router.beforeEach( (to,from,next) => {
-  let routerAuthCheck = Store.state.authenticated;
+  let routerAuthCheck = Store.state.plextv.authenticated;
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if(routerAuthCheck){

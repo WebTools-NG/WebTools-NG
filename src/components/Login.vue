@@ -31,7 +31,7 @@
               </div>
             </div>
             <div class="field">
-              <button type="button" class="button is-success" v-on:click="loginToPlex()">
+              <button type="button" class="button is-success" v-on:click="newLogin()">
                 Login
               </button>
             </div>
@@ -46,9 +46,9 @@
 
 
 <script>
-const axios = require('axios').default;
+//const axios = require('axios').default;
 import store from '../store'
-import router from '../router'
+//import router from '../router'
 
 export default {
   name: 'Login',
@@ -61,14 +61,11 @@ export default {
     }
   },
   methods: {
-    login(){
-      if(this.input.username == "admin" && this.input.password == "1234") {
-        this.$store.commit("setAuthentication", true);
-        this.$router.replace({name: "home"});
-      } else {
-        console.log("The username or password is wrong")
-        this.danger();
-      }
+    newLogin(){
+      store.dispatch('loginToPlex', {
+      username: this.input.username,
+      password: this.input.password
+      })
     },
     danger(){
        this.$buefy.toast.open({
@@ -78,6 +75,7 @@ export default {
                     type: 'is-danger'
                 })
     },
+    /*
     loginToPlex(){
       axios({
         method: 'POST',
@@ -117,6 +115,7 @@ export default {
     }    
   })
     }
+    */
   }}
 
 </script>
