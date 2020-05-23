@@ -6,7 +6,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <figure class="image is-48x48">
-                        <img src="https://bulma.io/images/placeholders/128x128.png">
+                        <img src="@/assets/WebTools.png">
                     </figure>
                     <div id="title" >
                         <p id="top_title" class="title is-size-3">{{ $t("Common.AppName") }}</p>
