@@ -6,7 +6,9 @@ const state = {
   plexServers: [],
   selectedServerId: '',
   authenticated: false,
-  authToken: ''
+  authToken: '',
+  avatar: '',
+  filteredProducts: []
 };
 
 const mutations = {
@@ -21,11 +23,14 @@ const mutations = {
   },
   UPDATE_AUTHTOKEN(state, value){
     state.authToken = value
+  },
+  UPDATE_AVATAR(state, value){
+    state.avatar = value
   }
 };
 
 const actions = {
-  getPlexServers({ commit, getters }) {
+  fetchPlexServers({ commit, getters }) {
       axios({
           method: 'get',
           url: 'https://plex.tv/api/v2/resources?includeHttps=1&includeRelay=1',
@@ -38,7 +43,15 @@ const actions = {
           },
         })
           .then((response) => {
-            commit('UPDATE_PLEX_SERVERS', response.data)
+            let result=[];
+          response.data.forEach((req) => {
+          if (req.owned == true && req.product == "Plex Media Server") {
+              result.push(req);
+            } 
+          })
+
+          console.log(result)
+            commit('UPDATE_PLEX_SERVERS', result)
           })
           .catch(function (error) {
             if (error.response) {                  
@@ -71,6 +84,7 @@ const actions = {
         console.log(response.status)
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
+        commit('UPDATE_AVATAR', response.data.user.thumb)
         router.replace({name: "home"}); 
 })
       .catch(function (error) {
@@ -94,8 +108,9 @@ const actions = {
 };
 
 const getters = {
-    plexServers: state => state.plexServers,
-    getAuthToken: state => state.authToken
+    getPlexServers: state => state.plexServers,
+    getAuthToken: state => state.authToken,
+    getAvatar: state => state.avatar
 };
 
 const serverModule = {

@@ -46,7 +46,7 @@
 
 
 <script>
-//onst axios = require('axios').default;
+//const axios = require('axios').default;
 import store from '../store'
 //import router from '../router'
 

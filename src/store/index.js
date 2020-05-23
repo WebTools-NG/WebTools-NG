@@ -11,29 +11,12 @@ const vuexLocal = new VuexPersistence({
 
 
 export default new Vuex.Store({
-  state: {
-    /*
-    authenticated: false,
-    authToken: ''
-    */
-  },
-  mutations: {
-    /*
-    setAuthentication(state, status) {
-      state.authenticated = status;
-    },
-    setAuthToken(state, token){
-      state.authToken = token
-    }
-    */
-  },
-  getters: {
-  },
-  actions: {
-  },
+  state: {},
+  mutations: {},
+  getters: {},
+  actions: {},
   modules: {
     plextv
-
   },
   plugins: [vuexLocal.plugin]
 })
