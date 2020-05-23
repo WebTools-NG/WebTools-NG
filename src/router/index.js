@@ -2,8 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
-import Export from '../components/Export.vue'
+import Export from '../components/moduels/Export'
 import Language from '../components/Language.vue'
+import About from '../components/moduels/About'
 import Store from '../store/index.js'
 Vue.use(VueRouter)
 
@@ -40,6 +41,12 @@ Vue.use(VueRouter)
     path: '/language',
     name: "language",
     component: Language,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/about',
+    name: "about",
+    component: About,
     meta: {requiresAuth: true}
   }
 ]});
