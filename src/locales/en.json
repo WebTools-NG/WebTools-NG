@@ -1,6 +1,7 @@
 {
   "Common": {
-    "AppName": "WebTools-NG"
+    "AppName": "WebTools-NG",
+    "SelServer": "Select Server"
   },
   "ET": {
     "Description": "@:ET.Name allows you to export some information about the medias in your libraries",
