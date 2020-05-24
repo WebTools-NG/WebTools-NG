@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h1 class="title is-2">{{ $t("Common.Home.Title") }}</h1>    
+    <h1 class="title is-3">{{ $t("Common.Home.Title") }}</h1>    
     <h2 class="subtitle">{{ $t("Common.Home.About") }}</h2>
     <br>
     <h1 class="title">{{ $t("Common.Home.Modules") }}</h1>

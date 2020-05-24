@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist';
 import plextv from './modules/plextv'
+import poeditor from './modules/poeditor'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
   getters: {},
   actions: {},
   modules: {
-    plextv
+    plextv,
+    poeditor
   },
   plugins: [vuexLocal.plugin]
 })
