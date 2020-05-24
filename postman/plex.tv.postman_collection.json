@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "52332b53-b724-431c-b1f4-82b9757ebac0",
+		"name": "plex.tv",
+		"description": "Calls agains plex.tv api site\n\nReq. a local defined environtment named plex with the following entries\n\nX-Plex-Token: leave empty, since will be populated after a login\nUser: plex.tv user\nPwd: plex.tv users password\n\n\nWe also has variables defined at this folder level",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "06dac4ba-3dd6-477e-978c-9bf94955e33a",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"X-Plex-Token\", data.authToken)",
+							"console.log(\"AuthToken-PlexTV:\", postman.getEnvironmentVariable(\"X-Plex-Token\"))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Plex-Client-Identifier",
+						"value": "{{X-Plex-Client-Identifier}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{plextvapi}}/v2/users/signin?login={{Usr-PlexTV}}&password={{Pwd-PlexTV}}",
+					"host": [
+						"{{plextvapi}}"
+					],
+					"path": [
+						"v2",
+						"users",
+						"signin"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "{{Usr-PlexTV}}"
+						},
+						{
+							"key": "password",
+							"value": "{{Pwd-PlexTV}}"
+						}
+					]
+				},
+				"description": "Use two defined local environtment variables named:\nUser\nPwd\n\nAbove are credentials for plex.tv\n\nA third variable named X-Plex-Token, that after a login will be populated with a token, other calls can use"
+			},
+			"response": []
+		},
+		{
+			"name": "Get-Resources",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Plex-Token",
+						"value": "{{X-Plex-Token}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Plex-Client-Identifier",
+						"value": "{{X-Plex-Client-Identifier}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{plextvapi}}/v2/resources",
+					"host": [
+						"{{plextvapi}}"
+					],
+					"path": [
+						"v2",
+						"resources"
+					]
+				},
+				"description": "Get Resources avail for the current plex.tv user"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0355f113-7ed5-4483-ac99-01f8665a8df5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "3d4cf58b-80b8-415e-b376-16a44cfbbd0d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "12749f23-3086-47bd-a268-6e1dfa5bc5c5",
+			"key": "plextvapi",
+			"value": "https://plex.tv/api",
+			"type": "string"
+		},
+		{
+			"id": "ee6d38c1-4cd1-4fec-9d63-abab0174e473",
+			"key": "X-Plex-Client-Identifier",
+			"value": "WebTools-NG",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

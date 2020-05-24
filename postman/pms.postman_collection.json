@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "daa2f31c-1db6-410b-a2ad-c8f4acc01d33",
+		"name": "pms",
+		"description": "In the PMS collection, we store calls against a local PMS\n\nIt req. some local variables, named PMSAddress and AccessToken",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get-Sections",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Plex-Token",
+						"value": "{{AccessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{PMSAddress}}/library/sections/all",
+					"host": [
+						"{{PMSAddress}}"
+					],
+					"path": [
+						"library",
+						"sections",
+						"all"
+					]
+				},
+				"description": "Will get a list of sections (Libraries) from a PMS\n\nWhat we need, is the key, type and title"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "fe0095c1-f667-415f-bd56-9f081ad198e4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "83a53476-85dc-43a7-a656-9c273ff0c0d1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d5e46b4d-7ea6-4d2f-85bd-3b957b9319b7",
+			"key": "X-Plex-Client-Identifier",
+			"value": "WebTools-NG",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

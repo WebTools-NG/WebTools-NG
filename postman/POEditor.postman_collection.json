@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "200deb21-86cb-4933-8438-d935b1fa48f4",
+		"name": "POEditor",
+		"description": "In this collection, we access the POEditor API\n\nWe use a ReadOnly Token for that, as well as an ID for our translation project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get-Languages",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{id}}",
+							"type": "text"
+						},
+						{
+							"key": "api_token",
+							"value": "{{api-token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.poeditor.com/v2/languages/list",
+					"protocol": "https",
+					"host": [
+						"api",
+						"poeditor",
+						"com"
+					],
+					"path": [
+						"v2",
+						"languages",
+						"list"
+					]
+				},
+				"description": "Get a list of languages avail on the POEditor.com site"
+			},
+			"response": []
+		},
+		{
+			"name": "Get-Translators",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "api_token",
+							"value": "{{api-token}}",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "{{id}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.poeditor.com/v2/contributors/list",
+					"protocol": "https",
+					"host": [
+						"api",
+						"poeditor",
+						"com"
+					],
+					"path": [
+						"v2",
+						"contributors",
+						"list"
+					]
+				},
+				"description": "Get a list of translators, and what they translated"
+			},
+			"response": []
+		},
+		{
+			"name": "GetTanslationLink",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{id}}",
+							"description": "id of project. Defined at folder level",
+							"type": "text"
+						},
+						{
+							"key": "api_token",
+							"value": "{{api-token}}",
+							"description": "api token. Defined at folder level",
+							"type": "text"
+						},
+						{
+							"key": "language",
+							"value": "da",
+							"description": "language",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "key_value_json",
+							"description": "format of file to download",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.poeditor.com/v2/projects/export",
+					"protocol": "https",
+					"host": [
+						"api",
+						"poeditor",
+						"com"
+					],
+					"path": [
+						"v2",
+						"projects",
+						"export"
+					]
+				},
+				"description": "Retrieves a download link for a translated language"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c5196d1d-7a09-4e04-b536-96d299778cca",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bda2c131-bb1a-467b-8074-18be164c1138",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c579020f-38a0-4f03-b6a9-5a621ebb0b57",
+			"key": "id",
+			"value": "342617",
+			"type": "string"
+		},
+		{
+			"id": "358c824e-cc8d-49e9-9925-e01a4ddcb649",
+			"key": "api-token",
+			"value": "5166c4294ff7fb3a82cbdc82958e850e",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
