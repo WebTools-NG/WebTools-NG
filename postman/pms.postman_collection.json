@@ -36,6 +36,52 @@
 				"description": "Will get a list of sections (Libraries) from a PMS\n\nWhat we need, is the key, type and title"
 			},
 			"response": []
+		},
+		{
+			"name": "Get-MovieSection",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Plex-Token",
+						"type": "text",
+						"value": "{{AccessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{PMSAddress}}/library/sections/{{MovieSection}}/all?type=1&X-Plex-Container-Start=31&X-Plex-Container-Size={{CONTAINERSIZEMOVIES}}",
+					"host": [
+						"{{PMSAddress}}"
+					],
+					"path": [
+						"library",
+						"sections",
+						"{{MovieSection}}",
+						"all"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "1"
+						},
+						{
+							"key": "X-Plex-Container-Start",
+							"value": "31"
+						},
+						{
+							"key": "X-Plex-Container-Size",
+							"value": "{{CONTAINERSIZEMOVIES}}"
+						}
+					]
+				},
+				"description": "Will get a list of sections (Libraries) from a PMS\n\nWhat we need, is the key, type and title"
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -62,9 +108,21 @@
 	],
 	"variable": [
 		{
-			"id": "d5e46b4d-7ea6-4d2f-85bd-3b957b9319b7",
+			"id": "e101680f-7df5-4c66-8b17-ab7df3aee299",
 			"key": "X-Plex-Client-Identifier",
 			"value": "WebTools-NG",
+			"type": "string"
+		},
+		{
+			"id": "11c72d02-77f6-4698-afbc-989b4557bc94",
+			"key": "MovieSection",
+			"value": "4",
+			"type": "string"
+		},
+		{
+			"id": "7694f803-748a-428d-b762-e7441becd677",
+			"key": "CONTAINERSIZEMOVIES",
+			"value": "30",
 			"type": "string"
 		}
 	],
