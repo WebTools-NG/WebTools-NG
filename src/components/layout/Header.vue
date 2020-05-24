@@ -27,7 +27,7 @@
                     </b-button>
 
                     <div class="select is-dark">
-                        <b-select v-bind:placeholder="$t('Common.SelectServer')"                        
+                        <b-select v-bind:placeholder="$t('Common.SelServer')"                        
                             @input="assignTag">
                             <option
                                 v-for="option in pserver"
