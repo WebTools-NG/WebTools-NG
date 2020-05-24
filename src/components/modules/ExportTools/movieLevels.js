@@ -1,8 +1,8 @@
-var levels = ["Level1", "Level2"];
+var levels = [{"Level 1": "level1"}, {"Level 2": "level2"}];
 
-var Level1 = ["Media ID", "Title", "Sort title", 
+var level1 = ["Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
                 "Rating", "Summary"];
 
-var Level2 = ["Media ID", "Title", "Sort title"];
+var level2 = ["Media ID", "Title", "Sort title"];
             
