@@ -8,7 +8,12 @@
 
 <script>
 export default {
-  name: 'export'
+  name: 'export',
+  created(){
+    console.log("ET Created")
+    this.$store.dispatch('fetchSections');
+  }
+  
 }
 </script>
 
