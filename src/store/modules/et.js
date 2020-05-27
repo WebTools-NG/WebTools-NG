@@ -2,12 +2,16 @@ import axios from 'axios';
 
 
 const state = {
-    sections:   []
+    sections:   [],
+    selectedSection : ""
 };
 
 const mutations = {
     UPDATE_SECTIONS(state, payload) {
         state.sections = payload;
+      },
+      UPDATE_SELECTEDSECTION(state, payload) {
+          state.selectedSection = payload
       }
 };
 

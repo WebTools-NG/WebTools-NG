@@ -10,7 +10,7 @@
       @input="selectSelection">
         <option
           v-for="option in pmsSections"
-          :value="option"
+          :value="option.key"
           :key="option.key"
           v-on:change="onchange()">
           {{ option.title }}
@@ -24,6 +24,9 @@
     <div class="buttons">
       <b-button type="is-primary" @click="getMedia" icon-left="fas fa-file-download" icon-pack="fas">Get Media from selection</b-button>
     </div>
+    <hr>
+    <h1 class="title is-3">3. Get data</h1>
+
 
   </section>
 </template>
@@ -41,13 +44,12 @@ export default {
   }, methods: {
         selectSelection: function (selected) {
           console.log(selected)
-          //this.$store.commit("UPDATE_SELECTED_SERVER", selected);
+          this.$store.commit("UPDATE_SELECTEDSECTION", selected);
         },
         getMedia(){
           console.log("getMedia Called")
               this.$store.dispatch('getMedia');
         }
-        
   }
   
 }
