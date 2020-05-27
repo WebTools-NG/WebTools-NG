@@ -22,7 +22,9 @@ export default new Vuex.Store({
 
   },
   mutations: {},
-  getters: {},
+  getters: {
+    getContainerSizeMovies: state => state.CONTAINERSIZEMOVIES
+  },
   actions: {},
   modules: {
     plextv,

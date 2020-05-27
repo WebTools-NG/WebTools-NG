@@ -45,12 +45,54 @@ const actions = {
                 }
             }
         )
+    },
+    getMedia({ getters }) {
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:32400/library/sections/3/all',
+            responseType: 'json',
+            headers: {
+                'Accept':       "application/json",
+                'X-Plex-Token': getters.getAuthToken
+            },
+            params: {
+                "type": "1",
+                "X-Plex-Container-Start": "0",
+                "X-Plex-Container-Size": getters.getContainerSizeMovies
+            }
+        }).then((response) => {
+            
+
+            console.log("getMedia is status " + response.status)
+            console.log(response.data)
+            console.log(response.data.MediaContainer.Metadata)
+            //commit('UPDATE_SECTIONS', response.data.MediaContainer.Metadata)
+            
+        }
+        ).catch((error) => {
+                if (error.response) {                  
+                    // The request was made and tgite server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data)
+                    console.log(error.response.status)
+                    alert(error.response.data.error)
+                    //this.danger(error.response.status, error.response.data.error);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+            }
+        )
     }
 }
 
 const getters = {
     getPmsSections: state => state.sections,
-
 };
 
 const etModule = {
