@@ -25,7 +25,8 @@
     "Modules": {
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
-            "Name": "ExportTool"
+            "Name": "ExportTool",
+            "SelectSelection": "Select Selection"
         },
         "About": {
             "Description": "@Modules.About.Name",

@@ -22,11 +22,8 @@ const actions = {
                 'X-Plex-Token': getters.getAuthToken
             }
         }).then((response) => {
-            console.log(response.data)
-            console.log(response.status)
-            console.log(response.data.MediaContainer.Directory)
-
-            commit('UPDATE_SECTIONS', response.data)
+            console.log("fetchSection is status " + response.status)
+            commit('UPDATE_SECTIONS', response.data.MediaContainer.Directory)
 
         }
         ).catch((error) => {
@@ -52,6 +49,8 @@ const actions = {
 }
 
 const getters = {
+    getPmsSections: state => state.sections,
+
 };
 
 const etModule = {
