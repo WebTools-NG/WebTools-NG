@@ -25,13 +25,13 @@ const actions = {
             console.log(response.data)
             console.log(response.status)
             console.log(response.data.MediaContainer.Directory)
-            
+
             commit('UPDATE_SECTIONS', response.data)
 
         }
         ).catch((error) => {
                 if (error.response) {                  
-                    // The request was made and the server responded with a status code
+                    // The request was made and tgite server responded with a status code
                     // that falls out of the range of 2xx
                     console.log(error.response.data)
                     console.log(error.response.status)

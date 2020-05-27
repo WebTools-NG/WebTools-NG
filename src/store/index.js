@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist';
-import plextv from './modules/plextv'
-import poeditor from './modules/poeditor'
-import et from './modules/et'
+import plextv from './Modules/plextv'
+import poeditor from './Modules/poeditor'
+import et from './Modules/et'
 
 Vue.use(Vuex)
 
