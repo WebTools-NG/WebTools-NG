@@ -51,9 +51,12 @@ const actions = {
         )
     },
     getMedia({ getters }) {
+
+        var key = getters.getSelectedSection
+
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:32400/library/sections/3/all',
+            url: `http://127.0.0.1:32400/library/sections/${key}/all`,
             responseType: 'json',
             headers: {
                 'Accept':       "application/json",
@@ -97,6 +100,7 @@ const actions = {
 
 const getters = {
     getPmsSections: state => state.sections,
+    getSelectedSection: state => state.selectedSection
 };
 
 const etModule = {
