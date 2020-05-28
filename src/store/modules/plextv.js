@@ -4,7 +4,7 @@ import router from '../../router'
 
 const state = {
   plexServers: [],
-  selectedServerId: '',
+  selectedServer: Object,
   authenticated: false,
   authToken: '',
   avatar: '',
@@ -16,7 +16,7 @@ const mutations = {
     state.plexServers = payload;
   },
   UPDATE_SELECTED_SERVER(state, value) {
-      state.selectedServerId = value
+      state.selectedServer = value
   },
   UPDATE_AUTHENTICATED(state, value){
     state.authenticated = value
@@ -33,13 +33,16 @@ const actions = {
   fetchPlexServers({ commit, getters }) {
       axios({
           method: 'get',
-          url: 'https://plex.tv/api/v2/resources?includeHttps=1&includeRelay=1',
+          url: 'https://plex.tv/api/v2/resources',
           responseType: 'json',
           headers: 
           {            
             'X-Plex-Client-Identifier' : 'WebTools-NG',
             'X-Plex-Token': getters.getAuthToken,
-            'Accept' : 'application/json'
+            'Accept' : 'application/json',
+            'includeHttps' : '1',
+            'includeRelay': '0',
+
           },
         })
           .then((response) => {
@@ -110,7 +113,20 @@ const actions = {
 const getters = {
     getPlexServers: state => state.plexServers,
     getAuthToken: state => state.authToken,
-    getAvatar: state => state.avatar
+    getAvatar: state => state.avatar,
+    getSelectedServer: state => state.selectedServer,
+    getSlectedServerAddress: state => {
+
+      let result= "";
+      state.selectedServer.connections.forEach((req) => {
+      if (req.local == true) {
+          result = req.address + ":" + req.port
+        } 
+      })
+
+      return result
+
+    }
 };
 
 const serverModule = {

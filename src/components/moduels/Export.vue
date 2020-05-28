@@ -38,7 +38,8 @@ export default {
     console.log("ET Created")
     this.$store.dispatch('fetchSections');
   }, computed: {
-      pmsSections(){
+      pmsSections: function(){
+        
         return this.$store.getters.getPmsSections
       }
   }, methods: {

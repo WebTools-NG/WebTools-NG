@@ -31,7 +31,7 @@
                             @input="assignTag">
                             <option
                                 v-for="option in pserver"
-                                :value="option.clientIdentifier"
+                                :value="option"
                                 :key="option.clientIdentifier"
                                 v-on:change="onchange()">
                                 {{ option.name }}

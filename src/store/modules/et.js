@@ -17,9 +17,12 @@ const mutations = {
 
 const actions = {
     fetchSections({ commit, getters }) {
+        var baseURL = getters.getSlectedServerAddress
+
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:32400/library/sections/all',
+            baseURL: `http://${baseURL}`,
+            url: '/library/sections/all',
             responseType: 'json',
             headers: {
                 'Accept':       "application/json",
