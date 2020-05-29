@@ -46,20 +46,26 @@ const actions = {
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
                     console.log(error.request);
+                    console.log("Unable to fetch sections")
+
                 } else {
                     // Something happened in setting up the request that triggered an Error
                     console.log('Error', error.message);
+                    console.log("fetchSection is error 2")
+
                 }
             }
         )
     },
-    getMedia({ getters }) {
+    getMediaMovies({ getters }) {
 
         var key = getters.getSelectedSection
+        var baseURL = getters.getSlectedServerAddress
 
         axios({
             method: 'get',
-            url: `http://127.0.0.1:32400/library/sections/${key}/all`,
+            baseURL: `http://${baseURL}`,
+            url: `/library/sections/${key}/all`,
             responseType: 'json',
             headers: {
                 'Accept':       "application/json",

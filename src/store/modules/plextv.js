@@ -55,6 +55,9 @@ const actions = {
 
           console.log(result)
             commit('UPDATE_PLEX_SERVERS', result)
+              this.$store.dispatch('fetchSections')
+            
+
           })
           .catch(function (error) {
             if (error.response) {                  

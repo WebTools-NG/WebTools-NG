@@ -3,7 +3,46 @@
     <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>    
     <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
     <br>
+    
+    <h1 class="title is-3">0. Select Media Type</h1>
+            <div class="block">
+            <b-radio v-model="radio" type="is-dark"
+                name="name"
+                native-value="movies">
+                Movies
+            </b-radio>
+            <b-radio v-model="radio"
+                name="name"
+                native-value="tvseries"
+                disabled>
+                TV Series
+            </b-radio>
+            <b-radio v-model="radio"
+                name="name"
+                native-value="music"
+                disabled>
+                Music
+            </b-radio>
+            <b-radio v-model="radio"
+                name="name"
+                native-value="photos"
+                disabled>
+                Photos
+            </b-radio>
+              <b-radio v-model="radio"
+                name="name"
+                native-value="othervideos"
+                disabled>
+                Other Videos
+            </b-radio>
+        </div>
+         <p class="content">
+            <b>Selection:</b>
+            {{ radio }}
+        </p>
 
+
+    <hr>
     <h1 class="title is-3">1. Select lib</h1>
     <div class="select is-dark">
     <b-select v-bind:placeholder="$t('Modules.ET.SelectSelection')"                        
@@ -34,12 +73,16 @@
 <script>
 export default {
   name: 'export',
-  created(){
+  data() {
+    return {
+      radio: 'movies'
+    }
+  },
+  created(){  
     console.log("ET Created")
     this.$store.dispatch('fetchSections');
   }, computed: {
       pmsSections: function(){
-        
         return this.$store.getters.getPmsSections
       }
   }, methods: {
@@ -49,7 +92,7 @@ export default {
         },
         getMedia(){
           console.log("getMedia Called")
-              this.$store.dispatch('getMedia');
+              this.$store.dispatch('getMediaMovies');
         }
   }
   
