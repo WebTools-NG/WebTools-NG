@@ -3,80 +3,74 @@
 
     <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>    
     <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
-
     <br>
-    
-    <h1 class="title is-3">0. Select Media Type</h1>
-            <div class="block">
-            <b-radio v-model="radio" type="is-dark"
-                name="name"
-                native-value="movie">
-                Movies
-            </b-radio>
-            <b-radio v-model="radio" type="is-dark"
-                name="name"
-                native-value="tvseries"
-                disabled
-                >
-                TV Series
-            </b-radio>
-            <b-radio v-model="radio" type="is-dark"
-                name="name"
-                native-value="artist"
-                disabled
-                >
-                Music
-            </b-radio>
-            <b-radio v-model="radio" type="is-dark"
-                name="name"
-                native-value="photo"
-                disabled
-                >
-                Photos
-            </b-radio>
-              <b-radio v-model="radio" type="is-dark"
-                name="name"
-                native-value="othervideos"
-                disabled
-                >
-                Other Videos
-            </b-radio>
-        </div>
+
+    <h1 class="title is-3">{{ $t("Modules.ET.HSelectMedia") }}</h1>
+    <div class="block">
+      <b-radio v-model="radio" type="is-dark"
+          name="movie"
+          native-value="movie">
+          {{ $t("Modules.ET.RadioMovies") }}
+      </b-radio>
+      <b-radio v-model="radio" type="is-dark"
+            name="tvseries"
+            native-value="tvseries"
+            disabled>
+            {{ $t("Modules.ET.RadioTVSeries") }}
+      </b-radio>
+      <b-radio v-model="radio" type="is-dark"
+            name="artist"
+            native-value="artist"
+            disabled>
+            {{ $t("Modules.ET.RadioMusic") }}
+      </b-radio>
+      <b-radio v-model="radio" type="is-dark"
+            name="photo"
+            native-value="photo"
+            disabled>
+            {{ $t("Modules.ET.RadioPhotos") }}
+      </b-radio>
+      <b-radio v-model="radio" type="is-dark"
+            name="othervideos"
+            native-value="othervideos"
+            disabled>
+            {{ $t("Modules.ET.RadioOtherVideos") }}
+      </b-radio>
+    </div>
     <hr>
+
     <div class="container">
-
-
-    <h1 class="title is-3">1. Select lib</h1>
-    <div class="select is-dark"> 
-    <b-select v-bind:placeholder="$t('Modules.ET.SelectSelection')"                        
-      @input="selectSelection">
-        <option
-          v-for="option in pmsSections"
-          :value="option.key"
-          :key="option.key"
-          v-on:change="onchange()">
-          {{ option.title }}
-        </option>
-    </b-select> 
-    </div>
+      <h1 class="title is-3">{{ $t("Modules.ET.HSelectSelection") }}</h1>
+      <div class="select is-dark"> 
+        <b-select v-bind:placeholder="$t('Modules.ET.SelectSelection')"                        
+          @input="selectSelection">
+            <option
+              v-for="option in pmsSections"
+              :value="option.key"
+              :key="option.key"
+              v-on:change="onchange()">
+              {{ option.title }}
+            </option>
+        </b-select> 
+      </div>
         <b-button   
-    id="sync-button" 
-    @click="fetchSelection" type="is-warning"
-      icon-left="fas fa-sync" icon-pack="fas"  >
-    </b-button>
-        </div>
-    <br>
-    <hr>
-
-    <h1 class="title is-3">2. Get data</h1>
-    <div class="buttons">
-      <b-button type="is-primary" @click="getMedia" icon-left="fas fa-file-download" icon-pack="fas">Get Media from selection</b-button>
+          id="sync-button" 
+          @click="fetchSelection" type="is-warning"
+          icon-left="fas fa-sync" icon-pack="fas"  >
+        </b-button>
     </div>
     <hr>
-    <h1 class="title is-3">3. Get data</h1>
 
-
-
+    <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
+    <div class="buttons">
+      <b-button 
+          type="is-primary" 
+          @click="getMedia" 
+          icon-left="fas fa-file-download" 
+          icon-pack="fas">
+          {{ $t("Modules.ET.HExportMedia") }}
+        </b-button>
+    </div>
   </section>
 </template>
 
@@ -91,15 +85,10 @@ export default {
   created(){  
     console.log("ET Created")
     this.fetchSelection()
-
-
-
   }, computed: {
       pmsSections: function(){
-
           let sections = this.$store.getters.getPmsSections
           let result=[];
-
           if(Array.isArray(sections) && sections.length){
             console.log("doing a forEach")
                 sections.forEach((req) => {
@@ -112,9 +101,6 @@ export default {
             console.log("No data found")
             result.push["No Section found"]
           }
-
-          
-
         return result
       }
   }, methods: {
@@ -140,8 +126,6 @@ export default {
                   message: `No server selected`,
                   type: 'is-danger'
                 })
-
-
           }
         }     
   }

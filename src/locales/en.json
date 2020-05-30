@@ -26,7 +26,15 @@
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
             "Name": "ExportTool",
-            "SelectSelection": "Select Selection"
+            "HSelectMedia": "Select Media Type",
+            "HSelectSelection": "Select Media Libary",
+            "SelectSelection": "Select Selection",
+            "HExportMedia": "Export Media",
+            "RadioMovies": "Movies",
+            "RadioTVSeries": "TV Series",
+            "RadioMusic": "Music",
+            "RadioPhotos" : "Photos",
+            "RadioOtherVideos": "Other Videos"
         },
         "About": {
             "Description": "@Modules.About.Name",
