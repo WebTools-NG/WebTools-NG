@@ -4,7 +4,7 @@ import router from '../../router'
 
 const state = {
   plexServers: [],
-  selectedServer: Object,
+  selectedServer: 'none',
   authenticated: false,
   authToken: '',
   avatar: '',
@@ -47,17 +47,14 @@ const actions = {
         })
           .then((response) => {
             let result=[];
+            console.log("response from fetchPlexServers", response)
           response.data.forEach((req) => {
           if (req.owned == true && req.product == "Plex Media Server") {
               result.push(req);
             } 
           })
-
-          console.log(result)
             commit('UPDATE_PLEX_SERVERS', result)
-              this.$store.dispatch('fetchSections')
-            
-
+            //this.$store.dispatch('fetchSections')
           })
           .catch(function (error) {
             if (error.response) {                  
@@ -66,7 +63,7 @@ const actions = {
             } else if (error.request) {
                 console.log(error.request);
             } else {
-                console.log('Error', error.message);
+                console.log('Error on fetchPlexServers', error.message);
      }    
    });
   },
@@ -86,8 +83,6 @@ const actions = {
       }
     })  
       .then(function (response) {
-        console.log(response.data)
-        console.log(response.status)
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)
@@ -121,11 +116,14 @@ const getters = {
     getSlectedServerAddress: state => {
 
       let result= "";
-      state.selectedServer.connections.forEach((req) => {
-      if (req.local == true) {
-          result = req.address + ":" + req.port
-        } 
-      })
+      if(state.selectedServer !== "none"){
+        state.selectedServer.connections.forEach((req) => {
+          if (req.local == true) {
+              result = req.address + ":" + req.port
+            } 
+          })
+      }
+      
 
       return result
 

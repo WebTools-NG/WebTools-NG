@@ -17,6 +17,7 @@ const mutations = {
 
 const actions = {
     fetchSections({ commit, getters }) {
+        console.log("calling fetchSections")
         var baseURL = getters.getSlectedServerAddress
 
         axios({
@@ -38,7 +39,7 @@ const actions = {
                     // The request was made and tgite server responded with a status code
                     // that falls out of the range of 2xx
                     console.log(error.response.data)
-                    console.log(error.response.status)
+                    console.log("fetching is error status", error.response.status)
                     alert(error.response.data.error)
                     //this.danger(error.response.status, error.response.data.error);
                 } else if (error.request) {

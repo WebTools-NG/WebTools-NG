@@ -8,25 +8,25 @@
             <div class="block">
             <b-radio v-model="radio" type="is-dark"
                 name="name"
-                native-value="movies">
+                native-value="movie">
                 Movies
             </b-radio>
             <b-radio v-model="radio"
                 name="name"
                 native-value="tvseries"
-                disabled>
+                >
                 TV Series
             </b-radio>
             <b-radio v-model="radio"
                 name="name"
-                native-value="music"
-                disabled>
+                native-value="artist"
+                >
                 Music
             </b-radio>
             <b-radio v-model="radio"
                 name="name"
-                native-value="photos"
-                disabled>
+                native-value="photo"
+                >
                 Photos
             </b-radio>
               <b-radio v-model="radio"
@@ -45,6 +45,7 @@
     <hr>
     <h1 class="title is-3">1. Select lib</h1>
     <div class="select is-dark">
+      
     <b-select v-bind:placeholder="$t('Modules.ET.SelectSelection')"                        
       @input="selectSelection">
         <option
@@ -67,6 +68,7 @@
     <h1 class="title is-3">3. Get data</h1>
 
 
+
   </section>
 </template>
 
@@ -75,15 +77,52 @@ export default {
   name: 'export',
   data() {
     return {
-      radio: 'movies'
+      radio: 'movie',
     }
   },
   created(){  
     console.log("ET Created")
-    this.$store.dispatch('fetchSections');
+    let serverCheck = this.$store.getters.getSelectedServer
+
+    if(serverCheck !== "none"){
+      console.log("serverCheck is not null, running fetchSections ")
+      this.$store.dispatch('fetchSections');
+      this.$buefy.toast.open('Something happened')
+
+    } else {
+      console.log("serverCheck is none")
+           this.$buefy.toast.open({
+                    duration: 3000,
+                    message: `No server selected`,
+                    type: 'is-danger'
+                })
+
+    }
+
+
+
   }, computed: {
       pmsSections: function(){
-        return this.$store.getters.getPmsSections
+
+          let sections = this.$store.getters.getPmsSections
+          let result=[];
+
+          if(Array.isArray(sections) && sections.length){
+            console.log("doing a forEach")
+                sections.forEach((req) => {
+              if (req.type == this.radio) {
+                console.log("pushing data to results")
+                  result.push(req);
+                }
+              })
+          } else {
+            console.log("No data found")
+            result.push["No Section found"]
+          }
+
+          
+
+        return result
       }
   }, methods: {
         selectSelection: function (selected) {
