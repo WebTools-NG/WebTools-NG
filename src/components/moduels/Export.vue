@@ -1,7 +1,9 @@
 <template>
   <section class="section">
+
     <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>    
     <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
+
     <br>
     
     <h1 class="title is-3">0. Select Media Type</h1>
@@ -11,41 +13,41 @@
                 native-value="movie">
                 Movies
             </b-radio>
-            <b-radio v-model="radio"
+            <b-radio v-model="radio" type="is-dark"
                 name="name"
                 native-value="tvseries"
+                disabled
                 >
                 TV Series
             </b-radio>
-            <b-radio v-model="radio"
+            <b-radio v-model="radio" type="is-dark"
                 name="name"
                 native-value="artist"
+                disabled
                 >
                 Music
             </b-radio>
-            <b-radio v-model="radio"
+            <b-radio v-model="radio" type="is-dark"
                 name="name"
                 native-value="photo"
+                disabled
                 >
                 Photos
             </b-radio>
-              <b-radio v-model="radio"
+              <b-radio v-model="radio" type="is-dark"
                 name="name"
                 native-value="othervideos"
-                disabled>
+                disabled
+                >
                 Other Videos
             </b-radio>
         </div>
-         <p class="content">
-            <b>Selection:</b>
-            {{ radio }}
-        </p>
-
-
     <hr>
+    <div class="container">
+
+
     <h1 class="title is-3">1. Select lib</h1>
-    <div class="select is-dark">
-      
+    <div class="select is-dark"> 
     <b-select v-bind:placeholder="$t('Modules.ET.SelectSelection')"                        
       @input="selectSelection">
         <option
@@ -55,8 +57,14 @@
           v-on:change="onchange()">
           {{ option.title }}
         </option>
-    </b-select>
+    </b-select> 
     </div>
+        <b-button   
+    id="sync-button" 
+    @click="fetchSelection" type="is-warning"
+      icon-left="fas fa-sync" icon-pack="fas"  >
+    </b-button>
+        </div>
     <br>
     <hr>
 
@@ -82,22 +90,7 @@ export default {
   },
   created(){  
     console.log("ET Created")
-    let serverCheck = this.$store.getters.getSelectedServer
-
-    if(serverCheck !== "none"){
-      console.log("serverCheck is not null, running fetchSections ")
-      this.$store.dispatch('fetchSections');
-      this.$buefy.toast.open('Something happened')
-
-    } else {
-      console.log("serverCheck is none")
-           this.$buefy.toast.open({
-                    duration: 3000,
-                    message: `No server selected`,
-                    type: 'is-danger'
-                })
-
-    }
+    this.fetchSelection()
 
 
 
@@ -132,7 +125,25 @@ export default {
         getMedia(){
           console.log("getMedia Called")
               this.$store.dispatch('getMediaMovies');
-        }
+        },
+        fetchSelection(){
+          console.log("fetchSelection")
+          let serverCheck = this.$store.getters.getSelectedServer
+            if(serverCheck !== "none"){
+
+              console.log("serverCheck is not null, running fetchSections ")
+              this.$store.dispatch('fetchSections')
+          } else {
+              console.log("serverCheck is none")
+               this.$buefy.toast.open({
+                  duration: 3000,
+                  message: `No server selected`,
+                  type: 'is-danger'
+                })
+
+
+          }
+        }     
   }
   
 }
@@ -140,5 +151,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+#sync-button{
+  margin-left: 1em;
+}
 
 </style>

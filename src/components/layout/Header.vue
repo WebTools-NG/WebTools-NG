@@ -27,10 +27,7 @@
                     </b-button>
 
                     <div class="select is-dark">
-                                 <b-tooltip label="Tooltip bottom"
-            position="is-bottom"
-                        :active="active"
-                always>
+                       
                         <b-select v-bind:placeholder="$t('Common.SelServer')"                        
                             @input="selected">
                             <option
@@ -41,7 +38,6 @@
                                 {{ option.name }}
                             </option>
                         </b-select>
-                                </b-tooltip>
 
                     </div>
                 </div>
@@ -57,16 +53,15 @@ import store from '../../store';
 
 
 export default {
-     data() {
-    return {
-      active: false
-    }
-    },
     methods: {
         fetchServers(){
             console.log("fetching servers")
             this.$store.dispatch('fetchPlexServers', store.getters.getAuthToken);
         },
+        active2(e) {
+            console.log("active2 called")
+        this.active = e;
+},
         selected: function (selected) {
             this.selected = selected;
             this.$store.commit("UPDATE_SELECTED_SERVER", selected);
