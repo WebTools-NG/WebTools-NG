@@ -27,16 +27,18 @@
                     </b-button>
 
                     <div class="select is-dark">
+                       
                         <b-select v-bind:placeholder="$t('Common.SelServer')"                        
-                            @input="assignTag">
+                            @input="selected">
                             <option
                                 v-for="option in pserver"
-                                :value="option.clientIdentifier"
+                                :value="option"
                                 :key="option.clientIdentifier"
                                 v-on:change="onchange()">
                                 {{ option.name }}
                             </option>
                         </b-select>
+
                     </div>
                 </div>
             </div>
@@ -56,9 +58,14 @@ export default {
             console.log("fetching servers")
             this.$store.dispatch('fetchPlexServers', store.getters.getAuthToken);
         },
-        assignTag: function (selected) {
+        active2(e) {
+            console.log("active2 called")
+        this.active = e;
+},
+        selected: function (selected) {
             this.selected = selected;
             this.$store.commit("UPDATE_SELECTED_SERVER", selected);
+
         },
         onChange(event) {
               console.log(event.target.selected);

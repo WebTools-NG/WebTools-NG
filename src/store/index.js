@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist';
 import plextv from './modules/plextv'
 import poeditor from './modules/poeditor'
+import et from './modules/et'
 
 Vue.use(Vuex)
 
@@ -12,13 +13,24 @@ const vuexLocal = new VuexPersistence({
 
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    CONTAINERSIZEMOVIES:    "30",
+    CONTAINERSIZETV:        "20",
+    CONTAINERSIZEEPISODES:  "30",
+    CONTAINERSIZEAUDIO:     "10",
+    CONTAINERSIZEPHOTO:     "20",
+    PMSTIMEOUT:             "20"
+
+  },
   mutations: {},
-  getters: {},
+  getters: {
+    getContainerSizeMovies: state => state.CONTAINERSIZEMOVIES
+  },
   actions: {},
   modules: {
     plextv,
-    poeditor
+    poeditor,
+    et
   },
   plugins: [vuexLocal.plugin]
 })
