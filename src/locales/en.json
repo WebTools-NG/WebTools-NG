@@ -37,13 +37,13 @@
             "RadioOtherVideos": "Other Videos"
         },
         "About": {
-            "Description": "@Modules.About.Name",
-            "Name": "About Us and Credits",
+            "Description": "@:Modules.About.Name",
+            "Name": "About us and credits",
             "MainDevelopers": "Main Developers",
             "Devdane22": "Tommy (aka dane22), a Plex community member (ukdtom on GitHub)",
             "DevCPSO": "Casper (aka CPSO), a soon to be Plex community member (CPSO on GitHub)",
             "TranslationBetaTestersTitle": "Translations and Beta Testers",
-            "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing WebTools-NG.",
+            "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName.",
             "PlexPoCredits": "And Many Thanks To The authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work And our friends at POEditor.com, who provided a free translation site because we are an Open-Source project."
 
             
