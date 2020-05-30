@@ -18,7 +18,8 @@ export default new Vuex.Store({
     CONTAINERSIZETV:        "20",
     CONTAINERSIZEEPISODES:  "30",
     CONTAINERSIZEAUDIO:     "10",
-    CONTAINERSIZEPHOTO:     "20"
+    CONTAINERSIZEPHOTO:     "20",
+    PMSTIMEOUT:             "20"
 
   },
   mutations: {},
