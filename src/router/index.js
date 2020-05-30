@@ -2,9 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
-import Export from '../components/moduels/Export'
+import Export from '../components/modules/ExportTools/Export'
 import Language from '../components/Language.vue'
-import About from '../components/moduels/About'
+import About from '../components/About'
 import Store from '../store/index.js'
 Vue.use(VueRouter)
 
