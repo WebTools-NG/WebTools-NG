@@ -1,121 +1,121 @@
 {
     "Media ID":
         {
-            "key": "ratingKey",
+            "key": "['MediaContainer']['Metadata']['ratingKey']",
             "call": "1",
             "type": "string"
         },
     "Title":
         {
-            "key": "title",
+            "key": "['MediaContainer']['Metadata']['title']",
             "call": "1",
             "type": "string"
         },
     "Sort title":
         {
-            "key": "titleSort",
+            "key": "['MediaContainer']['Metadata']['titleSort']",
             "call": "1",
             "type": "string"
         },
     "Studio":
         {
-            "key": "studio",
+            "key": "['MediaContainer']['Metadata']['studio']",
             "call": "1",
             "type": "string"
         },
     "Content Rating":
         {
-            "key": "contentRating",
+            "key": "['MediaContainer']['Metadata']['contentRating']",
             "call": "1",
             "type": "int32"
         },
     "Year":
         {
-            "key": "year",
+            "key": "['MediaContainer']['Metadata']['year']",
             "call": "1",
             "type": "int"
         },
     "Rating":
         {
-            "key": "rating",
+            "key": "['MediaContainer']['Metadata']['rating']",
             "call": "1",
             "type": "int32"
         },
     "Summary":
         {
-            "key": "summary",
+            "key": "['MediaContainer']['Metadata']['summary']",
             "call": "1",
             "type": "string"
         },
     "Genre":
         {
-            "key": "['Genre']['tag']",
+            "key": "['MediaContainer']['Metadata']['Genre']['tag']",
             "call": "1",
             "type": "array"
         },
-    "View Count":
+/*     "View Count":
         {
             "key": "viewCount",
             "call": "1",
             "type": "int"
-        },
+        }, */
     "Last Viewed at":
         {
-            "key": "lastViewedAt",
+            "key": "['MediaContainer']['Metadata']['lastViewedAt']",
             "call": "1",
             "type": "datetime"
         },
     "Tagline":
         {
-            "key": "tagline",
+            "key": "['MediaContainer']['Metadata']['tagline']",
             "call": "1",
             "type": "string"
         },
     "Release Date":
         {
-            "key": "originallyAvailableAt",
+            "key": "['MediaContainer']['Metadata']['originallyAvailableAt']",
             "call": "1",
             "type": "string"
         },
     "Writers":
         {
-            "key": "['Writer']['tag']",
+            "key": "['MediaContainer']['Metadata']['Writer']['tag']",
             "call": "1",
             "type": "array"
         },
     "Country":
         {
-            "key": "['Country']['tag']",
+            "key": "['MediaContainer']['Metadata']['Country']['tag']",
             "call": "1",
             "type": "array"
         },
     "Duration":
         {
-            "key": "duration",
+            "key": "['MediaContainer']['Metadata']['duration']",
             "call": "1",
             "type": "time"
         },
     "Directors":
         {
-            "key": "['Director']['tag']",
+            "key": "['MediaContainer']['Metadata']['Director']['tag']",
             "call": "1",
             "type": "array"
         },
     "Roles":
         {
-            "key": "['Role']['tag']",
+            "key": "['MediaContainer']['Metadata']['Role']['tag']",
             "call": "1",
             "type": "array"
         },
     "Audience Rating":
         {
-            "key": "audienceRating",
+            "key": "['MediaContainer']['Metadata']['audienceRating']",
             "call": "1",
             "type": "string"
         },
     "User Rating":
         {
-            "key": "userRating",
+            "key": "['MediaContainer']['Metadata']['userRating']",
             "call": "1",
             "type": "string"
         }
