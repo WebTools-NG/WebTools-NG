@@ -61,6 +61,46 @@
     </div>
     <hr>
 
+    <div class="container">
+      <h1 class="title is-3">Export Level</h1>
+
+          <b-tabs v-model="activeTab" type="is-boxed" :animated="false">
+            <b-tab-item label="Export Level"> 
+              <div class="columns">
+                <div class="column">
+             <b-field>
+                      <b-select
+                        placeholder="Default"
+                        expanded>
+                        <option value="flint">Flint</option>
+                        <option value="silver">Silver</option>
+                      </b-select>
+                    </b-field>
+                    </div>
+                <div class="column">
+                <b-message title="Default" :closable=false>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+                  </b-message>              </div>
+              </div>
+       
+
+  
+            </b-tab-item>
+
+            <b-tab-item label="Custom Export Level">
+
+            </b-tab-item>
+        </b-tabs>
+        </div>
+        
+
+
+      
+      
+
+      
+
+
     <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
     <div class="buttons">
       <b-button 
@@ -80,6 +120,8 @@ export default {
   data() {
     return {
       radio: 'movie',
+      activeTab: 0,
+
     }
   },
   created(){  
