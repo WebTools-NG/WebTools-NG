@@ -76,9 +76,10 @@
                     </div>
                     <div class="column is-3">
                     </div>
-                <div class="column is-6">   
+                <div class="column is-6">  
+                   
                 <b-message icon-pack="fas" has-icon icon="fas fa-info-circle">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+                  Export level determents what data is going to be exportet.
                 </b-message>         
                 </div>
               </div>
