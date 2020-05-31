@@ -67,7 +67,7 @@
           <b-tabs v-model="activeTab" type="is-boxed" :animated="false">
             <b-tab-item label="Export Level"> 
               <div class="columns">
-                <div class="column">
+                <div class="column is-3">
              <b-field>
                       <b-select
                         placeholder="Default"
@@ -77,10 +77,14 @@
                       </b-select>
                     </b-field>
                     </div>
-                <div class="column">
-                <b-message title="Default" :closable=false>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-                  </b-message>              </div>
+                    <div class="column is-3">
+                    </div>
+                <div class="column is-6">   
+                <b-message icon-pack="fas" has-icon icon="fas fa-info-circle">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+                </b-message>         
+                
+                </div>
               </div>
        
 
