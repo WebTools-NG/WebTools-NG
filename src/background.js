@@ -1,7 +1,7 @@
 'use strict'
 
 const log = require('electron-log');
-import { app, protocol, BrowserWindow, Menu } from 'electron'
+import { app, protocol, BrowserWindow, Menu, shell } from 'electron'
 import {
   createProtocol,
   /* installVueDevtools */
@@ -170,16 +170,21 @@ app.on('ready', async () => {
       ]
     },
     {
-      // About Menu
-      label: i18n.t("Common.Menu.About.menuAbout"),
+      // Help Menu
+      label: i18n.t("Common.Menu.Help.menuHelp"),
       submenu:
       [
         {
-          label: i18n.t("Common.Menu.About.menuAbout"),
-          click() {
-            BrowserWindow.loadURL('/about')
-          }
-          // TODO: Add action
+          label: i18n.t("Common.Menu.Help.menuForum"),
+          click: () => { shell.openExternal("https://forums.plex.tv/t/598539") }          
+        },
+        {
+          label: i18n.t("Common.Menu.Help.menuGithub"),   
+          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG") }          
+        },
+        {
+          label: i18n.t("Common.Menu.Help.menuManual"),
+          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki") }          
         }
       ]
     }

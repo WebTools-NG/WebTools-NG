@@ -47,10 +47,12 @@
                 "menuZoomOut": "Zoom Out",
                 "menuToggleFullScreen": "Toggle Full Screen"
             },
-            "About":{
-                "menuAbout": "About"
+            "Help":{
+                "menuHelp": "Help",
+                "menuForum": "Forums",
+                "menuGithub": "Github",
+                "menuManual": "Manual"
             }
-
         }
     },
     "Modules": {
