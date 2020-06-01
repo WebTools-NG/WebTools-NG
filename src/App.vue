@@ -36,8 +36,7 @@ export default {
     Header,
   }, methods: {
     setCollapsed(value){
-      console.log("This is a call")
-      console.log(value)
+
       this.isCollapsed = value
     },
     

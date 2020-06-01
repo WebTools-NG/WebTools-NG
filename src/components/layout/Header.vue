@@ -49,17 +49,18 @@
 
 <script>
 import store from '../../store';
+const log = require('electron-log');
 
 
 
 export default {
     methods: {
         fetchServers(){
-            console.log("fetching servers")
+            log.info("fetching servers")
             this.$store.dispatch('fetchPlexServers', store.getters.getAuthToken);
         },
         active2(e) {
-            console.log("active2 called")
+            log.info("active2 called")
         this.active = e;
 },
         selected: function (selected) {
@@ -68,14 +69,14 @@ export default {
 
         },
         onChange(event) {
-              console.log(event.target.selected);
+              log.info(event.target.selected);
           },
           getAvatar(){
                 return this.$store.getters.getAvatar
            }
     },
     created(){
-        console.log("menu created")
+        log.info("menu created")
         this.$store.dispatch('fetchPlexServers');
     },
     computed: {
