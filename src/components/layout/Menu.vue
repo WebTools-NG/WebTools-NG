@@ -7,6 +7,7 @@
 </template>
 
 <script>
+const log = require('electron-log');
 import '@fortawesome/fontawesome-free/css/all.css'
 
 
@@ -86,8 +87,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
             },methods: {
               onToggleCollapse(collapsed) {
                 this.$emit("e-iscollapsed", collapsed);
-                console.log(collapsed)
-
+                log.info(collapsed)
               },
         },  
     }
