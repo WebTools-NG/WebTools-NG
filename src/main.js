@@ -13,19 +13,13 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import i18n from './i18n'
 
-
-
-
 Vue.use(VueRouter);
 Vue.use(Vuex);
-
 Vue.use(VueSidebarMenu)
 Vue.use(Buefy);
 
-// let isElectron = require("is-electron");
-
-// Logging
-
+// Logging start
+// Remember to define log in all components where its used, as in below
 const log = require('electron-log');
 log.transports.file.level = 'info';
 log.transports.console.level = 'verbose';  
@@ -35,6 +29,7 @@ console.log = log.log;
 var version = require('electron').remote.app.getVersion(); 
 log.info('*********************************') 
 log.info('Starting ' + name + ' Version:' + version);
+// Logging ended
 
 Vue.config.productionTip = false
 

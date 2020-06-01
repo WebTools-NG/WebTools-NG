@@ -1,10 +1,12 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+const log = require('electron-log');
+import { app, protocol, BrowserWindow, Menu } from 'electron'
 import {
   createProtocol,
   /* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib'
+import i18n from './i18n'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -41,7 +43,7 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
-  }
+  }  
 })
 
 app.on('activate', () => {
@@ -71,6 +73,121 @@ app.on('ready', async () => {
 
   }
   createWindow()
+
+  log.debug('Building custom menu')
+  
+  // Menu template
+  const menuTemplate = [
+    {
+      // File menu
+      label: i18n.t("Common.Menu.File.menuFile"),      
+      submenu:
+      [
+        {
+          label: i18n.t("Common.Menu.File.menuOpenLogDir")
+          // TODO: Add Action
+        },
+        {
+          label: i18n.t("Common.Menu.File.menuQuit"),
+          role: 'quit'
+        }
+      ]
+    },
+    {
+      // Edit menu
+      label: i18n.t("Common.Menu.Edit.menuEdit"),
+      submenu:
+      [
+        {
+          label: i18n.t("Common.Menu.Edit.menuUndo"),
+          role: 'undo'
+        },
+        {
+          label: i18n.t("Common.Menu.Edit.menuRedo"),
+          role: 'redo'
+        },
+        {
+          type: 'separator'          
+        },
+        {
+          label: i18n.t("Common.Menu.Edit.menuCut"),
+          role: 'cut'
+        },
+        {
+          label: i18n.t("Common.Menu.Edit.menuCopy"),
+          role: 'copy'
+        },
+        {
+          label: i18n.t("Common.Menu.Edit.menuPaste"),
+          role: 'paste'
+        },
+        {
+          label: i18n.t("Common.Menu.Edit.menuDelete"),
+          role: 'delete'
+        },
+        {
+          label: i18n.t("Common.Menu.Edit.menuSelectAll"),
+          role: 'selectAll'
+        }
+      ]
+    },
+    {
+      // View Menu
+      label: i18n.t("Common.Menu.View.menuView"),
+      submenu:
+      [
+        {
+          label: i18n.t("Common.Menu.View.menuReload"),
+          role: 'reload'
+        },
+        {
+          label: i18n.t("Common.Menu.View.menuForceReload"),
+          role: 'forceReload'
+        },
+        {
+          label: i18n.t("Common.Menu.View.menuToggleDeveloperTools"),
+          role: 'toggleDevTools'
+        },
+        {
+          type: 'separator'          
+        },
+        {
+          label: i18n.t("Common.Menu.View.menuActualSize"),
+          role: 'resetZoom'
+        },
+        {
+          label: i18n.t("Common.Menu.View.menuZoomIn"),
+          role: 'zoomIn'
+        },
+        {
+          label: i18n.t("Common.Menu.View.menuZoomOut"),
+          role: 'zoomOut'
+        },
+        {
+          label: i18n.t("Common.Menu.View.menuToggleFullScreen"),
+          role: 'togglefullscreen'
+        }
+      ]
+    },
+    {
+      // About Menu
+      label: i18n.t("Common.Menu.About.menuAbout"),
+      submenu:
+      [
+        {
+          label: i18n.t("Common.Menu.About.menuAbout"),
+          click() {
+            BrowserWindow.loadURL('/about')
+          }
+          // TODO: Add action
+        }
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(menuTemplate)
+  Menu.setApplicationMenu(menu)
+
 })
 
 // Exit cleanly on request from parent process in development mode.
