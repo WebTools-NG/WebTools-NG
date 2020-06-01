@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-
     <div id="auth_login" v-if="isAuth == false">
       <router-view></router-view>
     </div>
-
     <div id="content" :class="{ collapsed: isCollapsed }" v-if="isAuth">
       <Header></Header>
       <div>
@@ -50,7 +48,7 @@ export default {
     }
   }, computed: {
     isAuth () {
-      return this.$store.state.authenticated
+      return this.$store.state.plextv.authenticated
     }
   }
   }

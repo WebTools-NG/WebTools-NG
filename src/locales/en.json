@@ -1,6 +1,7 @@
 {
     "Common": {
         "AppName": "WebTools-NG",
+        "SelServer": "Select Server",
         "Home": {
             "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
             "Modules": "Tool Modules currently available are:",
@@ -24,7 +25,28 @@
     "Modules": {
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
-            "Name": "ExportTool"
+            "Name": "ExportTool",
+            "HSelectMedia": "Select Media Type",
+            "HSelectSelection": "Select Media Libary",
+            "SelectSelection": "Select Selection",
+            "HExportMedia": "Export Media",
+            "RadioMovies": "Movies",
+            "RadioTVSeries": "TV Series",
+            "RadioMusic": "Music",
+            "RadioPhotos" : "Photos",
+            "RadioOtherVideos": "Other Videos"
+        },
+        "About": {
+            "Description": "@:Modules.About.Name",
+            "Name": "About us and credits",
+            "MainDevelopers": "Main Developers",
+            "Devdane22": "Tommy (aka dane22), a Plex community member (ukdtom on GitHub)",
+            "DevCPSO": "Casper (aka CPSO), a soon to be Plex community member (CPSO on GitHub)",
+            "TranslationBetaTestersTitle": "Translations and Beta Testers",
+            "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName.",
+            "PlexPoCredits": "And Many Thanks To The authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work And our friends at POEditor.com, who provided a free translation site because we are an Open-Source project."
+
+            
         }
     }
 }

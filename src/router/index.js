@@ -2,8 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
-import Export from '../components/Export.vue'
+import Export from '../components/modules/ExportTools/Export'
 import Language from '../components/Language.vue'
+import About from '../components/About'
 import Store from '../store/index.js'
 Vue.use(VueRouter)
 
@@ -41,11 +42,17 @@ Vue.use(VueRouter)
     name: "language",
     component: Language,
     meta: {requiresAuth: true}
+  },
+  {
+    path: '/about',
+    name: "about",
+    component: About,
+    meta: {requiresAuth: true}
   }
 ]});
 
 router.beforeEach( (to,from,next) => {
-  let routerAuthCheck = Store.state.authenticated;
+  let routerAuthCheck = Store.state.plextv.authenticated;
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if(routerAuthCheck){

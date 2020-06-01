@@ -10,11 +10,21 @@
         "Language": {
             "Description": "@:Common.Language.Name lader dig skifte sprog",
             "Name": "Sprog"
-        }
+        },
+        "Login": {
+            "SignIn": "Login med plex.tv",
+            "UseCred": "Brug dine normale plex.tv login oplysninger",
+            "Note": "3.Part Auth er ikke muligt, som f.eks. Google mm.",
+            "Username": "Brugernavn",
+            "UsernamePrompt": "Skriv dit plex.tv brugernavn",
+            "Password": "Kodeord",
+            "PasswordPrompt": "Skriv dit plex.tv kodeord"
+        },
+        "SelServer": "Vælg Server"
     },
     "Modules": {
         "ET": {
-            "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
+            "Description": "@:Modules.ET.Name lader dig eksportere information vedrørende de medier du har i dine biblioteker",
             "Name": "ExportTool"
         }
     }

@@ -41,7 +41,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
                         icon: 'fas fa-language'
                     },
                     {
-                        href: { path: '/' },
+                        href: { path: '/about' },
                         title: 'About us',
                         icon: 'fas fa-question-circle'
                     },
