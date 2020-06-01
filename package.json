@@ -19,6 +19,8 @@
     "buefy": "^0.8.20",
     "bulma": "^0.8.2",
     "core-js": "^3.6.4",
+    "electron-log": "^4.2.0",
+    "is-electron": "^2.2.0",
     "minimist": "^1.2.5",
     "secure-ls": "^1.2.6",
     "vue": "^2.6.11",
