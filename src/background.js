@@ -1,13 +1,27 @@
 'use strict'
-
-const log = require('electron-log');
 import { app, protocol, BrowserWindow, Menu, shell } from 'electron'
+const log = require('electron-log');
+
+var appName = app.getName(); 
+var appHome = app.getPath('home') 
+var logLinux = appHome + '/.config/' + appName + '/logs'
+var logWin = appHome + '\\AppData\\Roaming\\' + appName + '\\logs'
+var logMac = appHome + '/Library/Logs/' + appName
+
+// Sadly needs below, since part of main process, so not inherited
+log.transports.file.fileName = appName;
+console.log = log.log;
+
 import {
   createProtocol,
   /* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib'
 import i18n from './i18n'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+const isMac = process.platform === 'darwin'
+const isLinux = process.platform === 'linux'
+const isWindows = process.platform === 'win32'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -82,15 +96,34 @@ app.on('ready', async () => {
       // File menu
       label: i18n.t("Common.Menu.File.menuFile"),      
       submenu:
-      [
-        {
-          label: i18n.t("Common.Menu.File.menuOpenLogDir")
-          // TODO: Add Action
-        },
+      [   
+        isMac ?
+          {             
+              label: i18n.t("Common.Menu.File.menuOpenLogDir"),
+              click: () => { shell.openItem(logMac) }  
+          } : 
+          {
+            label: i18n.t("Common.Menu.File.menuQuit"),
+            role: 'quit'
+          },
+        isLinux ? 
+        { 
+          label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
+          click: () => { shell.openItem(logLinux) }           
+        } : 
         {
           label: i18n.t("Common.Menu.File.menuQuit"),
           role: 'quit'
-        }
+        },
+        isWindows ? 
+        { 
+          label: i18n.t("Common.Menu.File.menuOpenLogDir"),
+          click: () => { shell.openItem(logWin) } 
+        } : 
+        {
+          label: i18n.t("Common.Menu.File.menuQuit"),
+          role: 'quit'
+        }      
       ]
     },
     {
