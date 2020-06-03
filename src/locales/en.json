@@ -20,6 +20,39 @@
             "UsernamePrompt": "Enter your plex.tv Username",
             "Password": "Password",
             "PasswordPrompt": "Enter your plex.tv password"
+        },
+        "Menu": {
+            "File":{
+                "menuFile": "File",
+                "menuOpenLogDir": "Open Log Directory",
+                "menuQuit": "Quit"
+            },
+            "Edit":{
+                "menuEdit": "Edit",
+                "menuUndo": "Undo",
+                "menuRedo": "Redo",
+                "menuCut": "Cut",
+                "menuCopy": "Copy",
+                "menuPaste": "Paste",
+                "menuDelete": "Delete",
+                "menuSelectAll": "SelectAll"
+            },
+            "View":{
+                "menuView": "View",
+                "menuReload": "Reload",
+                "menuForceReload": "Force Reload",
+                "menuToggleDeveloperTools": "Toggle Developer Tools",
+                "menuActualSize": "Actual Size",
+                "menuZoomIn": "Zoom In",
+                "menuZoomOut": "Zoom Out",
+                "menuToggleFullScreen": "Toggle Full Screen"
+            },
+            "Help":{
+                "menuHelp": "Help",
+                "menuForum": "Forums",
+                "menuGithub": "Github",
+                "menuManual": "Manual"
+            }
         }
     },
     "Modules": {
