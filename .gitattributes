@@ -1,0 +1,4 @@
+.gitattributes export-ignore
+/Wiki export-ignore
+.gitignore export-ignore
+.github export-ignore
