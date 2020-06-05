@@ -20,6 +20,7 @@
     "bulma": "^0.8.2",
     "core-js": "^3.6.4",
     "electron-log": "^4.2.0",
+    "electron-store": "^5.1.1",
     "is-electron": "^2.2.0",
     "minimist": "^1.2.5",
     "secure-ls": "^1.2.6",
