@@ -8,6 +8,8 @@ var logLinux = appHome + '/.config/' + appName + '/logs'
 var logWin = appHome + '\\AppData\\Roaming\\' + appName + '\\logs'
 var logMac = appHome + '/Library/Logs/' + appName
 
+
+
 // Sadly needs below, since part of main process, so not inherited
 log.transports.file.fileName = appName;
 console.log = log.log;

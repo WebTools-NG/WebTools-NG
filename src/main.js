@@ -25,13 +25,15 @@ log.transports.file.level = 'info';
 log.transports.console.level = 'verbose';  
 var appName = require('electron').remote.app.getName(); 
 var appVersion = require('electron').remote.app.getVersion(); 
-
 log.transports.file.fileName = appName;
 console.log = log.log;
-
 log.info('*********************************') 
 log.info('Starting ' + appName + ' Version:' + appVersion);
 // Logging ended
+
+const wtconfig = require('./wtconfig');
+// Get saved language to use, and default to en
+i18n.locale = wtconfig.get('general.language', 'en')
 
 Vue.config.productionTip = false
 
