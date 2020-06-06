@@ -1,6 +1,8 @@
 {
   "name": "webtools-ng",
   "version": "0.1.0",
+  "description": "WebTools Next Generation 4 Plex",
+  "author": "dane22 & CPSO",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service electron:serve",
