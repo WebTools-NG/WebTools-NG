@@ -1,10 +1,12 @@
 import i18n from './i18n'
 import { shell } from 'electron'
 
+const isDev = require('electron-is-dev');
+
+console.log('Ged Mode:' + isDev)
 
 var appName = require('electron').remote.app.getName();
 var appHome = require('electron').remote.app.getPath('home') 
- 
 var logLinux = appHome + '/.config/' + appName + '/logs'
 var logWin = appHome + '\\AppData\\Roaming\\' + appName + '\\logs'
 var logMac = appHome + '/Library/Logs/' + appName
@@ -12,7 +14,6 @@ var logMac = appHome + '/Library/Logs/' + appName
 const isMac = process.platform === 'darwin'
 const isLinux = process.platform === 'linux'
 const isWindows = process.platform === 'win32' 
-
 
 // Menu template
 const menuTemplate = [
@@ -96,10 +97,14 @@ const menuTemplate = [
           label: i18n.t("Common.Menu.View.menuForceReload"),
           role: 'forceReload'
         },
-        {
-          label: i18n.t("Common.Menu.View.menuToggleDeveloperTools"),
-          role: 'toggleDevTools'
-        },
+        isDev ?
+          {             
+            label: i18n.t("Common.Menu.View.menuToggleDeveloperTools"),
+            role: 'toggleDevTools'
+          }: {
+            label: "nothere",
+            visible: false            
+          },
         {
           type: 'separator'          
         },
