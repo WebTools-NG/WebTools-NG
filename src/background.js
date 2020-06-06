@@ -1,14 +1,8 @@
 'use strict'
-import { app, protocol, BrowserWindow, Menu, shell } from 'electron'
+import { app, protocol, BrowserWindow, Menu} from 'electron'
 const log = require('electron-log');
 
 var appName = app.getName(); 
-var appHome = app.getPath('home') 
-var logLinux = appHome + '/.config/' + appName + '/logs'
-var logWin = appHome + '\\AppData\\Roaming\\' + appName + '\\logs'
-var logMac = appHome + '/Library/Logs/' + appName
-
-
 
 // Sadly needs below, since part of main process, so not inherited
 log.transports.file.fileName = appName;
@@ -18,12 +12,10 @@ import {
   createProtocol,
   /* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib'
-import i18n from './i18n'
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-const isMac = process.platform === 'darwin'
-const isLinux = process.platform === 'linux'
-const isWindows = process.platform === 'win32'
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -88,146 +80,8 @@ app.on('ready', async () => {
     // }
 
   }
+  Menu.setApplicationMenu(null)
   createWindow()
-
-  log.debug('Building custom menu')
-  
-  // Menu template
-  const menuTemplate = [
-    {
-      // File menu
-      label: i18n.t("Common.Menu.File.menuFile"),      
-      submenu:
-      [   
-        isMac ?
-          {             
-              label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-              click: () => { shell.openItem(logMac) }  
-          } : 
-          {
-            label: i18n.t("Common.Menu.File.menuQuit"),
-            role: 'quit'
-          },
-        isLinux ? 
-        { 
-          label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
-          click: () => { shell.openItem(logLinux) }           
-        } : 
-        {
-          label: i18n.t("Common.Menu.File.menuQuit"),
-          role: 'quit'
-        },
-        isWindows ? 
-        { 
-          label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-          click: () => { shell.openItem(logWin) } 
-        } : 
-        {
-          label: i18n.t("Common.Menu.File.menuQuit"),
-          role: 'quit'
-        }      
-      ]
-    },
-    {
-      // Edit menu
-      label: i18n.t("Common.Menu.Edit.menuEdit"),
-      submenu:
-      [
-        {
-          label: i18n.t("Common.Menu.Edit.menuUndo"),
-          role: 'undo'
-        },
-        {
-          label: i18n.t("Common.Menu.Edit.menuRedo"),
-          role: 'redo'
-        },
-        {
-          type: 'separator'          
-        },
-        {
-          label: i18n.t("Common.Menu.Edit.menuCut"),
-          role: 'cut'
-        },
-        {
-          label: i18n.t("Common.Menu.Edit.menuCopy"),
-          role: 'copy'
-        },
-        {
-          label: i18n.t("Common.Menu.Edit.menuPaste"),
-          role: 'paste'
-        },
-        {
-          label: i18n.t("Common.Menu.Edit.menuDelete"),
-          role: 'delete'
-        },
-        {
-          label: i18n.t("Common.Menu.Edit.menuSelectAll"),
-          role: 'selectAll'
-        }
-      ]
-    },
-    {
-      // View Menu
-      label: i18n.t("Common.Menu.View.menuView"),
-      submenu:
-      [
-        {
-          label: i18n.t("Common.Menu.View.menuReload"),
-          role: 'reload'
-        },
-        {
-          label: i18n.t("Common.Menu.View.menuForceReload"),
-          role: 'forceReload'
-        },
-        {
-          label: i18n.t("Common.Menu.View.menuToggleDeveloperTools"),
-          role: 'toggleDevTools'
-        },
-        {
-          type: 'separator'          
-        },
-        {
-          label: i18n.t("Common.Menu.View.menuActualSize"),
-          role: 'resetZoom'
-        },
-        {
-          label: i18n.t("Common.Menu.View.menuZoomIn"),
-          role: 'zoomIn'
-        },
-        {
-          label: i18n.t("Common.Menu.View.menuZoomOut"),
-          role: 'zoomOut'
-        },
-        {
-          label: i18n.t("Common.Menu.View.menuToggleFullScreen"),
-          role: 'togglefullscreen'
-        }
-      ]
-    },
-    {
-      // Help Menu
-      label: i18n.t("Common.Menu.Help.menuHelp"),
-      submenu:
-      [
-        {
-          label: i18n.t("Common.Menu.Help.menuForum"),
-          click: () => { shell.openExternal("https://forums.plex.tv/t/598539") }          
-        },
-        {
-          label: i18n.t("Common.Menu.Help.menuGithub"),   
-          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG") }          
-        },
-        {
-          label: i18n.t("Common.Menu.Help.menuManual"),
-          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki") }          
-        }
-      ]
-    }
-  ]
-
-  const menu = Menu.buildFromTemplate(menuTemplate)
-  Menu.setApplicationMenu(menu)
-
 })
 
 // Exit cleanly on request from parent process in development mode.

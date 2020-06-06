@@ -4,6 +4,8 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
+//import shell from 'electron'
+//import Menu from 'electron'
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -36,6 +38,11 @@ const wtconfig = require('./wtconfig');
 i18n.locale = wtconfig.get('general.language', 'en')
 
 Vue.config.productionTip = false
+
+// App Menu Bar
+const menuTemplate = require('./menubar.js')
+const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default)
+require('electron').remote.Menu.setApplicationMenu(menu)
 
 new Vue({
   render: h => h(App),
