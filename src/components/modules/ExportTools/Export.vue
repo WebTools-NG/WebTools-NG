@@ -117,7 +117,7 @@
 
 <script>
 
-import  levels from '../ExportTools/movieLevels'
+import  {levels, level1, level2} from '../ExportTools/movieLevels'
 
 export default {
   name: 'export',
@@ -125,12 +125,15 @@ export default {
     return {
       radio: 'movie',
       activeTab: 0,
-      levels: levels
+      levels: levels,
+      level1: level1,
+      level2: level2
     }
   },
   created(){  
     console.log("ET Created")
     this.fetchSelection()
+    console.log(level2)
   }, computed: {
       pmsSections: function(){
           let sections = this.$store.getters.getPmsSections
