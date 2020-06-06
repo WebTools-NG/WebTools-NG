@@ -1,21 +1,23 @@
 import i18n from './i18n'
 import { shell } from 'electron'
 
+
 var appName = require('electron').remote.app.getName();
 var appHome = require('electron').remote.app.getPath('home') 
+ 
 var logLinux = appHome + '/.config/' + appName + '/logs'
 var logWin = appHome + '\\AppData\\Roaming\\' + appName + '\\logs'
 var logMac = appHome + '/Library/Logs/' + appName
 
 const isMac = process.platform === 'darwin'
 const isLinux = process.platform === 'linux'
-const isWindows = process.platform === 'win32'
+const isWindows = process.platform === 'win32' 
 
 
 // Menu template
 const menuTemplate = [
     {
-      // File menu
+       // File menu
       label: i18n.t("Common.Menu.File.menuFile"),      
       submenu:
       [   
@@ -24,24 +26,19 @@ const menuTemplate = [
               label: i18n.t("Common.Menu.File.menuOpenLogDir"),
               click: () => { shell.openItem(logMac) }  
           } : 
-          {
-            label: i18n.t("Common.Menu.File.menuQuit"),
-            role: 'quit'
+          { 
+            ...isLinux ? 
+            { 
+              label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
+              click: () => { shell.openItem(logLinux) }           
+            } : {
+              ...isWindows ? 
+              { 
+                label: i18n.t("Common.Menu.File.menuOpenLogDir"),
+                click: () => { shell.openItem(logWin) } 
+              } : {}
           },
-        isLinux ? 
-        { 
-          label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
-          click: () => { shell.openItem(logLinux) }           
-        } : 
-        {
-          label: i18n.t("Common.Menu.File.menuQuit"),
-          role: 'quit'
         },
-        isWindows ? 
-        { 
-          label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-          click: () => { shell.openItem(logWin) } 
-        } : 
         {
           label: i18n.t("Common.Menu.File.menuQuit"),
           role: 'quit'
