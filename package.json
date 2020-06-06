@@ -21,6 +21,7 @@
     "buefy": "^0.8.20",
     "bulma": "^0.8.2",
     "core-js": "^3.6.4",
+    "electron-is-dev": "^1.2.0",
     "electron-log": "^4.2.0",
     "electron-store": "^5.1.1",
     "is-electron": "^2.2.0",

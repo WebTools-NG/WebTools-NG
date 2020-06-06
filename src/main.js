@@ -40,9 +40,11 @@ i18n.locale = wtconfig.get('general.language', 'en')
 Vue.config.productionTip = false
 
 // App Menu Bar
+log.info('Starting to build App Menu')
 const menuTemplate = require('./menubar.js')
 const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default)
 require('electron').remote.Menu.setApplicationMenu(menu)
+log.info('App Menu builded')
 
 new Vue({
   render: h => h(App),
