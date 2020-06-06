@@ -49,7 +49,7 @@
         },
     "Genre":
         {
-            "key": "['MediaContainer']['Metadata']['Genre']['tag']",
+            "key": "['MediaContainer']['Metadata']['Genre']['@.streamtype='3']['tag']",
             "call": "1",
             "type": "array"
         },

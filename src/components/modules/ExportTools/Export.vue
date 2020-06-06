@@ -68,9 +68,14 @@
              <b-field type="is-dark">
                       <b-select
                         placeholder="Default"
-                        expanded>
-                        <option value="flint">Flint</option>
-                        <option value="silver">Silver</option>
+                        expanded
+                        @input="selectExportLevel">
+                        <option
+                        v-for="option in levels"
+                        :value="option.key"
+                        :key="option.key">
+                        {{ option.name }}
+            </option>
                       </b-select>
                     </b-field>
                     </div>
@@ -111,13 +116,16 @@
 </template>
 
 <script>
+
+import  levels from '../ExportTools/movieLevels'
+
 export default {
   name: 'export',
   data() {
     return {
       radio: 'movie',
       activeTab: 0,
-
+      levels: levels
     }
   },
   created(){  
@@ -145,6 +153,10 @@ export default {
         selectSelection: function (selected) {
           console.log(selected)
           this.$store.commit("UPDATE_SELECTEDSECTION", selected);
+        },
+        selectExportLevel: function(selected){
+          console.log(selected)
+          this.$store.commit("UPDATE_EXPORTLEVEL", selected);
         },
         getMedia(){
           console.log("getMedia Called")
