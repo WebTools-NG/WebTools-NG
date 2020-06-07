@@ -32,6 +32,9 @@ log.info('*********************************')
 log.info('Starting ' + wtutils.GetAppName + ' Version:' + wtutils.GetAppVersion);
 // Logging ended
 
+wtutils.MoveToHome('./public/locales');
+
+
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('general.language', 'en')
 

@@ -18,7 +18,7 @@
 
 <script>
 // User Config
-import {wtconfig} from '../wtutils';
+import {wtconfig, wtutils} from '../wtutils';
 
 export default {
   name: 'locale-changer',
@@ -26,7 +26,15 @@ export default {
     return { langs: [] }
   },
    mounted() {
-    this.importAll(require.context('../locales', true, /\.json$/));
+     var LangDir = wtutils.GetHome + '/locales';
+     console.log('Ged LangDir: ' + LangDir)
+     var fs = require('fs');
+     fs.readdir(LangDir, function(err, items) { 
+       console.log('Ged files: ' + items)
+        //this.importAll(items)   
+        this.importAll = items                                
+            });
+     //this.importAll(require.context('../locales', true, /\.json$/));         
   },
   methods: {
     importAll(r) {
