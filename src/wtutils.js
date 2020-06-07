@@ -10,24 +10,36 @@ const electron = require('electron');
 const Store = require('electron-store');
 const wtconfig = new Store({name: require('electron').remote.app.getName()});
 
-const isMac = process.platform === 'darwin'
-const isLinux = process.platform === 'linux'
-const isWindows = process.platform === 'win32'
-
 const wtutils = new class WTUtils {
 
     constructor() {      
     }
+
+    get isDev() {
+        return require('electron-is-dev');
+    }
+
+    get isMac() {
+       return process.platform === 'darwin' 
+    }
+
+    get isLinux() {
+        return process.platform === 'linux'
+    }
+
+    get isWindows() {
+        return process.platform === 'win32'
+    }
   
-    get GetHome() {
+    get Home() {
       return (electron.app || electron.remote.app).getPath('userData');
     }
 
-    get GetAppName() {
+    get AppName() {
         return (electron.app || electron.remote.app).getName(); 
     }
 
-    get GetAppVersion() {
+    get AppVersion() {
         return (electron.app || electron.remote.app).getVersion(); 
     }
 
@@ -35,12 +47,12 @@ const wtutils = new class WTUtils {
   
     MoveToHome(SourceDir) {
         var last = wtconfig.get('general.transfilescopied', "0")
-        if (!(last == wtutils.GetAppVersion))
+        if (!(last == wtutils.AppVersion))
         {
             console.log('We need to copy translation strings over')            
             var fs = require('fs');
             // Check if userdata/locales exists, and create if not
-            var TargetDir = wtutils.GetHome + '/locales';
+            var TargetDir = wtutils.Home + '/locales';
             if (!fs.existsSync(TargetDir)){
                 fs.mkdirSync(TargetDir);
             }
@@ -53,7 +65,7 @@ const wtutils = new class WTUtils {
                     });                  
                 }                
             }); 
-            wtconfig.set('general.transfilescopied', wtutils.GetAppVersion)
+            wtconfig.set('general.transfilescopied', wtutils.AppVersion)
             }                       
     }
 
@@ -71,4 +83,4 @@ const wtutils = new class WTUtils {
   
 
 
-export {wtutils, wtconfig, isLinux, isMac, isWindows};
+export {wtutils, wtconfig};

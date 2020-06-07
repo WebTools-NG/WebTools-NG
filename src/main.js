@@ -26,10 +26,10 @@ Vue.use(Buefy);
 const log = require('electron-log');
 log.transports.file.level = 'info';
 log.transports.console.level = 'verbose';
-log.transports.file.fileName = wtutils.GetAppName;
+log.transports.file.fileName = wtutils.AppName;
 console.log = log.log;
 log.info('*********************************') 
-log.info('Starting ' + wtutils.GetAppName + ' Version:' + wtutils.GetAppVersion);
+log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
 wtutils.MoveToHome('./public/locales');

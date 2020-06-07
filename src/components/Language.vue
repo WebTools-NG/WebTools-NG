@@ -26,8 +26,8 @@ export default {
     return { langs: [] }
   },
    mounted() {
-     var LangDir = wtutils.GetHome + '/locales';
-     console.log('Ged LangDir: ' + LangDir)
+     var LangDir = wtutils.Home + '/locales';
+     console.log('Ged LangDir: ' + LangDir)     
      var fs = require('fs');
      fs.readdir(LangDir, function(err, items) { 
        console.log('Ged files: ' + items)
