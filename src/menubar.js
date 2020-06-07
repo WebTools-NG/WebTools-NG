@@ -3,8 +3,6 @@ import { shell } from 'electron'
 
 const isDev = require('electron-is-dev');
 
-console.log('Ged Mode:' + isDev)
-
 var appName = require('electron').remote.app.getName();
 var appHome = require('electron').remote.app.getPath('home') 
 var logLinux = appHome + '/.config/' + appName + '/logs'
