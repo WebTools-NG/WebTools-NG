@@ -4,8 +4,8 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-//import shell from 'electron'
-//import Menu from 'electron'
+import {wtutils, wtconfig} from './wtutils'
+
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -14,6 +14,7 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import i18n from './i18n'
+
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -24,16 +25,13 @@ Vue.use(Buefy);
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
 log.transports.file.level = 'info';
-log.transports.console.level = 'verbose';  
-var appName = require('electron').remote.app.getName(); 
-var appVersion = require('electron').remote.app.getVersion(); 
-log.transports.file.fileName = appName;
+log.transports.console.level = 'verbose';
+log.transports.file.fileName = wtutils.GetAppName;
 console.log = log.log;
 log.info('*********************************') 
-log.info('Starting ' + appName + ' Version:' + appVersion);
+log.info('Starting ' + wtutils.GetAppName + ' Version:' + wtutils.GetAppVersion);
 // Logging ended
 
-const wtconfig = require('./wtconfig');
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('general.language', 'en')
 

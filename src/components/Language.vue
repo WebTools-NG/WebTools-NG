@@ -18,7 +18,7 @@
 
 <script>
 // User Config
-const wtconfig = require('../wtconfig');
+import {wtconfig} from '../wtutils';
 
 export default {
   name: 'locale-changer',

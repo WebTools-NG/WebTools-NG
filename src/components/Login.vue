@@ -48,7 +48,8 @@
 <script>
 import store from '../store'
 // User Config
-const wtconfig = require('../wtconfig');
+import {wtconfig} from '../wtutils';
+
 var userName = "";
 if(wtconfig.get('general.rememberlastusername')){
   userName = wtconfig.get('general.username')
