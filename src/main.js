@@ -44,6 +44,7 @@ else
 console.log('localesHome: ' + localHome);
 wtutils.MoveToHome(localHome);
 
+
 const Translators = poeditor.Translators;
 console.log('Ged her1');
 console.log('Ged her2 ' + Translators);

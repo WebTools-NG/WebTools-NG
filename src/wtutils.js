@@ -101,7 +101,6 @@ const poeditor = new class POEditor {
           }
     }
    
-
     get Translators() {
          var result = [];
          
