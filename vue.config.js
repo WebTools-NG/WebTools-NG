@@ -5,6 +5,19 @@ module.exports = {
       fallbackLocale: 'en',
       localeDir: 'locales',
       enableInSFC: false
+    },
+    electronBuilder: {
+      builderOptions: {        
+        "extraResources": [
+          {
+            "from": "./public/locales",
+            "to": "locales"
+          }
+        ],
+        "linux": {
+          "category": "Utility"
+        }
+      }
     }
   }
 }

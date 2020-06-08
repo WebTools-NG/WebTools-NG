@@ -4,8 +4,7 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig} from './wtutils'
-
+import {wtutils, wtconfig, poeditor} from './wtutils'
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -24,7 +23,7 @@ Vue.use(Buefy);
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
-log.transports.file.level = 'info';
+log.transports.file.level = 'verbose';
 log.transports.console.level = 'verbose';
 log.transports.file.fileName = wtutils.AppName;
 console.log = log.log;
@@ -32,7 +31,31 @@ log.info('*********************************')
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
-wtutils.MoveToHome('./public/locales');
+// Where translation files are located
+var localHome = '';
+if (wtutils.isDev)
+{
+  localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
+}
+else
+{
+  localHome = __dirname.replace('app.asar', 'locales');
+}
+console.log('localesHome: ' + localHome);
+wtutils.MoveToHome(localHome);
+
+const Translators = poeditor.Translators;
+console.log('Ged her1');
+console.log('Ged her2 ' + Translators);
+
+
+
+Translators.forEach(element => { 
+  console.log('Ged Name: ' + element.name); 
+}); 
+
+
+
 
 
 // Get saved language to use, and default to en
