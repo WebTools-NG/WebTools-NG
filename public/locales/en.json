@@ -4,7 +4,7 @@
         "SelServer": "Select Server",
         "Home": {
             "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
-            "Modules": "Tool Modules currently available are:",
+            "Modules": "Tool modules currently available are:",
             "Name": "Home",
             "Title": "Welcome to @:Common.AppName"
         },
