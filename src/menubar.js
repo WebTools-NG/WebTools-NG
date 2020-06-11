@@ -1,20 +1,6 @@
 import i18n from './i18n'
 import { shell } from 'electron'
-
 import { wtutils} from './wtutils';
-//import { wtconfig } from './wtutils';
-
-const isDev = require('electron-is-dev');
-
-var appName = require('electron').remote.app.getName();
-var appHome = require('electron').remote.app.getPath('home') 
-var logLinux = wtutils.Home + '/.config/' + wtutils.AppName + '/logs'
-var logWin = appHome + '\\AppData\\Roaming\\' + appName + '\\logs'
-var logMac = appHome + '/Library/Logs/' + appName
-
-//const isMac = process.platform === 'darwin'
-//const isLinux = process.platform === 'linux'
-//const isWindows = process.platform === 'win32' 
 
 // Menu template
 const menuTemplate = [
@@ -26,18 +12,18 @@ const menuTemplate = [
         wtutils.isMac ?
           {             
               label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-              click: () => { shell.openItem(logMac) }  
+              click: () => { shell.openItem(wtutils.LogMac) }  
           } : 
           { 
             ...wtutils.isLinux ? 
             { 
               label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
-              click: () => { shell.openItem(logLinux) }           
+              click: () => { shell.openItem(wtutils.LogLinux) }           
             } : {
               ...wtutils.isWindows ? 
               { 
                 label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-                click: () => { shell.openItem(logWin) } 
+                click: () => { shell.openItem(wtutils.LogWin) } 
               } : {}
           },
         },
@@ -98,7 +84,7 @@ const menuTemplate = [
           label: i18n.t("Common.Menu.View.menuForceReload"),
           role: 'forceReload'
         },
-        isDev ?
+        wtutils.isDev ?
           {             
             label: i18n.t("Common.Menu.View.menuToggleDeveloperTools"),
             role: 'toggleDevTools'

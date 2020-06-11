@@ -59,6 +59,21 @@ const wtutils = new class WTUtils {
         return langFiles
     }
 
+    get LogLinux() {
+        return wtutils.Home + '/logs';
+    }
+
+    get LogWin() {
+        return wtutils.Home + '\\logs';
+    }
+
+    get LogMac() {
+        // does this work?
+        console.log('******* Need Help here ***********');
+        console.log('Mac Log dir detected as : ' + wtutils.Home + '/Library/Logs/' + wtutils.AppName);
+        console.log('********* Is that correct? ********** ');
+        return wtutils.Home + '/Library/Logs/' + wtutils.AppName;
+    }
 
     /* 
     This will move translation files in the app to userdata
