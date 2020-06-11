@@ -44,6 +44,21 @@ const wtutils = new class WTUtils {
         return (electron.app || electron.remote.app).getVersion(); 
     }
 
+    get LangFiles() {
+        const langFiles = []
+        var fs = require('fs');    
+        const localHome = wtutils.Home + '/locales'  
+        console.log('LocalHome detected as: ' + localHome);    
+        const items = fs.readdirSync(localHome)                   
+        console.log('Files count is: ' + items.length)
+        for (var i=0; i<items.length; i++) {                                    
+            console.log('found translation file : ' + items[i]);        
+            langFiles.push(items[i]);
+        }
+        console.log('********* Done reading translations ***********')          
+        return langFiles
+    }
+
 
     /* 
     This will move translation files in the app to userdata

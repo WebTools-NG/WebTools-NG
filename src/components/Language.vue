@@ -26,19 +26,17 @@ export default {
     return { langs: [] }
   },
    mounted() {
-     var LangDir = wtutils.Home + '/locales';
-     console.log('Ged LangDir: ' + LangDir)     
-     
-
-    this.importAll(require.context('../locales', true, /\.json$/));         
+    this.importAll(wtutils.LangFiles);    
   },
   methods: {
     importAll(r) {
-      r.keys().forEach(key => (this.langs.push(key.slice(2,4))));
+      for (var i=0; i<r.length; i++) {       
+        this.langs.push(r[i].slice(0,-5))
+      }
     },
     onChange(event) {
             console.log('language set to:' + event.target.value);
-            wtconfig.set('general.language', event.target.value)
+            wtconfig.set('general.language', event.target.value);
         }
   }
 }

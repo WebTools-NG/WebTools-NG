@@ -6,11 +6,17 @@ Vue.use(VueI18n)
 
 function loadLocaleMessages () {  
   wtutils.MoveToHome();
+  
+/*   wtutils.LangFiles;
   const messages = {}
   var fs = require('fs');    
   const localHome = wtutils.Home + '/locales'  
-  console.log('LocalHome detected as: ' + localHome);    
-  const items = fs.readdirSync(localHome)                   
+  console.log('LocalHome detected as: ' + localHome);  */   
+  //const items = fs.readdirSync(localHome)  
+  var fs = require('fs');   
+  const messages = {}
+  const items = wtutils.LangFiles  
+  const localHome = wtutils.Home + '/locales'
   console.log('Files count is: ' + items.length)
   for (var i=0; i<items.length; i++) {                                    
       console.log('found translation file : ' + items[i]);        
