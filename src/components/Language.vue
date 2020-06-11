@@ -28,13 +28,9 @@ export default {
    mounted() {
      var LangDir = wtutils.Home + '/locales';
      console.log('Ged LangDir: ' + LangDir)     
-     var fs = require('fs');
-     fs.readdir(LangDir, function(err, items) { 
-       console.log('Ged files: ' + items)
-        //this.importAll(items)   
-        this.importAll = items                                
-            });
-     //this.importAll(require.context('../locales', true, /\.json$/));         
+     
+
+    this.importAll(require.context('../locales', true, /\.json$/));         
   },
   methods: {
     importAll(r) {

@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig, poeditor} from './wtutils'
+import {wtutils, wtconfig} from './wtutils'
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -12,8 +12,12 @@ import 'buefy/dist/buefy.css'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+//wtutils.MoveToHome();
 import i18n from './i18n'
 
+/* i18n.setLocaleMessage('da', require('/home/tm/data/github/WebTools-NG/public/locales/da').default);
+i18n.locale = 'da';
+ */
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -31,33 +35,7 @@ log.info('*********************************')
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
-// Where translation files are located
-var localHome = '';
-if (wtutils.isDev)
-{
-  localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
-}
-else
-{
-  localHome = __dirname.replace('app.asar', 'locales');
-}
-console.log('localesHome: ' + localHome);
-wtutils.MoveToHome(localHome);
-
-
-const Translators = poeditor.Translators;
-console.log('Ged her1');
-console.log('Ged her2 ' + Translators);
-
-
-
-Translators.forEach(element => { 
-  console.log('Ged Name: ' + element.name); 
-}); 
-
-
-
-
+//wtutils.MoveToHome();
 
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('general.language', 'en')
