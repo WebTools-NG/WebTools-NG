@@ -77,9 +77,7 @@
             "DevCPSO": "Casper (aka CPSO), a soon to be Plex community member (CPSO on GitHub)",
             "TranslationBetaTestersTitle": "Translators and Beta Testers",
             "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
-            "PlexPoCredits": "And Many Thanks To The authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work And our friends at POEditor.com, who provided a free translation site because we are an Open-Source project."
-
-            
+            "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work And our friends at POEditor.com, who provided a free translation site because we are an Open-Source project."
         }
     }
 }
