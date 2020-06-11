@@ -5,14 +5,7 @@ import {wtutils} from './wtutils'
 Vue.use(VueI18n)
 
 function loadLocaleMessages () {  
-  wtutils.MoveToHome();
-  
-/*   wtutils.LangFiles;
-  const messages = {}
-  var fs = require('fs');    
-  const localHome = wtutils.Home + '/locales'  
-  console.log('LocalHome detected as: ' + localHome);  */   
-  //const items = fs.readdirSync(localHome)  
+  wtutils.MoveToHome();  
   var fs = require('fs');   
   const messages = {}
   const items = wtutils.LangFiles  
