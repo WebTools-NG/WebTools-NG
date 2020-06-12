@@ -4,7 +4,7 @@ that we use in our solution.
 Can be used both from rendering and from main
  */
 
-
+import i18n from './i18n'
 const log = require('electron-log');
 const electron = require('electron');
 // User Config 
@@ -123,5 +123,38 @@ const wtutils = new class WTUtils {
       this._name = value;
     } */
   }  
+  
+  const dialog = new class Dialog {
+    constructor() { 
+                   
+    }
+            
+    SelectFile(title, defaultPath) {
+        console.log('Ged start dialog')
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow(); 
+        const lOK = i18n.t('Common.Ok');
+        console.log('OK Label: ' + lOK);
+        let options = {
+            //Placeholder 1 (Not on Linux)
+            title: title,            
+            //Placeholder 2
+            defaultPath : defaultPath,            
+            //Placeholder 4
+            buttonLabel : "Ok", 
+            //buttonLabel : lOK,           
+            //buttonLabel : "{{ i18n.__('Common.Ok') }}",            
+            //Placeholder 3
+            filters :[
+             {name: 'ExportTools', extensions: ['xlsx', 'csv']},
+             {name: 'All Files', extensions: ['*']}
+            ]
+           } 
+        let filename = dialog.showSaveDialogSync(WIN, options)
+        return filename
+    }
 
-export {wtutils, wtconfig};
+  }
+
+export {wtutils, wtconfig, dialog};
