@@ -1,8 +1,19 @@
-var levels = [{"Level 1": "level1"}, {"Level 2": "level2"}];
+const levels = [
+    {name:"Level 1", key:"level1"}, 
+    {name:"Level 2", key:"level2"}
+];
 
-var level1 = ["Media ID", "Title", "Sort title", 
+
+
+
+const level1 = ["Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
                 "Rating", "Summary"];
 
-var level2 = ["Media ID", "Title", "Sort title"];
+
+const level2 = ["Media ID", "Title", "Sort title"];
+
+export {levels, level1, level2}
+
+
             

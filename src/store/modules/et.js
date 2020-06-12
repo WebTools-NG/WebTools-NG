@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const state = {
     sections:   [],
-    selectedSection : ""
+    selectedSection : "",
+    selectedExportLevel: ""
 };
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
       },
       UPDATE_SELECTEDSECTION(state, payload) {
           state.selectedSection = payload
+      },
+      UPDATE_EXPORTLEVEL(state, payload) {
+          state.selectedExportLevel = payload
       }
 };
 
