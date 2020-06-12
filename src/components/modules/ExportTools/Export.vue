@@ -116,8 +116,8 @@
 </template>
 
 <script>
-
 import  {levels, level1, level2} from '../ExportTools/movieLevels'
+const log = require('electron-log');
 
 export default {
   name: 'export',
@@ -130,8 +130,8 @@ export default {
       level2: level2
     }
   },
-  created(){  
-    console.log("ET Created")
+  created(){     
+    log.info('ET Created')    
     this.fetchSelection()
     console.log(level2)
   }, computed: {
@@ -139,22 +139,22 @@ export default {
           let sections = this.$store.getters.getPmsSections
           let result=[];
           if(Array.isArray(sections) && sections.length){
-            console.log("doing a forEach")
+            log.debug("doing a forEach")
                 sections.forEach((req) => {
               if (req.type == this.radio) {
-                console.log("pushing data to results")
+                log.debug("pushing data to results")
                   result.push(req);
                 }
               })
           } else {
-            console.log("No data found")
+            log.info("No data found")
             result.push["No Section found"]
           }
         return result
       }
   }, methods: {
         selectSelection: function (selected) {
-          console.log(selected)
+          log.debug(selected)
           this.$store.commit("UPDATE_SELECTEDSECTION", selected);
         },
         selectExportLevel: function(selected){
@@ -166,14 +166,14 @@ export default {
               this.$store.dispatch('getMediaMovies');
         },
         fetchSelection(){
-          console.log("fetchSelection")
+          log.debug("fetchSelection")
           let serverCheck = this.$store.getters.getSelectedServer
             if(serverCheck !== "none"){
 
-              console.log("serverCheck is not null, running fetchSections ")
+              log.debug("serverCheck is not null, running fetchSections ")
               this.$store.dispatch('fetchSections')
           } else {
-              console.log("serverCheck is none")
+              log.debug("serverCheck is none")
                this.$buefy.toast.open({
                   duration: 3000,
                   message: `No server selected`,

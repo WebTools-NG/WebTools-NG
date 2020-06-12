@@ -47,13 +47,20 @@
 
 <script>
 import store from '../store'
+// User Config
+import {wtconfig} from '../wtutils';
+
+var userName = "";
+if(wtconfig.get('general.rememberlastusername')){
+  userName = wtconfig.get('general.username')
+}
 
 export default {
   name: 'Login',
   data() {
     return {
       input: {
-        username: "",
+        username: userName,
         password: ""
       },
     }
@@ -64,6 +71,7 @@ export default {
       username: this.input.username,
       password: this.input.password
       })
+      wtconfig.set('general.username', this.input.username)
     },
     danger(){
        this.$buefy.toast.open({

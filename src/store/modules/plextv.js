@@ -1,6 +1,7 @@
 import axios from 'axios';
 import router from '../../router'
 
+const log = require('electron-log');
 
 const state = {
   plexServers: [],
@@ -47,9 +48,12 @@ const actions = {
         })
           .then((response) => {
             let result=[];
-            console.log("response from fetchPlexServers", response)
+            log.info('Response from fetchPlexServers recieved')
+            log.verbose(response)
+            // console.log("response from fetchPlexServers", response)
           response.data.forEach((req) => {
           if (req.owned == true && req.product == "Plex Media Server") {
+              log.debug(req)
               result.push(req);
             } 
           })

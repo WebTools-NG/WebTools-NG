@@ -5,7 +5,7 @@
     <br>
     <div class="control has-icons-left">
     <div class="locale-changer select is-dark is-medium" >
-      <select v-model="$i18n.locale">
+      <select @change="onChange($event)" v-model="$i18n.locale">
         <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
       </select>
     </div>
@@ -17,6 +17,9 @@
 </template>
 
 <script>
+// User Config
+import {wtconfig, wtutils} from '../wtutils';
+const log = require('electron-log');
 
 export default {
   name: 'locale-changer',
@@ -24,13 +27,19 @@ export default {
     return { langs: [] }
   },
    mounted() {
-    this.importAll(require.context('../locales', true, /\.json$/));
+    this.importAll(wtutils.LangFiles);    
   },
-    methods: {
+  methods: {
     importAll(r) {
-      r.keys().forEach(key => (this.langs.push(key.slice(2,4))));
+      for (var i=0; i<r.length; i++) {       
+        this.langs.push(r[i].slice(0,-5))
+      }
     },
-}
+    onChange(event) {            
+            log.info('language set to:' + event.target.value);
+            wtconfig.set('general.language', event.target.value);            
+        }
+  }
 }
 </script>
 
