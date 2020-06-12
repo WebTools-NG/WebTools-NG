@@ -195,12 +195,12 @@ const wtutils = new class WTUtils {
 
     AddHeader(Sheet, Level) {
         const columns = []
-        for (var i=0; i<Level.length; i++) {
-            console.log('Column: ' + Level[i])
+        for (var i=0; i<Level.length; i++) {            
+            log.verbose('Column: ' + Level[i])
             //let column = { header: Level[i], key: 'id', width: 10 }
             let column = { header: Level[i] }
             columns.push(column)            
-        }        
+        }             
         Sheet.columns = columns
     }
     
