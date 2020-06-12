@@ -10,7 +10,7 @@ console.log = log.log;
 
 import {
   createProtocol,
-  /* installVueDevtools */
+  installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -74,11 +74,11 @@ app.on('ready', async () => {
     // Electron will not launch with Devtools extensions installed on Windows 10 with dark mode
     // If you are not using Windows 10 dark mode, you may uncomment these lines
     // In addition, if the linked issue is closed, you can upgrade electron and uncomment these lines
-    // try {
-    //   await installVueDevtools()
-    // } catch (e) {
-    //   console.error('Vue Devtools failed to install:', e.toString())
-    // }
+     try {
+       await installVueDevtools()
+     } catch (e) {
+       console.error('Vue Devtools failed to install:', e.toString())
+     }
 
   }
   Menu.setApplicationMenu(null)
