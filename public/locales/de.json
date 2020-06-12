@@ -1,6 +1,6 @@
 {
     "Common": {
-        "AppName": "WebTools-NG",
+        "AppName": "WebTools-NG1",
         "Home": {
             "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
             "Modules": "Tool Modules currently available are:",
