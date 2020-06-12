@@ -4,7 +4,9 @@ that we use in our solution.
 Can be used both from rendering and from main
  */
 
-import i18n from './i18n'
+//import i18n from './i18n';
+
+//import i18n from './i18n'
 const log = require('electron-log');
 const electron = require('electron');
 // User Config 
@@ -34,6 +36,10 @@ const wtutils = new class WTUtils {
   
     get Home() {
       return (electron.app || electron.remote.app).getPath('userData');
+    }
+
+    get UserHomeDir() {
+        return (electron.app || electron.remote.app).getPath('home');
     }
 
     get AppName() {
@@ -125,26 +131,39 @@ const wtutils = new class WTUtils {
   }  
   
   const dialog = new class Dialog {
-    constructor() { 
-                   
+    constructor() {                    
     }
-            
-    SelectFile(title, defaultPath) {
-        console.log('Ged start dialog')
+
+    OpenDirectory(Title, OKLabel)
+    {
+        log.debug('Start OpenDirectory Dialog')
         const {remote} = require('electron'),
         dialog = remote.dialog,
-        WIN = remote.getCurrentWindow(); 
-        const lOK = i18n.t('Common.Ok');
-        console.log('OK Label: ' + lOK);
+        WIN = remote.getCurrentWindow();
+        let options = {
+            properties:["openDirectory"],
+            buttonLabel : OKLabel,
+            title: Title
+        }
+        
+        let dirName = dialog.showOpenDialogSync(WIN, options)
+        log.debug('Returned directoryname is: ' + dirName)
+        return dirName
+
+    }
+            
+    SaveFile(title, defaultPath, OKLabel) {        
+        log.debug('Start SaveFile Dialog')
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
         let options = {
             //Placeholder 1 (Not on Linux)
             title: title,            
             //Placeholder 2
             defaultPath : defaultPath,            
             //Placeholder 4
-            buttonLabel : "Ok", 
-            //buttonLabel : lOK,           
-            //buttonLabel : "{{ i18n.__('Common.Ok') }}",            
+            buttonLabel : OKLabel,            
             //Placeholder 3
             filters :[
              {name: 'ExportTools', extensions: ['xlsx', 'csv']},
@@ -152,6 +171,7 @@ const wtutils = new class WTUtils {
             ]
            } 
         let filename = dialog.showSaveDialogSync(WIN, options)
+        log.debug('Returned filename is: ' + filename)
         return filename
     }
 

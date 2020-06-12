@@ -48,35 +48,25 @@ const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.defa
 require('electron').remote.Menu.setApplicationMenu(menu)
 log.info('App Menu builded')
 
-console.log('Ged start dialog')
-/* const {remote} = require('electron'),
-dialog = remote.dialog,
-WIN = remote.getCurrentWindow();
 
-let options = {
- //Placeholder 1
- title: "ExportTools Output file",
- 
- //Placeholder 2
- defaultPath : "/home/tm/Documents",
- 
- //Placeholder 4
- buttonLabel : "Ok",
- 
- //Placeholder 3
- filters :[
-  {name: 'ExportTools', extensions: ['xlsx', 'csv']},
-  {name: 'All Files', extensions: ['*']}
- ]
-}        
+console.log('*********** Ged CASPER start dialog ************');
+console.log('Se main.js linie 54 for at lave en dialog i ET, så');
+console.log('vi kan gemme std. output dir');
+console.log('Gemmes med wtconfig.set("ET.OutPath", <sti til dir>)');
 
+// Nedenstående line slettes nå vi bruger det
+dialog;
+/* 
 
-let filename = dialog.showSaveDialogSync(WIN, options)
+const outDir = dialog.OpenDirectory('Title', i18n.t('Common.OK'));
+if (outDir)
+{
+  wtconfig.set('ET.OutPath', outDir[0]);
+} */
 
-console.log('Selected fileName: ' + filename)
- */
+// for at lave en dialog til at vælge et filnavn, se nedenstående
+//console.log('FileName: ' +  dialog.SaveFile('Title', wtconfig.get('ET.OutPath', wtutils.UserHomeDir), i18n.t('Common.OK')));
 
-console.log('FileName: ' +  dialog.SelectFile('Gummiged', '/home/tm'));
 
 new Vue({
   render: h => h(App),
