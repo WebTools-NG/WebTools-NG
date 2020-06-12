@@ -19,6 +19,7 @@
 <script>
 // User Config
 import {wtconfig, wtutils} from '../wtutils';
+const log = require('electron-log');
 
 export default {
   name: 'locale-changer',
@@ -34,9 +35,9 @@ export default {
         this.langs.push(r[i].slice(0,-5))
       }
     },
-    onChange(event) {
-            console.log('language set to:' + event.target.value);
-            wtconfig.set('general.language', event.target.value);
+    onChange(event) {            
+            log.info('language set to:' + event.target.value);
+            wtconfig.set('general.language', event.target.value);            
         }
   }
 }
