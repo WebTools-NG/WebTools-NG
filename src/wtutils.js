@@ -1,12 +1,8 @@
 /* 
 This file contains different functions and methods
 that we use in our solution.
-Can be used both from rendering and from main
  */
 
-//import i18n from './i18n';
-
-//import i18n from './i18n'
 const log = require('electron-log');
 const electron = require('electron');
 // User Config 
@@ -40,6 +36,10 @@ const wtutils = new class WTUtils {
 
     get UserHomeDir() {
         return (electron.app || electron.remote.app).getPath('home');
+    }
+
+    get UserDocFld() {
+        return (electron.app || electron.remote.app).getPath('documents');
     }
 
     get AppName() {
@@ -184,4 +184,48 @@ const wtutils = new class WTUtils {
 
   }
 
-export {wtutils, wtconfig, dialog};
+  const excel = new class Excel {
+    constructor() {           
+    }
+
+    NewSheet(Workbook, Library, Level) {        
+        const sheet = Workbook.addWorksheet(Library + '-' + Level);        
+        return sheet
+    }
+
+    AddHeader(Sheet, Level) {
+        const columns = []
+        for (var i=0; i<Level.length; i++) {
+            console.log('Column: ' + Level[i])
+            //let column = { header: Level[i], key: 'id', width: 10 }
+            let column = { header: Level[i] }
+            columns.push(column)            
+        }        
+        Sheet.columns = columns
+    }
+    
+    SaveWorkbook(Workbook, Library, Level, Type) {
+        const fs = require('fs')
+        const dateFormat = require('dateformat');
+        const OutDir = wtconfig.get('ET.OutPath', wtutils.UserHomeDir)
+        const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");          
+        const name = OutDir + '/' + Library + '_' + Level + '_' + timeStamp + '.' + Type;
+        // Save Excel on Hard Disk
+        Workbook.xlsx.writeBuffer()
+            .then(buffer => fs.writeFileSync(name, buffer))
+    }
+
+    NewExcelFile() {
+        const Excel = require('exceljs');                
+        // A new Excel Work Book
+        const workbook = new Excel.Workbook();
+        // Some information about the Excel Work Book.
+        workbook.creator = 'WebTools-NG';
+        workbook.lastModifiedBy = '';
+        workbook.created = new Date();
+        workbook.modified = new Date();
+        return workbook
+    }
+}
+
+export {wtutils, wtconfig, dialog, excel};

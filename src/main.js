@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig, dialog} from './wtutils'
+import {wtutils, wtconfig, dialog, excel} from './wtutils'
 
 //import dialog from 'electron'
 
@@ -66,6 +66,27 @@ if (outDir)
 
 // for at lave en dialog til at vælge et filnavn, se nedenstående
 //console.log('FileName: ' +  dialog.SaveFile('Title', wtconfig.get('ET.OutPath', wtutils.UserHomeDir), i18n.t('Common.OK')));
+
+
+// EXCEL STUFF
+
+// We export library named "Ged" of the type movie with a level of "Level 1"
+const libName = 'Ged'
+const level = 'Level 1'
+const libType = 'movie'
+// Real stuff to use
+const WorkBook = excel.NewExcelFile()
+const Sheet = excel.NewSheet(WorkBook, libName, level)
+var def = JSON.parse(JSON.stringify(require('./components/modules/ExportTools/definitions.json')));
+// First get the real name of the level, and not just the display name
+const levelName = def[libType]['levels'][level]
+log.debug('LevelName: ' + levelName)
+// Now get the fields, to use as header
+const header = def[libType]['level'][levelName]
+log.debug('Header: ' + header)
+excel.AddHeader(Sheet, header)
+excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
+
 
 
 new Vue({
