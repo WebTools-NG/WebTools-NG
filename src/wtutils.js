@@ -85,7 +85,14 @@ const wtutils = new class WTUtils {
         var localHome = '';
         if (wtutils.isDev)
         {
-        localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
+            if (wtutils.isWindows)
+            {
+                localHome = __dirname.replace('node_modules\\electron\\dist\\resources\\electron.asar\\renderer', 'public/locales');
+            }
+            else
+            {
+                localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
+            }                                       
         }
         else
         {
