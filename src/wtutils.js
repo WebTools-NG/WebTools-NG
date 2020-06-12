@@ -4,7 +4,9 @@ that we use in our solution.
 Can be used both from rendering and from main
  */
 
+//import i18n from './i18n';
 
+//import i18n from './i18n'
 const log = require('electron-log');
 const electron = require('electron');
 // User Config 
@@ -34,6 +36,10 @@ const wtutils = new class WTUtils {
   
     get Home() {
       return (electron.app || electron.remote.app).getPath('userData');
+    }
+
+    get UserHomeDir() {
+        return (electron.app || electron.remote.app).getPath('home');
     }
 
     get AppName() {
@@ -130,5 +136,52 @@ const wtutils = new class WTUtils {
       this._name = value;
     } */
   }  
+  
+  const dialog = new class Dialog {
+    constructor() {                    
+    }
 
-export {wtutils, wtconfig};
+    OpenDirectory(Title, OKLabel)
+    {
+        log.debug('Start OpenDirectory Dialog')
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
+        let options = {
+            properties:["openDirectory"],
+            buttonLabel : OKLabel,
+            title: Title
+        }
+        
+        let dirName = dialog.showOpenDialogSync(WIN, options)
+        log.debug('Returned directoryname is: ' + dirName)
+        return dirName
+
+    }
+            
+    SaveFile(title, defaultPath, OKLabel) {        
+        log.debug('Start SaveFile Dialog')
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
+        let options = {
+            //Placeholder 1 (Not on Linux)
+            title: title,            
+            //Placeholder 2
+            defaultPath : defaultPath,            
+            //Placeholder 4
+            buttonLabel : OKLabel,            
+            //Placeholder 3
+            filters :[
+             {name: 'ExportTools', extensions: ['xlsx', 'csv']},
+             {name: 'All Files', extensions: ['*']}
+            ]
+           } 
+        let filename = dialog.showSaveDialogSync(WIN, options)
+        log.debug('Returned filename is: ' + filename)
+        return filename
+    }
+
+  }
+
+export {wtutils, wtconfig, dialog};

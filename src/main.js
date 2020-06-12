@@ -4,7 +4,10 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig} from './wtutils'
+import {wtutils, wtconfig, dialog} from './wtutils'
+
+//import dialog from 'electron'
+
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -12,12 +15,8 @@ import 'buefy/dist/buefy.css'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
-//wtutils.MoveToHome();
-import i18n from './i18n'
 
-/* i18n.setLocaleMessage('da', require('/home/tm/data/github/WebTools-NG/public/locales/da').default);
-i18n.locale = 'da';
- */
+import i18n from './i18n'
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -48,6 +47,26 @@ const menuTemplate = require('./menubar.js')
 const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default)
 require('electron').remote.Menu.setApplicationMenu(menu)
 log.info('App Menu builded')
+
+
+console.log('*********** Ged CASPER start dialog ************');
+console.log('Se main.js linie 54 for at lave en dialog i ET, så');
+console.log('vi kan gemme std. output dir');
+console.log('Gemmes med wtconfig.set("ET.OutPath", <sti til dir>)');
+
+// Nedenstående line slettes nå vi bruger det
+dialog;
+/* 
+
+const outDir = dialog.OpenDirectory('Title', i18n.t('Common.OK'));
+if (outDir)
+{
+  wtconfig.set('ET.OutPath', outDir[0]);
+} */
+
+// for at lave en dialog til at vælge et filnavn, se nedenstående
+//console.log('FileName: ' +  dialog.SaveFile('Title', wtconfig.get('ET.OutPath', wtutils.UserHomeDir), i18n.t('Common.OK')));
+
 
 new Vue({
   render: h => h(App),
