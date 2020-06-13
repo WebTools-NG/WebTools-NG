@@ -23,6 +23,13 @@ const et = new class ET {
         return out
     }
 
+    getLevelCall (libType, level) {
+        // this will return true, if we also need to call individual items
+        console.log('Ged libType: ' + libType)
+        console.log('Ged Level: ' + level)
+        return true
+    }
+
     getLevels(libType) {
         // Returns an array of levels for a selected type og medias, like 'movie'
         const levels = def[libType]['levels']

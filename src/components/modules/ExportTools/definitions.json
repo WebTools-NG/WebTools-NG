@@ -134,8 +134,134 @@
                     "key": "userRating",
                     "call": "1",
                     "type": "string"
-                }
+                },
+            "Labels":
+                {
+                    "key": "['Label']['tag']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Locked Fields":
+                {
+                    "key": "['Field']['name']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras":
+                {
+                    "key": "['Extras']['size']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-behindthescenes":
+                {
+                    "key": "['Extras']['Video'][@subtype='behindTheScenes']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-deleted":
+                {
+                    "key": "['Extras']['Video'][@subtype='deleted']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-featurette":
+                {
+                    "key": "['Extras']['Video'][@subtype='featurette']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-interview":
+                {
+                    "key": "['Extras']['Video'][@subtype='interview']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-scene":
+                {
+                    "key": "['Extras']['Video'][@subtype='scene']",
+                    "call": "2",
+                    "type": "array"                    
+                },                
+            "Extras-short":
+                {
+                    "key": "['Extras']['Video'][@subtype='short']",
+                    "call": "2",
+                    "type": "array"                    
+                }, 
+            "Extras-trailer":
+                {
+                    "key": "['Extras']['Video'][@subtype='trailer']",
+                    "call": "2",
+                    "type": "array"                    
+                }, 
+            "Collections":
+                {
+                    "key": "['Collection']['tag']",
+                    "call": "2",
+                    "type": "array"                    
+                }, 
+            "Original Title":
+                {
+                    "key": "['originalTitle']",
+                    "call": "2",
+                    "type": "string"                    
+                }, 
+            "Added":
+                {
+                    "key": "['addedAt']",
+                    "call": "2",
+                    "type": "datetime"                    
+                },                 
+            "Updated":
+                {
+                    "key": "['updatedAt']",
+                    "call": "2",
+                    "type": "datetime"                    
+                },
+            "Audio Languages":
+                {
+                    "key": "[Media][Part][Stream][@streamType=2][@languageCode]",
+                    "call": "2",
+                    "type": "array"                    
+                }                
+
+
         }
     }
 }
 
+
+
+
+
+/*
+    ('Audio Title',
+        'Media/Part/Stream[@streamType=2]/@title'),
+    ('Subtitle Languages',
+        'Media/Part/Stream[@streamType=3]/@languageCode'),
+    ('Subtitle Title',
+        'Media/Part/Stream[@streamType=3]/@title'),
+    ('Subtitle Codec',
+        'Media/Part/Stream[@streamType=3]/@codec'),
+    ('Subtitle Forced',
+        'Media/Part/Stream[@streamType=3]/@forced'),
+    ('Accessible',
+        'Media/Part/@accessible'),
+    ('Exists',
+        'Media/Part/@exists'),
+    ('MetaDB Link',
+        '@guid'),
+    ('MetaData Language',
+        '@guid'),
+    ('Poster url',
+        '@thumb'),
+    ('Art url',
+        '@art'),
+    ('Chapter Source',
+        '@chapterSource'),
+    ('Chapter Title',
+        'Chapter/@tag'),
+    ('Chapter Count',
+        'Chapter/@index')
+         */
