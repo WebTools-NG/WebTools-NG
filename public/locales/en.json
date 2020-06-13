@@ -19,6 +19,7 @@
             "Note": "3.Party Auth is not supported!",
             "Username": "Username",
             "UsernamePrompt": "Enter your plex.tv Username",
+            "UsernameSave": "Remember Username",
             "Password": "Password",
             "PasswordPrompt": "Enter your plex.tv password"
         },
