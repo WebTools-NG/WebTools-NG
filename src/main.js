@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig, dialog, excel} from './wtutils'
+import {wtutils, wtconfig, dialog} from './wtutils'
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -75,7 +75,7 @@ const libType = 'movie'
 
 
 // ET Stuff
-import {et} from './components/modules/ExportTools/et'
+import {et, excel} from './components/modules/ExportTools/et'
 // Get possible levels for movie
 console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
 console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
@@ -91,7 +91,7 @@ const Sheet = excel.NewSheet(WorkBook, libName, level)
 // Now get the fields, to use as header
 const header = et.getLevelFields(level, libType)
 //const header = et.getLevelKeys()
-excel.AddHeader(Sheet, header)
+excel.AddHeader(Sheet, header, libType)
 
 // Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
