@@ -189,19 +189,30 @@ const wtutils = new class WTUtils {
     }
 
     NewSheet(Workbook, Library, Level) {        
-        const sheet = Workbook.addWorksheet(Library + '-' + Level);        
+        const sheet = Workbook.addWorksheet(Library + '-' + Level, {
+            views: [
+            {state: 'frozen', ySplit: 1}
+            ]
+            });        
         return sheet
     }
 
     AddHeader(Sheet, Level) {
         const columns = []
         for (var i=0; i<Level.length; i++) {            
-            log.verbose('Column: ' + Level[i])
+            log.debug('Column: ' + Level[i])
             //let column = { header: Level[i], key: 'id', width: 10 }
             let column = { header: Level[i] }
             columns.push(column)            
         }             
         Sheet.columns = columns
+
+
+
+/*         Sheet.autoFilter = {
+            from: 'A1',
+            to: 'D1',
+          } */
     }
     
     SaveWorkbook(Workbook, Library, Level, Type) {
@@ -210,6 +221,7 @@ const wtutils = new class WTUtils {
         const OutDir = wtconfig.get('ET.OutPath', wtutils.UserHomeDir)
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");          
         const name = OutDir + '/' + Library + '_' + Level + '_' + timeStamp + '.' + Type;
+        log.debug('Saving output file as: ' + name)
         // Save Excel on Hard Disk
         Workbook.xlsx.writeBuffer()
             .then(buffer => fs.writeFileSync(name, buffer))

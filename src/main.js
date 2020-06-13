@@ -6,9 +6,6 @@ import router from './router'
 import store from './store'
 import {wtutils, wtconfig, dialog, excel} from './wtutils'
 
-//import dialog from 'electron'
-
-
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
@@ -26,8 +23,8 @@ Vue.use(Buefy);
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
-log.transports.file.level = 'verbose';
-log.transports.console.level = 'verbose';
+log.transports.file.level = 'debug';
+log.transports.console.level = 'silly';
 log.transports.file.fileName = wtutils.AppName;
 console.log = log.log;
 log.info('*********************************') 
@@ -68,24 +65,35 @@ if (outDir)
 //console.log('FileName: ' +  dialog.SaveFile('Title', wtconfig.get('ET.OutPath', wtutils.UserHomeDir), i18n.t('Common.OK')));
 
 
-// EXCEL STUFF
+// ET-EXCEL STUFF
 
 // We export library named "Ged" of the type movie with a level of "Level 1"
 const libName = 'Ged'
 const level = 'Level 1'
 const libType = 'movie'
 // Real stuff to use
+
+
+// ET Stuff
+import {et} from './components/modules/ExportTools/et'
+// Get possible levels for movie
+console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
+console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
+console.log('RealLevelName: ' + et.getRealLevelName(level, libType))
+console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, libType)))
+
+
+// EXCEL Stuff
+// Create WorkBook
 const WorkBook = excel.NewExcelFile()
+// Create Sheet
 const Sheet = excel.NewSheet(WorkBook, libName, level)
-var def = JSON.parse(JSON.stringify(require('./components/modules/ExportTools/definitions.json')));
-// First get the real name of the level, and not just the display name
-const levelName = def[libType]['levels'][level]
-log.debug('LevelName: ' + levelName)
 // Now get the fields, to use as header
-const header = def[libType]['level'][levelName]
-log.debug('Header: ' + header)
+const header = et.getLevelFields(level, libType)
+//const header = et.getLevelKeys()
 excel.AddHeader(Sheet, header)
 
+// Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
 
 
