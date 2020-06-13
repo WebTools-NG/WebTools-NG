@@ -176,7 +176,7 @@ export default {
               log.debug("serverCheck is none")
                this.$buefy.toast.open({
                   duration: 3000,
-                  message: `No server selected`,
+                  message: this.$t('Modules.ET.ErrorNoServerSelected'),
                   type: 'is-danger'
                 })
           }
