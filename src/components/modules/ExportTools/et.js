@@ -59,22 +59,27 @@ const excel = new class Excel {
 
     AddHeader(Sheet, Level, libType) {
         const columns = []
-        let key        
-        for (var i=0; i<Level.length; i++) {
-            key = et.getFieldKey(libType, Level[i])
-            log.debug('Column: ' + Level[i] + ' - ' + key)                                                
+        let key
+        // Get level fields
+        const fields = et.getLevelFields(Level, libType)        
+        for (var i=0; i<fields.length; i++) {
+            key = et.getFieldKey(libType, fields[i])
+            log.debug('Column: ' + fields[i] + ' - ' + key)                                                
             //let column = { header: Level[i], key: 'id', width: 10 }
-            let column = { header: Level[i], key: key }
+            let column = { header: fields[i], key: key }
             columns.push(column)            
         }             
         Sheet.columns = columns
-
-
-
 /*         Sheet.autoFilter = {
             from: 'A1',
             to: 'D1',
           } */
+    }
+
+    AddRow(Sheet, Row) {
+        // Adds a row to the Sheet
+        // Find last Row
+        Sheet.addRow(Row);
     }
     
     SaveWorkbook(Workbook, Library, Level, Type) {

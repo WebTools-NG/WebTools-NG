@@ -88,10 +88,14 @@ console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, l
 const WorkBook = excel.NewExcelFile()
 // Create Sheet
 const Sheet = excel.NewSheet(WorkBook, libName, level)
-// Now get the fields, to use as header
-const header = et.getLevelFields(level, libType)
-//const header = et.getLevelKeys()
-excel.AddHeader(Sheet, header, libType)
+// Now add the header column
+excel.AddHeader(Sheet, level, libType)
+// Add a couple of Rows
+let Row = []
+Row = ['ged1', 'ged2', 'ged3']
+excel.AddRow(Sheet, Row)
+Row = ['ged2-1', 'ged2-2', 'ged2-3']
+excel.AddRow(Sheet, Row)
 
 // Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
