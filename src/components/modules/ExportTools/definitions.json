@@ -1,0 +1,315 @@
+{
+    "movie": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2"
+        },
+        "level": {
+            "level1": [
+                "Media ID", "Title", "Sort title", 
+                "Studio", "Content Rating", "Year",
+                "Rating", "Summary"
+            ],
+            "level2": [
+                "Media ID", "Title", "Sort title"
+            ]
+        },
+        "fields": {
+            "Media ID":
+                {
+                    "key": "ratingKey",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Title":
+                {
+                    "key": "title",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Sort title":
+                {
+                    "key": "titleSort",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Studio":
+                {
+                    "key": "studio",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Content Rating":
+                {
+                    "key": "contentRating",
+                    "call": "1",
+                    "type": "int32"
+                },
+            "Year":
+                {
+                    "key": "year",
+                    "call": "1",
+                    "type": "int"
+                },
+            "Rating":
+                {
+                    "key": "rating",
+                    "call": "1",
+                    "type": "int32"
+                },
+            "Summary":
+                {
+                    "key": "summary",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Genre":
+                {
+                    "key": "['Genre']['tag']",
+                    "call": "1",
+                    "type": "array"
+                },
+            "View Count":
+                {
+                    "key": "viewCount",
+                    "call": "1",
+                    "type": "int"
+                },
+            "Last Viewed at":
+                {
+                    "key": "lastViewedAt",
+                    "call": "1",
+                    "type": "datetime"
+                },
+            "Tagline":
+                {
+                    "key": "tagline",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Release Date":
+                {
+                    "key": "originallyAvailableAt",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Writers":
+                {
+                    "key": "['Writer']['tag']",
+                    "call": "1",
+                    "type": "array"
+                },
+            "Country":
+                {
+                    "key": "['Country']['tag']",
+                    "call": "1",
+                    "type": "array"
+                },
+            "Duration":
+                {
+                    "key": "duration",
+                    "call": "1",
+                    "type": "time"
+                },
+            "Directors":
+                {
+                    "key": "['Director']['tag']",
+                    "call": "1",
+                    "type": "array"
+                },
+            "Roles":
+                {
+                    "key": "['Role']['tag']",
+                    "call": "1",
+                    "type": "array"
+                },
+            "Audience Rating":
+                {
+                    "key": "audienceRating",
+                    "call": "1",
+                    "type": "string"
+                },
+            "User Rating":
+                {
+                    "key": "userRating",
+                    "call": "1",
+                    "type": "string"
+                },
+            "Labels":
+                {
+                    "key": "['Label']['tag']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Locked Fields":
+                {
+                    "key": "['Field']['name']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras":
+                {
+                    "key": "['Extras']['size']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-behindthescenes":
+                {
+                    "key": "['Extras']['Video'][@subtype='behindTheScenes']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-deleted":
+                {
+                    "key": "['Extras']['Video'][@subtype='deleted']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-featurette":
+                {
+                    "key": "['Extras']['Video'][@subtype='featurette']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-interview":
+                {
+                    "key": "['Extras']['Video'][@subtype='interview']",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Extras-scene":
+                {
+                    "key": "['Extras']['Video'][@subtype='scene']",
+                    "call": "2",
+                    "type": "array"                    
+                },                
+            "Extras-short":
+                {
+                    "key": "['Extras']['Video'][@subtype='short']",
+                    "call": "2",
+                    "type": "array"                    
+                }, 
+            "Extras-trailer":
+                {
+                    "key": "['Extras']['Video'][@subtype='trailer']",
+                    "call": "2",
+                    "type": "array"                    
+                }, 
+            "Collections":
+                {
+                    "key": "['Collection']['tag']",
+                    "call": "2",
+                    "type": "array"                    
+                }, 
+            "Original Title":
+                {
+                    "key": "['originalTitle']",
+                    "call": "2",
+                    "type": "string"                    
+                }, 
+            "Added":
+                {
+                    "key": "['addedAt']",
+                    "call": "2",
+                    "type": "datetime"                    
+                },                 
+            "Updated":
+                {
+                    "key": "['updatedAt']",
+                    "call": "2",
+                    "type": "datetime"                    
+                },
+            "Audio Languages":
+                {
+                    "key": "[Media][Part][Stream][@streamType=2][@languageCode]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Title":
+                {                    
+                    "key": "[Media][Part][Stream][@streamType=2][@title]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Languages":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@languageCode]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Title":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@title]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Codec":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@codec]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Forced":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@forced]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Accessible":
+                {                    
+                    "key": "[Media][Part][accessible]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Exists":
+                {                    
+                    "key": "[Media][Part][exists]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "MetaDB Link":
+                {
+                    "key": "[Media][guid]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "MetaData Language":
+                {
+                    "key": "[Media][guid]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Poster url":
+                {
+                    "key": "[Media][thumb]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Art url":
+                {
+                    "key": "[Media][art]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Chapter Source":
+                {
+                    "key": "[Media][chapterSource]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Chapter Title":
+                {
+                    "key": "[Chapter][tag]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Chapter Count":
+                {
+                    "key": "[Chapter][index]",
+                    "call": "2",
+                    "type": "array"                    
+                }
+        }
+    }
+}
+
