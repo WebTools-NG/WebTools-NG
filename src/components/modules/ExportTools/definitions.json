@@ -224,44 +224,92 @@
                     "key": "[Media][Part][Stream][@streamType=2][@languageCode]",
                     "call": "2",
                     "type": "array"                    
-                }                
-
-
+                },
+            "Audio Title":
+                {                    
+                    "key": "[Media][Part][Stream][@streamType=2][@title]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Languages":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@languageCode]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Title":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@title]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Codec":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@codec]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Forced":
+                {
+                    "key": "[Media][Part][Stream][@streamType=3][@forced]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Accessible":
+                {                    
+                    "key": "[Media][Part][accessible]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Exists":
+                {                    
+                    "key": "[Media][Part][exists]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "MetaDB Link":
+                {
+                    "key": "[Media][guid]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "MetaData Language":
+                {
+                    "key": "[Media][guid]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Poster url":
+                {
+                    "key": "[Media][thumb]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Art url":
+                {
+                    "key": "[Media][art]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Chapter Source":
+                {
+                    "key": "[Media][chapterSource]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Chapter Title":
+                {
+                    "key": "[Chapter][tag]",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Chapter Count":
+                {
+                    "key": "[Chapter][index]",
+                    "call": "2",
+                    "type": "array"                    
+                }
         }
     }
 }
 
-
-
-
-
-/*
-    ('Audio Title',
-        'Media/Part/Stream[@streamType=2]/@title'),
-    ('Subtitle Languages',
-        'Media/Part/Stream[@streamType=3]/@languageCode'),
-    ('Subtitle Title',
-        'Media/Part/Stream[@streamType=3]/@title'),
-    ('Subtitle Codec',
-        'Media/Part/Stream[@streamType=3]/@codec'),
-    ('Subtitle Forced',
-        'Media/Part/Stream[@streamType=3]/@forced'),
-    ('Accessible',
-        'Media/Part/@accessible'),
-    ('Exists',
-        'Media/Part/@exists'),
-    ('MetaDB Link',
-        '@guid'),
-    ('MetaData Language',
-        '@guid'),
-    ('Poster url',
-        '@thumb'),
-    ('Art url',
-        '@art'),
-    ('Chapter Source',
-        '@chapterSource'),
-    ('Chapter Title',
-        'Chapter/@tag'),
-    ('Chapter Count',
-        'Chapter/@index')
-         */
