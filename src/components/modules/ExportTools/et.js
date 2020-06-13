@@ -77,6 +77,13 @@ const excel = new class Excel {
             columns.push(column)            
         }             
         Sheet.columns = columns
+        // Add background to header column
+        Sheet.getRow(1).fill = {
+            type: 'pattern',
+            pattern:'solid',
+            fgColor:{ argb:'729fcf' }
+            }
+
 /*         Sheet.autoFilter = {
             from: 'A1',
             to: 'D1',
