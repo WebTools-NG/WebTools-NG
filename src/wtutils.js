@@ -1,12 +1,8 @@
 /* 
 This file contains different functions and methods
 that we use in our solution.
-Can be used both from rendering and from main
  */
 
-//import i18n from './i18n';
-
-//import i18n from './i18n'
 const log = require('electron-log');
 const electron = require('electron');
 // User Config 
@@ -40,6 +36,10 @@ const wtutils = new class WTUtils {
 
     get UserHomeDir() {
         return (electron.app || electron.remote.app).getPath('home');
+    }
+
+    get UserDocFld() {
+        return (electron.app || electron.remote.app).getPath('documents');
     }
 
     get AppName() {

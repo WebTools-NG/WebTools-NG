@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import  {levels, level1, level2} from '../ExportTools/movieLevels'
+//import  {levels, level1, level2} from '../ExportTools/movieLevels'
 const log = require('electron-log');
 
 export default {
@@ -124,16 +124,17 @@ export default {
   data() {
     return {
       radio: 'movie',
-      activeTab: 0,
-      levels: levels,
-      level1: level1,
-      level2: level2
+      activeTab: 0
+//      activeTab: 0,
+//      levels: levels,
+//      level1: level1,
+//      level2: level2
     }
   },
   created(){     
     log.info('ET Created')    
     this.fetchSelection()
-    console.log(level2)
+    //console.log(level2)
   }, computed: {
       pmsSections: function(){
           let sections = this.$store.getters.getPmsSections
