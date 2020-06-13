@@ -2,29 +2,20 @@
 <section class="hero is-dark is-small">
 <div class="hero-body">
         <div class="level">
-
-            <div class="level-left">
-                <div class="level-item">
+            <div class="level-right">
+            <div class="level-item">
                     <figure class="image is-48x48">
                         <img src="@/assets/WebTools.png">
                     </figure>
                     <div id="title" >
                         <p id="top_title" class="title is-size-3">{{ $t("Common.AppName") }}</p>
                     </div>
-                </div>
             </div>
+             </div>
 
-            <div class="level-right">
-                <div class="level-item">
-                    <figure class="image is-48x48" id="avatar">
-                        <img id="avatar" :src="getAvatar()">
-                    </figure>
-                </div>
 
                 <div class="level-item">
-                    <b-button   id="sync-button" @click="fetchServers" type="is-warning" 
-                                icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
-                    </b-button>
+
 
                     <div class="select is-dark">
                        
@@ -40,10 +31,22 @@
                         </b-select>
 
                     </div>
+
+                                        <b-button   id="sync-button" @click="fetchServers" type="is-warning" 
+                                icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
+                    </b-button>
                 </div>
+                <div class="level-left">
+            <div class="level-item">
+                    <p id="plexname">{{ getPlexName() }}</p>
+                    <figure class="image is-48x48" id="avatar">
+                        <img id="avatar" :src="getAvatar()">
+                    </figure>
+                </div>
+                </div>
+
             </div>
         </div>
-</div>
 </section>
 </template>
 
@@ -73,6 +76,9 @@ export default {
           },
           getAvatar(){
                 return this.$store.getters.getAvatar
+           },
+           getPlexName(){
+               return this.$store.getters.getPlexName
            }
     },
     created(){
@@ -89,9 +95,13 @@ export default {
 
 <style scoped>
     #title {
-        margin-left: 15px;
-    }
+        margin-left: 0.5em;
+    } 
     #sync-button{
-        margin-right: 10px;
+        margin-left: 0.5em;
+    }
+
+    #plexname {
+        margin-right: 0.5em;
     }
 </style>

@@ -19,6 +19,7 @@
             "Note": "3.Party Auth is not supported!",
             "Username": "Username",
             "UsernamePrompt": "Enter your plex.tv Username",
+            "UsernameSave": "Remember Username",
             "Password": "Password",
             "PasswordPrompt": "Enter your plex.tv password"
         },
@@ -60,6 +61,7 @@
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
             "Name": "ExportTool",
+            "ErrorServer": "No server",
             "HSelectMedia": "Select Media Type",
             "HSelectSelection": "Select Media Libary",
             "SelectSelection": "Select Selection",
@@ -68,7 +70,8 @@
             "RadioTVSeries": "TV Series",
             "RadioMusic": "Music",
             "RadioPhotos" : "Photos",
-            "RadioOtherVideos": "Other Videos"
+            "RadioOtherVideos": "Other Videos",
+            "ErrorNoServerSelected": "No server selected"
         },
         "About": {
             "Description": "@:Modules.About.Name",
