@@ -8,7 +8,8 @@
             type="is-info"
             has-icon
             icon-pack="fas"
-            aria-close-label="Close notification">
+            aria-close-label="Close notification"
+            :closable = false>
             {{ $t("Common.Login.SignIn") }} <br> {{ $t("Common.Login.UseCred") }} <br> {{ $t("Common.Login.Note") }}
         </b-notification>
           <form action="" class="box">
@@ -31,6 +32,11 @@
               </div>
             </div>
             <div class="field">
+              <b-checkbox type="is-dark" v-model="checkbox">
+                Save Username
+            </b-checkbox>
+            </div> 
+            <div class="field">
               <button type="button" class="button is-success" v-on:click="plexLogin()">
                 Login
               </button>
@@ -51,14 +57,17 @@ import store from '../store'
 import {wtconfig} from '../wtutils';
 
 var userName = "";
+let isRemember = false
 if(wtconfig.get('general.rememberlastusername')){
   userName = wtconfig.get('general.username')
+  isRemember = true
 }
 
 export default {
   name: 'Login',
   data() {
     return {
+      checkbox: isRemember,
       input: {
         username: userName,
         password: ""
@@ -72,6 +81,14 @@ export default {
       password: this.input.password
       })
       wtconfig.set('general.username', this.input.username)
+      
+      if(this.checkbox){
+        console.log('Save username is: ' + this.checkbox)
+        wtconfig.set('general.rememberlastusername', true )
+      } else {
+        console.log("Save username is: " + this.checkbox)
+        wtconfig.set('general.rememberlastusername', false )
+      }
     },
     danger(){
        this.$buefy.toast.open({
@@ -80,7 +97,8 @@ export default {
                     type: 'is-danger'
                 })
     }
-  }}
+  }
+  }
 
 </script>
 
