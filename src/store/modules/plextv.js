@@ -9,6 +9,7 @@ const state = {
   authenticated: false,
   authToken: '',
   avatar: '',
+  plexname: '',
   filteredProducts: []
 };
 
@@ -27,6 +28,9 @@ const mutations = {
   },
   UPDATE_AVATAR(state, value){
     state.avatar = value
+  },
+  UPDATE_PLEXNAME(state, value){
+    state.plexname = value
   }
 };
 
@@ -90,6 +94,8 @@ const actions = {
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)
+        commit('UPDATE_PLEXNAME', response.data.user.username)
+
         router.replace({name: "home"}); 
 })
       .catch(function (error) {
@@ -116,6 +122,7 @@ const getters = {
     getPlexServers: state => state.plexServers,
     getAuthToken: state => state.authToken,
     getAvatar: state => state.avatar,
+    getPlexName: state => state.plexname,
     getSelectedServer: state => state.selectedServer,
     getSlectedServerAddress: state => {
 
