@@ -308,8 +308,67 @@
                     "key": "[Chapter][index]",
                     "call": "2",
                     "type": "array"                    
+                },
+            "Video Resolution":
+                {
+                    "key": "[Media][videoResolution]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Bitrate":
+                {
+                    "key": "[Media][bitrate]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Width":
+                {
+                    "key": "[Media][width]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Height":
+                {
+                    "key": "[Media][height]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Aspect Ratio":
+                {
+                    "key": "[Media][aspectRatio]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Audio Channels":
+                {
+                    "key": "[Media][audioChannels]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Audio Codec":
+                {
+                    "key": "[Media][audioCodec]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Video Codec":
+                {
+                    "key": "[Media][videoCodec]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Container":
+                {
+                    "key": "[Media][container]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Video FrameRate":
+                {
+                    "key": "[Media][videoFrameRate]",
+                    "call": "2",
+                    "type": "string"                    
                 }
         }
     }
 }
-
