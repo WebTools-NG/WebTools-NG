@@ -148,8 +148,8 @@ export default {
                 }
               })
           } else {
-            log.info("No data found")
-            result.push["No Section found"]
+            log.info("No library found")
+            result.push["No library found"]
           }
         return result
       }
