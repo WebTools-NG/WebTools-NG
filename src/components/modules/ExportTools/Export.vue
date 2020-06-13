@@ -143,7 +143,7 @@ export default {
             log.debug("doing a forEach")
                 sections.forEach((req) => {
               if (req.type == this.radio) {
-                log.debug("pushing data to results")
+                  log.debug("pushing library to results: " + req.title)                                    
                   result.push(req);
                 }
               })
