@@ -3,8 +3,7 @@
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2"
-        }
-        ,
+        },
         "level": {
             "level1": [
                 "Media ID", "Title", "Sort title", 
@@ -136,7 +135,7 @@
                     "call": "1",
                     "type": "string"
                 }
-            }
+        }
     }
 }
 
