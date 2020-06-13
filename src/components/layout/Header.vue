@@ -100,7 +100,6 @@ export default {
     #sync-button{
         margin-left: 0.5em;
     }
-
     #plexname {
         margin-right: 0.5em;
     }
