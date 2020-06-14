@@ -56,7 +56,9 @@ const actions = {
             log.verbose(response)
             // console.log("response from fetchPlexServers", response)
           response.data.forEach((req) => {
-          if (req.owned == true && req.product == "Plex Media Server") {
+          // if (req.owned == true && req.product == "Plex Media Server") {
+            if (req.product == "Plex Media Server") {
+              console.log('GED&NUGGA ser ikke owned')
               log.debug(req)
               result.push(req);
             } 

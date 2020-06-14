@@ -71,10 +71,10 @@
                         expanded
                         @input="selectExportLevel">
                         <option
-                        v-for="option in exportLevels"
-                        :value="option.key"
-                        :key="option.key">
-                        {{ option.key }}
+                        v-for="(value, name) in exportLevels"
+                        :value="value"
+                        :key="name">
+                        {{ name }}
             </option>
                       </b-select>
                     </b-field>

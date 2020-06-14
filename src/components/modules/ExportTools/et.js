@@ -31,17 +31,10 @@ const et = new class ET {
     }
 
     getLevels(libType) {
-        let result = []
         // Returns an array of levels for a selected type og medias, like 'movie'
-        const levels = def[libType]['levels']
-        Object.keys(levels).forEach(function(key) { 
-            const entry = {}
-            entry[key]=levels[key]           
-            result.push(entry)
-          });    
-        console.log('Nugga Keys123: ' + JSON.stringify( result))
+        const levels = def[libType]['levels']    
         log.debug('ET LevelNames: ' + JSON.stringify(levels))
-        return result
+        return levels
     }
 
     getLevelKeys(libType){
