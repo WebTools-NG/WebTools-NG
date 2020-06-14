@@ -3,8 +3,9 @@
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
-            "Level 3": "level3"
-
+            "Level 3": "level3",
+            "Level 4": "level4",
+            "Level 5": "level5"
         },
         "level": {
             "level1": [
@@ -42,6 +43,66 @@
                 "MetaData Language", "Poster url",
                 "Art url", "Chapter Source",
                 "Chapter Title", "Chapter Count"
+            ],
+            "level4": [
+                "Media ID", "Title", "Sort title", 
+                "Studio", "Content Rating", "Year",
+                "Rating", "Summary",
+                "View Count", "Last Viewed at",
+                "Tagline", "Release Date", "Writers",
+                "Country", "Duration", "Directors",
+                "Roles", "Audience Rating", "User Rating",
+                "Labels", "Locked Fields", "Extras",
+                "Extras-behindthescenes", "Extras-deleted",
+                "Extras-featurette", "Extras-interview",
+                "Extras-scene", "Extras-short",
+                "Extras-trailer", "Collections",
+                "Original Title", "Added", "Updated",
+                "Audio Languages", "Audio Title",
+                "Subtitle Languages", "Subtitle Title",
+                "Subtitle Codec", "Subtitle Forced",
+                "Accessible", "Exists", "MetaDB Link",
+                "MetaData Language", "Poster url",
+                "Art url", "Chapter Source",
+                "Chapter Title", "Chapter Count",
+                "Video Resolution", "Bitrate",
+                "Width", "Height", "Aspect Ratio",
+                "Audio Channels", "Audio Codec",
+                "Video Codec", "Container",
+                "Video FrameRate"               
+            ],
+            "level5": [
+                "Media ID", "Title", "Sort title", 
+                "Studio", "Content Rating", "Year",
+                "Rating", "Summary",
+                "View Count", "Last Viewed at",
+                "Tagline", "Release Date", "Writers",
+                "Country", "Duration", "Directors",
+                "Roles", "Audience Rating", "User Rating",
+                "Labels", "Locked Fields", "Extras",
+                "Extras-behindthescenes", "Extras-deleted",
+                "Extras-featurette", "Extras-interview",
+                "Extras-scene", "Extras-short",
+                "Extras-trailer", "Collections",
+                "Original Title", "Added", "Updated",
+                "Audio Languages", "Audio Title",
+                "Subtitle Languages", "Subtitle Title",
+                "Subtitle Codec", "Subtitle Forced",
+                "Accessible", "Exists", "MetaDB Link",
+                "MetaData Language", "Poster url",
+                "Art url", "Chapter Source",
+                "Chapter Title", "Chapter Count",
+                "Video Resolution", "Bitrate",
+                "Width", "Height", "Aspect Ratio",
+                "Audio Channels", "Audio Codec",
+                "Video Codec", "Container",
+                "Video FrameRate", "Part File Combined",
+                "Part File", "Part File Path", "Part Size",
+                "Part Size as Bytes", "Part Indexed",
+                "Part Duration", "Part Container",
+                "Part Optimized for Streaming",
+                "Part Deep Analysis Version",
+                "Required Bandwidths"
             ]
         },
         "fields": {
@@ -460,6 +521,336 @@
                     "key": "[Media][Part][@requiredBandwidths]",
                     "call": "2",
                     "type": "string"                    
+                },
+            "Video Stream Title":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@title",
+                    "call": "2",
+                    "type": "array"                    
+                },                
+            "Video Stream Default":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@default",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Index":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@index",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Pixel Format":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@pixelFormat",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Profile":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@profile",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Ref Frames":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@refFrames",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Scan Type":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@scanType",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Stream Identifier":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@streamIdentifier",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Width":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@width",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Pixel Aspect Ratio":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@pixelAspectRatio",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Height":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@height",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Has Scaling Matrix":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@hasScalingMatrix",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Frame Rate Mode":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@frameRateMode",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Frame Rate":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@frameRate",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Codec":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@codec",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Codec ID":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@codecID",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Chroma Sub Sampling":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@chromaSubsampling",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Color Primaries":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@colorPrimaries",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Color Range":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@colorRange",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Color Space":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@colorSpace",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Color Trc":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@colorTrc",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Cabac":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@cabac",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Anamorphic":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@anamorphic",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Language Code":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@languageCode",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Language":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@language",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Bitrate":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@bitrate",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Bit Depth":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@bitDepth",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Video Stream Duration":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@duration",
+                    "call": "2",
+                    "type": "array"                    
+                },                                                
+            "Video Stream Required Bandwidths":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@requiredBandwidths",
+                    "call": "2",
+                    "type": "array"                    
+                },                                                
+            "Video Stream Level":
+                {
+                    "key": "Media/Part/Stream[@streamType=1]/@level",
+                    "call": "2",
+                    "type": "array"                    
+                },                                                
+            "Audio Stream Selected":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@selected",
+                    "call": "2",
+                    "type": "array"                    
+                },                                                
+            "Audio Stream Default":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@default",
+                    "call": "2",
+                    "type": "array"                    
+                },                                                
+            "Audio Stream Codec":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@codec",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Index":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@index",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Channels":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@channels",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Bitrate":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@bitrate",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Language":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@language",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Language Code":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@languageCode",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Audio Channel Layout":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@audioChannelLayout",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Bit Depth":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@bitDepth",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Bitrate Mode":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@bitrateMode",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Codec ID":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@codecID",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Duration":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@duration",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Profile":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@profile",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Sampling Rate":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@samplingRate",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Audio Stream Required Bandwidths":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@requiredBandwidths",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Codec":
+                {
+                    "key": "Media/Part/Stream[@streamType=2]/@profile",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Language":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@language",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Language Code":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@languageCode",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Codec ID":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@codecID",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Format":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@format",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Title":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@title",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Selected":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@selected",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Stream Required Bandwidths":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@requiredBandwidths",
+                    "call": "2",
+                    "type": "array"                    
+                },
+            "Subtitle Header Compression":
+                {
+                    "key": "Media/Part/Stream[@streamType=3]/@headerCompression",
+                    "call": "2",
+                    "type": "array"                    
                 }
         }
     }
