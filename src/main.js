@@ -81,6 +81,7 @@ console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libTyp
 console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
 console.log('RealLevelName: ' + et.getRealLevelName(level, libType))
 console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, libType)))
+console.log('Fields in this level sorted: ' + JSON.stringify(et.getLevelFields(level, libType).sort()))
 
 
 // EXCEL Stuff
