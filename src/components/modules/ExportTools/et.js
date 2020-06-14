@@ -24,10 +24,19 @@ const et = new class ET {
     }
 
     getLevelCall (libType, level) {
-        // this will return true, if we also need to call individual items
-        console.log('Ged libType: ' + libType)
-        console.log('Ged Level: ' + level)
-        return true
+        // this will return number of calls needed
+        let count = 0
+        // So walk every field
+        const fields = et.getLevelFields(level, libType)
+        for (var i=0; i<fields.length; i++) {
+            const call = def[libType]['fields'][fields[i]]['call']
+            if (call > count)
+            {
+                count = call
+            }
+        }
+        log.debug('Count needed is: ' + count)        
+        return count
     }
 
     getLevels(libType) {

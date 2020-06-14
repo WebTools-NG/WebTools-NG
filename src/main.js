@@ -84,6 +84,14 @@ console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, l
 console.log('Fields in this level sorted: ' + JSON.stringify(et.getLevelFields(level, libType).sort()))
 
 
+console.log('GetLevel calls: ' + et.getLevelCall(libType, level) )
+
+
+excel
+libName
+
+/* 
+
 // EXCEL Stuff
 // Create WorkBook
 const WorkBook = excel.NewExcelFile()
@@ -101,7 +109,7 @@ excel.AddRow(Sheet, Row)
 // Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
 
-
+ */
 
 new Vue({
   render: h => h(App),

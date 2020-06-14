@@ -11,7 +11,7 @@
         },        
         "level": {
             "testtommy": [
-                "Media ID", "Title"
+                "Media ID", "Title", "Subtitle Header Compression"
             ],
             "level1": [
                 "Media ID", "Title", "Sort title", 
