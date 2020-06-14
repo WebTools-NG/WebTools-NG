@@ -71,7 +71,7 @@
                         expanded
                         @input="selectExportLevel">
                         <option
-                        v-for="option in levels"
+                        v-for="option in exportLevels"
                         :value="option.key"
                         :key="option.key">
                         {{ option.name }}
@@ -93,13 +93,6 @@
             </b-tab-item>
         </b-tabs>
         <hr>
-        
-
-
-      
-      
-
-      
 
 
     <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
@@ -116,6 +109,7 @@
 </template>
 
 <script>
+import {et} from './et'
 //import  {levels, level1, level2} from '../ExportTools/movieLevels'
 const log = require('electron-log');
 
@@ -124,17 +118,16 @@ export default {
   data() {
     return {
       radio: 'movie',
-      activeTab: 0
+      activeTab: 0,
 //      activeTab: 0,
 //      levels: levels,
 //      level1: level1,
 //      level2: level2
     }
   },
-  created(){     
+  created(){  
     log.info('ET Created')    
     this.fetchSelection()
-    //console.log(level2)
   }, computed: {
       pmsSections: function(){
           let sections = this.$store.getters.getPmsSections
@@ -152,6 +145,16 @@ export default {
             result.push["No Section found"]
           }
         return result
+      },
+      exportLevels: function(){
+        
+        let levels=[]
+        levels = JSON.stringify(et.getLevels(this.radio))
+  
+        const libType = 'movie'
+        console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
+
+        return levels
       }
   }, methods: {
         selectSelection: function (selected) {

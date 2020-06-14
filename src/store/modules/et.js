@@ -62,7 +62,7 @@ const actions = {
             }
         )
     },
-    getMediaMovies({ getters }) {
+    getMediaMovies({ getters,commit }) {
 
         var key = getters.getSelectedSection
         var baseURL = getters.getSlectedServerAddress
@@ -82,12 +82,11 @@ const actions = {
                 "X-Plex-Container-Size": getters.getContainerSizeMovies
             }
         }).then((response) => {
-            
-
             console.log("getMedia is status " + response.status)
             console.log(response.data)
             console.log(response.data.MediaContainer.Metadata)
-            //commit('UPDATE_SECTIONS', response.data.MediaContainer.Metadata)
+            commit('UPDATE_SECTIONS', response.data.MediaContainer.Metadata)
+
             
         }
         ).catch((error) => {
