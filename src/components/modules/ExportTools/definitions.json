@@ -2,7 +2,9 @@
     "movie": {
         "levels": {
             "Level 1": "level1",
-            "Level 2": "level2"
+            "Level 2": "level2",
+            "Level 3": "level3"
+
         },
         "level": {
             "level1": [
@@ -11,7 +13,35 @@
                 "Rating", "Summary"
             ],
             "level2": [
-                "Media ID", "Title", "Sort title"
+                "Media ID", "Title", "Sort title", 
+                "Studio", "Content Rating", "Year",
+                "Rating", "Summary",
+                "View Count", "Last Viewed at",
+                "Tagline", "Release Date", "Writers",
+                "Country", "Duration", "Directors",
+                "Roles", "Audience Rating", "User Rating"
+            ],
+            "level3": [
+                "Media ID", "Title", "Sort title", 
+                "Studio", "Content Rating", "Year",
+                "Rating", "Summary",
+                "View Count", "Last Viewed at",
+                "Tagline", "Release Date", "Writers",
+                "Country", "Duration", "Directors",
+                "Roles", "Audience Rating", "User Rating",
+                "Labels", "Locked Fields", "Extras",
+                "Extras-behindthescenes", "Extras-deleted",
+                "Extras-featurette", "Extras-interview",
+                "Extras-scene", "Extras-short",
+                "Extras-trailer", "Collections",
+                "Original Title", "Added", "Updated",
+                "Audio Languages", "Audio Title",
+                "Subtitle Languages", "Subtitle Title",
+                "Subtitle Codec", "Subtitle Forced",
+                "Accessible", "Exists", "MetaDB Link",
+                "MetaData Language", "Poster url",
+                "Art url", "Chapter Source",
+                "Chapter Title", "Chapter Count"
             ]
         },
         "fields": {
@@ -366,6 +396,68 @@
             "Video FrameRate":
                 {
                     "key": "[Media][videoFrameRate]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part File Combined":
+                {
+                    "key": "[Media][Part][@file]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part File Path":
+                {
+                    "key": "[Media][Part][@file]",
+                    "call": "2",
+                    "type": "string",
+                    "postProcess": true                    
+                },
+            "Part Size":
+                {                    
+                    "key": "[Media][Part][@size]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part Size as Bytes":
+                {
+                    "key": "[Media][Part][@size]",
+                    "call": "2",
+                    "type": "string",
+                    "postProcess": true
+                },
+            "Part Indexed":
+                {
+                    "key": "[Media][Part][@indexes]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part Duration":
+                {
+                    "key": "[Media][Part][@duration]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part Container":
+                {
+                    "key": "[Media][Part][@container]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part Optimized for Streaming":
+                {
+                    "key": "[Media][Part][@optimizedForStreaming]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Part Deep Analysis Version":
+                {
+                    "key": "[Media][Part][@deepAnalysisVersion]",
+                    "call": "2",
+                    "type": "string"                    
+                },
+            "Required Bandwidths":
+                {
+                    "key": "[Media][Part][@requiredBandwidths]",
                     "call": "2",
                     "type": "string"                    
                 }
