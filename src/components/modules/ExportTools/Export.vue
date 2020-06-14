@@ -74,7 +74,7 @@
                         v-for="option in exportLevels"
                         :value="option.key"
                         :key="option.key">
-                        {{ option.name }}
+                        {{ option.key }}
             </option>
                       </b-select>
                     </b-field>
@@ -148,8 +148,9 @@ export default {
       },
       exportLevels: function(){
         
-        let levels=[]
-        levels = JSON.stringify(et.getLevels(this.radio))
+        let levels=''
+        console.log('Nugga levels: ' + JSON.stringify(et.getLevels(this.radio)))
+        levels = et.getLevels(this.radio)
   
         const libType = 'movie'
         console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
