@@ -69,7 +69,7 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 1"
 const libName = 'Ged'
-const level = 'Level 1'
+const level = 'Level 2'
 const libType = 'movie'
 // Real stuff to use
 
@@ -81,6 +81,7 @@ console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libTyp
 console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
 console.log('RealLevelName: ' + et.getRealLevelName(level, libType))
 console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, libType)))
+console.log('Fields in this level sorted: ' + JSON.stringify(et.getLevelFields(level, libType).sort()))
 
 
 // EXCEL Stuff
