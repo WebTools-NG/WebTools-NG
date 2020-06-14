@@ -187,13 +187,13 @@
                 },
             "Sort title":
                 {
-                    "key": "titleSort",
+                    "key": "MediaContainer.Metadata[0].titleSort",
                     "call": 1,
                     "type": "string"
                 },
             "Studio":
                 {
-                    "key": "studio",
+                    "key": "MediaContainer.Metadata[0].studio",
                     "call": 1,
                     "type": "string"
                 },
