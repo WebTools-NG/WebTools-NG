@@ -28,6 +28,7 @@
     "exceljs": "^4.0.1",
     "file-saver": "^2.0.2",
     "is-electron": "^2.2.0",
+    "jsonpath": "^1.0.2",
     "minimist": "^1.2.5",
     "secure-ls": "^1.2.6",
     "vue": "^2.6.11",

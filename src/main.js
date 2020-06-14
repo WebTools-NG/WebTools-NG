@@ -69,7 +69,7 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 1"
 const libName = 'Ged'
-const level = 'Level 2'
+const level = 'Test Tommy'
 const libType = 'movie'
 // Real stuff to use
 
