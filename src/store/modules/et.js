@@ -1,8 +1,11 @@
 import axios from 'axios';
+const log = require('electron-log');
+
 
 
 const state = {
     sections:   [],
+    mediaData: [],
     selectedSection : "",
     selectedExportLevel: ""
 };
@@ -10,18 +13,23 @@ const state = {
 const mutations = {
     UPDATE_SECTIONS(state, payload) {
         state.sections = payload;
+        log.info("UPDATE_SECTIONS called")
       },
       UPDATE_SELECTEDSECTION(state, payload) {
           state.selectedSection = payload
+          log.info("UPDATE_SELECTEDSECTION called")
       },
       UPDATE_EXPORTLEVEL(state, payload) {
           state.selectedExportLevel = payload
+      },
+      UPDATE_MEDIADATA(state, payload) {
+          state.mediaData = payload
       }
 };
 
 const actions = {
     fetchSections({ commit, getters }) {
-        console.log("calling fetchSections")
+        log.info("fetchSections called")
         var baseURL = getters.getSlectedServerAddress
 
         axios({
@@ -34,8 +42,10 @@ const actions = {
                 'X-Plex-Token': getters.getAuthToken
             }
         }).then((response) => {
-            console.log("fetchSection is status " + response.status)
+            log.info("fetchSection is status " + response.status)
             commit('UPDATE_SECTIONS', response.data.MediaContainer.Directory)
+            log.verbose("verbose log fetchSection is status " + response.status)
+
 
         }
         ).catch((error) => {
@@ -44,6 +54,7 @@ const actions = {
                     // that falls out of the range of 2xx
                     console.log(error.response.data)
                     console.log("fetching is error status", error.response.status)
+
                     alert(error.response.data.error)
                     //this.danger(error.response.status, error.response.data.error);
                 } else if (error.request) {
@@ -83,9 +94,7 @@ const actions = {
             }
         }).then((response) => {
             console.log("getMedia is status " + response.status)
-            console.log(response.data)
-            console.log(response.data.MediaContainer.Metadata)
-            commit('UPDATE_SECTIONS', response.data.MediaContainer.Metadata)
+            commit('UPDATE_MEDIADATA', response.data.MediaContainer.Metadata)
 
             
         }
