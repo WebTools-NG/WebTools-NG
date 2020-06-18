@@ -2,6 +2,8 @@ var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
 import {wtconfig, wtutils} from '../../../wtutils'
 
+
+
 const et = new class ET {
     constructor() {                    
     }
@@ -59,6 +61,18 @@ const et = new class ET {
     getFieldKey(libType, fieldName) {
         return def[libType]['fields'][fieldName]['key']        
     }
+
+    getFieldsKeyVal( libType, level) {
+        // Get fields for level
+        const fields = et.getLevelFields(level, libType)
+        const out = [] 
+        fields.forEach(element => {            
+            const item = {}
+            item[element] = et.getFieldKey(libType, element)
+            out.push(item)
+        });
+        return out
+    }
 }
 
 const excel = new class Excel {
@@ -75,14 +89,15 @@ const excel = new class Excel {
 
     AddHeader(Sheet, Level, libType) {
         const columns = []
-        let key
+        //let key
         // Get level fields
         const fields = et.getLevelFields(Level, libType)        
         for (var i=0; i<fields.length; i++) {
-            key = et.getFieldKey(libType, fields[i])
-            log.debug('Column: ' + fields[i] + ' - ' + key)                                                
+            //key = et.getFieldKey(libType, fields[i])
+            //log.debug('Column: ' + fields[i] + ' - ' + key)                                                
+            log.debug('Column: ' + fields[i] + ' - ' + fields[i])                                                
             //let column = { header: Level[i], key: 'id', width: 10 }
-            let column = { header: fields[i], key: key }
+            let column = { header: fields[i], key: fields[i] }
             columns.push(column)            
         }             
         Sheet.columns = columns
@@ -127,6 +142,36 @@ const excel = new class Excel {
         workbook.created = new Date();
         workbook.modified = new Date();
         return workbook
+    }
+
+    addToSheet(sheet, libType, level, data) {
+        console.log('Start AddToSheet')
+        const jp = require('jsonpath')
+        // Placeholder for row
+        let row = []
+        // Need to find the fields and keys we'll
+        // query the data for
+        const keyVal = et.getFieldsKeyVal( libType, level)
+        // Now get the medias                
+        const nodes = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
+        for (var x=0; x<nodes.length; x++) {
+            const mediaItem = nodes[x].value
+            const rowentry = {}            
+            for (var i=0; i<keyVal.length; i++) {
+                let val = jp.value(mediaItem, Object.values(keyVal[i]))                
+                if (val == null)
+                {
+                    val = wtconfig.get('ET.NotAvail', 'N/A')
+                }
+                console.log('Media Item: ' + Object.keys(keyVal[i]) + ' has a value of: ' + val)
+                rowentry[Object.keys(keyVal[i])] = val
+            }
+            row.push(rowentry)
+        }
+        console.log('Entire rows: ' + JSON.stringify(row))
+        row.forEach(element => {
+            excel.AddRow(sheet, element)            
+        });                     
     }
 }
 

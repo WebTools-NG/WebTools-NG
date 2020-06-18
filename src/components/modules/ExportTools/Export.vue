@@ -71,10 +71,10 @@
                         expanded
                         @input="selectExportLevel">
                         <option
-                        v-for="option in levels"
-                        :value="option.key"
-                        :key="option.key">
-                        {{ option.name }}
+                        v-for="(value, name) in exportLevels"
+                        :value="value"
+                        :key="name">
+                        {{ name }}
             </option>
                       </b-select>
                     </b-field>
@@ -93,13 +93,6 @@
             </b-tab-item>
         </b-tabs>
         <hr>
-        
-
-
-      
-      
-
-      
 
 
     <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
@@ -116,6 +109,7 @@
 </template>
 
 <script>
+import {et} from './et'
 //import  {levels, level1, level2} from '../ExportTools/movieLevels'
 const log = require('electron-log');
 
@@ -124,17 +118,16 @@ export default {
   data() {
     return {
       radio: 'movie',
-      activeTab: 0
+      activeTab: 0,
 //      activeTab: 0,
 //      levels: levels,
 //      level1: level1,
 //      level2: level2
     }
   },
-  created(){     
+  created(){  
     log.info('ET Created')    
     this.fetchSelection()
-    //console.log(level2)
   }, computed: {
       pmsSections: function(){
           let sections = this.$store.getters.getPmsSections
@@ -143,15 +136,26 @@ export default {
             log.debug("doing a forEach")
                 sections.forEach((req) => {
               if (req.type == this.radio) {
-                  log.debug("pushing library to results: " + req.title)                                    
+                log.debug("pushing data to results")
                   result.push(req);
                 }
               })
           } else {
-            log.info("No library found")
-            result.push["No library found"]
+            log.info("No data found")
+            result.push["No Section found"]
           }
         return result
+      },
+      exportLevels: function(){
+        
+        let levels=''
+        console.log('Nugga levels: ' + JSON.stringify(et.getLevels(this.radio)))
+        levels = et.getLevels(this.radio)
+  
+        const libType = 'movie'
+        console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
+
+        return levels
       }
   }, methods: {
         selectSelection: function (selected) {

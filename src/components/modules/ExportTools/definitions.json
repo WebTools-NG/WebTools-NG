@@ -11,7 +11,12 @@
         },        
         "level": {
             "testtommy": [
-                "Media ID", "Title", "Subtitle Header Compression"
+                "Sort title", 
+                "View Count", "Last Viewed at",
+                "Writers",
+                "Country", "Duration", "Directors",
+                "Roles", "User Rating"
+                
             ],
             "level1": [
                 "Media ID", "Title", "Sort title", 
@@ -175,25 +180,25 @@
         "fields": {
             "Media ID":
                 {
-                    "key": "MediaContainer.Metadata[0].ratingKey",
+                    "key": "ratingKey",
                     "call": 1,
                     "type": "string"
                 },
             "Title":
                 {
-                    "key": "MediaContainer.Metadata[0].title",
+                    "key": "title",
                     "call": 1,
                     "type": "string"
                 },
             "Sort title":
                 {
-                    "key": "MediaContainer.Metadata[0].titleSort",
+                    "key": "titleSort",
                     "call": 1,
                     "type": "string"
                 },
             "Studio":
                 {
-                    "key": "MediaContainer.Metadata[0].studio",
+                    "key": "studio",
                     "call": 1,
                     "type": "string"
                 },

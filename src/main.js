@@ -69,7 +69,9 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 1"
 const libName = 'Ged'
-const level = 'Test Tommy'
+//const level = 'Test Tommy'
+const level = 'Level 2'
+
 const libType = 'movie'
 // Real stuff to use
 
@@ -82,15 +84,10 @@ console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
 console.log('RealLevelName: ' + et.getRealLevelName(level, libType))
 console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, libType)))
 console.log('Fields in this level sorted: ' + JSON.stringify(et.getLevelFields(level, libType).sort()))
-
-
 console.log('GetLevel calls: ' + et.getLevelCall(libType, level) )
 
+const testimp = require('./components/modules/ExportTools/testimp.json')
 
-excel
-libName
-
-/* 
 
 // EXCEL Stuff
 // Create WorkBook
@@ -100,16 +97,9 @@ const Sheet = excel.NewSheet(WorkBook, libName, level)
 // Now add the header column
 excel.AddHeader(Sheet, level, libType)
 // Add a couple of Rows
-let Row = []
-Row = ['ged1', 'ged2', 'ged3']
-excel.AddRow(Sheet, Row)
-Row = ['ged2-1', 'ged2-2', 'ged2-3']
-excel.AddRow(Sheet, Row)
-
+excel.addToSheet(Sheet, libType, level, testimp)
 // Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
-
- */
 
 new Vue({
   render: h => h(App),
