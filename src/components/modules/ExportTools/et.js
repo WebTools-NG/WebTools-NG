@@ -1,6 +1,7 @@
 var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
 import {wtconfig, wtutils} from '../../../wtutils'
+import axios from 'axios'
 
 const et = new class ET {
     constructor() {                    
@@ -49,6 +50,25 @@ const et = new class ET {
 
     getFieldKey(libType, fieldName) {
         return def[libType]['fields'][fieldName]['key']        
+    }
+
+    checkServerConnect(server) {
+        log.info("NUGGA : ET : checkServerConnect called")
+        server.connections.forEach((val) => {
+            log.info(val.uri)
+            let baseurl = val.uri
+
+                axios.get(baseurl + '/identity')
+                .then(response => {
+                    log.info(response)
+                  }).catch(error => {
+                      log.error(error)
+                  })
+            }
+          )
+       let serverAdress = []
+
+        return serverAdress
     }
 }
 

@@ -44,11 +44,12 @@ const actions = {
           {            
             'X-Plex-Client-Identifier' : 'WebTools-NG',
             'X-Plex-Token': getters.getAuthToken,
-            'Accept' : 'application/json',
-            'includeHttps' : '1',
-            'includeRelay': '0',
-
+            'Accept' : 'application/json'
           },
+          params: {
+            'includeHttps' : '1',
+            'includeRelay': '0'
+          }
         })
           .then((response) => {
             let result=[];
@@ -133,7 +134,8 @@ const getters = {
           if (req.local == true) {
               result = req.address + ":" + req.port
             } 
-          })
+          }
+        )
       }
       
 
