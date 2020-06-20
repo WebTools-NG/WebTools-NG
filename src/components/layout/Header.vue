@@ -52,8 +52,7 @@
 
 <script>
 import store from '../../store';
-import { et } from "../modules/ExportTools/et";
-
+import { ptv } from '../modules/General/plextv';
 const log = require('electron-log');
 
 
@@ -75,7 +74,7 @@ export default {
 },
         selected: function () {
             log.info('HEADER: selected server: ' + this.selectedOption.name)
-            et.checkServerConnect(this.selectedOption)
+            ptv.checkServerConnect(this.selectedOption)
             this.$store.commit("UPDATE_SELECTED_SERVER", this.selectedOption);
 
         },
