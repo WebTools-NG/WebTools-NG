@@ -34,13 +34,17 @@ const actions = {
 
         axios({
             method: 'get',
-            baseURL: `http://${baseURL}`,
+            baseURL: `${baseURL}`,
             url: '/library/sections/all',
             responseType: 'json',
             headers: {
                 'Accept':       "application/json",
-                'X-Plex-Token': getters.getAuthToken
-            }
+                'X-Plex-Token': getters.getSlectedServerToken
+            },
+            params: {
+                'includeHttps' : '1',
+                'includeRelay': '0'
+              }
         }).then((response) => {
             log.info("fetchSection is status " + response.status)
             commit('UPDATE_SECTIONS', response.data.MediaContainer.Directory)
@@ -80,12 +84,12 @@ const actions = {
 
         axios({
             method: 'get',
-            baseURL: `http://${baseURL}`,
+            baseURL: `${baseURL}`,
             url: `/library/sections/${key}/all`,
             responseType: 'json',
             headers: {
                 'Accept':       "application/json",
-                'X-Plex-Token': getters.getAuthToken
+                'X-Plex-Token': getters.getSlectedServerToken
             },
             params: {
                 "type": "1",

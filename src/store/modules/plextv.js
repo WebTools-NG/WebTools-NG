@@ -6,6 +6,8 @@ const log = require('electron-log');
 const state = {
   plexServers: [],
   selectedServer: 'none',
+  selectedServerAddress: '',
+  selectedServerToken: '',
   authenticated: false,
   authToken: '',
   avatar: '',
@@ -19,6 +21,11 @@ const mutations = {
   },
   UPDATE_SELECTED_SERVER(state, value) {
       state.selectedServer = value
+      state.selectedServerToken = value.accessToken 
+  },
+  UPDATE_SELECTED_SERVER_ADDRESS(state, value) {
+    state.selectedServerAddress = value
+    log.info('UPDATE_SELECTED_SERVER_ADDRESS: ' + value)
   },
   UPDATE_AUTHENTICATED(state, value){
     state.authenticated = value
@@ -126,22 +133,9 @@ const getters = {
     getAvatar: state => state.avatar,
     getPlexName: state => state.plexname,
     getSelectedServer: state => state.selectedServer,
-    getSlectedServerAddress: state => {
-
-      let result= "";
-      if(state.selectedServer !== "none"){
-        state.selectedServer.connections.forEach((req) => {
-          if (req.local == true) {
-              result = req.address + ":" + req.port
-            } 
-          }
-        )
-      }
-      
-
-      return result
-
-    }
+    getSlectedServerAddress: state => state.selectedServerAddress,
+    getSlectedServerToken: state => state.selectedServerToken
+,
 };
 
 const serverModule = {
