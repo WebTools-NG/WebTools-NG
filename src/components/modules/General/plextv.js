@@ -11,8 +11,9 @@ const ptv = new class PTV {
         server.connections.forEach((val) => {
             log.info(val.uri)
             let baseurl = val.uri
-
-                axios.get(baseurl + '/identity')
+                axios.get(baseurl + '/identity', {
+                    timeout: 5000
+                })
                 .then(response => {
                     log.info(response)
                     if(response.status == 200){

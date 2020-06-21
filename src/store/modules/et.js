@@ -81,6 +81,26 @@ const actions = {
 
         var key = getters.getSelectedSection
         var baseURL = getters.getSlectedServerAddress
+        var mediaSize = ''
+
+        axios({
+            method: 'get',
+            baseURL: `${baseURL}`,
+            url: `/library/sections/${key}/all`,
+            responseType: 'json',
+            headers: {
+                'Accept':       "application/json",
+                'X-Plex-Token': getters.getSlectedServerToken
+            },
+            params: {
+                "type": "1",
+                "X-Plex-Container-Start": "0",
+                "X-Plex-Container-Size": "0"
+            }
+        }).then((response) => {
+            mediaSize = response.data.MediaContainer.totalSize;
+            log.info(mediaSize)
+        })
 
         axios({
             method: 'get',
