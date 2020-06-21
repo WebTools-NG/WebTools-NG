@@ -23,7 +23,7 @@ const mutations = {
           state.selectedExportLevel = payload
       },
       UPDATE_MEDIADATA(state, payload) {
-          state.mediaData = payload
+          state.mediaData.push(payload)
       }
 };
 
@@ -82,6 +82,7 @@ const actions = {
         var key = getters.getSelectedSection
         var baseURL = getters.getSlectedServerAddress
         var mediaSize = ''
+        var calcSize = 0
 
         axios({
             method: 'get',
@@ -99,9 +100,57 @@ const actions = {
             }
         }).then((response) => {
             mediaSize = response.data.MediaContainer.totalSize;
-            log.info(mediaSize)
-        })
+            calcSize = Math.ceil(mediaSize/30)
 
+            for (let i = 0; i <= calcSize; i++) {
+                axios({
+                    method: 'get',
+                    baseURL: `${baseURL}`,
+                    url: `/library/sections/${key}/all`,
+                    responseType: 'json',
+                    headers: {
+                        'Accept':       "application/json",
+                        'X-Plex-Token': getters.getSlectedServerToken
+                    },
+                    params: {
+                        "type": "1",
+                        "X-Plex-Container-Start":getters.getContainerSizeMovies * i,
+                        "X-Plex-Container-Size": getters.getContainerSizeMovies
+                    }
+                }).then((response) => {
+                    console.log("getMedia is status " + response.status)
+                    console.log("getMedia data" + response.data)
+                    console.log(response.data.MediaContainer.Metadata)
+                    commit('UPDATE_MEDIADATA', response.data.MediaContainer.Metadata)
+                }).catch((error) => {
+                    if (error.response) {                  
+                        // The request was made and tgite server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data)
+                        console.log(error.response.status)
+                        alert(error.response.data.error)
+                        //this.danger(error.response.status, error.response.data.error);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                }
+            )
+              }
+
+
+            log.info("NUGGA " + calcSize)
+            log.info(mediaSize)
+            log.warn('NUGGA' + state.mediaData)
+            log.warn(state.mediaData)
+
+        })
+        /*
         axios({
             method: 'get',
             baseURL: `${baseURL}`,
@@ -140,7 +189,7 @@ const actions = {
                     console.log('Error', error.message);
                 }
             }
-        )
+        )*/
     }
 }
 
