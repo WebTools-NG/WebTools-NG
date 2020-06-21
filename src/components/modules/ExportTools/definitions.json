@@ -11,12 +11,12 @@
         },        
         "level": {
             "testtommy": [
-                "Sort title", 
-                "View Count", "Last Viewed at",
+                "Media ID", "Title", "Sort title", "Studio",
+                "Content Rating", "Year", "Rating",            
+                "View Count",
                 "Writers",
                 "Country", "Duration", "Directors",
-                "Roles", "User Rating"
-                
+                "Roles"                
             ],
             "level1": [
                 "Media ID", "Title", "Sort title", 
@@ -228,7 +228,7 @@
                 },
             "Genre":
                 {
-                    "key": "['Genre']['tag']",
+                    "key": "$.Genre[*].tag",
                     "call": 1,
                     "type": "array"
                 },
@@ -258,13 +258,13 @@
                 },
             "Writers":
                 {
-                    "key": "['Writer']['tag']",
+                    "key": "$.Writer[*].tag",
                     "call": 1,
                     "type": "array"
                 },
             "Country":
                 {
-                    "key": "['Country']['tag']",
+                    "key": "$.Country[*].tag",
                     "call": 1,
                     "type": "array"
                 },
@@ -276,13 +276,13 @@
                 },
             "Directors":
                 {
-                    "key": "['Director']['tag']",
+                    "key": "$.Director[*].tag",
                     "call": 1,
                     "type": "array"
                 },
             "Roles":
                 {
-                    "key": "['Role']['tag']",
+                    "key": "$.Role[*].tag",
                     "call": 1,
                     "type": "array"
                 },
@@ -300,19 +300,19 @@
                 },
             "Labels":
                 {
-                    "key": "['Label']['tag']",
+                    "key": "$.Label[*].tag",
                     "call": 2,
                     "type": "array"                    
                 },
             "Locked Fields":
                 {
-                    "key": "['Field']['name']",
+                    "key": "$.Field[*].tag",
                     "call": 2,
                     "type": "array"                    
                 },
             "Extras":
                 {
-                    "key": "['Extras']['size']",
+                    "key": "$.Extras[*].size",
                     "call": 2,
                     "type": "array"                    
                 },
@@ -373,13 +373,13 @@
             "Added":
                 {
                     "key": "['addedAt']",
-                    "call": 2,
+                    "call": 1,
                     "type": "datetime"                    
                 },                 
             "Updated":
                 {
                     "key": "['updatedAt']",
-                    "call": 2,
+                    "call": 1,
                     "type": "datetime"                    
                 },
             "Audio Languages":

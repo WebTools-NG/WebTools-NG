@@ -1,8 +1,25 @@
 var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
 import {wtconfig, wtutils} from '../../../wtutils'
+const fetch = require('node-fetch');
+const jp = require('jsonpath')
 
-
+/* async function getSectionNameAndSize(baseURI, accessToken, sectionID)
+{
+    const url = baseURI + '/library/sections/' + sectionID + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'    
+    var headers = {
+        "Accept": "application/json",
+        "X-Plex-Token": accessToken
+      }
+    const result = {}
+    let response = await fetch(url, { method: 'GET', headers: headers});    
+    let resp = await response.json();
+    const respJSON = await Promise.resolve(resp)    
+    result['size'] = jp.value(respJSON, '$.MediaContainer.totalSize');
+    result['name'] = jp.value(respJSON, '$.MediaContainer.librarySectionTitle');
+    console.log('GED RESULT: ' + JSON.stringify(result))
+    return result    
+} */
 
 const et = new class ET {
     constructor() {                    
@@ -62,6 +79,10 @@ const et = new class ET {
         return def[libType]['fields'][fieldName]['key']        
     }
 
+    getFieldType(libType, fieldName) {
+        return def[libType]['fields'][fieldName]['type']        
+    }
+
     getFieldsKeyVal( libType, level) {
         // Get fields for level
         const fields = et.getLevelFields(level, libType)
@@ -72,6 +93,38 @@ const et = new class ET {
             out.push(item)
         });
         return out
+    }
+
+    getFieldsKeyValType( libType, level) {
+        // Get field and type for level
+        const fields = et.getLevelFields(level, libType)
+        const out = [] 
+        fields.forEach(element => {            
+            const item = {}
+            const vals = []
+            vals.push(et.getFieldKey(libType, element))
+            vals.push(et.getFieldType(libType, element))
+            item[element] = vals
+            out.push(item)
+        });
+        return out
+    }
+
+    async getSectionNameSize(baseURI, accessToken, sectionID) {
+        //getSectionNameAndSize(baseURI, accessToken, sectionID)
+        const url = baseURI + '/library/sections/' + sectionID + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'    
+        var headers = {
+            "Accept": "application/json",
+            "X-Plex-Token": accessToken
+        }
+        const result = {}
+        let response = await fetch(url, { method: 'GET', headers: headers});    
+        let resp = await response.json();
+        const respJSON = await Promise.resolve(resp)    
+        result['size'] = jp.value(respJSON, '$.MediaContainer.totalSize');
+        result['name'] = jp.value(respJSON, '$.MediaContainer.librarySectionTitle');
+        console.log('GED RESULT: ' + JSON.stringify(result))
+        return result  
     }
 }
 
@@ -92,10 +145,8 @@ const excel = new class Excel {
         //let key
         // Get level fields
         const fields = et.getLevelFields(Level, libType)        
-        for (var i=0; i<fields.length; i++) {
-            //key = et.getFieldKey(libType, fields[i])
-            //log.debug('Column: ' + fields[i] + ' - ' + key)                                                
-            log.debug('Column: ' + fields[i] + ' - ' + fields[i])                                                
+        for (var i=0; i<fields.length; i++) {                        
+            //log.debug('Column: ' + fields[i] + ' - ' + fields[i])                                                
             //let column = { header: Level[i], key: 'id', width: 10 }
             let column = { header: fields[i], key: fields[i] }
             columns.push(column)            
@@ -145,33 +196,108 @@ const excel = new class Excel {
     }
 
     addToSheet(sheet, libType, level, data) {
-        console.log('Start AddToSheet')
-        const jp = require('jsonpath')
+        console.log('Start AddToSheet')           
         // Placeholder for row
         let row = []
+        let date, year, month, day, hours, minutes, seconds
         // Need to find the fields and keys we'll
         // query the data for
-        const keyVal = et.getFieldsKeyVal( libType, level)
+        const keyVal = et.getFieldsKeyValType( libType, level)               
         // Now get the medias                
         const nodes = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
         for (var x=0; x<nodes.length; x++) {
             const mediaItem = nodes[x].value
             const rowentry = {}            
-            for (var i=0; i<keyVal.length; i++) {
-                let val = jp.value(mediaItem, Object.values(keyVal[i]))                
+            for (var i=0; i<keyVal.length; i++) {                                
+                const monthsArr = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+                // Get type
+                let val                
+                switch(Object.values(keyVal[i])[0][1]) {
+                    case "string":
+                        val = jp.value(mediaItem, Object.values(keyVal[i])[0][0]);
+                        break;
+                    case "array":
+                        // Get Items                        
+                        val = jp.query(mediaItem, Object.values(keyVal[i])[0][0]);
+                        // Seperate as wanted
+                        val = val.join(wtconfig.get('ET.ArraySep', ' - '))                        
+                        break;
+                    case "int":
+                        val = '';
+                        break;
+                    case "time":
+                        val = jp.value(mediaItem, Object.values(keyVal[i])[0][0]);                                                
+                        if ( typeof val !== 'undefined' && val )
+                        {
+                            seconds = '0' + (Math.round(val/1000)%60).toString();                            
+                            minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();                            
+                            hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();                                                                  
+                            // Will display time in 10:30:23 format                        
+                            val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                                           
+                        }
+                        else
+                        {
+                            val = null
+                        }                                            
+                        break;  
+
+                    case "datetime":
+                        val = jp.value(mediaItem, Object.values(keyVal[i])[0][0]);                                                
+                        if ( typeof val !== 'undefined' && val )
+                        {
+                            // Create a new JavaScript Date object based on the timestamp
+                            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                            date = new Date(val * 1000);                            
+                            year = date.getFullYear();                            
+                            month = monthsArr[date.getMonth()];                            
+                            day = date.getDate();                            
+                            hours = date.getHours();                            
+                            minutes = "0" + date.getMinutes();                            
+                            seconds = "0" + date.getSeconds();
+                            // Will display time in 10:30:23 format                        
+                            val = month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        }
+                        else
+                        {
+                            val = null
+                        }                                            
+                        break;            
+                }
+
+                //console.log('Ged Value: ' + val)
+           
                 if (val == null)
                 {
                     val = wtconfig.get('ET.NotAvail', 'N/A')
                 }
-                console.log('Media Item: ' + Object.keys(keyVal[i]) + ' has a value of: ' + val)
+                //console.log('Media Item: ' + Object.keys(keyVal[i]) + ' has a value of: ' + val)
                 rowentry[Object.keys(keyVal[i])] = val
             }
             row.push(rowentry)
         }
-        console.log('Entire rows: ' + JSON.stringify(row))
+        //console.log('Entire rows: ' + JSON.stringify(row))
         row.forEach(element => {
             excel.AddRow(sheet, element)            
         });                     
+    }        
+    
+    exportMedia(baseURI, accessToken, level, sectionID) {
+        console.log('GED exportMedia Start');
+        console.log('GED exportMedia baseURI: ' + baseURI);
+        // Get section name and size
+        let result
+        //var ged = et.getSectionNameSize(baseURI, accessToken, sectionID)
+        et.getSectionNameSize(baseURI, accessToken, sectionID)
+            .then(function(values) {
+                console.log('GED Result returned: ' + JSON.stringify(values));
+                result = values
+              }).catch(function(error) {
+                console.error(error);
+              });
+       
+                
+        console.log('GED Result Outside returned: ' + JSON.stringify(result))
+        level        
     }
 }
 

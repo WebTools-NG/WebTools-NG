@@ -67,26 +67,25 @@ if (outDir)
 
 // ET-EXCEL STUFF
 
-// We export library named "Ged" of the type movie with a level of "Level 1"
+// We export library named "Ged" of the type movie with a level of "Level 2"
 const libName = 'Ged'
 //const level = 'Test Tommy'
 const level = 'Level 2'
-
 const libType = 'movie'
+
 // Real stuff to use
 
-
 // ET Stuff
-import {et, excel} from './components/modules/ExportTools/et'
-// Get possible levels for movie
-console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
-console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
-console.log('RealLevelName: ' + et.getRealLevelName(level, libType))
-console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, libType)))
-console.log('Fields in this level sorted: ' + JSON.stringify(et.getLevelFields(level, libType).sort()))
-console.log('GetLevel calls: ' + et.getLevelCall(libType, level) )
+import {excel} from './components/modules/ExportTools/et'
 
+const testimp3 = require('./components/modules/ExportTools/testimp3.json')
 const testimp = require('./components/modules/ExportTools/testimp.json')
+const testimp1 = require('./components/modules/ExportTools/testimp1.json')
+
+// Just use to avoid errors later
+testimp3
+testimp
+testimp1
 
 
 // EXCEL Stuff
@@ -97,9 +96,18 @@ const Sheet = excel.NewSheet(WorkBook, libName, level)
 // Now add the header column
 excel.AddHeader(Sheet, level, libType)
 // Add a couple of Rows
-excel.addToSheet(Sheet, libType, level, testimp)
+//excel.addToSheet(Sheet, libType, level, testimp3)
+//excel.addToSheet(Sheet, libType, level, testimp)
+excel.addToSheet(Sheet, libType, level, testimp1)
 // Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
+
+
+//const baseURI = wtconfig.get('Developer.baseURI', 'NO SERVER URI');
+//const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
+//const sectionID = 4;
+//excel.exportMedia(baseURI, accessToken, level, sectionID)
+
 
 new Vue({
   render: h => h(App),
