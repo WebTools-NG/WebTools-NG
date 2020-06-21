@@ -11,12 +11,14 @@
         },        
         "level": {
             "testtommy": [
-                "Media ID", "Title", "Sort title", "Studio",
-                "Content Rating", "Year", "Rating",            
-                "View Count",
-                "Writers",
-                "Country", "Duration", "Directors",
-                "Roles"                
+                "Title",
+                "Labels"
+
+                 
+
+            ],
+            "PlaceHolder": [
+
             ],
             "level1": [
                 "Media ID", "Title", "Sort title", 
@@ -206,19 +208,19 @@
                 {
                     "key": "contentRating",
                     "call": 1,
-                    "type": "int32"
+                    "type": "string"
                 },
             "Year":
                 {
                     "key": "year",
                     "call": 1,
-                    "type": "int"
+                    "type": "string"
                 },
             "Rating":
                 {
                     "key": "rating",
                     "call": 1,
-                    "type": "int32"
+                    "type": "string"
                 },
             "Summary":
                 {
@@ -236,7 +238,7 @@
                 {
                     "key": "viewCount",
                     "call": 1,
-                    "type": "int"
+                    "type": "string"
                 },
             "Last Viewed at":
                 {
@@ -372,13 +374,13 @@
                 }, 
             "Added":
                 {
-                    "key": "['addedAt']",
+                    "key": "addedAt",
                     "call": 1,
                     "type": "datetime"                    
                 },                 
             "Updated":
                 {
-                    "key": "['updatedAt']",
+                    "key": "updatedAt",
                     "call": 1,
                     "type": "datetime"                    
                 },

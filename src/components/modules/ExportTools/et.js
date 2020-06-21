@@ -25,6 +25,21 @@ const et = new class ET {
     constructor() {                    
     }
 
+    async getItemData(baseURL, accessToken, element)
+    {
+        const url = baseURL + element    
+        var headers = {
+            "Accept": "application/json",
+            "X-Plex-Token": accessToken
+        }        
+        let response = await fetch(url, { method: 'GET', headers: headers});    
+        let resp = await response.json();
+        const respJSON = await Promise.resolve(resp)
+        //console.log('Ged Item 666: ' + JSON.stringify(respJSON))
+        console.log('Done key: ' + element)
+        return respJSON            
+    }
+
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         const levelName = def[libType]['levels'][level]
@@ -195,11 +210,36 @@ const excel = new class Excel {
         return workbook
     }
 
-    addToSheet(sheet, libType, level, data) {
+    addToSheet(sheet, libType, level, data, baseURL, accessToken) {        
+        log.info('Start AddToSheet')
+        // Check if single or multi call is needed
+        const call = et.getLevelCall(libType, level)        
+        log.info('Needed calls for each item is: ' + call)
+        if (call == 1)
+        {
+            // Single call needed, so simply pass along
+            excel.addRowToSheet(sheet, libType, level, data)
+        }
+        else
+        {
+            console.log('Ged multiple calls needed')
+            // Get rating key for each item            
+            const urls = jp.query(data, '$.MediaContainer.Metadata[*].key');
+            log.verbose('Items to lookup are: ' + urls)
+            urls.forEach(element => {
+                console.log('Ged item: ' + element)                
+                const itemdata = et.getItemData(baseURL, accessToken, element);
+                console.log('Ged ItemData: ' + JSON.stringify(itemdata))                                
+            });            
+        }                
+    }     
+    
+    addRowToSheet(sheet, libType, level, data) {
         console.log('Start AddToSheet')           
-        // Placeholder for row
+        // Placeholder for row        
         let row = []
         let date, year, month, day, hours, minutes, seconds
+        //year, month, day,
         // Need to find the fields and keys we'll
         // query the data for
         const keyVal = et.getFieldsKeyValType( libType, level)               
@@ -208,8 +248,7 @@ const excel = new class Excel {
         for (var x=0; x<nodes.length; x++) {
             const mediaItem = nodes[x].value
             const rowentry = {}            
-            for (var i=0; i<keyVal.length; i++) {                                
-                const monthsArr = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            for (var i=0; i<keyVal.length; i++) {               
                 // Get type
                 let val                
                 switch(Object.values(keyVal[i])[0][1]) {
@@ -248,29 +287,25 @@ const excel = new class Excel {
                             // Create a new JavaScript Date object based on the timestamp
                             // multiplied by 1000 so that the argument is in milliseconds, not seconds.
                             date = new Date(val * 1000);                            
-                            year = date.getFullYear();                            
-                            month = monthsArr[date.getMonth()];                            
-                            day = date.getDate();                            
+                            year = date.getFullYear().toString();                             
+                            month = ('0' + date.getMonth().toString()).substr(-2);  
+                            day = ('0' +  date.getDate().toString()).substr(-2);                            
                             hours = date.getHours();                            
                             minutes = "0" + date.getMinutes();                            
                             seconds = "0" + date.getSeconds();
-                            // Will display time in 10:30:23 format                        
-                            val = month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                            // Will display time in 10:30:23 format                                                      
+                            val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                           
                         }
                         else
                         {
                             val = null
                         }                                            
                         break;            
-                }
-
-                //console.log('Ged Value: ' + val)
-           
+                }           
                 if (val == null)
                 {
                     val = wtconfig.get('ET.NotAvail', 'N/A')
                 }
-                //console.log('Media Item: ' + Object.keys(keyVal[i]) + ' has a value of: ' + val)
                 rowentry[Object.keys(keyVal[i])] = val
             }
             row.push(rowentry)
@@ -279,7 +314,7 @@ const excel = new class Excel {
         row.forEach(element => {
             excel.AddRow(sheet, element)            
         });                     
-    }        
+    }    
     
     exportMedia(baseURI, accessToken, level, sectionID) {
         console.log('GED exportMedia Start');

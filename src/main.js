@@ -69,9 +69,39 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 2"
 const libName = 'Ged'
-//const level = 'Test Tommy'
-const level = 'Level 2'
+const level = 'Test Tommy'
+//const level = 'Level 2'
 const libType = 'movie'
+/*
+Some hidden stuff during dev only
+I need baseurl of the server, as 
+well as the accesstoken, so I store 
+those for devs only in the config file,
+in a key named "Developer", and since this
+is never pushed to GitHub, it's safe ;)
+like:
+
+{
+	"general": {
+		"username": "dane22",
+		"language": "en",
+		"rememberlastusername": true,
+		"transfilescopied": "0.1.0"
+	},
+	"ET": {
+		"OutPath": "/home/tm/Videos",
+		"ArraySep": " - "
+	},
+	"Developer": {
+		"baseURI": "http://192.168.1.14:32400",
+		"accessToken": "MyAccessToken"
+	}
+}
+*/
+const baseURI = wtconfig.get('Developer.baseURI', 'NO SERVER URI');
+const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
+
+
 
 // Real stuff to use
 
@@ -96,9 +126,9 @@ const Sheet = excel.NewSheet(WorkBook, libName, level)
 // Now add the header column
 excel.AddHeader(Sheet, level, libType)
 // Add a couple of Rows
-//excel.addToSheet(Sheet, libType, level, testimp3)
-//excel.addToSheet(Sheet, libType, level, testimp)
-excel.addToSheet(Sheet, libType, level, testimp1)
+//excel.addToSheet(Sheet, libType, level, testimp3, baseURI, accessToken)
+//excel.addToSheet(Sheet, libType, level, testimp, baseURI, accessToken)
+excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken)
 // Save Excel file
 excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
 
