@@ -77,12 +77,13 @@ const actions = {
             }
         )
     },
-    getMediaMovies({ getters,commit }) {
+     getMediaMovies({ getters, commit }) {
 
         var key = getters.getSelectedSection
         var baseURL = getters.getSlectedServerAddress
         var mediaSize = ''
         var calcSize = 0
+        
 
         axios({
             method: 'get',
@@ -101,6 +102,7 @@ const actions = {
         }).then((response) => {
             mediaSize = response.data.MediaContainer.totalSize;
             calcSize = Math.ceil(mediaSize/30)
+            log.info('calcSize is: ' + calcSize)
 
             for (let i = 0; i <= calcSize; i++) {
                 axios({
@@ -118,37 +120,30 @@ const actions = {
                         "X-Plex-Container-Size": getters.getContainerSizeMovies
                     }
                 }).then((response) => {
-                    console.log("getMedia is status " + response.status)
-                    console.log("getMedia data" + response.data)
-                    console.log(response.data.MediaContainer.Metadata)
+                    log.info("NUGGA Calc : I is: " + i + "calc is: " + getters.getContainerSizeMovies * i)
+                    log.info(response.data.MediaContainer.Metadata)
+                    //mediaArray.push(response.data.MediaContainer.Metadata)
                     commit('UPDATE_MEDIADATA', response.data.MediaContainer.Metadata)
                 }).catch((error) => {
                     if (error.response) {                  
                         // The request was made and tgite server responded with a status code
                         // that falls out of the range of 2xx
-                        console.log(error.response.data)
-                        console.log(error.response.status)
+                        log.info(error.response.data)
+                        log.info(error.response.status)
                         alert(error.response.data.error)
                         //this.danger(error.response.status, error.response.data.error);
                     } else if (error.request) {
                         // The request was made but no response was received
                         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                         // http.ClientRequest in node.js
-                        console.log(error.request);
+                        log.info(error.request);
                     } else {
                         // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
+                        log.info('Error', error.message);
                     }
                 }
             )
               }
-
-
-            log.info("NUGGA " + calcSize)
-            log.info(mediaSize)
-            log.warn('NUGGA' + state.mediaData)
-            log.warn(state.mediaData)
-
         })
         /*
         axios({
