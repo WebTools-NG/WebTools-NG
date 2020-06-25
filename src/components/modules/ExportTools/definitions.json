@@ -1,6 +1,9 @@
 {
     "movie": {
         "levels": {
+            "Level 1":"level1",
+            "Level 2": "level2"
+        },
             "Level 1": "level1",
             "Level 2": "level2",
             "Level 3": "level3",

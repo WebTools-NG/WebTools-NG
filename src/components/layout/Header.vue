@@ -19,13 +19,13 @@
 
                     <div class="select is-dark">
                        
-                        <b-select v-bind:placeholder="$t('Common.SelServer')"                        
+                        <b-select v-bind:placeholder="$t('Common.SelServer')"
+                            v-model="selectedOption"
                             @input="selected">
                             <option
                                 v-for="option in pserver"
                                 :value="option"
-                                :key="option.clientIdentifier"
-                                v-on:change="onchange()">
+                                :key="option.clientIdentifier">
                                 {{ option.name }}
                             </option>
                         </b-select>
@@ -52,11 +52,17 @@
 
 <script>
 import store from '../../store';
+import { ptv } from '../modules/General/plextv';
 const log = require('electron-log');
 
 
 
 export default {
+    data(){
+        return {
+            selectedOption: []
+        }
+    },
     methods: {
         fetchServers(){
             log.info("fetching servers")
@@ -66,9 +72,10 @@ export default {
             log.info("active2 called")
         this.active = e;
 },
-        selected: function (selected) {
-            this.selected = selected;
-            this.$store.commit("UPDATE_SELECTED_SERVER", selected);
+        selected: function () {
+            log.info('HEADER: selected server: ' + this.selectedOption.name)
+            ptv.checkServerConnect(this.selectedOption)
+            this.$store.commit("UPDATE_SELECTED_SERVER", this.selectedOption);
 
         },
         onChange(event) {
@@ -100,7 +107,6 @@ export default {
     #sync-button{
         margin-left: 0.5em;
     }
-
     #plexname {
         margin-right: 0.5em;
     }
