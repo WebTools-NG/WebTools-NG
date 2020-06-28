@@ -12,7 +12,7 @@
 
     <div class="container">
   <div class="notification">
-    {{ poTranslators }}
+    <p v-for="po in poTranslators" :key="po.name">{{ po.name }}</p>
   </div>
 </div>
 
@@ -32,12 +32,9 @@ export default {
   methods: {
   }, created() {
   this.$store.dispatch('fetchPOEContrib');
-  this.$store.getters.poTranslators
   }, computed: {
     poTranslators(){
-      console.log(this.$store.getters.poTranslators)
-      console.log('computed:contrip'+this.$store.getters.getContrip)
-      return this.$store.getters.getContrip
+     return this.$store.getters.getContrip
     }
   }
 }

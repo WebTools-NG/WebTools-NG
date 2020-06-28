@@ -25,7 +25,6 @@ const actions = {
           }
           axios.post('https://api.poeditor.com/v2/contributors/list', qs.stringify(requestBody), config)
             .then((response) => {                
-                console.log(response)
                 commit('UPDATE_CONTRIBUTORS', response.data.result.contributors)
               })
               .catch(function (error) {
@@ -44,7 +43,8 @@ const actions = {
 const getters = {
   getTranslators: state => {
     state.contributors.forEach(element => {
-      return element.name
+      console.log(element)
+      return element
     });
   },
   getContrip: state => state.contributors,
