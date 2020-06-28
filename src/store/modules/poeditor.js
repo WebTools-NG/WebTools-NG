@@ -18,7 +18,6 @@ const actions = {
             id: '342617',
             api_token: '5166c4294ff7fb3a82cbdc82958e850e'
           } 
-          
           const config = {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -28,7 +27,7 @@ const actions = {
           axios.post('https://api.poeditor.com/v2/contributors/list', qs.stringify(requestBody), config)
             .then((response) => {                
                 console.log(response)
-                commit('UPDATE_CONTRIBUTORS', response)
+                commit('UPDATE_CONTRIBUTORS', response.data.result.contributors)
               })
               .catch(function (error) {
                 if (error.response) {                  
