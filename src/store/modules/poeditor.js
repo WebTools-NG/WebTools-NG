@@ -23,7 +23,6 @@ const actions = {
               'Content-Type': 'application/x-www-form-urlencoded'
             }
           }
-          
           axios.post('https://api.poeditor.com/v2/contributors/list', qs.stringify(requestBody), config)
             .then((response) => {                
                 console.log(response)
@@ -43,6 +42,14 @@ const actions = {
 }
 
 const getters = {
+  getTranslators: state => {
+    state.contributors.forEach(element => {
+      return element.name
+    });
+  },
+  getContrip: state => state.contributors,
+
+
 };
 
 const serverModule = {

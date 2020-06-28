@@ -10,6 +10,14 @@
     <br>
     <h1 class="title is-5">{{ $t("Modules.About.PlexPoCredits") }}</h1>
 
+    <div class="container">
+  <div class="notification">
+    {{ poTranslators }}
+  </div>
+</div>
+
+
+
 
     
 
@@ -22,9 +30,15 @@
 export default {
   name: 'about',
   methods: {
-
   }, created() {
   this.$store.dispatch('fetchPOEContrib');
+  this.$store.getters.poTranslators
+  }, computed: {
+    poTranslators(){
+      console.log(this.$store.getters.poTranslators)
+      console.log('computed:contrip'+this.$store.getters.getContrip)
+      return this.$store.getters.getContrip
+    }
   }
 }
 
