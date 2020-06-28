@@ -12,6 +12,10 @@
         "level": {
             "testtommy": [
                 "Title",
+                
+                "Rating",
+                "Content Rating",
+                "Year",
                 "Labels"
 
                  

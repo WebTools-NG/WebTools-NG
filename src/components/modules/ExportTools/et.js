@@ -217,6 +217,7 @@ const excel = new class Excel {
         log.info('Needed calls for each item is: ' + call)
         if (call == 1)
         {
+            console.log('GED Result returned: ' + JSON.stringify(data));
             // Single call needed, so simply pass along
             excel.addRowToSheet(sheet, libType, level, data)
         }
@@ -226,11 +227,21 @@ const excel = new class Excel {
             // Get rating key for each item            
             const urls = jp.query(data, '$.MediaContainer.Metadata[*].key');
             log.verbose('Items to lookup are: ' + urls)
+
+            let result
             urls.forEach(element => {
                 console.log('Ged item: ' + element)                
-                const itemdata = et.getItemData(baseURL, accessToken, element);
-                console.log('Ged ItemData: ' + JSON.stringify(itemdata))                                
-            });            
+                et.getItemData(baseURL, accessToken, element)            
+                .then(function(values) {
+                    console.log('GED Result returned: ' + JSON.stringify(values));
+                    excel.addRowToSheet(sheet, libType, level, values)
+                    result = values
+                    result
+                  }).catch(function(error) {
+                    console.error(error);
+                  });
+            });  
+            console.log('GED Tommy Done')          
         }                
     }     
     
