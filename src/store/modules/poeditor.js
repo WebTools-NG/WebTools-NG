@@ -41,15 +41,7 @@ const actions = {
 }
 
 const getters = {
-  getTranslators: state => {
-    state.contributors.forEach(element => {
-      console.log(element)
-      return element
-    });
-  },
   getContrip: state => state.contributors,
-
-
 };
 
 const serverModule = {
