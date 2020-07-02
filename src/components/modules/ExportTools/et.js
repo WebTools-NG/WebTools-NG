@@ -34,8 +34,7 @@ const et = new class ET {
         }        
         let response = await fetch(url, { method: 'GET', headers: headers});    
         let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)
-        //console.log('Ged Item 666: ' + JSON.stringify(respJSON))
+        const respJSON = await Promise.resolve(resp)        
         console.log('Done key: ' + element)
         return respJSON            
     }
@@ -209,17 +208,22 @@ const excel = new class Excel {
         workbook.modified = new Date();
         return workbook
     }
-
-    addToSheet(sheet, libType, level, data, baseURL, accessToken) {        
+    
+    async addToSheet(sheet, libType, level, data, baseURL, accessToken, workBook, libName, outType) {                
         log.info('Start AddToSheet')
         // Check if single or multi call is needed
-        const call = et.getLevelCall(libType, level)        
+         const call = et.getLevelCall(libType, level)        
         log.info('Needed calls for each item is: ' + call)
-        if (call == 1)
+        if ( call == 1)
         {
-            console.log('GED Result returned: ' + JSON.stringify(data));
-            // Single call needed, so simply pass along
-            excel.addRowToSheet(sheet, libType, level, data)
+            console.log('GED Result returned1: ' + JSON.stringify(data));
+            // Single call needed, so simply pass along the individual items            
+            const items = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
+            for (var x=0; x<items.length; x++) {
+                console.log('GED Item returned: ' + JSON.stringify(items[x]['value']));
+                excel.addRowToSheet(sheet, libType, level, items[x]['value'])
+            }
+            excel.SaveWorkbook(workBook, libName, level, outType)
         }
         else
         {
@@ -227,20 +231,21 @@ const excel = new class Excel {
             // Get rating key for each item            
             const urls = jp.query(data, '$.MediaContainer.Metadata[*].key');
             log.verbose('Items to lookup are: ' + urls)
-
-            let result
+            // TODO: Wait until all is processed before we save
             urls.forEach(element => {
                 console.log('Ged item: ' + element)                
-                et.getItemData(baseURL, accessToken, element)            
-                .then(function(values) {
-                    console.log('GED Result returned: ' + JSON.stringify(values));
-                    excel.addRowToSheet(sheet, libType, level, values)
-                    result = values
-                    result
+                et.getItemData(baseURL, accessToken, element)                 
+                .then(function(data) {
+                    const items = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
+                    for (var x=0; x<items.length; x++) {
+                        console.log('GED Item returned Multi: ' + JSON.stringify(items[x]['value']));
+                        excel.addRowToSheet(sheet, libType, level, items[x]['value'])
+                    }                    
                   }).catch(function(error) {
                     console.error(error);
                   });
-            });  
+            });
+            excel.SaveWorkbook(workBook, libName, level, outType)  
             console.log('GED Tommy Done')          
         }                
     }     
@@ -255,20 +260,22 @@ const excel = new class Excel {
         // query the data for
         const keyVal = et.getFieldsKeyValType( libType, level)               
         // Now get the medias                
-        const nodes = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
-        for (var x=0; x<nodes.length; x++) {
-            const mediaItem = nodes[x].value
+        //const nodes = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
+
             const rowentry = {}            
             for (var i=0; i<keyVal.length; i++) {               
                 // Get type
-                let val                
+                let val  
+                console.log('Ged Field Type: ' + Object.values(keyVal[i])[0][1]);              
                 switch(Object.values(keyVal[i])[0][1]) {
                     case "string":
-                        val = jp.value(mediaItem, Object.values(keyVal[i])[0][0]);
+                        console.log('Ged Item: ' + JSON.stringify(data))
+                        val = jp.value(data, Object.values(keyVal[i])[0][0]);
+                        console.log('Ged Result: ' + val)
                         break;
                     case "array":
                         // Get Items                        
-                        val = jp.query(mediaItem, Object.values(keyVal[i])[0][0]);
+                        val = jp.query(data, Object.values(keyVal[i])[0][0]);
                         // Seperate as wanted
                         val = val.join(wtconfig.get('ET.ArraySep', ' - '))                        
                         break;
@@ -276,7 +283,7 @@ const excel = new class Excel {
                         val = '';
                         break;
                     case "time":
-                        val = jp.value(mediaItem, Object.values(keyVal[i])[0][0]);                                                
+                        val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
                         if ( typeof val !== 'undefined' && val )
                         {
                             seconds = '0' + (Math.round(val/1000)%60).toString();                            
@@ -292,7 +299,7 @@ const excel = new class Excel {
                         break;  
 
                     case "datetime":
-                        val = jp.value(mediaItem, Object.values(keyVal[i])[0][0]);                                                
+                        val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
                         if ( typeof val !== 'undefined' && val )
                         {
                             // Create a new JavaScript Date object based on the timestamp
@@ -320,7 +327,7 @@ const excel = new class Excel {
                 rowentry[Object.keys(keyVal[i])] = val
             }
             row.push(rowentry)
-        }
+        
         //console.log('Entire rows: ' + JSON.stringify(row))
         row.forEach(element => {
             excel.AddRow(sheet, element)            
@@ -335,7 +342,7 @@ const excel = new class Excel {
         //var ged = et.getSectionNameSize(baseURI, accessToken, sectionID)
         et.getSectionNameSize(baseURI, accessToken, sectionID)
             .then(function(values) {
-                console.log('GED Result returned: ' + JSON.stringify(values));
+                console.log('GED Result returned3: ' + JSON.stringify(values));
                 result = values
               }).catch(function(error) {
                 console.error(error);

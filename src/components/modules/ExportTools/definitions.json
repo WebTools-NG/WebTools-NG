@@ -11,17 +11,12 @@
         },        
         "level": {
             "testtommy": [
-                "Title",
-                
+                "Title",                
                 "Rating",
-                "Content Rating",
-                "Year",
-                "Labels"
-
-                 
-
+                "Original Title"               
             ],
             "PlaceHolder": [
+                "Original Title"
 
             ],
             "level1": [
@@ -372,7 +367,7 @@
                 }, 
             "Original Title":
                 {
-                    "key": "['originalTitle']",
+                    "key": "originalTitle",
                     "call": 2,
                     "type": "string"                    
                 }, 

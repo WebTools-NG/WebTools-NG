@@ -128,9 +128,10 @@ excel.AddHeader(Sheet, level, libType)
 // Add a couple of Rows
 //excel.addToSheet(Sheet, libType, level, testimp3, baseURI, accessToken)
 //excel.addToSheet(Sheet, libType, level, testimp, baseURI, accessToken)
-excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken)
+//excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken)
+excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken, WorkBook, libName, 'xlsx')
 // Save Excel file
-excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
+//excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
 
 
 //const baseURI = wtconfig.get('Developer.baseURI', 'NO SERVER URI');
