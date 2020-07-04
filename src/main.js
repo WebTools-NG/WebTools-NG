@@ -72,6 +72,8 @@ const libName = 'Ged'
 const level = 'Test Tommy'
 //const level = 'Level 2'
 const libType = 'movie'
+
+libType
 /*
 Some hidden stuff during dev only
 I need baseurl of the server, as 
@@ -101,12 +103,15 @@ like:
 const baseURI = wtconfig.get('Developer.baseURI', 'NO SERVER URI');
 const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
 
-
+baseURI
+accessToken
 
 // Real stuff to use
 
 // ET Stuff
-import {excel} from './components/modules/ExportTools/et'
+//import {excel} from './components/modules/ExportTools/et'
+
+import {excel2} from './components/modules/ExportTools/et'
 
 const testimp3 = require('./components/modules/ExportTools/testimp3.json')
 const testimp = require('./components/modules/ExportTools/testimp.json')
@@ -120,16 +125,19 @@ testimp1
 
 // EXCEL Stuff
 // Create WorkBook
-const WorkBook = excel.NewExcelFile()
+//const WorkBook = excel.NewExcelFile()
 // Create Sheet
-const Sheet = excel.NewSheet(WorkBook, libName, level)
+//const Sheet = excel.NewSheet(WorkBook, libName, level)
 // Now add the header column
-excel.AddHeader(Sheet, level, libType)
+//excel.AddHeader(Sheet, level, libType)
 // Add a couple of Rows
 //excel.addToSheet(Sheet, libType, level, testimp3, baseURI, accessToken)
 //excel.addToSheet(Sheet, libType, level, testimp, baseURI, accessToken)
 //excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken)
-excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken, WorkBook, libName, 'xlsx')
+console.log('Ged main call')
+//excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken, WorkBook, libName, 'xlsx')
+excel2.createOutFile( libName, level, libType, 'xlsx', testimp1, baseURI, accessToken );
+console.log('Ged main ended')
 // Save Excel file
 //excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
 

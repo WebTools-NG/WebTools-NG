@@ -8,7 +8,16 @@
             "Level 5": "level5",
             "Level 6": "level6",
             "Test Tommy": "testtommy"
-        },        
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "Level 3": 2,
+            "Level 4": 2,
+            "Level 5": 2,
+            "Level 6": 2,
+            "Test Tommy": 2
+        },
         "level": {
             "testtommy": [
                 "Title",                
