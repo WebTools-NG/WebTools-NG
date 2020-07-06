@@ -69,7 +69,8 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 2"
 const libName = 'Ged'
-const level = 'Test Tommy'
+const level = 'Test Tommy Done2'
+//const level = 'Test Tommy'
 //const level = 'Level 2'
 const libType = 'movie'
 
@@ -113,11 +114,13 @@ accessToken
 
 import {excel2} from './components/modules/ExportTools/et'
 
+const testimp4 = require('./components/modules/ExportTools/testimp4.json')
 const testimp3 = require('./components/modules/ExportTools/testimp3.json')
 const testimp = require('./components/modules/ExportTools/testimp.json')
 const testimp1 = require('./components/modules/ExportTools/testimp1.json')
 
 // Just use to avoid errors later
+testimp4
 testimp3
 testimp
 testimp1
@@ -136,7 +139,7 @@ testimp1
 //excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken)
 console.log('Ged main call')
 //excel.addToSheet(Sheet, libType, level, testimp1, baseURI, accessToken, WorkBook, libName, 'xlsx')
-excel2.createOutFile( libName, level, libType, 'xlsx', testimp1, baseURI, accessToken );
+excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
 console.log('Ged main ended')
 // Save Excel file
 //excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
