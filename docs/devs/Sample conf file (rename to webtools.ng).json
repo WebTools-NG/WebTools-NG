@@ -1,0 +1,32 @@
+{
+	"general": {
+		"username": "dane22",
+		"language": "en",
+		"rememberlastusername": true,
+		"transfilescopied": "0.1.0"
+	},
+	"Log": {
+		"maxSize": 10485760
+	},
+	"ET": {
+		"OutPath": "/home/tm/Videos",
+		"ArraySep": " - ",
+		"CustomLevels": {
+			"movie": {
+				"levels": {
+					"My Level": "My Level"
+				},
+				"LevelCount": {
+					"My Level": 2
+				},
+				"level": {
+					"My Level": []
+				}
+			}
+		}
+	},
+	"Developer": {
+		"baseURI": "http://192.168.1.14:32400",
+		"accessToken": "INSERT TOKEN HERE"
+	}
+}

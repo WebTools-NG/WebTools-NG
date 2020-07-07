@@ -7,8 +7,7 @@
             "Level 4": "level4",
             "Level 5": "level5",
             "Level 6": "level6",
-            "Test Tommy": "testtommy",
-            "Test Tommy Done": "testtommydone",
+            "Test Tommy": "testtommy",            
             "Test Tommy Done2": "testtommydone2"
 
         },
@@ -19,8 +18,7 @@
             "Level 4": 2,
             "Level 5": 2,
             "Level 6": 2,
-            "Test Tommy": 2,
-            "Test Tommy Done": 2,
+            "Test Tommy": 2,            
             "Test Tommy Done2": 2
         },
         "level": {
