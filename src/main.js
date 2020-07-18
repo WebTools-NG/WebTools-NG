@@ -137,8 +137,8 @@ AllMovies
 // EXCEL Stuff
 
 // Add a couple of Rows
-excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
-//excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
+excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
 
 new Vue({
   render: h => h(App),

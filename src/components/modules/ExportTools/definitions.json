@@ -23,7 +23,8 @@
         },
         "level": {
             "testtommydone2": [                
-                "Title",
+                "Title",    
+                "Extras-behindthescenes", "Extras-deleted"                                            
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
             ],
             "Investigate": [
@@ -38,7 +39,12 @@
                 "Audio Stream Codec ID", "Audio Stream Duration",
                 "Audio Stream Profile","Audio Stream Sampling Rate",
                 "Audio Stream Required Bandwidths",
-
+                "Subtitle Stream Codec", "Subtitle Stream Language",
+                "Subtitle Stream Language Code", "Subtitle Stream Codec ID",
+                "Subtitle Stream Format", "Subtitle Stream Title",
+                "Subtitle Stream Selected",
+                "Subtitle Stream Required Bandwidths",
+                "Subtitle Header Compression",
                 "Required Bandwidths","Video Stream Title",
                 "Video Stream Stream Identifier", "Video Stream Width",
                 "Video Stream Pixel Aspect Ratio", "Video Stream Height",
@@ -86,17 +92,10 @@
                 "Chapter Count" 
             ],
             "PlaceHolder": [                                                                                                                                
-                "Extras-behindthescenes", "Extras-deleted",
+                
                 "Extras-featurette", "Extras-interview",
                 "Extras-scene", "Extras-short",
-                "Extras-trailer", "Collections",                                                                                                                                                                                                              
-                                                                                                                                                                                                                
-                "Subtitle Stream Codec", "Subtitle Stream Language",
-                "Subtitle Stream Language Code", "Subtitle Stream Codec ID",
-                "Subtitle Stream Format", "Subtitle Stream Title",
-                "Subtitle Stream Selected", 
-                "Subtitle Stream Required Bandwidths",
-                "Subtitle Header Compression"
+                "Extras-trailer", "Collections"                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             ],
             "level1": [
                 "Media ID", "Title", "Sort title", 
@@ -410,13 +409,14 @@
                 },
             "Extras-behindthescenes":
                 {
-                    "key": "['Extras']['Video'][@subtype='behindTheScenes']",
+                    "key": "['Extras']['Video'][*][?(@subtype='behindTheScenes')]",
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array"
+                                                        
                 },
             "Extras-deleted":
                 {
-                    "key": "['Extras']['Video'][@subtype='deleted']",
+                    "key": "['Extras']['Video'][*][?(@subtype='deleted')]",                    
                     "call": 2,
                     "type": "array"                    
                 },
@@ -1125,75 +1125,75 @@
                 },
             "Subtitle Stream Codec":
                 {
-                    "key": "Media/Part/Stream[@streamType=2]/@profile",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "$.profile"                    
                 },
             "Subtitle Stream Language":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@language",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "$.language"                    
                 },
             "Subtitle Stream Language Code":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@languageCode",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "$.languageCode"                    
                 },
             "Subtitle Stream Codec ID":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@codecID",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "codecID"                    
                 },
             "Subtitle Stream Format":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@format",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "format"                    
                 },
             "Subtitle Stream Title":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@title",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "title"                    
                 },
             "Subtitle Stream Selected":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@selected",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "selected"                    
                 },
             "Subtitle Stream Required Bandwidths":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@requiredBandwidths",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "requiredBandwidths"                    
                 },
             "Subtitle Header Compression":
                 {
-                    "key": "Media/Part/Stream[@streamType=3]/@headerCompression",
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "headerCompression"                    
                 },
             "Subtitle Stream Default":
                 {
