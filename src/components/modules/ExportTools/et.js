@@ -10,8 +10,7 @@ const et = new class ET {
     }
 
     async getItemData(baseURL, accessToken, element)
-    {
-        console.log('ged22')
+    {        
         const url = baseURL + element + '?checkFiles=1&includeExtras=1&includeBandwidths=1';
         var headers = {
             "Accept": "application/json",
@@ -20,15 +19,15 @@ const et = new class ET {
         log.verbose(`Calling url: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: headers});    
         let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)        
-        console.log('Done key: ' + element)
+        const respJSON = await Promise.resolve(resp)                
+        log.debug(`Done key: ${element}`)
         return respJSON            
     }
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         const levelName = def[libType]['levels'][level]
-        log.debug('ET LevelName: ' + levelName)
+        log.debug(`ET LevelName: ${levelName}`)
         return levelName
     } 
 
@@ -101,36 +100,28 @@ const et = new class ET {
 
     getFieldsKeyValType( libType, level) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType)
-        console.log('Ged CAVA123: ' + JSON.stringify(fields))
+        const fields = et.getLevelFields(level, libType)        
         const out = [] 
         fields.forEach(element => {            
             const item = {}
-            const vals = []
-            console.log('Ged Nugga 887766: ' + JSON.stringify(et.getField(libType, element)))
-            
-            
+            const vals = []                        
             vals.push(et.getFieldKey(libType, element))
-            vals.push(et.getFieldType(libType, element))
+            vals.push(et.getFieldType(libType, element))                                 
             item[element] = vals
             out.push(item)
-        });
-        console.log('Ged CAVA124: ' + JSON.stringify(out))
+        });        
         return out
     }
 
     getFields( libType, level) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType)
-        console.log('Ged CAVA123: ' + JSON.stringify(fields))
+        const fields = et.getLevelFields(level, libType)        
         const out = [] 
         fields.forEach(element => {            
-            const item = {}            
-            console.log('Ged Nugga 887766: ' + JSON.stringify(et.getField(libType, element)))
+            const item = {}                        
             item[element] = et.getField(libType, element)
             out.push(item)
-        });
-        console.log('Ged CAVA124: ' + JSON.stringify(out))
+        });        
         return out
     }
 
@@ -146,8 +137,7 @@ const et = new class ET {
         let resp = await response.json();
         const respJSON = await Promise.resolve(resp)    
         result['size'] = jp.value(respJSON, '$.MediaContainer.totalSize');
-        result['name'] = jp.value(respJSON, '$.MediaContainer.librarySectionTitle');
-        console.log('GED RESULT: ' + JSON.stringify(result))
+        result['name'] = jp.value(respJSON, '$.MediaContainer.librarySectionTitle');        
         return result  
     }
 }
@@ -221,8 +211,8 @@ const excel2 = new class Excel {
         return true
     }
 
-    async addRowToSheet(sheet, libType, level, data) {
-        console.log('Start AddToSheet')           
+    async addRowToSheet(sheet, libType, level, data) {        
+        log.debug(`Start addRowToSheet. libType: ${libType} - level: ${level}`)          
         // Placeholder for row        
         let row = []
         let date, year, month, day, hours, minutes, seconds
@@ -236,15 +226,102 @@ const excel2 = new class Excel {
 
         const fields = et.getFields( libType, level) 
 
+        const rowentry = {}        
+        let lookup, val, array, i, valArray, valArrayVal, subType, subKey                  
+        
+        for (var x=0; x<fields.length; x++) {                                   
+            var name = Object.keys(fields[x]);
+            lookup = jp.value(fields[x], '$..key')            
+            switch(jp.value(fields[x], '$..type')) {
+                case "string":                                        
+                    val = jp.value(data, lookup);                    
+                    // Make N/A if not found
+                    if (val == null)
+                    {
+                        val = wtconfig.get('ET.NotAvail', 'N/A')
+                    }
+                    break;
+                case "array":                                        
+                    array = jp.query(data, lookup);
+                    valArray = []
+                    
+                    for (i=0; i<array.length; i++) {                        
+                        subType = jp.value(fields[x], '$..subtype')
+                        subKey = jp.value(fields[x], '$..subkey')
+                        //console.log('Ged 1112233 SubType: ' + subType)
+                        switch(subType) {
+                            case "string":
+                                //valArrayVal = jp.value(fields[x], subKey)
+                                valArrayVal = jp.value(array[i], subKey)
+                                // Make N/A if not found
+                                if (valArrayVal == null)
+                                {
+                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                }
+                                break
+                        }                                            
+                        valArray.push(valArrayVal)
 
-        console.log('Ged Nugga 443322:' + JSON.stringify(fields))
+
+                    }                    
+                    val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))                                        
+                    break;
+                case "int":                                        
+                    console.log('************ FIX INT **************')
+                    break;
+                case "time":
+                    console.log('************ FIX TIME **************')
+                    val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
+                    if ( typeof val !== 'undefined' && val )
+                    {
+                        seconds = '0' + (Math.round(val/1000)%60).toString();                            
+                        minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();                            
+                        hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();                                                                  
+                        // Will display time in 10:30:23 format                        
+                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                                           
+                    }
+                    else
+                    {
+                        val = null
+                    }                                            
+                    break;
+                case "datetime":
+                    val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
+                    if ( typeof val !== 'undefined' && val )
+                    {
+                        // Create a new JavaScript Date object based on the timestamp
+                        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                        date = new Date(val * 1000);                            
+                        year = date.getFullYear().toString();                             
+                        month = ('0' + date.getMonth().toString()).substr(-2);  
+                        day = ('0' +  date.getDate().toString()).substr(-2);                            
+                        hours = date.getHours();                            
+                        minutes = "0" + date.getMinutes();                            
+                        seconds = "0" + date.getSeconds();
+                        // Will display time in 10:30:23 format                                                      
+                        val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                           
+                    }
+                    else
+                    {
+                        val = null
+                    }                                            
+                    break;  
+            }
+            rowentry[name[0]] = val
+        }
+        row.push(rowentry)        
+        row.forEach(element => {
+            excel2.AddRow(sheet, element)                        
+        });
+    }
+    
 
 
-        console.log('Ged Cava1: ' + JSON.stringify(keyVal))
-            const rowentry = {}            
+    /*     console.log('Ged Cava1: ' + JSON.stringify(keyVal))
+                        
             for (var i=0; i<keyVal.length; i++) {               
                 // Get type
-                let val  
+                 
                 console.log('Ged Field Type: ' + Object.values(keyVal[i])[0][1]);              
                 switch(Object.values(keyVal[i])[0][1]) {
                     case "string":
@@ -253,8 +330,11 @@ const excel2 = new class Excel {
                         console.log('Ged1 Result: ' + val)
                         break;
                     case "array":
-                        // Get Items                        
+                        // Get Items 
+                        console.log('Ged123 Item: ' + JSON.stringify(data)) 
+                        console.log('Ged123 keyVal: ' +  JSON.stringify(keyVal[i]))                     
                         val = jp.query(data, Object.values(keyVal[i])[0][0]);
+                        console.log('Ged123 VAL: ' + JSON.stringify(val))
                         // Seperate as wanted
                         val = val.join(wtconfig.get('ET.ArraySep', ' - '))                        
                         break;
@@ -311,23 +391,19 @@ const excel2 = new class Excel {
         row.forEach(element => {
             excel2.AddRow(sheet, element)                        
         });                     
-    }  
+    }   */
     
     async createOutFile( libName, level, libType, outType, data, baseURL, accessToken )
-    {
-        console.log(`Ged CreateOutFile libName: ${libName} - level: ${level} - libType: ${libType}`)
+    {       
         // First create a WorkBook
-        const workBook = await excel2.NewExcelWorkBook()
-        console.log(`Ged workBook: ${workBook}`);
+        const workBook = await excel2.NewExcelWorkBook()     
         // Create Sheet
-        let sheet = await excel2.NewSheet(workBook, libName, level)
-        console.log(`Ged sheet: ${sheet}`);
+        let sheet = await excel2.NewSheet(workBook, libName, level)        
         // Add the header to the sheet
         const header = await excel2.AddHeader(sheet, level, libType)
-        console.log(`Ged header: ${header}`);
+        log.debug(`header: ${header}`);
         // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level)         
-        console.log(`GED Count needed is: ${call}`)
+        const call = await et.getLevelCall(libType, level)                 
         if ( call == 1 )
         {            
             // Single call needed, so simply pass along the individual items            
@@ -337,28 +413,19 @@ const excel2 = new class Excel {
             }            
         }
         else
-        {
-            console.log('Ged multiple calls needed')
+        {            
             // Get rating key for each item            
             const urls = jp.query(data, '$.MediaContainer.Metadata[*].key');
             log.verbose('Items to lookup are: ' + urls)
 
             for (const url of urls) {
-                const contents = await et.getItemData(baseURL, accessToken, url);
-               // console.log('Ged gummi 123' + JSON.stringify(contents));
+                const contents = await et.getItemData(baseURL, accessToken, url);               
                 const items = jp.nodes(contents, '$.MediaContainer.Metadata[*]')         
-                for (var y=0; y<items.length; y++) {
-               //     console.log('GED Item returned Multi: ' + JSON.stringify(items[y]['value']));
+                for (var y=0; y<items.length; y++) {               
                     excel2.addRowToSheet(sheet, libType, level, items[y]['value'])
                 }
-              }
-          
-            console.log('GED Tommy Done')          
-        } 
-
-
-        
-
+              }                             
+        }         
         // Save Excel file
         const result = await excel2.SaveWorkbook(workBook, libName, level, 'xlsx')
         return result
