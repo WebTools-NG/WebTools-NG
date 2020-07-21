@@ -1,12 +1,6 @@
 * Export role med roller og pic url
 * postProcess for fields
-  * Part Duration, "Part File Path", "Part File", "Part Size", "MetaDB Link"
-  * "MetaData Language", "Original Title"
-* Array bruger ikke N/A
-  * FIXED
-
-
-
+   "Original Title"
 
 
 * Check/Validate:
