@@ -75,12 +75,11 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 2"
 const libName = 'Ged'
-//const level = 'Test Tommy Done2'
-//const level = 'Test Tommy'
-const level = 'Test Tommy Done2'
+const level = 'Tommy'
 const libType = 'movie'
 
 libType
+
 /*
 Some hidden stuff during dev only
 I need baseurl of the server, as 
@@ -110,16 +109,13 @@ like:
 const baseURI = wtconfig.get('Developer.baseURI', 'NO SERVER URI');
 const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
 
-baseURI
-accessToken
-
 // Real stuff to use
 
 // ET Stuff
 import {excel2} from './components/modules/ExportTools/et'
 
 
-// TEmp json files to export, until linked called by webpage
+// Temp json files to export, until linked called by webpage
 const testimp4 = require('./components/modules/ExportTools/testimp4.json')
 const testimp3 = require('./components/modules/ExportTools/testimp3.json')
 const testimp = require('./components/modules/ExportTools/testimp.json')
@@ -137,8 +133,8 @@ AllMovies
 // EXCEL Stuff
 
 // Add a couple of Rows
-//excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
-excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
+excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
 
 new Vue({
   render: h => h(App),

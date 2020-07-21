@@ -2,6 +2,7 @@ var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
 import {wtconfig, wtutils} from '../../../wtutils'
 
+
 const fetch = require('node-fetch');
 const jp = require('jsonpath')
 
@@ -11,7 +12,7 @@ const et = new class ET {
 
     async getItemData(baseURL, accessToken, element)
     {        
-        const url = baseURL + element + '?checkFiles=1&includeExtras=1&includeBandwidths=1';
+        const url = baseURL + element + '?checkFiles=1&includeRelated=1&includeExtras=1&includeBandwidths=1&includeChapters=1';
         var headers = {
             "Accept": "application/json",
             "X-Plex-Token": accessToken
@@ -211,19 +212,30 @@ const excel2 = new class Excel {
         return true
     }
 
+    async postProcess(name, val){
+        log.debug(`Start postProcess. name: ${name} - val: ${val}`)
+        var retVal
+        switch ( String(name) ){
+            
+            case "MetaDB Link":                
+                retVal = val.split("?")[0];                                                
+                break;
+            case "MetaData Language":
+                retVal = val.split("=")[1];
+                break;            
+            default:
+                console.log('Ged NO HIT:' + name + 'END')
+                break;
+        }             
+        return await retVal;
+    }
+
     async addRowToSheet(sheet, libType, level, data) {        
         log.debug(`Start addRowToSheet. libType: ${libType} - level: ${level}`)          
         // Placeholder for row        
         let row = []
         let date, year, month, day, hours, minutes, seconds
-        //year, month, day,
-        // Need to find the fields and keys we'll
-        // query the data for
-        const keyVal = et.getFieldsKeyValType( libType, level)               
-        // Now get the medias                
-        //const nodes = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
-
-
+        
         const fields = et.getFields( libType, level) 
 
         const rowentry = {}        
@@ -243,8 +255,7 @@ const excel2 = new class Excel {
                     break;
                 case "array":                                        
                     array = jp.query(data, lookup);
-                    valArray = []
-                    
+                    valArray = []                    
                     for (i=0; i<array.length; i++) {                        
                         subType = jp.value(fields[x], '$..subtype')
                         subKey = jp.value(fields[x], '$..subkey')
@@ -254,24 +265,43 @@ const excel2 = new class Excel {
                                 //valArrayVal = jp.value(fields[x], subKey)
                                 valArrayVal = jp.value(array[i], subKey)
                                 // Make N/A if not found
-                                if (valArrayVal == null)
+                                if (valArrayVal == null || valArrayVal == "")
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
                                 break
+                            case "time":  
+                                console.log('Ged ARRAY: ' + JSON.stringify(array[i]))                              
+                                valArrayVal = jp.value(array[i], subKey)                                
+                                // Make N/A if not found
+                                if (valArrayVal == null || valArrayVal == "")
+                                {
+                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                }
+                                else
+                                {
+                                    for (i=0; i<valArrayVal.length; i++) {
+                                        seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();                            
+                                        minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();                            
+                                        hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();                                                                  
+                                        // Will display time in 10:30:23 format                        
+                                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                    }                                    
+                                }
+                                break
                         }                                            
                         valArray.push(valArrayVal)
-
-
                     }                    
                     val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))                                        
                     break;
-                case "int":                                        
-                    console.log('************ FIX INT **************')
+                case "array-count":                                                                                                    
+                    val = jp.query(data, lookup).length;                                                           
                     break;
-                case "time":
-                    console.log('************ FIX TIME **************')
-                    val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
+                case "int":                    
+                    val = jp.query(data, lookup)[0];
+                    break;
+                case "time":                    
+                    val = jp.value(data, lookup);                                                
                     if ( typeof val !== 'undefined' && val )
                     {
                         seconds = '0' + (Math.round(val/1000)%60).toString();                            
@@ -286,7 +316,7 @@ const excel2 = new class Excel {
                     }                                            
                     break;
                 case "datetime":
-                    val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
+                    val = jp.value(data, lookup);                                                
                     if ( typeof val !== 'undefined' && val )
                     {
                         // Create a new JavaScript Date object based on the timestamp
@@ -307,6 +337,10 @@ const excel2 = new class Excel {
                     }                                            
                     break;  
             }
+            if ( jp.value(fields[x], '$..postProcess') == true)
+            {                
+                val = await this.postProcess(name, val);                
+            }            
             rowentry[name[0]] = val
         }
         row.push(rowentry)        

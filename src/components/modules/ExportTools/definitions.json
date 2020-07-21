@@ -7,8 +7,7 @@
             "Level 4": "level4",
             "Level 5": "level5",
             "Level 6": "level6",
-            "Test Tommy": "testtommy",            
-            "Test Tommy Done2": "testtommydone2"
+            "Tommy": "tommy"
 
         },
         "LevelCount": {
@@ -18,85 +17,14 @@
             "Level 4": 2,
             "Level 5": 2,
             "Level 6": 2,
-            "Test Tommy": 2,            
-            "Test Tommy Done2": 2
+            "Tommy": 2            
         },
-        "level": {
-            "testtommydone2": [                
-                "Title",    
-                "Extras-behindthescenes", "Extras-deleted"                                            
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-            ],
-            "Investigate": [
-                 
-            ],
-            "verified1": [
-                "Audio Stream Default", "Audio Stream Codec",
-                "Audio Stream Index", "Audio Stream Channels",
-                "Audio Stream Bitrate", "Audio Stream Language",
-                "Audio Stream Language Code", "Audio Stream Audio Channel Layout",
-                "Audio Stream Bit Depth", "Audio Stream Bitrate Mode",
-                "Audio Stream Codec ID", "Audio Stream Duration",
-                "Audio Stream Profile","Audio Stream Sampling Rate",
-                "Audio Stream Required Bandwidths",
-                "Subtitle Stream Codec", "Subtitle Stream Language",
-                "Subtitle Stream Language Code", "Subtitle Stream Codec ID",
-                "Subtitle Stream Format", "Subtitle Stream Title",
-                "Subtitle Stream Selected",
-                "Subtitle Stream Required Bandwidths",
-                "Subtitle Header Compression",
-                "Required Bandwidths","Video Stream Title",
-                "Video Stream Stream Identifier", "Video Stream Width",
-                "Video Stream Pixel Aspect Ratio", "Video Stream Height",
-                "Video Stream Has Scaling Matrix", "Video Stream Frame Rate Mode",
-                "Video Stream Frame Rate", "Video Stream Codec",
-                "Video Stream Codec ID", "Video Stream Chroma Sub Sampling",
-                "Video Stream Color Primaries", "Video Stream Color Range",
-                "Video Stream Color Space", "Video Stream Color Trc",
-                "Video Stream Cabac", "Video Stream Anamorphic",
-                "Video Stream Language Code", "Video Stream Language",
-                "Video Stream Bitrate", "Video Stream Bit Depth",
-                "Video Stream Duration", "Video Stream Required Bandwidths",
-                "Video Stream Level", "Audio Stream Selected",                
-                "Video Stream Ref Frames", "Video Stream Scan Type",
-                "Video Stream Default", "Video Stream Index",
-                "Video Stream Pixel Format", "Video Stream Profile",
-                "Media ID", "Subtitle Stream Default",
-                "Subtitle Languages",
-                "Sort title", "Studio", "Content Rating",
-                "Year", "Rating", "Summary", "Genre",
-                "Part Deep Analysis Version",
-                "Part Optimized for Streaming",
-                "Part Container", "Accessible", "Exists",
-                "Part Duration", "Part Indexed", "Video Codec",
-                "Container", "Video FrameRate", "Audio Codec",
-                "Audio Channels", "Width", "Height", "Aspect Ratio",
-                "Bitrate", "Video Resolution", "Part File Combined",
-                "Part File Path", "Part File", "Part Size", "Part Size as Bytes",
-                "Chapter Source", "Poster url", "Art url",
-                "MetaDB Link", "MetaData Language", "Part Container",
-                "Audio Languages", "Audio Title", "Original Title",
-                "Studio", "Content Rating", "Year","Summary", "View Count",
-                "Tagline", "Writers", "Country", "Directors",
-                "Roles", "Audience Rating", "User Rating", "Labels",
-                "Subtitle Title", "Subtitle Codec", "Subtitle Forced"
-            ],
-            "ToDo": [                                                                                                                           
-                "Last Viewed at",
-                "Release Date", 
-                "Duration",                
-                "Added", "Updated"                            
-            ],    
-            "BAD": [
-                "Locked Fields", "Extras", "Chapter Title",
-                "Chapter Count" 
-            ],
-            "PlaceHolder": [                                                                                                                                
-                
-                "Extras-featurette", "Extras-interview",
-                "Extras-scene", "Extras-short",
-                "Extras-trailer", "Collections"                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-            ],
+        "level": {  
+            "tommy": [
+                "Title",
+                "Part Duration"
+
+            ],          
             "level1": [
                 "Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
@@ -321,7 +249,7 @@
                 },
             "Last Viewed at":
                 {
-                    "key": "lastViewedAt",
+                    "key": "$..lastViewedAt",
                     "call": 1,
                     "type": "datetime"
                 },
@@ -333,7 +261,7 @@
                 },
             "Release Date":
                 {
-                    "key": "originallyAvailableAt",
+                    "key": "$..originallyAvailableAt",
                     "call": 1,
                     "type": "string"
                 },
@@ -355,7 +283,7 @@
                 },
             "Duration":
                 {
-                    "key": "duration",
+                    "key": "$..duration",
                     "call": 1,
                     "type": "time"
                 },
@@ -397,81 +325,84 @@
                 },
             "Locked Fields":
                 {
-                    "key": "$.Field[*].tag",
+                    "key": "$.Field[*]",
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.name"                     
                 },
             "Extras":
                 {
-                    "key": "$.Extras[*].size",
+                    "key": "$.Extras.size",
                     "call": 2,
-                    "type": "array"                    
+                    "type": "int"                    
                 },
             "Extras-behindthescenes":
                 {
-                    "key": "['Extras']['Video'][*][?(@subtype='behindTheScenes')]",
+                    "key": "$..Extras.Metadata[?(@.subtype=='behindTheScenes')].ratingKey",
                     "call": 2,
-                    "type": "array"
-                                                        
+                    "type": "array-count"                                                        
                 },
             "Extras-deleted":
                 {
-                    "key": "['Extras']['Video'][*][?(@subtype='deleted')]",                    
+                    "key": "$..Extras.Metadata[?(@.subtype=='deleted')].ratingKey",                                      
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"                   
                 },
             "Extras-featurette":
                 {
-                    "key": "['Extras']['Video'][@subtype='featurette']",
+                    "key": "$..Extras.Metadata[?(@.subtype=='featurette')].ratingKey",                                      
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"                  
                 },
             "Extras-interview":
                 {
-                    "key": "['Extras']['Video'][@subtype='interview']",
+                    "key": "$..Extras.Metadata[?(@.subtype=='interview')].ratingKey",                                      
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"                    
                 },
             "Extras-scene":
                 {
-                    "key": "['Extras']['Video'][@subtype='scene']",
+                    "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",                                      
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"                   
                 },                
             "Extras-short":
                 {
-                    "key": "['Extras']['Video'][@subtype='short']",
+                    "key": "$..Extras.Metadata[?(@.subtype=='short')].ratingKey",                                      
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"                    
                 }, 
             "Extras-trailer":
                 {
-                    "key": "['Extras']['Video'][@subtype='trailer']",
+                    "key": "$..Extras.Metadata[?(@.subtype=='trailer')].ratingKey",                                      
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"                                       
                 }, 
             "Collections":
                 {
-                    "key": "['Collection']['tag']",
+                    "key": "$.Collection[*]",
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.tag"
                 }, 
             "Original Title":
                 {
-                    "key": "originalTitle",
+                    "key": "$..originalTitle",
                     "call": 2,
                     "type": "string",
                     "postProcess": true                    
                 }, 
             "Added":
                 {
-                    "key": "addedAt",
+                    "key": "$..addedAt",
                     "call": 1,
                     "type": "datetime"                    
                 },                 
             "Updated":
                 {
-                    "key": "updatedAt",
+                    "key": "$..updatedAt",
                     "call": 1,
                     "type": "datetime"                    
                 },
@@ -573,15 +504,17 @@
                 },
             "Chapter Title":
                 {
-                    "key": "[Chapter][tag]",
+                    "key": "$.Chapter[*]",
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.tag" 
                 },
             "Chapter Count":
-                {
-                    "key": "[Chapter][index]",
+                {                    
+                    "key": "$..Chapter[*]",
                     "call": 2,
-                    "type": "array"                    
+                    "type": "array-count"
                 },
             "Video Resolution":
                 {                    
@@ -716,11 +649,11 @@
                 },
             "Part Duration":
                 {
-                    "key": "$.Media[*].Part[*]",
+                    "key": "$..Media[*].Part[?(@.key.startsWith('/library/parts'))]",
                     "call": 2,
                     "type": "array",
-                    "postProcess": true,
-                    "subtype": "string",
+                    "postProcess": false,
+                    "subtype": "time",
                     "subkey": "$.duration" 
                 },
             "Part Container":
