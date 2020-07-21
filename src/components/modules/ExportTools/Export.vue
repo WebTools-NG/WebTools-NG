@@ -41,6 +41,7 @@
         disabled
       >{{ $t("Modules.ET.RadioOtherVideos") }}</b-radio>
     </div>
+
     <hr />
 
     <h1 class="title is-3">{{ $t("Modules.ET.HSelectSelection") }}</h1>
@@ -89,6 +90,7 @@
     </b-tabs>
     <hr />
 
+
     <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
     <div class="buttons">
       <b-button
@@ -102,13 +104,6 @@
 </template>
 
 <script>
-import { et } from "./et";
-const log = require("electron-log");
-
-export default {
-  name: "export",
-  data() {
-    return {
       radio: "movie",
       activeTab: 0
     };

@@ -53,15 +53,15 @@ const wtutils = new class WTUtils {
     get LangFiles() {
         const langFiles = []
         var fs = require('fs');    
-        const localHome = wtutils.Home + '/locales'  
-        console.log('LocalHome detected as: ' + localHome);    
-        const items = fs.readdirSync(localHome)                   
-        console.log('Files count is: ' + items.length)
+        const localHome = wtutils.Home + '/locales' 
+        log.verbose(`LocalHome detected as: ${localHome}`)            
+        const items = fs.readdirSync(localHome)  
+        log.verbose(`Files count is: ${items.length}`)        
         for (var i=0; i<items.length; i++) {                                    
-            console.log('found translation file : ' + items[i]);        
+            log.verbose(`found translation file : ${items[i]}`);        
             langFiles.push(items[i]);
         }
-        console.log('********* Done reading translations ***********')          
+        log.verbose(`********* Done reading translations ***********`)          
         return langFiles
     }
 

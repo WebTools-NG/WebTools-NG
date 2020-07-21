@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import {wtutils} from './wtutils'
+const log = require('electron-log');
 
 Vue.use(VueI18n)
 
@@ -10,15 +11,14 @@ function loadLocaleMessages () {
   const messages = {}
   const items = wtutils.LangFiles  
   const localHome = wtutils.Home + '/locales'
-  console.log('Files count is: ' + items.length)
+  log.verbose(`Files count is: ${items.length}`)  
   for (var i=0; i<items.length; i++) {                                    
-      console.log('found translation file : ' + items[i]);        
+    log.verbose(`found translation file : ${items[i]}`);        
       let langCode = items[i].split(".")[0];
       let langFile = localHome + '/' + items[i];
       messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8'));         
     }        
-
-  console.log('********* Done reading translations ***********')  
+    log.verbose(`********* Done reading translations ***********`)  
   return messages
 }
 

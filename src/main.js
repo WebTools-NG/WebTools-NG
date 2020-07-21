@@ -23,19 +23,24 @@ Vue.use(Buefy);
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
-log.transports.file.level = 'debug';
-log.transports.console.level = 'silly';
+// Default file log level is info
+log.transports.file.level = wtconfig.get('Log.fileLevel', 'info');
+// Default console level is Silly, since used by us
+log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
+
+
 log.transports.file.fileName = wtutils.AppName;
+// Set logfile to 10Mb
+log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
+
+
 console.log = log.log;
 log.info('*********************************') 
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
-//wtutils.MoveToHome();
-
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('general.language', 'en')
-
 Vue.config.productionTip = false
 
 // App Menu Bar
@@ -47,7 +52,7 @@ log.info('App Menu builded')
 
 
 console.log('*********** Ged CASPER start dialog ************');
-console.log('Se main.js linie 54 for at lave en dialog i ET, så');
+console.log('Se main.js linie 61 for at lave en dialog i ET, så');
 console.log('vi kan gemme std. output dir');
 console.log('Gemmes med wtconfig.set("ET.OutPath", <sti til dir>)');
 
@@ -67,41 +72,72 @@ if (outDir)
 
 // ET-EXCEL STUFF
 
-// We export library named "Ged" of the type movie with a level of "Level 1"
+// We export library named "Ged" of the type movie with a level of "Level 3"
 const libName = 'Ged'
-const level = 'Level 2'
+//const level = 'Tommy'
+const level = 'Level 3'
 const libType = 'movie'
+
+/*
+Some hidden stuff during dev only
+I need baseurl of the server, as 
+well as the accesstoken, so I store 
+those for devs only in the config file,
+in a key named "Developer", and since this
+is never pushed to GitHub, it's safe ;)
+like:
+
+{
+	"general": {
+		"username": "dane22",
+		"language": "en",
+		"rememberlastusername": true,
+		"transfilescopied": "0.1.0"
+	},
+	"Log": {
+		"maxSize": 10485760
+	},
+	"ET": {
+		"OutPath": "/home/tm/Videos",
+		"ArraySep": " - "
+		"Default Sort title to title, if empty": true
+	},
+	"Developer": {
+		"baseURI": "http://192.168.1.14:32400",
+		"accessToken": "MyAccessToken"
+	}
+}
+*/
+const baseURI = wtconfig.get('Developer.baseURI', 'NO SERVER URI');
+const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
+
 // Real stuff to use
 
-
 // ET Stuff
-import {et, excel} from './components/modules/ExportTools/et'
-// Get possible levels for movie
-console.log('Possible levels key/val are: ' + JSON.stringify(et.getLevels(libType)))
-console.log('Possible levels key only names: ' + et.getLevelKeys(libType))
-console.log('RealLevelName: ' + et.getRealLevelName(level, libType))
-console.log('Fields in this level: ' + JSON.stringify(et.getLevelFields(level, libType)))
-console.log('Fields in this level sorted: ' + JSON.stringify(et.getLevelFields(level, libType).sort()))
+import {excel2} from './components/modules/ExportTools/et'
+
+
+// Temp json files to export, until linked called by webpage
+const testimp4 = require('./components/modules/ExportTools/testimp4.json')
+const testimp3 = require('./components/modules/ExportTools/testimp3.json')
+const testimp = require('./components/modules/ExportTools/testimp.json')
+const testimp1 = require('./components/modules/ExportTools/testimp1.json')
+const AllMovies = require('./components/modules/ExportTools/AllMovies.json')
+const Fast = require('./components/modules/ExportTools/2Fast.json')
+
 
 
 // EXCEL Stuff
-// Create WorkBook
-const WorkBook = excel.NewExcelFile()
-// Create Sheet
-const Sheet = excel.NewSheet(WorkBook, libName, level)
-// Now add the header column
-excel.AddHeader(Sheet, level, libType)
+
+ 
+// To avoid errors if not exporting, remove below when frontend is calling
+libName, level, libType, baseURI, accessToken, excel2, testimp4, testimp3, testimp, testimp1, AllMovies, Fast
+
 // Add a couple of Rows
-let Row = []
-Row = ['ged1', 'ged2', 'ged3']
-excel.AddRow(Sheet, Row)
-Row = ['ged2-1', 'ged2-2', 'ged2-3']
-excel.AddRow(Sheet, Row)
-
-// Save Excel file
-excel.SaveWorkbook(WorkBook, libName, level, 'xlsx')
-
-
+//excel2.createOutFile( libName, level, libType, 'xlsx', testimp1, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', Fast, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
 
 new Vue({
   render: h => h(App),
