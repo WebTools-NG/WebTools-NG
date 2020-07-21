@@ -72,13 +72,11 @@ if (outDir)
 
 // ET-EXCEL STUFF
 
-// We export library named "Ged" of the type movie with a level of "Level 2"
+// We export library named "Ged" of the type movie with a level of "Level 3"
 const libName = 'Ged'
 //const level = 'Tommy'
-const level = 'Level 6'
+const level = 'Level 3'
 const libType = 'movie'
-
-libType
 
 /*
 Some hidden stuff during dev only
@@ -96,9 +94,13 @@ like:
 		"rememberlastusername": true,
 		"transfilescopied": "0.1.0"
 	},
+	"Log": {
+		"maxSize": 10485760
+	},
 	"ET": {
 		"OutPath": "/home/tm/Videos",
 		"ArraySep": " - "
+		"Default Sort title to title, if empty": true
 	},
 	"Developer": {
 		"baseURI": "http://192.168.1.14:32400",
@@ -123,21 +125,19 @@ const testimp1 = require('./components/modules/ExportTools/testimp1.json')
 const AllMovies = require('./components/modules/ExportTools/AllMovies.json')
 const Fast = require('./components/modules/ExportTools/2Fast.json')
 
-// Just use to avoid errors later
-testimp4
-testimp3
-testimp
-testimp1
-AllMovies
-Fast
+
 
 // EXCEL Stuff
+
+ 
+// To avoid errors if not exporting, remove below when frontend is calling
+libName, level, libType, baseURI, accessToken, excel2, testimp4, testimp3, testimp, testimp1, AllMovies, Fast
 
 // Add a couple of Rows
 //excel2.createOutFile( libName, level, libType, 'xlsx', testimp1, baseURI, accessToken );
 //excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
 //excel2.createOutFile( libName, level, libType, 'xlsx', Fast, baseURI, accessToken );
-excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
 
 new Vue({
   render: h => h(App),

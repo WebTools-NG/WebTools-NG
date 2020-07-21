@@ -1,6 +1,5 @@
 var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
-log.transports.console.level = false;
 
 import {wtconfig, wtutils} from '../../../wtutils'
 import filesize from 'filesize';
@@ -250,6 +249,13 @@ const excel2 = new class Excel {
                 case "Part Size": 
                     for (x=0; x<valArray.length; x++) {                    
                         retArray.push(filesize(valArray[x]))                    
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    break;
+                case "Original Title":
+                    console.log('GED Org Title: ' + JSON.stringify(valArray))
+                    for (x=0; x<valArray.length; x++) {                    
+                        retArray.push(valArray[x])
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break;
