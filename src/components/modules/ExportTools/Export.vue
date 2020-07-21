@@ -104,9 +104,14 @@
 </template>
 
 <script>
-      radio: "movie",
-      activeTab: 0
-    };
+  import { et } from "./et";
+  const log = require("electron-log");
+  export default {
+      data() {
+        return {
+          radio: "movie",
+          activeTab: 0
+        };
   },
   created() {
     log.info("ET Created");

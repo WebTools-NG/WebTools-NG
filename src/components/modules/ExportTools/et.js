@@ -146,7 +146,8 @@ const et = new class ET {
         const respJSON = await Promise.resolve(resp)            
         result['size'] = JSONPath({path: '$.MediaContainer.totalSize', json: respJSON});        
         result['name'] = JSONPath({path: '$.MediaContainer.librarySectionTitle', json: respJSON});        
-        return result  
+        return result
+    }  
 
     checkServerConnect(server) {
         log.info("NUGGA : ET : checkServerConnect called")
