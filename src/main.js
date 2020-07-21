@@ -27,8 +27,10 @@ const log = require('electron-log');
 log.transports.file.level = wtconfig.get('Log.fileLevel', 'info');
 // Default console level is Silly, since used by us
 log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
+
+
 log.transports.file.fileName = wtutils.AppName;
-// Set logfile to 1Mb
+// Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 
 
@@ -37,11 +39,8 @@ log.info('*********************************')
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
-//wtutils.MoveToHome();
-
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('general.language', 'en')
-
 Vue.config.productionTip = false
 
 // App Menu Bar
@@ -53,7 +52,7 @@ log.info('App Menu builded')
 
 
 console.log('*********** Ged CASPER start dialog ************');
-console.log('Se main.js linie 54 for at lave en dialog i ET, så');
+console.log('Se main.js linie 61 for at lave en dialog i ET, så');
 console.log('vi kan gemme std. output dir');
 console.log('Gemmes med wtconfig.set("ET.OutPath", <sti til dir>)');
 
@@ -75,7 +74,8 @@ if (outDir)
 
 // We export library named "Ged" of the type movie with a level of "Level 2"
 const libName = 'Ged'
-const level = 'Tommy'
+//const level = 'Tommy'
+const level = 'Level 6'
 const libType = 'movie'
 
 libType
@@ -121,7 +121,7 @@ const testimp3 = require('./components/modules/ExportTools/testimp3.json')
 const testimp = require('./components/modules/ExportTools/testimp.json')
 const testimp1 = require('./components/modules/ExportTools/testimp1.json')
 const AllMovies = require('./components/modules/ExportTools/AllMovies.json')
-
+const Fast = require('./components/modules/ExportTools/2Fast.json')
 
 // Just use to avoid errors later
 testimp4
@@ -129,12 +129,15 @@ testimp3
 testimp
 testimp1
 AllMovies
+Fast
 
 // EXCEL Stuff
 
 // Add a couple of Rows
-excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
-//excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', testimp1, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', testimp3, baseURI, accessToken );
+//excel2.createOutFile( libName, level, libType, 'xlsx', Fast, baseURI, accessToken );
+excel2.createOutFile( libName, level, libType, 'xlsx', AllMovies, baseURI, accessToken );
 
 new Vue({
   render: h => h(App),

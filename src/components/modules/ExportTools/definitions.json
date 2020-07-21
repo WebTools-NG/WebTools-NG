@@ -21,10 +21,19 @@
         },
         "level": {  
             "tommy": [
-                "Title",
+                "Title", 
                 "Part Duration"
 
-            ],          
+               
+                                             
+                
+                                                                                                                                              
+            ], 
+            "Inspect": [                                                                
+                "Part Duration" 
+
+
+            ],         
             "level1": [
                 "Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
@@ -187,49 +196,49 @@
         "fields": {
             "Media ID":
                 {
-                    "key": "ratingKey",
+                    "key": "$.ratingKey",
                     "call": 1,
                     "type": "string"
                 },
             "Title":
                 {
-                    "key": "title",
+                    "key": "$.title",
                     "call": 1,
                     "type": "string"
                 },
             "Sort title":
                 {
-                    "key": "titleSort",
+                    "key": "$.titleSort",
                     "call": 1,
                     "type": "string"
                 },
             "Studio":
                 {
-                    "key": "studio",
+                    "key": "$.studio",
                     "call": 1,
                     "type": "string"
                 },
             "Content Rating":
                 {
-                    "key": "contentRating",
+                    "key": "$.contentRating",
                     "call": 1,
                     "type": "string"
                 },
             "Year":
                 {
-                    "key": "year",
+                    "key": "$.year",
                     "call": 1,
                     "type": "string"
                 },
             "Rating":
                 {
-                    "key": "rating",
+                    "key": "$.rating",
                     "call": 1,
                     "type": "string"
                 },
             "Summary":
                 {
-                    "key": "summary",
+                    "key": "$.summary",
                     "call": 1,
                     "type": "string"
                 },
@@ -283,7 +292,7 @@
                 },
             "Duration":
                 {
-                    "key": "$..duration",
+                    "key": "$.duration",
                     "call": 1,
                     "type": "time"
                 },
@@ -396,13 +405,13 @@
                 }, 
             "Added":
                 {
-                    "key": "$..addedAt",
+                    "key": "$.addedAt",
                     "call": 1,
                     "type": "datetime"                    
                 },                 
             "Updated":
                 {
-                    "key": "$..updatedAt",
+                    "key": "$.updatedAt",
                     "call": 1,
                     "type": "datetime"                    
                 },
@@ -627,6 +636,7 @@
                     "key": "$.Media[*].Part[*]",
                     "call": 2,
                     "type": "array",
+                    "postProcess": true,
                     "subtype": "string",
                     "subkey": "$.size"                    
                 },
@@ -634,8 +644,7 @@
                 {
                     "key": "$.Media[*].Part[*]",
                     "call": 2,
-                    "type": "array",
-                    "postProcess": true,
+                    "type": "array",                    
                     "subtype": "string",
                     "subkey": "$.size" 
                 },

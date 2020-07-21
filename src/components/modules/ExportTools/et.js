@@ -1,10 +1,15 @@
 var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
-import {wtconfig, wtutils} from '../../../wtutils'
+log.transports.console.level = false;
 
+import {wtconfig, wtutils} from '../../../wtutils'
+import filesize from 'filesize';
+var path = require("path");
 
 const fetch = require('node-fetch');
-const jp = require('jsonpath')
+//const {jp} = require('jsonpath');
+
+const {JSONPath} = require('jsonpath-plus');
 
 const et = new class ET {
     constructor() {                    
@@ -12,7 +17,7 @@ const et = new class ET {
 
     async getItemData(baseURL, accessToken, element)
     {        
-        const url = baseURL + element + '?checkFiles=1&includeRelated=1&includeExtras=1&includeBandwidths=1&includeChapters=1';
+        const url = baseURL + element + '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1';
         var headers = {
             "Accept": "application/json",
             "X-Plex-Token": accessToken
@@ -27,8 +32,7 @@ const et = new class ET {
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
-        const levelName = def[libType]['levels'][level]
-        log.debug(`ET LevelName: ${levelName}`)
+        const levelName = def[libType]['levels'][level]        
         return levelName
     } 
 
@@ -136,9 +140,9 @@ const et = new class ET {
         const result = {}
         let response = await fetch(url, { method: 'GET', headers: headers});    
         let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)    
-        result['size'] = jp.value(respJSON, '$.MediaContainer.totalSize');
-        result['name'] = jp.value(respJSON, '$.MediaContainer.librarySectionTitle');        
+        const respJSON = await Promise.resolve(resp)            
+        result['size'] = JSONPath({path: '$.MediaContainer.totalSize', json: respJSON});        
+        result['name'] = JSONPath({path: '$.MediaContainer.librarySectionTitle', json: respJSON});        
         return result  
     }
 }
@@ -213,20 +217,49 @@ const excel2 = new class Excel {
     }
 
     async postProcess(name, val){
-        log.debug(`Start postProcess. name: ${name} - val: ${val}`)
-        var retVal
-        switch ( String(name) ){
-            
-            case "MetaDB Link":                
-                retVal = val.split("?")[0];                                                
-                break;
-            case "MetaData Language":
-                retVal = val.split("=")[1];
-                break;            
-            default:
-                console.log('Ged NO HIT:' + name + 'END')
-                break;
-        }             
+        log.silly(`Start postProcess. name: ${name} - val: ${val}`)        
+        const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '))
+        let retArray = []
+        let x, retVal  
+        try {                 
+            switch ( String(name) ){            
+                case "MetaDB Link":                                                                                           
+                    for (x=0; x<valArray.length; x++) {                    
+                        retArray.push(path.basename(valArray[x].split("?")[0]))                    
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    break;
+                case "MetaData Language":                
+                    for (x=0; x<valArray.length; x++) {                    
+                        retArray.push(path.basename(valArray[x].split("=")[1]))                    
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    break; 
+                case "Part File":                
+                    for (x=0; x<valArray.length; x++) {                    
+                        retArray.push(path.basename(valArray[x]))                    
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    break; 
+                case "Part File Path":                
+                    for (x=0; x<valArray.length; x++) {                    
+                        retArray.push(path.dirname(valArray[x]))                    
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    break;
+                case "Part Size": 
+                    for (x=0; x<valArray.length; x++) {                    
+                        retArray.push(filesize(valArray[x]))                    
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    break;
+                default:
+                    log.error(`postProcess no hit for: ${name}`)                
+                    break;
+            } 
+        } catch (error) {
+            retVal = 'ERROR'            
+        }                
         return await retVal;
     }
 
@@ -234,74 +267,71 @@ const excel2 = new class Excel {
         log.debug(`Start addRowToSheet. libType: ${libType} - level: ${level}`)          
         // Placeholder for row        
         let row = []
-        let date, year, month, day, hours, minutes, seconds
-        
-        const fields = et.getFields( libType, level) 
-
+        let date, year, month, day, hours, minutes, seconds        
+        const fields = et.getFields( libType, level)         
         const rowentry = {}        
-        let lookup, val, array, i, valArray, valArrayVal, subType, subKey                  
-        
+        let lookup, val, array, i, valArray, valArrayVal, subType, subKey                          
         for (var x=0; x<fields.length; x++) {                                   
-            var name = Object.keys(fields[x]);
-            lookup = jp.value(fields[x], '$..key')            
-            switch(jp.value(fields[x], '$..type')) {
-                case "string":                                        
-                    val = jp.value(data, lookup);                    
+            var name = Object.keys(fields[x]);            
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
+            switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
+                case "string":                                                                                            
+                    val = JSONPath({path: String(lookup), json: data})[0];                    
                     // Make N/A if not found
                     if (val == null)
                     {
                         val = wtconfig.get('ET.NotAvail', 'N/A')
-                    }
+                    }                    
                     break;
-                case "array":                                        
-                    array = jp.query(data, lookup);
-                    valArray = []                    
-                    for (i=0; i<array.length; i++) {                        
-                        subType = jp.value(fields[x], '$..subtype')
-                        subKey = jp.value(fields[x], '$..subkey')
-                        //console.log('Ged 1112233 SubType: ' + subType)
-                        switch(subType) {
-                            case "string":
-                                //valArrayVal = jp.value(fields[x], subKey)
-                                valArrayVal = jp.value(array[i], subKey)
+                case "array":                                                            
+                    array = JSONPath({path: lookup, json: data});
+                    valArray = []                                       
+                    for (i=0; i<array.length; i++) {                                                                     
+                        subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
+                        subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
+                        switch(String(subType)) {
+                            case "string":                                                                                                                       
+                                valArrayVal = JSONPath({path: String(subKey), json: array[i]})[0];                                
                                 // Make N/A if not found
                                 if (valArrayVal == null || valArrayVal == "")
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
-                                break
-                            case "time":  
-                                console.log('Ged ARRAY: ' + JSON.stringify(array[i]))                              
-                                valArrayVal = jp.value(array[i], subKey)                                
+                                break;
+                            case "time":                                                                                                                        
+                                valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
                                 // Make N/A if not found
                                 if (valArrayVal == null || valArrayVal == "")
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
                                 else
-                                {
-                                    for (i=0; i<valArrayVal.length; i++) {
+                                {                                    
+                                    const total = valArrayVal.length                                 
+                                    for (let i=0; i<total; i++) {                                        
                                         seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();                            
                                         minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();                            
                                         hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();                                                                  
                                         // Will display time in 10:30:23 format                        
-                                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                        valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
                                     }                                    
                                 }
-                                break
+                                break;
+                            default:
+                                log.error('NO ARRAY HIT (addRowToSheet-array)')                                
                         }                                            
                         valArray.push(valArrayVal)
                     }                    
                     val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))                                        
                     break;
-                case "array-count":                                                                                                    
-                    val = jp.query(data, lookup).length;                                                           
+                case "array-count":                                                                                                                        
+                    val = JSONPath({path: String(lookup), json: data}).length;                                                          
                     break;
                 case "int":                    
-                    val = jp.query(data, lookup)[0];
+                    val = JSONPath({path: String(lookup), json: data})[0];
                     break;
-                case "time":                    
-                    val = jp.value(data, lookup);                                                
+                case "time":                                                     
+                    val = JSONPath({path: String(lookup), json: data});                                                                                                                             
                     if ( typeof val !== 'undefined' && val )
                     {
                         seconds = '0' + (Math.round(val/1000)%60).toString();                            
@@ -315,8 +345,8 @@ const excel2 = new class Excel {
                         val = null
                     }                                            
                     break;
-                case "datetime":
-                    val = jp.value(data, lookup);                                                
+                case "datetime":                     
+                    val = JSONPath({path: String(lookup), json: data});                    
                     if ( typeof val !== 'undefined' && val )
                     {
                         // Create a new JavaScript Date object based on the timestamp
@@ -335,97 +365,23 @@ const excel2 = new class Excel {
                     {
                         val = null
                     }                                            
-                    break;  
+                    break;
+                default:
+                    log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)                    
             }
-            if ( jp.value(fields[x], '$..postProcess') == true)
-            {                
-                val = await this.postProcess(name, val);                
+            let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
+            if ( doPostProc == 'true')
+            {                     
+                val = await this.postProcess(name, val);                              
             }            
             rowentry[name[0]] = val
-        }
+        }        
         row.push(rowentry)        
         row.forEach(element => {
             excel2.AddRow(sheet, element)                        
-        });
-    }
-    
-
-
-    /*     console.log('Ged Cava1: ' + JSON.stringify(keyVal))
-                        
-            for (var i=0; i<keyVal.length; i++) {               
-                // Get type
-                 
-                console.log('Ged Field Type: ' + Object.values(keyVal[i])[0][1]);              
-                switch(Object.values(keyVal[i])[0][1]) {
-                    case "string":
-                        console.log('Ged Item: ' + JSON.stringify(data))
-                        val = jp.value(data, Object.values(keyVal[i])[0][0]);
-                        console.log('Ged1 Result: ' + val)
-                        break;
-                    case "array":
-                        // Get Items 
-                        console.log('Ged123 Item: ' + JSON.stringify(data)) 
-                        console.log('Ged123 keyVal: ' +  JSON.stringify(keyVal[i]))                     
-                        val = jp.query(data, Object.values(keyVal[i])[0][0]);
-                        console.log('Ged123 VAL: ' + JSON.stringify(val))
-                        // Seperate as wanted
-                        val = val.join(wtconfig.get('ET.ArraySep', ' - '))                        
-                        break;
-                    case "int":
-                        val = '';
-                        break;
-                    case "time":
-                        val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
-                        if ( typeof val !== 'undefined' && val )
-                        {
-                            seconds = '0' + (Math.round(val/1000)%60).toString();                            
-                            minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();                            
-                            hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();                                                                  
-                            // Will display time in 10:30:23 format                        
-                            val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                                           
-                        }
-                        else
-                        {
-                            val = null
-                        }                                            
-                        break;  
-
-                    case "datetime":
-                        val = jp.value(data, Object.values(keyVal[i])[0][0]);                                                
-                        if ( typeof val !== 'undefined' && val )
-                        {
-                            // Create a new JavaScript Date object based on the timestamp
-                            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                            date = new Date(val * 1000);                            
-                            year = date.getFullYear().toString();                             
-                            month = ('0' + date.getMonth().toString()).substr(-2);  
-                            day = ('0' +  date.getDate().toString()).substr(-2);                            
-                            hours = date.getHours();                            
-                            minutes = "0" + date.getMinutes();                            
-                            seconds = "0" + date.getSeconds();
-                            // Will display time in 10:30:23 format                                                      
-                            val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                           
-                        }
-                        else
-                        {
-                            val = null
-                        }                                            
-                        break;            
-                }           
-                if (val == null)
-                {
-                    val = wtconfig.get('ET.NotAvail', 'N/A')
-                }
-                rowentry[Object.keys(keyVal[i])] = val
-            }
-            row.push(rowentry)
-        
-        //console.log('Entire rows: ' + JSON.stringify(row))
-        row.forEach(element => {
-            excel2.AddRow(sheet, element)                        
-        });                     
-    }   */
+        });        
+        log.silly(`End addRowToSheet. Row: ${JSON.stringify(row)}`)
+    }        
     
     async createOutFile( libName, level, libType, outType, data, baseURL, accessToken )
     {       
@@ -439,27 +395,27 @@ const excel2 = new class Excel {
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level)                 
         if ( call == 1 )
-        {            
-            // Single call needed, so simply pass along the individual items            
-            const items = jp.nodes(data, '$.MediaContainer.Metadata[*]')         
-            for (var x=0; x<items.length; x++) {             
-                await excel2.addRowToSheet(sheet, libType, level, items[x]['value'])
+        {              
+            // Single call needed, so simply pass along the individual items
+            var items = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: data});            
+            for (var x=0; x<items.length; x++) {                                           
+                await excel2.addRowToSheet(sheet, libType, level, items[x])
             }            
         }
         else
         {            
-            // Get rating key for each item            
-            const urls = jp.query(data, '$.MediaContainer.Metadata[*].key');
+            // Get rating key for each item    
+            const urls = JSONPath({path: '$.MediaContainer.Metadata[*].key', json: data});                    
             log.verbose('Items to lookup are: ' + urls)
 
             for (const url of urls) {
-                const contents = await et.getItemData(baseURL, accessToken, url);               
-                const items = jp.nodes(contents, '$.MediaContainer.Metadata[*]')         
+                const contents = await et.getItemData(baseURL, accessToken, url);                 
+                const items = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                                       
                 for (var y=0; y<items.length; y++) {               
-                    excel2.addRowToSheet(sheet, libType, level, items[y]['value'])
+                    await excel2.addRowToSheet(sheet, libType, level, items[y])
                 }
               }                             
-        }         
+        }            
         // Save Excel file
         const result = await excel2.SaveWorkbook(workBook, libName, level, 'xlsx')
         return result
