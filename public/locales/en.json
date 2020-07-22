@@ -71,7 +71,12 @@
             "RadioMusic": "Music",
             "RadioPhotos" : "Photos",
             "RadioOtherVideos": "Other Videos",
-            "ErrorNoServerSelected": "No server selected"
+            "ErrorNoServerSelected": "No server selected",
+            "Settings":
+            {
+                "Settings": "Settings",
+                "Description": "Here you can define the settings for @:Modules.ET.Name"
+            }
         },
         "About": {
             "Description": "@:Modules.About.Name",

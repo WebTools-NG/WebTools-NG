@@ -6,6 +6,7 @@ import Export from '../components/modules/ExportTools/Export'
 import Language from '../components/Language.vue'
 import About from '../components/About'
 import Store from '../store/index.js'
+import ExportSettings from '../components/modules/ExportTools/Settings/settings'
 Vue.use(VueRouter)
 
   const router = new VueRouter({
@@ -35,6 +36,12 @@ Vue.use(VueRouter)
     path: '/export',
     name: "export",
     component: Export,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/export/settings',
+    name: "exportsettings",
+    component: ExportSettings,
     meta: {requiresAuth: true}
   },
   {

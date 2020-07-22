@@ -28,7 +28,14 @@ import '@fortawesome/fontawesome-free/css/all.css'
                     {
                         href: { path: '/export' },
                         title: 'Export',
-                        icon: 'fas fa-file-export'
+                        icon: 'fas fa-file-export',
+                        child: [
+                            {
+                                href: '/export/settings',
+                                title: 'Settings',
+                                icon: 'fa fa-cog'
+                            }
+                        ]
                         
                     },
                     {
