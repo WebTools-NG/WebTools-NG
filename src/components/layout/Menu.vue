@@ -9,6 +9,7 @@
 <script>
 const log = require('electron-log');
 import '@fortawesome/fontawesome-free/css/all.css'
+import i18n from '../../i18n'
 
 
     export default {
@@ -30,9 +31,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
                         title: 'Export',
                         icon: 'fas fa-file-export',
                         child: [
-                            {
+                            {                                
                                 href: '/export/settings',
-                                title: 'Settings',
+                                title: i18n.t("Common.Menu.Modules.ET.Settings"),                                
                                 icon: 'fa fa-cog'
                             }
                         ]
@@ -67,26 +68,6 @@ import '@fortawesome/fontawesome-free/css/all.css'
                         href: { path: '/' },
                         title: 'Logout',
                         icon: 'fas fa-sign-out-alt'
-                    },
-                    {
-                        header: true,
-                        title: 'Help',
-                        hiddenOnCollapse: true
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'WebTools Forum',
-                        icon: 'fab fa-forumbee'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'WebTools Github',
-                        icon: 'fab fa-github'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'WebTools Wiki',
-                        icon: 'fab fa-wikipedia-w',
                     }
                 ], 
                   collapsed: false,

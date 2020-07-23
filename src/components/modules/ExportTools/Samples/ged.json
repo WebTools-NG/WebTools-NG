@@ -1,0 +1,134 @@
+{
+    "ratingKey":"9068","key":"/library/metadata/9068",
+    "guid":"com.plexapp.agents.imdb://tt3542188?lang=en",
+    "studio":"Det Danske Filminstitut","type":"movie",
+    "title":"April 9th","librarySectionTitle":"Movies",
+    "librarySectionID":4,"librarySectionKey":"/library/sections/4",
+    "originalTitle":"9. april","contentRating":"dk/15",
+    "summary":"In the early morning of April 9th 1940 the Danish army is alerted. The Germans have crossed the border; Denmark is at war against Europe's strongest army. In Southern Jutland Danish bicycle- and motorcycle companies are ordered out, to against all odds, hold back the forces until the Danish reinforcements can be mobilized. In the fatal hours, we follow second lieutenant Sand and his bicycle company - they will as the first Danish soldiers meet the enemy in combat on April 9th 1940.",
+    "rating":6.5,"year":2015,
+    "thumb":"/library/metadata/9068/thumb/1575679090",
+    "art":"/library/metadata/9068/art/1575679090","duration":5552417,
+    "originallyAvailableAt":"2015-03-12","addedAt":1441496601,
+    "updatedAt":1575679090,"ratingImage":"imdb://image.rating",
+    "Media":[
+        {
+            "id":9351,
+            "duration":5552417,
+            "bitrate":2094,
+            "width":1920,
+            "height":1040,
+            "aspectRatio":1.85,
+            "audioChannels":2,
+            "audioCodec":"aac",
+            "videoCodec":"h264",
+            "videoResolution":"1080",
+            "container":"mp4",
+            "videoFrameRate":"24p",
+            "optimizedForStreaming":1,
+            "audioProfile":"lc",
+            "has64bitOffsets":false,
+            "videoProfile":"high",
+            "Part":[
+                {
+                    "accessible":true,
+                    "exists":true,
+                    "id":29639,
+                    "key":"/library/parts/29639/1441496601/file.mp4",
+                    "duration":5552417,
+                    "file":"/share/CACHEDEV1_DATA/video/old-movies/#/9.April (2015)/9.April.2015.1080p.BluRay.x264.Danish.AAC-ETRG.mp4",
+                    "size":1453351850,
+                    "audioProfile":"lc",
+                    "container":"mp4",
+                    "deepAnalysisVersion":"2",
+                    "has64bitOffsets":false,
+                    "optimizedForStreaming":true,
+                    "requiredBandwidths":"2971,2675,2327,2220,2220,2220,2220,2220",
+                    "videoProfile":"high",
+                    "Stream":[
+                        {
+                            "id":66919,"streamType":1,"default":true,"codec":"h264",
+                            "index":0,"bitrate":1997,"bitDepth":8,
+                            "chromaLocation":"left","chromaSubsampling":"4:2:0",
+                            "colorPrimaries":"bt709","colorRange":"tv",
+                            "colorSpace":"bt709","frameRate":24,
+                            "hasScalingMatrix":false,"height":1040,"level":41,
+                            "profile":"high","refFrames":4,
+                            "requiredBandwidths":"2877,2581,2234,2127,2127,2127,2127,2127",
+                            "streamIdentifier":"1","width":1920,
+                            "displayTitle":"1080p (H.264)"
+                        },
+                        {
+                            "id":66920,"streamType":2,"selected":true,
+                            "default":true,"codec":"aac","index":1,
+                            "channels":2,"bitrate":97,"profile":"lc",
+                            "requiredBandwidths":"94,94,94,94,94,94,94,94",
+                            "samplingRate":48000,"streamIdentifier":"2",
+                            "displayTitle":"Unknown (AAC Stereo)"
+                        },
+                        {
+                            "id":98475,
+                            "key":"/library/streams/98475",
+                            "streamType":3,
+                            "selected":true,
+                            "codec":"srt",
+                            "language":"Dansk",
+                            "languageCode":"dan",
+                            "format":"srt",
+                            "displayTitle":"Dansk (SRT External)"
+                        },
+                        {
+                            "id":98474,
+                            "key":"/library/streams/98474",
+                            "streamType":3,
+                            "codec":"srt",
+                            "language":"English",
+                            "languageCode":"eng",
+                            "format":"srt",
+                            "displayTitle":"English (SRT External)"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "Genre":[
+        {"id":66,"filter":"genre=66","tag":"Drama"},
+        {"id":13453,"filter":"genre=13453","tag":"History"},
+        {"id":14042,"filter":"genre=14042","tag":"War"}
+    ],
+    "Director":[
+        {"id":16178,"filter":"director=16178","tag":"Roni Ezra"}
+    ],
+    "Writer":[
+        {
+            "id":16179,"filter":"writer=16179","tag":"Tobias Lindholm"
+        }
+    ],
+    "Producer":[
+        {"id":16194,"filter":"producer=16194","tag":"Rene Ezra"},
+        {"id":16195,"filter":"producer=16195","tag":"Tomas Radoor"}
+    ],
+    "Country":[
+        {"id":16196,"filter":"country=16196","tag":"Denmark"}
+    ],
+    "Role":[
+        {
+            "id":1426,"filter":"actor=1426","tag":"Pilou Asbæk",
+            "role":"Sekondløjtnant Sand",
+            "thumb":"http://image.tmdb.org/t/p/original/r0Z1eqyYcJYGy0x9MqgIKDHUrHG.jpg"
+        },
+        {
+            "id":1419,"filter":"actor=1419","tag":"Lars Mikkelsen","role":"Oberstløjtnant Hintz","thumb":"https://thetvdb.com/banners/person/292060/65417340.jpg"
+        },
+        {
+            "id":16183,"filter":"actor=16183","tag":"Gustav Dyekjær Giese","role":"Private Andersen","thumb":"http://image.tmdb.org/t/p/original/uK9ilkdvaHo9yg8oxDJhjL37i4W.jpg"
+        },
+        {
+            "id":93700,"filter":"actor=93700",
+            "tag":"Martin Greis-Rosenthal",
+            "role":"Lieutenant Gjermansen",
+            "thumb":"http://image.tmdb.org/t/p/original/syMV0RZmZbUqQCsHCz75y7eRDrs.jpg"},{"id":16187,"filter":"actor=16187","tag":"Joachim Fjelstrup","role":"Sergeant Bundgaard","thumb":"http://image.tmdb.org/t/p/original/gJuohyYx2phkAcJmkv51DGj2p1K.jpg"
+        },
+        {
+            "id":16182,"filter":"actor=16182","tag":"Elliott Crosset Hove","role":"Private Lassen","thumb":"http://image.tmdb.org/t/p/original/dGBMaetF0JeyXpyp3cleyCgN46M.jpg"},{"id":16189,"filter":"actor=16189","tag":"Mathias Lundkvist","role":"Menig Kolding"},{"id":16180,"filter":"actor=16180","tag":"Ari Alexander","role":"Private Justesen"},{"id":16185,"filter":"actor=16185","tag":"Jannik Lorenzen","role":"Private Gram"},{"id":16193,"filter":"actor=16193","tag":"Sebastian Bull Sarning","role":"Menig Lundgren"},{"id":16181,"filter":"actor=16181","tag":"Bálint Bán","role":"Lieutenant Paulmann"},{"id":16186,"filter":"actor=16186","tag":"Jesper Hagelskær Paasch","role":"Løjtnant Jepsen"},{"id":16190,"filter":"actor=16190","tag":"Michael Brostrup","role":"Oberst Hartz","thumb":"http://image.tmdb.org/t/p/original/eG410607pn8fzkaNmryzBBLw4WU.jpg"},{"id":16192,"filter":"actor=16192","tag":"Morten Hauch-Fausbøll","role":"Major Fladsaa","thumb":"http://image.tmdb.org/t/p/original/z5Z1g6qUEpE2xsMkk9jmyTfqoNN.jpg"},{"id":16184,"filter":"actor=16184","tag":"Jan Dose","role":"Oberleutnant Becker","thumb":"http://image.tmdb.org/t/p/original/hCg8kXzLzobpowvokGa7aizso5N.jpg"},{"id":16191,"filter":"actor=16191","tag":"Mikkel Bentzen","role":"Private Nørreskov"}],"Similar":[{"id":16206,"filter":"similar=16206","tag":"The Cartel"},{"id":16200,"filter":"similar=16200","tag":"Oldboys"},{"id":62381,"filter":"similar=62381","tag":"Father of Four"},{"id":16215,"filter":"similar=16215","tag":"The Veterinarian's Adopted Children"},{"id":97002,"filter":"similar=97002","tag":"Father of Four: The Whole Shebang"},{"id":97003,"filter":"similar=97003","tag":"The Goldcabbage Family"},{"id":96653,"filter":"similar=96653","tag":"Father of Four: And Uncle Sofus"},{"id":97001,"filter":"similar=97001","tag":"Father of Four: On Bornholm"},{"id":16205,"filter":"similar=16205","tag":"The Bad Seeds"},{"id":45813,"filter":"similar=45813","tag":"In the Middle of the Night"},{"id":18730,"filter":"similar=18730","tag":"The One and Only"},{"id":16212,"filter":"similar=16212","tag":"The Olsen Gang jumps the fence"},{"id":16201,"filter":"similar=16201","tag":"Rubber Tarzan"},{"id":16210,"filter":"similar=16210","tag":"The Olsen Gang Outta Sight"},{"id":16209,"filter":"similar=16209","tag":"The Olsen Gang Long Gone"},{"id":16208,"filter":"similar=16208","tag":"The Olsen Gang Goes to War"},{"id":16202,"filter":"similar=16202","tag":"Sex, Drugs & Taxation"},{"id":96528,"filter":"similar=96528","tag":"The Last Exploits of the Olsen Gang"},{"id":18731,"filter":"similar=18731","tag":"Truly Human"},{"id":16204,"filter":"similar=16204","tag":"Støv for alle pengene"}],"Extras":{"size":0}}

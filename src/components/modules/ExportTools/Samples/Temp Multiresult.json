@@ -1,0 +1,648 @@
+{
+    "MediaContainer":{
+        "size":1,
+        "allowSync":true,
+        "identifier":"com.plexapp.plugins.library",
+        "librarySectionID":4,
+        "librarySectionTitle":"Movies",
+        "librarySectionUUID":"611d44e2-c4cc-4cec-8b65-d77b037e1b3d",
+        "mediaTagPrefix":"/system/bundle/media/flags/",
+        "mediaTagVersion":1576869286,
+        "Metadata":[
+            {
+                "ratingKey":"9050",
+                "key":"/library/metadata/9050",
+                "guid":"com.plexapp.agents.imdb://tt0463854?lang=en",
+                "studio":"DNA Films",
+                "type":"movie",
+                "title":"28 Weeks Later",
+                "librarySectionTitle":"Movies",
+                "librarySectionID":4,
+                "librarySectionKey":"/library/sections/4",
+                "contentRating":"dk/15",
+                "summary":"The inhabitants of the British Isles have lost their battle against the onslaught of disease, as the deadly rage virus has killed every citizen there. Six months later, a group of Americans dare to set foot on the isles, convinced the danger has come and gone. But it soon becomes all too clear that the scourge continues to live, waiting to pounce on its next victims.",
+                "rating":7.1,
+                "audienceRating":6.7,
+                "year":2007,
+                "tagline":"When days turn to weeks... the horror returns.",
+                "thumb":"/library/metadata/9050/thumb/1575678555",
+                "art":"/library/metadata/9050/art/1575678555",
+                "duration":5757240,
+                "originallyAvailableAt":"2007-04-26",
+                "addedAt":1186162396,
+                "updatedAt":1575678555,
+                "audienceRatingImage":"rottentomatoes://image.rating.upright",
+                "chapterSource":"agent",
+                "primaryExtraKey":"/library/metadata/9454",
+                "ratingImage":"rottentomatoes://image.rating.ripe",
+                "Media":[
+                    {
+                        "id":9333,
+                        "duration":5757240,
+                        "bitrate":1022,
+                        "width":592,
+                        "height":320,
+                        "aspectRatio":1.85,
+                        "audioChannels":2,
+                        "audioCodec":"mp3",
+                        "videoCodec":"mpeg4",
+                        "videoResolution":"sd",
+                        "container":"avi",
+                        "videoFrameRate":"PAL",
+                        "videoProfile":"advanced simple",
+                        "Part":[
+                            {
+                                "id":29662,
+                                "key":"/library/parts/29662/1186162396/file.avi",
+                                "duration":5757240,
+                                "file":"/share/CACHEDEV1_DATA/video/old-movies/#/28 Weeks Later (2007)/28 Weeks Later.avi",
+                                "size":735303680,
+                                "container":"avi",
+                                "videoProfile":"advanced simple",
+                                "Stream":[
+                                    {
+                                        "id":67012,
+                                        "streamType":1,
+                                        "codec":"mpeg4",
+                                        "index":0,
+                                        "bitrate":879,
+                                        "bitDepth":8,
+                                        "chromaLocation":"left",
+                                        "chromaSubsampling":"4:2:0",
+                                        "frameRate":25,
+                                        "height":320,
+                                        "level":5,
+                                        "profile":"advanced simple",
+                                        "refFrames":1,
+                                        "width":592,
+                                        "displayTitle":"SD (MPEG4)"
+                                    },
+                                    {
+                                        "id":67013,
+                                        "streamType":2,
+                                        "selected":true,
+                                        "codec":"mp3",
+                                        "index":1,
+                                        "channels":2,
+                                        "bitrate":129,
+                                        "audioChannelLayout":"stereo",
+                                        "samplingRate":44100,
+                                        "streamIdentifier":"1",
+                                        "displayTitle":"Unknown (MP3 Stereo)"
+                                    },
+                                    {
+                                        "id":87333,
+                                        "key":"/library/streams/87333",
+                                        "streamType":3,
+                                        "selected":true,
+                                        "codec":"srt",
+                                        "language":"Dansk",
+                                        "languageCode":"dan",
+                                        "format":"srt",
+                                        "displayTitle":"Dansk (SRT External)"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "Genre":[
+                    {
+                        "id":66,
+                        "filter":"genre=66",
+                        "tag":"Drama"
+                    },
+                    {
+                        "id":425,
+                        "filter":"genre=425",
+                        "tag":"Horror"
+                    },
+                    {
+                        "id":13303,
+                        "filter":"genre=13303",
+                        "tag":"Sci-Fi"
+                    }
+                ],
+                "Director":[
+                    {
+                        "id":707,
+                        "filter":"director=707",
+                        "tag":"Juan Carlos Fresnadillo"
+                    }
+                ],
+                "Writer":[
+                    {
+                        "id":15263,
+                        "filter":"writer=15263",
+                        "tag":"Juan Carlos Fresnadillo"
+                    },
+                    {
+                        "id":15261,
+                        "filter":"writer=15261",
+                        "tag":"Enrique López Lavigne"
+                    },
+                    {
+                        "id":15264,
+                        "filter":"writer=15264",
+                        "tag":"Rowan Joffe"
+                    },
+                    {
+                        "id":15262,
+                        "filter":"writer=15262",
+                        "tag":"Jesús Olmo"
+                    }
+                ],
+                "Producer":[
+                    {
+                        "id":15212,
+                        "filter":"producer=15212",
+                        "tag":"Andrew Macdonald"
+                    },
+                    {
+                        "id":15314,
+                        "filter":"producer=15314",
+                        "tag":"Allon Reich"
+                    },
+                    {
+                        "id":15315,
+                        "filter":"producer=15315",
+                        "tag":"Bernard Bellew"
+                    },
+                    {
+                        "id":15316,
+                        "filter":"producer=15316",
+                        "tag":"Enrique López Lavigne"
+                    }
+                ],
+                "Country":[
+                    {
+                        "id":13562,
+                        "filter":"country=13562",
+                        "tag":"United Kingdom"
+                    }
+                ],
+                "Collection":[
+                    {
+                        "id":15213,
+                        "filter":"collection=15213",
+                        "tag":"28 Days/Weeks Later"
+                    }
+                ],
+                "Role":[
+                    {
+                        "id":15281,
+                        "filter":"actor=15281",
+                        "tag":"Imogen Poots",
+                        "role":"Tammy Harris",
+                        "thumb":"http://image.tmdb.org/t/p/original/kJOUQP0I5HzyenTLWUTCdx6mIAk.jpg"
+                    },
+                    {
+                        "id":5195,
+                        "filter":"actor=5195",
+                        "tag":"Robert Carlyle",
+                        "role":"Don",
+                        "thumb":"http://image.tmdb.org/t/p/original/dLNeFPfJACiCiUz3oEdAjeKIwvZ.jpg"
+                    },
+                    {
+                        "id":15302,
+                        "filter":"actor=15302",
+                        "tag":"Rose Byrne",
+                        "role":"Scarlet",
+                        "thumb":"http://image.tmdb.org/t/p/original/4oQWCLK7gd6RNKF0WJipJo7TyFP.jpg"
+                    },
+                    {
+                        "id":15286,
+                        "filter":"actor=15286",
+                        "tag":"Jeremy Renner",
+                        "role":"Sergeant Doyle",
+                        "thumb":"http://image.tmdb.org/t/p/original/g8gheNEdPSXWH5SnjfjTYWj5ziU.jpg"
+                    },
+                    {
+                        "id":3146,
+                        "filter":"actor=3146",
+                        "tag":"Harold Perrineau",
+                        "role":"Flynn",
+                        "thumb":"http://image.tmdb.org/t/p/original/dvvViqumTolGoCut6YiGow666z2.jpg"
+                    },
+                    {
+                        "id":15269,
+                        "filter":"actor=15269",
+                        "tag":"Catherine McCormack",
+                        "role":"Alice",
+                        "thumb":"http://image.tmdb.org/t/p/original/a8Jszh3rHQ2T4u1VyE4lXrb0uDI.jpg"
+                    },
+                    {
+                        "id":13551,
+                        "filter":"actor=13551",
+                        "tag":"Idris Elba",
+                        "role":"General Stone",
+                        "thumb":"http://image.tmdb.org/t/p/original/be1bVF7qGX91a6c5WeRPs5pKXln.jpg"
+                    },
+                    {
+                        "id":15294,
+                        "filter":"actor=15294",
+                        "tag":"Mackintosh Muggleton",
+                        "role":"Andy",
+                        "thumb":"http://image.tmdb.org/t/p/original/iQFNTcNVfgHE4CZ4UoLhpNQoNmB.jpg"
+                    },
+                    {
+                        "id":15266,
+                        "filter":"actor=15266",
+                        "tag":"Amanda Walker",
+                        "role":"Sally",
+                        "thumb":"http://image.tmdb.org/t/p/original/bOjEahLqTmhO6gFBTLnN5g2xOpn.jpg"
+                    },
+                    {
+                        "id":15305,"filter":"actor=15305",
+                        "tag":"Shahid Ahmed",
+                        "role":"Jacob",
+                        "thumb":"http://image.tmdb.org/t/p/original/uwepvgBhG6AgTl4hqOapKcQsGK3.jpg"
+                    },
+                    {
+                        "id":15280,
+                        "filter":"actor=15280",
+                        "tag":"Garfield Morgan",
+                        "role":"Geoff",
+                        "thumb":"http://image.tmdb.org/t/p/original/hbCQsxjwJEjx7evHmIVX3No9WSM.jpg"
+                    },
+                    {
+                        "id":15278,
+                        "filter":"actor=15278",
+                        "tag":"Emily Beecham",
+                        "role":"Karen",
+                        "thumb":"http://image.tmdb.org/t/p/original/cwBsTcY0FLnVYvRUY6cTutZsfPs.jpg"
+                    },
+                    {
+                        "id":15268,
+                        "filter":"actor=15268",
+                        "tag":"Beans El-Balawi",
+                        "role":"Boy in Cottage",
+                        "thumb":"http://image.tmdb.org/t/p/original/gKKgurTC5zBJDiNSUnSxTWLmT4N.jpg"
+                    },
+                    {
+                        "id":15297,
+                        "filter":"actor=15297",
+                        "tag":"Meghan Popiel",
+                        "role":"DLR Soldier",
+                        "thumb":"http://image.tmdb.org/t/p/original/3clr9teZrczPM3lTwHKXH14De21.jpg"
+                    },
+                    {
+                        "id":15307,
+                        "filter":"actor=15307",
+                        "tag":"Stewart Alexander",
+                        "role":"Military Officer",
+                        "thumb":"http://image.tmdb.org/t/p/original/hCnwlefK3ws4zYacepkUH9r3xlp.jpg"
+                    },
+                    {
+                        "id":15298,
+                        "filter":"actor=15298",
+                        "tag":"Philip Bulcock",
+                        "role":"Senior Medical Officer",
+                        "thumb":"http://image.tmdb.org/t/p/original/1HTTFGHLopYndPS5aYucpG79wTO.jpg"
+                    },                        
+                    {
+                        "id":15270,
+                        "filter":"actor=15270",
+                        "tag":"Chris Ryman",
+                        "role":"Rooftop Sniper",
+                        "thumb":"http://image.tmdb.org/t/p/original/qTXI6K6TrbJiUxOp9dbgd4mLKJg.jpg"
+                    },
+                    {
+                        "id":15312,
+                        "filter":"actor=15312",
+                        "tag":"Tristan Tait",
+                        "role":"Soldier",
+                        "thumb":"http://image.tmdb.org/t/p/original/8XDYVxAyJq81qysTzE5p0KCgSKY.jpg"
+                    },
+                    {
+                        "id":15313,
+                        "filter":"actor=15313",
+                        "tag":"William Meredith",
+                        "role":"Medical Officer",
+                        "thumb":"http://image.tmdb.org/t/p/original/5AFiiW7d8MBsnhJhjcVE2LmlqPg.jpg"
+                    },
+                    {
+                        "id":15309,
+                        "filter":"actor=15309",
+                        "tag":"Thomas Garvey",
+                        "role":"Bunker Major"
+                    },
+                    {
+                        "id":15310,
+                        "filter":"actor=15310",
+                        "tag":"Tom Bodell",
+                        "role":"Medical Centre Lobby Soldier"
+                    },
+                    {
+                        "id":15267,
+                        "filter":"actor=15267",
+                        "tag":"Andrew Byron",
+                        "role":"Carpark Soldier",
+                        "thumb":"http://image.tmdb.org/t/p/original/yOoY7YAfKzLfJIw9dOyvczH2xmi.jpg"
+                    },
+                    {
+                        "id":15303,
+                        "filter":"actor=15303",
+                        "tag":"Sarah Finigan",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/77UiRlRRT3792HxusFxuPMrkNaW.jpg"
+                    },
+                    {
+                        "id":15301,
+                        "filter":"actor=15301",
+                        "tag":"Roderic Culver",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/pN6V2Ga9N8qwyzcD7yrlIMhU3CH.jpg"
+                    },
+                    {
+                        "id":15295,
+                        "filter":"actor=15295",
+                        "tag":"Maeve Malley-Ryan",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/8idtel3Nk44EUrwZI1voUMQdmoO.jpg"
+                    },
+                    {
+                        "id":15277,
+                        "filter":"actor=15277",
+                        "tag":"Ed Coleman",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/gFRjKe4QfoilRuXTZFsRZ4Eo0Gb.jpg"
+                    },
+                    {
+                        "id":15290,
+                        "filter":"actor=15290",
+                        "tag":"Karen Meagher",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/iIhQNJCYVsOmiMmP40FDub1CSBW.jpg"
+                    },
+                    {
+                        "id":15265,
+                        "filter":"actor=15265",
+                        "tag":"Amanda Lawrence",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/n0RmDWYo266XvrNlS0aZCXSOihn.jpg"
+                    },
+                    {
+                        "id":15276,
+                        "filter":"actor=15276",
+                        "tag":"Drew Rhys-Williams",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/7GmTgiU4qrQTpJyL9a6hsvaSE7x.jpg"
+                    },
+                    {
+                        "id":15300,
+                        "filter":"actor=15300",
+                        "tag":"Raymond Waring",
+                        "role":"Sam",
+                        "thumb":"http://image.tmdb.org/t/p/original/iI9pw8ukPkgLRF20YVonTO5VQp8.jpg"
+                    },
+                    {
+                        "id":15292,
+                        "filter":"actor=15292",
+                        "tag":"Kish Sharma",
+                        "role":"Depot Man"
+                    },
+                    {
+                        "id":15284,
+                        "filter":"actor=15284",
+                        "tag":"Jane Thorne",
+                        "role":"Depot Woman",
+                        "thumb":"http://image.tmdb.org/t/p/original/wZnyLVOfkIrhEsNQFADSa5bAeBw.jpg"
+                    },
+                    {
+                        "id":15273,
+                        "filter":"actor=15273",
+                        "tag":"Dean Alexandrou",
+                        "role":"Infected Person (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/kr1WMrKVCx9eGJm4thT19gtrpA6.jpg"
+                    },
+                    {
+                        "id":15275,
+                        "filter":"actor=15275",
+                        "tag":"Didier Dell Benjamin",
+                        "role":"Civilian (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/ckwkBkKsC2Wt2GOrILtDBDFLY8X.jpg"
+                    },
+                    {
+                        "id":15279,
+                        "filter":"actor=15279",
+                        "tag":"Gareth Clarke",
+                        "role":"Infected Person (uncredited)"
+                    },
+                    {
+                        "id":15282,
+                        "filter":"actor=15282",
+                        "tag":"James Fiddy",
+                        "role":"Victim (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/8RYvhkfNCuWiZOeWrzl46QWTCSU.jpg"
+                    },
+                    {
+                        "id":15311,
+                        "filter":"actor=15311",
+                        "tag":"Tommy Gunn",
+                        "role":"Marine (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/yiBD0BrDZIsSN4m8f0d8Hl76Eo9.jpg"
+                    },
+                    {
+                        "id":15272,
+                        "filter":"actor=15272",
+                        "tag":"Daniel Jefferson",
+                        "role":"Civilian (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/lWy5MZMXcLuzsGdAeT9GuDdo4F9.jpg"
+                    },
+                    {
+                        "id":15274,
+                        "filter":"actor=15274",
+                        "tag":"Debbie Kurup",
+                        "role":"Infected Person (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/orhBknLRtV7AGXVkEAlol0p7ncq.jpg"
+                    },
+                    {
+                        "id":15304,
+                        "filter":"actor=15304",
+                        "tag":"Selina Lo",
+                        "role":"Infected Person (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/vz3r7SYYWSp4Lte0JwvtTqxXsh9.jpg"
+                    },
+                    {
+                        "id":15288,
+                        "filter":"actor=15288",
+                        "tag":"João Costa Menezes",
+                        "role":"Infected Person (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/xDnd4tnHZAgdMgmt443E4nG7Ko0.jpg"
+                    },
+                    {
+                        "id":15283,
+                        "filter":"actor=15283",
+                        "tag":"Jane Osborn",
+                        "role":"Infected Person (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/tCXL4SuqvDH0wk0J6A7OEADKY2L.jpg"
+                    },
+                    {
+                        "id":15289,
+                        "filter":"actor=15289",
+                        "tag":"Jude Poyer",
+                        "role":"Infected Person (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/quUa0O1fTgPH5aRRq3RNYL6pg8b.jpg"
+                    },
+                    {
+                        "id":15287,
+                        "filter":"actor=15287",
+                        "tag":"Joseph Ripley",
+                        "role":"Infected person (uncredited)"
+                    },
+                    {
+                        "id":15306,
+                        "filter":"actor=15306",
+                        "tag":"Simon Delaney",
+                        "role":"Carpark Civilian",
+                        "thumb":"http://image.tmdb.org/t/p/original/x74QVhesWL0nM0EFIosl6awxcIu.jpg"
+                    },
+                    {
+                        "id":15308,
+                        "filter":"actor=15308",
+                        "tag":"Stuart Adams",
+                        "role":"Don"
+                    },
+                    {
+                        "id":15271,
+                        "filter":"actor=15271",
+                        "tag":"Daniel Baggs",
+                        "role":"Jeremy Renner - Double (uncredited)"
+                    },
+                    {
+                        "id":15291,"filter":"actor=15291","tag":"Katie Borland",
+                        "role":"Infected (uncredited)",
+                        "thumb":"http://image.tmdb.org/t/p/original/vRtWKZJKwTtkF8ZQAl56WIwSCid.jpg"
+                    },
+                    {
+                        "id":15285,
+                        "filter":"actor=15285",
+                        "tag":"Jason Curle",
+                        "role":"Infected Person (uncredited)"
+                    },
+                    {
+                        "id":15293,
+                        "filter":"actor=15293",
+                        "tag":"Laine Edwards",
+                        "role":"Civilian (uncredited)"
+                    },
+                    {
+                        "id":15299,
+                        "filter":"actor=15299",
+                        "tag":"Pip Henderson",
+                        "role":"Infected (uncredited)"
+                    },
+                    {
+                        "id":15296,
+                        "filter":"actor=15296",
+                        "tag":"Matt Reeves",
+                        "role":"Bunker Soldier",
+                        "thumb":"http://image.tmdb.org/t/p/original/fj2OSoBhVepDZSfLXisGJmMXDNo.jpg"
+                    }
+                ],
+                "Similar":[
+                    {
+                        "id":13343,
+                        "filter":"similar=13343",
+                        "tag":"28 Days Later"
+                    },
+                    {
+                        "id":14197,
+                        "filter":"similar=14197",
+                        "tag":"30 Days of Night"
+                    },
+                    {
+                        "id":15252,
+                        "filter":"similar=15252",
+                        "tag":"Dawn of the Dead"
+                    },
+                    {
+                        "id":15255,
+                        "filter":"similar=15255",
+                        "tag":"Land of the Dead"
+                    },
+                    {
+                        "id":14209,
+                        "filter":"similar=14209",
+                        "tag":"The Crazies"
+                    },
+                    {
+                        "id":15350,"filter":"similar=15350",
+                        "tag":"Pandorum"
+                    },
+                    {
+                        "id":15258,
+                        "filter":"similar=15258",
+                        "tag":"Sunshine"
+                    },
+                    {
+                        "id":15253,
+                        "filter":"similar=15253",
+                        "tag":"Daybreakers"
+                    },
+                    {
+                        "id":755,
+                        "filter":"similar=755",
+                        "tag":"The Mist"
+                    },
+                    {
+                        "id":13355,
+                        "filter":"similar=13355",
+                        "tag":"The Descent"
+                    },
+                    {
+                        "id":15254,
+                        "filter":"similar=15254",
+                        "tag":"Event Horizon"
+                    },
+                    {
+                        "id":14210,
+                        "filter":"similar=14210",
+                        "tag":"The Hills Have Eyes"
+                    },
+                    {
+                        "id":15256,
+                        "filter":"similar=15256",
+                        "tag":"Planet Terror"
+                    },
+                    {
+                        "id":14207,
+                        "filter":"similar=14207",
+                        "tag":"Silent Hill"
+                    },
+                    {
+                        "id":15349,
+                        "filter":"similar=15349",
+                        "tag":"Monsters"
+                    },
+                    {
+                        "id":15353,
+                        "filter":"similar=15353",
+                        "tag":"The Happening"
+                    },
+                    {
+                        "id":15517,
+                        "filter":"similar=15517",
+                        "tag":"1408"
+                    },
+                    {
+                        "id":15348,
+                        "filter":"similar=15348",
+                        "tag":"Doomsday"
+                    },
+                    {
+                        "id":53994,
+                        "filter":"similar=53994",
+                        "tag":"Resident Evil"
+                    },
+                    {
+                        "id":14199,
+                        "filter":"similar=14199",
+                        "tag":"Drag Me to Hell"
+                    }
+                ]            
+            }
+        ]
+    }
+}

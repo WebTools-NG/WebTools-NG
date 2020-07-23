@@ -57,6 +57,7 @@ import store from '../store'
 import {wtconfig} from '../wtutils';
 
 var userName = "";
+
 let isRemember = false
 if(wtconfig.get('general.rememberlastusername')){
   userName = wtconfig.get('general.username')
@@ -70,7 +71,7 @@ export default {
       checkbox: isRemember,
       input: {
         username: userName,
-        password: ""
+        password: wtconfig.get('Developer.password', "")
       },
     }
   },
@@ -80,7 +81,7 @@ export default {
       username: this.input.username,
       password: this.input.password
       })
-      wtconfig.set('general.username', this.input.username)
+      wtconfig.set('general.username', this.input.username)      
       
       if(this.checkbox){
         console.log('Save username is: ' + this.checkbox)
