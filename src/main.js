@@ -101,7 +101,7 @@ const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
 
 // ET Stuff
 import {excel2} from './components/modules/ExportTools/et'
-import BootstrapVue from 'bootstrap-vue'
+//import BootstrapVue from 'bootstrap-vue'
 
 
 // Temp json files to export, until linked called by webpage
