@@ -79,7 +79,14 @@
             "RadioOtherVideos": "Other Videos",
             "ErrorNoServerSelected": "No server selected",
             "LevelInfo": "Export level determines what data is going to be exported.",
+            "ExportLevel": "Export Level",
             "SelectLevel": "Select level",
+            "BuildInLevels": "*** Buildin levels ***",
+            "CustomLevels": "*** Custom levels ***",
+            "NoLevelFound": "N/A",
+            "TT-ETType": "Here you select the type of library you want to export",
+            "TT-ETLibrary": "Here you select library you want to export",
+            "TT-ETLevel": "Here you select the values you want to export",
             "Settings":
             {
                 "Settings": "Settings",

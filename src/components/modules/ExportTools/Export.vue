@@ -3,58 +3,57 @@
     <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>
     <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
     <br />
+    
+    <div> <!-- Media type to export -->      
+      <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-tooltip target="etTypeGroup" triggers="hover">
+          {{ $t('Modules.ET.TT-ETType') }}
+        </b-tooltip>
+        <b-form-radio-group
+          id="mediaType"
+          v-model="selMediaType"
+          :options="optionsMediaType"
+          name="mediaType"
+        ></b-form-radio-group>
+      </b-form-group>
+    </div>    
 
-    <h1 class="title is-3">{{ $t("Modules.ET.HSelectMedia") }}</h1>
-    <div class="block">
-      <b-radio
-        v-model="radio"
-        type="is-dark"
-        name="movie"
-        native-value="movie"
-      >{{ $t("Modules.ET.RadioMovies") }}</b-radio>
-      <b-radio
-        v-model="radio"
-        type="is-dark"
-        name="tvseries"
-        native-value="tvseries"
-        disabled
-      >{{ $t("Modules.ET.RadioTVSeries") }}</b-radio>
-      <b-radio
-        v-model="radio"
-        type="is-dark"
-        name="artist"
-        native-value="artist"
-        disabled
-      >{{ $t("Modules.ET.RadioMusic") }}</b-radio>
-      <b-radio
-        v-model="radio"
-        type="is-dark"
-        name="photo"
-        native-value="photo"
-        disabled
-      >{{ $t("Modules.ET.RadioPhotos") }}</b-radio>
-      <b-radio
-        v-model="radio"
-        type="is-dark"
-        name="othervideos"
-        native-value="othervideos"
-        disabled
-      >{{ $t("Modules.ET.RadioOtherVideos") }}</b-radio>
-    </div>
+    <div> <!-- Select Library -->
+      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-tooltip target="etLibraryGroup" triggers="hover">
+          {{ $t('Modules.ET.TT-ETLibrary') }}
+        </b-tooltip>
+        <b-form-select 
+          v-model="selLibrary" 
+          name="selLibrary"
+          id="selLibrary">                   
+          <option
+            v-for="option in pmsSections"
+            :value="option.key"
+            :key="option.key"
+            v-on:change="onchange()">
+            {{ option.title }}
+          </option>          
+        </b-form-select>
+      </b-form-group>
+    </div>   
 
-    <hr />
+    <div> <!-- Select Export Level -->    
+      <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0">  
+        <b-tooltip target="etLevelGroup" triggers="hover">
+          {{ $t('Modules.ET.TT-ETLevel') }}
+        </b-tooltip>            
+        <b-form-select
+          v-model="selLevel"
+          id="selLevel"
+          :options="exportLevels">         
+        </b-form-select>
+      </b-form-group>           
+    </div> 
+    
 
-    <h1 class="title is-3">{{ $t("Modules.ET.HSelectSelection") }}</h1>
-    <div class="select is-dark">
-      <b-select v-bind:placeholder="$t('Modules.ET.SelectSelection')" @input="selectSelection">
-        <option
-          v-for="option in pmsSections"
-          :value="option.key"
-          :key="option.key"
-          v-on:change="onchange()"
-        >{{ option.title }}</option>
-      </b-select>
-    </div>
+
+<!-- 
     <b-button
       id="sync-button"
       @click="fetchSelection"
@@ -64,32 +63,10 @@
     ></b-button>
     <hr />
 
-    <h1 class="title is-3">Export Level</h1>
+    -->
 
-    <b-tabs v-model="activeTab" type="is-boxed" :animated="false">
-      <b-tab-item label="Export Level">
-        <div class="columns">
-          <div class="column is-3">
-            <b-field type="is-dark">
-              <b-select placeholder="Default" expanded @input="selectExportLevel">
-                <option v-for="(value, name) in exportLevels" :value="value" :key="name">{{ name }}</option>
-              </b-select>
-            </b-field>
-          </div>
-          <div class="column is-3"></div>
-          <div class="column is-6">
-            <b-message
-              icon-pack="fas"
-              has-icon
-              icon="fas fa-info-circle"
-            >Export level determents what data is going to be exportet.</b-message>
-          </div>
-        </div>
-      </b-tab-item>
-      <b-tab-item label="Custom Export Level"></b-tab-item>
-    </b-tabs>
-    <hr />
 
+ 
 
     <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
     <div class="buttons">
@@ -99,18 +76,29 @@
         icon-left="fas fa-file-download"
         icon-pack="fas"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>
+    </div>  
   </section>
 </template>
 
 <script>
-  import { et } from "./et";
+  import { et } from "./et";  
+  import i18n from '../../../i18n';
   const log = require("electron-log");
   export default {
       data() {
         return {
           radio: "movie",
-          activeTab: 0
+          activeTab: 0,
+          selMediaType: 'movie',
+          selLibrary: '',
+          selLevel: '',
+          optionsMediaType: [
+            { text: 'Movies', value: 'movie', disabled: false },            
+            { text: 'Shows', value: 'show', disabled: false },            
+            { text: 'Artist', value: 'artist', disabled: true },
+            { text: 'Photos', value: 'photo', disabled: true },
+            { text: 'Other Videos', value: 'other', disabled: true }
+          ]
         };
   },
   created() {
@@ -119,30 +107,57 @@
   },
   computed: {
     pmsSections: function() {
-      let sections = this.$store.getters.getPmsSections;
-      let result = [];
-      if (Array.isArray(sections) && sections.length) {
-        log.debug("doing a forEach");
+      const sections = this.$store.getters.getPmsSections;
+      const result = [];
+      if (Array.isArray(sections) && sections.length) {                
         sections.forEach(req => {
-          if (req.type == this.radio) {
-            log.debug("pushing data to results");
+          if (req.type == this.selMediaType) {
+            log.debug(`pushing library: ${req.title} to results`);            
             result.push(req);
           }
         });
       } else {
-        log.info("No data found");
-        result.push["No Section found"];
-      }
+        log.error("No Library found");
+        result.push["No Library found"];
+      }      
       return result;
     },
-    exportLevels: function() {
-      let levels = "";
-      log.info("exportLevels: found levels: " + JSON.stringify(et.getLevels(this.radio)));
-      levels = et.getLevels(this.radio);
-
-      const libType = "movie";
-      log.info("exportLevels: Possible levels key/val are: " + JSON.stringify(et.getLevels(libType)));
-      return levels;
+    exportLevels: function() {      
+      // Returns valid levels for selected media type
+      const etLevel = et.getLevels(this.selMediaType);
+      const etCustomLevel = et.getCustomLevels(this.selMediaType);      
+      const options = []
+      const item = {}
+      let custLabel = {}
+      custLabel['text']=this.$t('Modules.ET.CustomLevels');      
+      custLabel['disabled']=true;
+      options.push(custLabel);      
+      Object.keys(etCustomLevel).forEach(function(key) {        
+        let option = {}
+        option['value'] = etCustomLevel[key];         
+        if (key === "No Level Yet") {          
+          option['text']=i18n.t('Modules.ET.NoLevelFound');          
+          option['disabled'] = true;          
+        } 
+        else { option['text'] = key; }                       
+        options.push(option);        
+      });      
+      let buildinLabel = {}
+      buildinLabel['text']=this.$t('Modules.ET.BuildInLevels');      
+      buildinLabel['disabled']=true;
+      options.push(buildinLabel);      
+      Object.keys(etLevel).forEach(function(key) {        
+        let option = {}
+        option['value'] = etLevel[key];
+        if (key === "No Level Yet") {          
+          option['text']=i18n.t('Modules.ET.NoLevelFound');          
+          option['disabled'] = true;          
+        } 
+        else { option['text'] = key; }       
+        options.push(option);        
+      });      
+      item['options']=options;
+      return options;              
     }
   },
   methods: {

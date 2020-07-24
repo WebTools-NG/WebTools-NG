@@ -1147,5 +1147,25 @@
                 }
 
         }
+    },
+    "show": {
+        "levels": {
+            "No Level Yet": "level1"
+        }
+    },
+    "artist": {
+        "levels": {
+            "No Level Yet": "level1"
+        }
+    },
+    "photo": {
+        "levels": {
+            "No Level Yet": "level1"
+        }
+    },
+    "other": {
+        "levels": {
+            "No Level Yet": "level1"
+        }
     }
 }

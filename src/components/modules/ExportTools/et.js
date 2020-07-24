@@ -56,12 +56,20 @@ const et = new class ET {
     }
 
     getLevels(libType) {
-        // Returns an array of levels for a selected type og medias, like 'movie'
+        // Returns an json of levels for a selected type og medias, like 'movie'
         const levels = def[libType]['levels']    
         log.debug('ET LevelNames: ' + JSON.stringify(levels))
         return levels
     }
 
+    getCustomLevels(libType) {        
+        const notDefined = {"No Level Yet": ""}
+        // Returns an json of custom levels for a selected type og medias, like 'movie'
+        const levels = wtconfig.get(`ET.CustomLevels.${libType}.levels`, notDefined)        
+        log.debug('ET LevelNames: ' + JSON.stringify(levels))
+        return levels
+    }
+    
     getLevelKeys(libType){
         // Only return the keys for possible levels
         const out = []

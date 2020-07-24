@@ -19,7 +19,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueSidebarMenu)
 Vue.use(Buefy);
-//Vue.use(BootstrapVue);
+Vue.use(BootstrapVue);
 
 
 
@@ -61,7 +61,7 @@ log.info('App Menu builded')
 // We export library named "Ged" of the type movie with a level of "Level 3"
 const libName = 'Ged'
 //const level = 'Tommy'
-const level = 'Level 3'
+const level = 'Level 5'
 const libType = 'movie'
 
 /*
@@ -78,7 +78,7 @@ like:
 		"username": "dane22",
 		"language": "en",
 		"rememberlastusername": true,
-		"transfilescopied": "0.1.0"
+		"transfilescopied": "0.0.0"
 	},
 	"Log": {
 		"maxSize": 10485760
@@ -90,7 +90,8 @@ like:
 	},
 	"Developer": {
 		"baseURI": "http://192.168.1.14:32400",
-		"accessToken": "MyAccessToken"
+		"accessToken": "MyAccessToken",
+		"password": "MyPassword"
 	}
 }
 */
@@ -101,7 +102,9 @@ const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
 
 // ET Stuff
 import {excel2} from './components/modules/ExportTools/et'
-//import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
 // Temp json files to export, until linked called by webpage

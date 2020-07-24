@@ -45,10 +45,9 @@ const actions = {
                 'includeHttps' : '1',
                 'includeRelay': '0'
               }
-        }).then((response) => {
-            log.info("fetchSection is status " + response.status)
+        }).then((response) => {            
             commit('UPDATE_SECTIONS', response.data.MediaContainer.Directory)
-            log.verbose("verbose log fetchSection is status " + response.status)
+            log.verbose("fetchSection is status " + response.status)
 
 
         }
