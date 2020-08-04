@@ -4,7 +4,7 @@
     <h2 class="subtitle">{{ $t("Modules.ET.Settings.Description") }}</h2>
     <br />
     <div id="outDir">
-        <input id="outDirbox" name="outDirbox" v-model="outDirVal" v-bind:placeholder="$t('Modules.ET.Settings.SelectOutDir')">                
+        <input id="outDirbox" name="outDirbox" v-model="outDirVal" :disabled=true v-bind:placeholder="$t('Modules.ET.Settings.SelectOutDir')">                        
         <button v-on:click="browse">{{ $t("Modules.ET.Settings.Browse") }}</button>        
     </div>                
 

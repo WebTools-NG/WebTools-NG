@@ -6,7 +6,18 @@
 		"transfilescopied": "0.1.0"
 	},
 	"Log": {
-		"maxSize": 10485760
+		"maxSize": 10485760,
+		"fileLevel": "debug"
+	},
+	"PMS": {
+		"ContainerSize": {
+			"artist": 10,
+			"episode": 30, 
+			"movie": 30,
+			"photo": 20,
+			"show": 20
+		},
+		"TimeOut": 20
 	},
 	"ET": {
 		"OutPath": "/home/tm/Videos",
@@ -27,6 +38,7 @@
 	},
 	"Developer": {
 		"baseURI": "http://192.168.1.14:32400",
-		"accessToken": "INSERT TOKEN HERE"
+		"accessToken": "INSERT TOKEN HERE",
+		"password": "your plex.tv password, when developing"
 	}
 }

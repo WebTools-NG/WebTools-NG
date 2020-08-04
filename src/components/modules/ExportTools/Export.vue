@@ -12,6 +12,7 @@
         <b-form-radio-group
           id="mediaType"
           v-model="selMediaType"
+          @change.native="changeType()"
           :options="optionsMediaType"
           name="mediaType"
         ></b-form-radio-group>
@@ -24,19 +25,14 @@
           {{ $t('Modules.ET.TT-ETLibrary') }}
         </b-tooltip>
         <b-form-select 
-          v-model="selLibrary" 
-          name="selLibrary"
-          id="selLibrary">                   
-          <option
-            v-for="option in pmsSections"
-            :value="option.key"
-            :key="option.key"
-            v-on:change="onchange()">
-            {{ option.title }}
-          </option>          
+          v-model="selLibrary"          
+          id="selLibrary"
+          @change.native="enableBtnExport"
+          :options="pmsSections"
+          name="selLibrary">        
         </b-form-select>
       </b-form-group>
-    </div>   
+    </div>    
 
     <div> <!-- Select Export Level -->    
       <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0">  
@@ -44,29 +40,15 @@
           {{ $t('Modules.ET.TT-ETLevel') }}
         </b-tooltip>            
         <b-form-select
+          class="form-control"
           v-model="selLevel"
-          id="selLevel"
-          :options="exportLevels">         
+          id="selLevel"          
+          @change.native="selectExportLevel()"
+          :options="exportLevels"
+          name="selLevel">         
         </b-form-select>
-      </b-form-group>           
-    </div> 
-    
-
-
-<!-- 
-    <b-button
-      id="sync-button"
-      @click="fetchSelection"
-      type="is-warning"
-      icon-left="fas fa-sync"
-      icon-pack="fas"
-    ></b-button>
-    <hr />
-
-    -->
-
-
- 
+      </b-form-group>     
+    </div>
 
     <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
     <div class="buttons">
@@ -75,8 +57,14 @@
         @click="getMedia"
         icon-left="fas fa-file-download"
         icon-pack="fas"
+        :disabled="btnDisable == true"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>  
+    </div>      
+    <label id="status" class="form-label"  v-show='status'>
+      {{ status }}
+    </label>
+ 
+  
   </section>
 </template>
 
@@ -86,23 +74,25 @@
   const log = require("electron-log");
   export default {
       data() {
-        return {
-          radio: "movie",
-          activeTab: 0,
-          selMediaType: 'movie',
-          selLibrary: '',
-          selLevel: '',
+        return {          
+          btnDisable: true,                  
+          selMediaType: "movie",
+          selLibrary: "",
+          selLevel: "",
+          selLevelName: "",
           optionsMediaType: [
             { text: 'Movies', value: 'movie', disabled: false },            
             { text: 'Shows', value: 'show', disabled: false },            
             { text: 'Artist', value: 'artist', disabled: true },
             { text: 'Photos', value: 'photo', disabled: true },
             { text: 'Other Videos', value: 'other', disabled: true }
-          ]
+          ],
+          status: "Idle"
         };
   },
   created() {
     log.info("ET Created");
+    this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
     this.fetchSelection();
   },
   computed: {
@@ -110,19 +100,24 @@
       const sections = this.$store.getters.getPmsSections;
       const result = [];
       if (Array.isArray(sections) && sections.length) {                
-        sections.forEach(req => {
+        sections.forEach(req => {          
           if (req.type == this.selMediaType) {
-            log.debug(`pushing library: ${req.title} to results`);            
-            result.push(req);
+            log.debug(`pushing library: ${req.title} to results`);
+            let item = {};
+            item['text']=req.title;
+            item['value']=req.key;                       
+            result.push(item);
           }
         });
       } else {
         log.error("No Library found");
         result.push["No Library found"];
-      }      
+      }       
       return result;
-    },
-    exportLevels: function() {      
+    },    
+    exportLevels: function() {   
+      
+      et.getLevelDisplayName('My Level', this.selMediaType)
       // Returns valid levels for selected media type
       const etLevel = et.getLevels(this.selMediaType);
       const etCustomLevel = et.getCustomLevels(this.selMediaType);      
@@ -131,6 +126,7 @@
       let custLabel = {}
       custLabel['text']=this.$t('Modules.ET.CustomLevels');      
       custLabel['disabled']=true;
+      custLabel['value']='';
       options.push(custLabel);      
       Object.keys(etCustomLevel).forEach(function(key) {        
         let option = {}
@@ -145,6 +141,7 @@
       let buildinLabel = {}
       buildinLabel['text']=this.$t('Modules.ET.BuildInLevels');      
       buildinLabel['disabled']=true;
+      buildinLabel['value']='';
       options.push(buildinLabel);      
       Object.keys(etLevel).forEach(function(key) {        
         let option = {}
@@ -156,7 +153,7 @@
         else { option['text'] = key; }       
         options.push(option);        
       });      
-      item['options']=options;
+      item['options']=options;      
       return options;              
     }
   },
@@ -164,13 +161,30 @@
     selectSelection: function(selected) {
       log.debug(selected);
       this.$store.commit("UPDATE_SELECTEDSECTION", selected);
+    },    
+    enableBtnExport: function() {
+      // Enables export button only if both library and level is selected        
+      this.btnDisable=(this.selLibrary=='' && this.selLevel=='')                    
     },
-    selectExportLevel: function(selected) {
-      log.info('selectExportLevel: Selected Level: ' + selected);
-      this.$store.commit("UPDATE_EXPORTLEVEL", selected);
+    changeType: function() {
+      // Triggers when lib type is changed
+      this.selLibrary = '';
+      this.selLevel = '';  
+      this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+
+    },
+    selectExportLevel: function() {
+      this.enableBtnExport();
+    },
+    callbackStatus: function(statusTxt) {      
+      this.status = statusTxt;
+      console.log('Status: ' + statusTxt)
     },
     getMedia() {
       log.info("getMedia Called");
+      this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);      
+      this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
+      this.callbackStatus('Starting Export');                
       this.$store.dispatch("getMediaMovies");
     },
     fetchSelection() {

@@ -1,5 +1,8 @@
+/* eslint-disable no-unreachable */
 var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
+const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
+
 
 import {wtconfig, wtutils} from '../../../wtutils'
 
@@ -17,26 +20,143 @@ const et = new class ET {
     constructor() {                    
     }
 
-    async getItemData(baseURL, accessToken, element)
+    async getSectionData({sectionName, baseURL, accessToken, libType})
+    {
+        const sectionData = []
+        log.info(`Starting getSectionData with Name: ${sectionName}`)    
+        // Get Section Key
+        const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})        
+        log.debug(`Get SectionKey as: ${libKey}`)
+        // Get the size of the library        
+        const libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken})
+        log.debug(`Get Section size as: ${libSize}`)
+        // Find LibType steps
+        const step = wtconfig.get("PMS.ContainerSize." + libType)
+        log.debug(`Get Step size as: ${step}`)
+        // Current item
+        let idx = 0
+        // Now let's walk the section
+        let chuncks, postURI 
+        const element = '/library/sections/' + libKey
+        let size
+        do {            
+            postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;            
+            chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});                        
+            size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
+            log.verbose(`getSectionData chunck size is ${size} and idx is ${idx}`)            
+            sectionData.push(chuncks)             
+            idx = idx + step;
+        } while (size > 1);        
+        return sectionData;        
+    }
+
+    async getSectionSizeByKey({sectionKey, baseURL, accessToken})
     {        
-        const url = baseURL + element + '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1';
+        const sizeURI = '/library/sections/' + sectionKey
+        const sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+        const sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});       
+        const size = await JSONPath({path: '$..totalSize', json: sizeContents});
+        return size         
+    }
+
+    async getSectionSizeByName({sectionName, baseURL, accessToken})
+    {
+        const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
+        const sizeURI = '/library/sections/' + libKey
+        const sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+        const sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});    
+        const size = await JSONPath({path: '$..totalSize', json: sizeContents});
+        return size         
+    }
+
+    async getItemData({baseURL, accessToken, element, postURI=defpostURI})
+    {        
+        const url = baseURL + element + postURI;
         var headers = {
             "Accept": "application/json",
             "X-Plex-Token": accessToken
-        }        
-        log.verbose(`Calling url: ${url}`)
+        }           
+        //log.verbose(`Calling url: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: headers});    
         let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)                
-        log.debug(`Done key: ${element}`)
-        return respJSON            
+        //const respJSON = await Promise.resolve(resp)                
+        //log.debug(`Done url: ${url}`)
+       // return respJSON            
+       return resp
     }
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         const levelName = def[libType]['levels'][level]        
         return levelName
-    } 
+    }
+
+    async getSections(address, accessToken)
+    {
+        // Returns an array of json, as:
+        // [{"title":"DVR Movies","key":31,"type":"movie"}]
+        
+        const result = []
+        const url = address + '/library/sections/all'
+        var headers = {
+            "Accept": "application/json",
+            "X-Plex-Token": accessToken
+        }
+        let response = await fetch(url, { method: 'GET', headers: headers});    
+        let resp = await response.json();
+        const respJSON = await Promise.resolve(resp)                 
+        let sections = await JSONPath({path: '$..Directory', json: respJSON})[0];        
+        for (var section of sections){            
+            const subItem = {}
+            subItem['title'] = JSONPath({path: '$..title', json: section})[0];                        
+            subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);            
+            subItem['type'] = JSONPath({path: '$..type', json: section})[0];                                                                  
+            result.push(subItem)
+        }        
+        await Promise.resolve(result)
+        return  result
+    }
+    
+    getLevelDisplayName(level, libType){
+        // return displayname fort with buildin levels
+        const levels = et.getLevels(libType)        
+        let result = '';
+        loop1:
+            for(var key in levels){                
+                if ( levels[key] == level)
+                {                    
+                    result = key;
+                    break loop1;
+                }
+            }
+        if ( result == '')
+        {
+            // We need to check custom levels
+            const customLevels = et.getCustomLevels(libType)
+            loop2:
+                for(key in customLevels){                    
+                    if ( customLevels[key] == level)
+                    {                        
+                        result = key;
+                        break loop2;
+                    }
+                }
+        }        
+        return result;
+    }
+
+    getLibDisplayName(libKey, sections){
+        // return displayname for library
+        let result = '';
+        for (var i=0; i<sections.length; i++){                      
+            if ( JSONPath({path: '$..key', json: sections[i]}) == libKey)
+            {                    
+                result = JSONPath({path: '$..title', json: sections[i]});
+                i = sections.length;
+            }
+        }          
+        return result;
+    }
 
     getLevelFields(level, libType) {
         // return fields in a level
@@ -84,6 +204,26 @@ const et = new class ET {
         return def[libType]['fields'][fieldName]['key']        
     }
 
+    resolveAfter2Seconds() {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve('resolved');
+          }, 2000);
+        });
+      }
+
+    async getSectionKey({libName, baseURL, accessToken}){
+        // Returns the key of a library
+        const sections = await et.getSections(baseURL, accessToken)        
+        let result = '';
+        for (var i=0; i<sections.length; i++){
+            if (String(await JSONPath({path: '$..title', json: sections[i]})) == libName) {                
+                result = await JSONPath({path: '$..key', json: sections[i]});                    
+                i = sections.length;                
+            }                        
+        }            
+        return result               
+    }
 
     getField(libType, fieldName) {
         return def[libType]['fields'][fieldName]        
@@ -173,18 +313,18 @@ const et = new class ET {
                     if (error.response) {                  
                         // The request was made and tgite server responded with a status code
                         // that falls out of the range of 2xx
-                        console.log(error.response.data)
-                        console.log(error.response.status)
+                        log.error(error.response.data)
+                        log.error(error.response.status)
                         alert(error.response.data.error)
                         //this.danger(error.response.status, error.response.data.error);
                     } else if (error.request) {
                         // The request was made but no response was received
                         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                         // http.ClientRequest in node.js
-                        console.log(error.request);
+                        log.error(error.request);
                     } else {
                         // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
+                        log.error('Error', error.message);
                     }
                 }
             )
@@ -233,8 +373,7 @@ const excel2 = new class Excel {
         // Get level fields
         const fields = et.getLevelFields(Level, libType)              
         for (var i=0; i<fields.length; i++) {                        
-            log.verbose('Column: ' + fields[i] + ' - ' + fields[i])                                                
-            //let column = { header: Level[i], key: 'id', width: 10 }
+            log.verbose('Column: ' + fields[i] + ' - ' + fields[i])                                                            
             let column = { header: fields[i], key: fields[i] }
             columns.push(column)            
         }             
@@ -253,12 +392,16 @@ const excel2 = new class Excel {
         return true;
     }
 
-    async SaveWorkbook(Workbook, Library, Level, Type) {
-        const fs = require('fs')
+    async getFileName({ Library, Level, Type }){
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('ET.OutPath', wtutils.UserHomeDir)
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");          
-        const name = OutDir + '/' + Library + '_' + Level + '_' + timeStamp + '.' + Type;
+        return OutDir + '/' + Library + '_' + Level + '_' + timeStamp + '.' + Type;        
+    }
+
+    async SaveWorkbook(Workbook, Library, Level, Type) {
+        const fs = require('fs')
+        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type })
         log.debug('Saving output file as: ' + name)
         // Save Excel on Hard Disk
         Workbook.xlsx.writeBuffer()
@@ -267,7 +410,7 @@ const excel2 = new class Excel {
     }
 
     async postProcess(name, val){
-        log.silly(`Start postProcess. name: ${name} - val: ${val}`)        
+       // log.silly(`Start postProcess. name: ${name} - val: ${val}`)        
         const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '))
         let retArray = []
         let x, retVal  
@@ -303,8 +446,7 @@ const excel2 = new class Excel {
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break;
-                case "Original Title":
-                    console.log('GED Org Title: ' + JSON.stringify(valArray))
+                case "Original Title":                    
                     for (x=0; x<valArray.length; x++) {                    
                         retArray.push(valArray[x])
                     }
@@ -318,6 +460,129 @@ const excel2 = new class Excel {
             retVal = 'ERROR'            
         }                
         return await retVal;
+    }
+
+    async addRowToTmp( { libType, level, data, stream }) {        
+        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                               
+        let date, year, month, day, hours, minutes, seconds        
+        const fields = et.getFields( libType, level)                       
+        let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
+        let str = ''
+        let result = ''                         
+        for (var x=0; x<fields.length; x++) {                                           
+            var name = Object.keys(fields[x]);            
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
+            switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
+                case "string":                                                                                            
+                    val = JSONPath({path: String(lookup), json: data})[0];                    
+                    // Make N/A if not found
+                    if (val == null)
+                    {
+                        val = wtconfig.get('ET.NotAvail', 'N/A')
+                    }                    
+                    break;
+                case "array":                                                            
+                    array = JSONPath({path: lookup, json: data});
+                    valArray = []                                       
+                    for (i=0; i<array.length; i++) {                                                                     
+                        subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
+                        subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
+                        switch(String(subType)) {
+                            case "string":                                                                                                                       
+                                valArrayVal = JSONPath({path: String(subKey), json: array[i]})[0];                                
+                                // Make N/A if not found
+                                if (valArrayVal == null || valArrayVal == "")
+                                {
+                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                }
+                                break;
+                            case "time":                                                                                                                        
+                                valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
+                                // Make N/A if not found
+                                if (valArrayVal == null || valArrayVal == "")
+                                {
+                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                }
+                                else
+                                {                                    
+                                    const total = valArrayVal.length                                 
+                                    for (let i=0; i<total; i++) {                                        
+                                        seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();                            
+                                        minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();                            
+                                        hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();                                                                  
+                                        // Will display time in 10:30:23 format                        
+                                        valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                    }                                    
+                                }
+                                break;
+                            default:
+                                log.error('NO ARRAY HIT (addRowToSheet-array)')                                
+                        }                                            
+                        valArray.push(valArrayVal)
+                    }                    
+                    val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))                                        
+                    break;
+                case "array-count":                                                                                                                        
+                    val = JSONPath({path: String(lookup), json: data}).length;                                                          
+                    break;
+                case "int":                    
+                    val = JSONPath({path: String(lookup), json: data})[0];
+                    break;
+                case "time":                                                     
+                    val = JSONPath({path: String(lookup), json: data});                                                                                                                             
+                    if ( typeof val !== 'undefined' && val )
+                    {
+                        seconds = '0' + (Math.round(val/1000)%60).toString();                            
+                        minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();                            
+                        hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();                                                                  
+                        // Will display time in 10:30:23 format                        
+                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                                           
+                    }
+                    else
+                    {
+                        val = null
+                    }                                            
+                    break;
+                case "datetime":                     
+                    val = JSONPath({path: String(lookup), json: data});                    
+                    if ( typeof val !== 'undefined' && val )
+                    {
+                        // Create a new JavaScript Date object based on the timestamp
+                        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                        date = new Date(val * 1000);                            
+                        year = date.getFullYear().toString();                             
+                        month = ('0' + date.getMonth().toString()).substr(-2);  
+                        day = ('0' +  date.getDate().toString()).substr(-2);                            
+                        hours = date.getHours();                            
+                        minutes = "0" + date.getMinutes();                            
+                        seconds = "0" + date.getSeconds();
+                        // Will display time in 10:30:23 format                                                      
+                        val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                           
+                    }
+                    else
+                    {
+                        val = null
+                    }                                            
+                    break;
+                default:
+                    log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)                    
+            }
+            let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
+            if ( doPostProc == 'true')
+            {                     
+                val = await this.postProcess(name, val);                              
+            }            
+            // If string, put in ""
+            if (isNaN(val)){
+                str += `,"${val}"`
+            }
+            else {
+                str += `,${val}`
+            }
+        }        
+        // Remove first character
+        result = str.substr(1);        
+        stream.write( result + "\n");        
     }
 
     async addRowToSheet(sheet, libType, level, data) {        
@@ -437,10 +702,9 @@ const excel2 = new class Excel {
         row.forEach(element => {
             excel2.AddRow(sheet, element)                        
         });        
-        log.silly(`End addRowToSheet. Row: ${JSON.stringify(row)}`)
-    }        
-    
-    async createOutFile( libName, level, libType, outType, data, baseURL, accessToken )
+    }      
+
+    async createOutFile( {libName, level, libType, outType, baseURL, accessToken} )
     {       
         // First create a WorkBook
         const workBook = await excel2.NewExcelWorkBook()     
@@ -450,33 +714,64 @@ const excel2 = new class Excel {
         const header = await excel2.AddHeader(sheet, level, libType)
         log.debug(`header: ${header}`);
         // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level)                 
-        if ( call == 1 )
-        {              
-            // Single call needed, so simply pass along the individual items
-            var items = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: data});            
-            for (var x=0; x<items.length; x++) {                                           
-                await excel2.addRowToSheet(sheet, libType, level, items[x])
-            }            
-        }
-        else
+        const call = await et.getLevelCall(libType, level)
+        // Get all the items in small chuncks        
+        var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                 
+        
+        
+        outType, call
+        
+        
+        
+        log.verbose('*** Returned from section was ***')
+        log.verbose(JSON.stringify(sectionData))
+        log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
+        // Open a file stream
+        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp' })
+        var fs = require('fs');        
+        var stream = fs.createWriteStream(tmpFile, {flags:'a'}); 
+        
+        
+        for (var x=0; x<sectionData.length; x++)        
         {            
-            // Get rating key for each item    
-            const urls = JSONPath({path: '$.MediaContainer.Metadata[*].key', json: data});                    
-            log.verbose('Items to lookup are: ' + urls)
-
-            for (const url of urls) {
-                const contents = await et.getItemData(baseURL, accessToken, url);                 
-                const items = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                                       
-                for (var y=0; y<items.length; y++) {               
-                    await excel2.addRowToSheet(sheet, libType, level, items[y])
+            var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});
+            //for (var n=0; n<sectionChunk.length; n++)            
+            for (var item of sectionChunk)
+            {     
+                if ( call == 1 )
+                {                                          
+                    //await excel2.addRowToSheet(sheet, libType, level, item)
+                    await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
                 }
-              }                             
-        }            
+                else
+                {            
+                    // Get rating key for each item                    
+                    const url = await JSONPath({path: '$..ratingKey', json: item});                    
+                    log.verbose('Item to lookup are: ' + url)                    
+                    const urlWIthPath = '/library/metadata/' + url                
+                    const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});                                     
+                    const detailedItem = await JSONPath({path: '$.MediaContainer.Metadata[0]', json: contents});                                       
+                    //log.verbose('detailedItem: ' + JSON.stringify(detailedItem[0]))
+                    //await excel2.addRowToSheet(sheet, libType, level, detailedItem[0]) 
+                    await excel2.addRowToTmp( { libType: libType, level: level, data: detailedItem[0], stream: stream } );                           
+                }                
+            }
+                            
+        }   
+        stream.end();  
+        stream.close();
+        stream.destroy();
+        // Rename to real file name
+        var newFile = tmpFile.replace('.tmp', 'csv')                        
+        fs.rename(tmpFile, newFile, function (err) {
+            if (err) throw err;
+            console.log('renamed complete');
+          });
+
         // Save Excel file
-        const result = await excel2.SaveWorkbook(workBook, libName, level, 'xlsx')
-        return result
-    }
+        // const result = await excel2.SaveWorkbook(workBook, libName, level, outType)
+        // return result    
+    }       
 }
 
 export {et, excel2};

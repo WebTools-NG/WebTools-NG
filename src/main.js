@@ -37,6 +37,7 @@ log.transports.file.fileName = wtutils.AppName;
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 
 
+
 console.log = log.log;
 log.info('*********************************') 
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
@@ -59,9 +60,9 @@ log.info('App Menu builded')
 // ET-EXCEL STUFF
 
 // We export library named "Ged" of the type movie with a level of "Level 3"
-const libName = 'Ged'
+const libName = 'Movies'
 //const level = 'Tommy'
-const level = 'Level 5'
+const level = 'Level 3'
 const libType = 'movie'
 
 /*
