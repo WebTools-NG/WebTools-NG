@@ -185,7 +185,7 @@
       log.info("getMedia Called");
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);      
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
-      this.$store.commit("UPDATE_EXPORTSTATUS", "Stating to Export");                     
+      this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));                     
       this.$store.dispatch("exportMedias");
     },
     fetchSelection() {

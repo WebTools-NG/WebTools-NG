@@ -88,6 +88,8 @@
             "TT-ETLibrary": "Here you select library you want to export",
             "TT-ETLevel": "Here you select the values you want to export",
             "Status":{
+                "StartExport": "Starting to Export",
+                "GetSectionItems": "Initial fetching items of {idx} in chuncks of {chunck}",
                 "Idle": "Idle",
                 "Status": "Status: ",
                 "Processing-Chunk": "Processing chunk {current} of {total}",

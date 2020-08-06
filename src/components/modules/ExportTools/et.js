@@ -45,7 +45,8 @@ const et = new class ET {
             postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;            
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});                        
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
-            log.verbose(`getSectionData chunck size is ${size} and idx is ${idx}`)            
+            log.verbose(`getSectionData chunck size is ${size} and idx is ${idx}`)                      
+            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size}))
             sectionData.push(chuncks)             
             idx = idx + step;
         } while (size > 1);        
