@@ -59,10 +59,10 @@
         icon-pack="fas"
         :disabled="btnDisable == true"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>      
-    <label id="status" class="form-label"  v-show='status'>
-      {{ status }}
-    </label>
+    </div>
+    <div name="status">
+      {{ count }}
+    </div>
  
   
   </section>
@@ -71,6 +71,7 @@
 <script>
   import { et } from "./et";  
   import i18n from '../../../i18n';
+  import store from '../../../store';
   const log = require("electron-log");
   export default {
       data() {
@@ -86,13 +87,13 @@
             { text: 'Artist', value: 'artist', disabled: true },
             { text: 'Photos', value: 'photo', disabled: true },
             { text: 'Other Videos', value: 'other', disabled: true }
-          ],
-          status: "Idle"
+          ]
         };
   },
   created() {
     log.info("ET Created");
     this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+    this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.Idle"));
     this.fetchSelection();
   },
   computed: {
@@ -155,6 +156,9 @@
       });      
       item['options']=options;      
       return options;              
+    },
+    count () {      
+      return this.$i18n.t("Modules.ET.Status.Status") + store.getters.getExportStatus
     }
   },
   methods: {
@@ -173,19 +177,16 @@
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
 
     },
-    selectExportLevel: function() {
+    selectExportLevel: function() {      
       this.enableBtnExport();
     },
-    callbackStatus: function(statusTxt) {      
-      this.status = statusTxt;
-      console.log('Status: ' + statusTxt)
-    },
+    
     getMedia() {
       log.info("getMedia Called");
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);      
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
-      this.callbackStatus('Starting Export');                
-      this.$store.dispatch("getMediaMovies");
+      this.$store.commit("UPDATE_EXPORTSTATUS", "Stating to Export");                     
+      this.$store.dispatch("exportMedias");
     },
     fetchSelection() {
       log.debug("fetchSelection");

@@ -8,8 +8,8 @@ const state = {
     mediaData: [],
     selectedSection : "",
     selectedExportLevel: "",    
-    selectedLibType: ""
-
+    selectedLibType: "",
+    exportStatus: ""
 };
 
 const mutations = {
@@ -23,7 +23,10 @@ const mutations = {
       },
       UPDATE_EXPORTLEVEL(state, payload) {
           state.selectedExportLevel = payload
-      },      
+      },
+      UPDATE_EXPORTSTATUS(state, payload) {
+        state.exportStatus = payload
+      },          
       UPDATE_EXPORTLEVELS(state, payload) {
         state.exportLevels = payload
       },
@@ -43,9 +46,9 @@ const actions = {
         commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))        
     },
     //getMediaMovies({ getters, commit }) {
-    getMediaMovies({ commit, getters }) {
+    exportMedias({ commit, getters }) {
 
-        const testimp3 = require('../../components/modules/ExportTools/Samples/testimp3.json')
+        //const testimp3 = require('../../components/modules/ExportTools/Samples/testimp3.json')
         
         // Vars OK
         var baseURL = getters.getSlectedServerAddress
@@ -64,7 +67,7 @@ const actions = {
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)
                           
 
-        libName, levelName, libType, 'xlsx', testimp3, baseURL, accessToken
+        libName, levelName, libType, 'xlsx', baseURL, accessToken
         excel2
 
         //excel2.createOutFile( libName, levelName, libType, 'xlsx', testimp3, baseURL, accessToken );
@@ -148,7 +151,8 @@ const getters = {
     getSelectedSection: state => state.selectedSection,    
     getSelectedExportLevel: state => state.selectedExportLevel,
     getLibType: state  => state.selectedLibType,
-    getExportLevels: state => state.exportLevels    
+    getExportLevels: state => state.exportLevels,
+    getExportStatus: state => state.exportStatus    
 };
 
 const etModule = {

@@ -14,17 +14,9 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
-    CONTAINERSIZEMOVIES:    "30",
-    CONTAINERSIZETV:        "20",
-    CONTAINERSIZEEPISODES:  "30",
-    CONTAINERSIZEAUDIO:     "10",
-    CONTAINERSIZEPHOTO:     "20",
-    PMSTIMEOUT:             "20"
-
   },
   mutations: {},
-  getters: {
-    getContainerSizeMovies: state => state.CONTAINERSIZEMOVIES
+  getters: {    
   },
   actions: {},
   modules: {

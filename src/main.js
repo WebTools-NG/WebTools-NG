@@ -23,6 +23,8 @@ Vue.use(BootstrapVue);
 
 
 
+
+
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
@@ -43,8 +45,13 @@ log.info('*********************************')
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
+if (wtconfig.get("general.version", "") != wtutils.AppVersion){
+	// Config file out of date, so prepopulate with default values if missing	
+	wtutils.UpdateConfigFile()
+}
+
 // Get saved language to use, and default to en
-i18n.locale = wtconfig.get('general.language', 'en')
+i18n.locale = wtconfig.get('General.language', 'en')
 Vue.config.productionTip = false
 
 // App Menu Bar

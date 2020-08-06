@@ -37,7 +37,7 @@ export default {
     },
     onChange(event) {            
             log.info('language set to:' + event.target.value);
-            wtconfig.set('general.language', event.target.value);            
+            wtconfig.set('General.language', event.target.value);            
         }
   }
 }

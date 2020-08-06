@@ -4,7 +4,8 @@ const log = require('electron-log');
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 
-import {wtconfig, wtutils} from '../../../wtutils'
+import {wtconfig, wtutils} from '../../../wtutils';
+import i18n from '../../../i18n';
 
 import filesize from 'filesize';
 var path = require("path");
@@ -14,6 +15,7 @@ const fetch = require('node-fetch');
 
 const {JSONPath} = require('jsonpath-plus');
 import axios from 'axios'
+import store from '../../../store';
 
 
 const et = new class ET {
@@ -463,12 +465,12 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp( { libType, level, data, stream }) {        
-        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                               
+      //  log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                               
         let date, year, month, day, hours, minutes, seconds        
         const fields = et.getFields( libType, level)                       
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
         let str = ''
-        let result = ''                         
+        let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
             var name = Object.keys(fields[x]);            
             lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
@@ -582,7 +584,7 @@ const excel2 = new class Excel {
         }        
         // Remove first character
         result = str.substr(1);        
-        stream.write( result + "\n");        
+        await stream.write( result + "\n");              
     }
 
     async addRowToSheet(sheet, libType, level, data) {        
@@ -715,58 +717,61 @@ const excel2 = new class Excel {
         log.debug(`header: ${header}`);
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level)
-        // Get all the items in small chuncks        
-        var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                 
         
         
-        outType, call
-        
-        
-        
-        log.verbose('*** Returned from section was ***')
-        log.verbose(JSON.stringify(sectionData))
-        log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
+        outType, call            
         // Open a file stream
         const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp' })
         var fs = require('fs');        
-        var stream = fs.createWriteStream(tmpFile, {flags:'a'}); 
+        var stream = fs.createWriteStream(tmpFile, {flags:'a'});
+
+        // Get all the items in small chuncks        
+        var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                 
         
+        log.verbose('*** Returned from section was ***')
+        //log.verbose(JSON.stringify(sectionData))
+        log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
+                  
         
-        for (var x=0; x<sectionData.length; x++)        
-        {            
-            var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});
-            //for (var n=0; n<sectionChunk.length; n++)            
-            for (var item of sectionChunk)
-            {     
-                if ( call == 1 )
-                {                                          
-                    //await excel2.addRowToSheet(sheet, libType, level, item)
+        let item
+        for (var x=0; x<sectionData.length; x++)                
+        {
+            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}))                    
+            var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});        
+            if ( call == 1 )
+            {                
+                for (item of sectionChunk){                                                      
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
                 }
-                else
-                {            
-                    // Get rating key for each item                    
-                    const url = await JSONPath({path: '$..ratingKey', json: item});                    
-                    log.verbose('Item to lookup are: ' + url)                    
-                    const urlWIthPath = '/library/metadata/' + url                
-                    const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});                                     
-                    const detailedItem = await JSONPath({path: '$.MediaContainer.Metadata[0]', json: contents});                                       
-                    //log.verbose('detailedItem: ' + JSON.stringify(detailedItem[0]))
-                    //await excel2.addRowToSheet(sheet, libType, level, detailedItem[0]) 
-                    await excel2.addRowToTmp( { libType: libType, level: level, data: detailedItem[0], stream: stream } );                           
-                }                
-            }
-                            
-        }   
+            } 
+            
+            else
+            {                           
+                // Get ratingKeys in the chunk
+                const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
+                let urlStr = urls.join(',') 
+                log.verbose(`Items to lookup are: ${urlStr}`)
+                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}))
+                //store.commit("UPDATE_EXPORTSTATUS", `Processing chunk ${x} of ${sectionData.length}.\nItems to export: \n${urlStr}`)                 
+                const urlWIthPath = '/library/metadata/' + urlStr                          
+                log.verbose(`Items retrieved`)
+                const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
+                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                
+                //await excel2.addRowsToTmp( { libType: libType, level: level, data: contentsItems, stream: stream } );
+                
+                for (item of contentsItems){                       
+                    await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                }
+            }                                            
+        } 
         stream.end();  
-        stream.close();
-        stream.destroy();
         // Rename to real file name
-        var newFile = tmpFile.replace('.tmp', 'csv')                        
+        var newFile = tmpFile.replace('.tmp', '.csv')                        
         fs.rename(tmpFile, newFile, function (err) {
             if (err) throw err;
             console.log('renamed complete');
           });
+          store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`)
 
         // Save Excel file
         // const result = await excel2.SaveWorkbook(workBook, libName, level, outType)

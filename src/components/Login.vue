@@ -60,8 +60,8 @@ import {wtconfig} from '../wtutils';
 var userName = "";
 
 let isRemember = false
-if(wtconfig.get('general.rememberlastusername')){
-  userName = wtconfig.get('general.username')
+if(wtconfig.get('General.rememberlastusername')){
+  userName = wtconfig.get('General.username')
   isRemember = true
 }
 
@@ -85,11 +85,11 @@ export default {
             
       if(this.checkbox){
         log.verbose(`Save username is: ${this.checkbox}`)
-        wtconfig.set('general.rememberlastusername', true )
-        wtconfig.set('general.username', this.input.username)      
+        wtconfig.set('General.rememberlastusername', true )
+        wtconfig.set('General.username', this.input.username)      
       } else {
         log.verbose(`Save username is: ${this.checkbox}`)
-        wtconfig.set('general.rememberlastusername', false )
+        wtconfig.set('General.rememberlastusername', false )
       }
     },
     danger(){
