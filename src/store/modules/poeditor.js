@@ -1,5 +1,16 @@
 import axios from 'axios';
 
+const api_token = '5166c4294ff7fb3a82cbdc82958e850e';
+const id = '342617';
+
+const requestBody = {
+  id: id,
+  api_token: api_token
+}
+
+const headers = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+}
 
 const state = {
     contributors: [],
@@ -13,15 +24,9 @@ const mutations = {
 
 const qs = require('querystring')
 const actions = {
-    fetchPOEContrib({ commit }) {
-        const requestBody = {
-            id: '342617',
-            api_token: '5166c4294ff7fb3a82cbdc82958e850e'
-          } 
+    fetchPOEContrib({ commit }) {         
           const config = {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            headers: headers
           }
           axios.post('https://api.poeditor.com/v2/contributors/list', qs.stringify(requestBody), config)
             .then((response) => {                
@@ -41,7 +46,7 @@ const actions = {
 }
 
 const getters = {
-  getContrip: state => state.contributors,
+  getContrib: state => state.contributors,
 };
 
 const serverModule = {
