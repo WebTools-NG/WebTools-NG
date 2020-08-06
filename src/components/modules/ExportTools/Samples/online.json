@@ -1,0 +1,122 @@
+{
+    "ratingKey":"9042",
+    "key":"/library/metadata/9042",
+    "guid":"com.plexapp.agents.imdb://tt4385888?lang=en",
+    "studio":"Annapurna Pictures",
+    "type":"movie",
+    "title":"20th Century Women",
+    "librarySectionTitle":"Movies",
+    "librarySectionID":4,
+    "librarySectionKey":"/library/sections/4",
+    "contentRating":"dk/fr.u.7",
+    "summary":"In 1979 Santa Barbara, California, Dorothea Fields is a determined single mother in her mid-50s who is raising her adolescent son, Jamie, at a moment brimming with cultural change and rebellion. Dorothea enlists the help of two younger women – Abbie, a free-spirited punk artist living as a boarder in the Fields' home and Julie, a savvy and provocative teenage neighbour – to help with Jamie's upbringing.",
+    "rating":8.9,
+    "audienceRating":7.3,
+    "year":2016,
+    "thumb":"/library/metadata/9042/thumb/1575678525",
+    "art":"/library/metadata/9042/art/1575678525",
+    "duration":7124159,
+    "originallyAvailableAt":"2016-12-28",
+    "addedAt":1490792202,
+    "updatedAt":1575678525,
+    "audienceRatingImage":"rottentomatoes://image.rating.upright",
+    "chapterSource":"media",
+    "primaryExtraKey":"/library/metadata/9421",
+    "ratingImage":"rottentomatoes://image.rating.ripe",
+    "Media":[
+        {
+            "id":9325,
+            "duration":7124159,
+            "bitrate":10980,
+            "width":1920,
+            "height":960,
+            "aspectRatio":1.85,
+            "audioChannels":6,
+            "audioCodec":"ac3",
+            "videoCodec":"h264",
+            "videoResolution":"1080",
+            "container":"mkv",
+            "videoFrameRate":"24p",
+            "audioProfile":"dts",
+            "videoProfile":"high",
+            "Part":[
+                {
+                    "id":29623,
+                    "key":"/library/parts/29623/1567348678/file.mkv",
+                    "duration":7124159,
+                    "file":"/share/CACHEDEV1_DATA/video/old-movies/#/20th Century Women (2016)/20th.Century.Women.2016.1080p.BluRay.x264-GECKOS.mkv",
+                    "size":9777930144,
+                    "audioProfile":"dts",
+                    "container":"mkv",
+                    "videoProfile":"high",
+                    "Stream":[
+                        {
+                            "id":66877,
+                            "streamType":1,
+                            "default":true,
+                            "codec":"h264",
+                            "index":0,
+                            "bitrate":8996,
+                            "bitDepth":8,
+                            "chromaLocation":"left",
+                            "chromaSubsampling":"4:2:0",
+                            "frameRate":23.976,
+                            "hasScalingMatrix":false,
+                            "height":960,
+                            "level":41,
+                            "profile":"high",
+                            "refFrames":4,
+                            "scanType":"progressive",
+                            "width":1920,
+                            "displayTitle":"1080p (H.264)"
+                        },
+                        {
+                            "id":66878,"streamType":2,"selected":true,"default":true,
+                            "codec":"ac3","index":1,"channels":6,"bitrate":448,
+                            "language":"English","languageCode":"eng",
+                            "audioChannelLayout":"5.1(side)","samplingRate":48000,
+                            "displayTitle":"English (AC3 5.1)"
+                        },
+                        {
+                            "id":145278,"streamType":2,"codec":"dca","index":2,
+                            "channels":6,"bitrate":1536,"language":"English",
+                            "languageCode":"eng","audioChannelLayout":"5.1(side)",
+                            "bitDepth":24,"profile":"dts","samplingRate":48000,
+                            "displayTitle":"English (DTS 5.1)"},{"id":66880,
+                            "streamType":3,"codec":"srt","index":3,"bitrate":0,
+                            "language":"English","languageCode":"eng",
+                            "displayTitle":"English (SRT)"},{"id":145279,
+                            "streamType":3,"codec":"srt","index":4,"bitrate":0,
+                            "language":"English","languageCode":"eng","title":"SDH",
+                            "displayTitle":"English (SRT)"
+                        },
+                        {
+                            "id":87315,"key":"/library/streams/87315",
+                            "streamType":3,"selected":true,"codec":"srt",
+                            "language":"Dansk","languageCode":"dan","format":"srt",
+                            "displayTitle":"Dansk (SRT External)"
+                        },
+                        {
+                            "id":87314,"key":"/library/streams/87314","streamType":3,
+                            "codec":"srt","language":"English","languageCode":"eng",
+                            "format":"srt","displayTitle":"English (SRT External)"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "Genre":[
+        {
+            "id":7,"filter":"genre=7","tag":"Comedy"
+        },
+        {
+            "id":66,"filter":"genre=66","tag":"Drama"
+        }
+    ],
+    "Director":[
+        {
+            "id":14818,"filter":"director=14818","tag":"Mike Mills"
+        }
+    ],"Writer":[{"id":14819,"filter":"writer=14819","tag":"Mike Mills"}],"Producer":[{"id":14840,"filter":"producer=14840","tag":"Anne Carey"},{"id":14841,"filter":"producer=14841","tag":"Megan Ellison"},{"id":14842,"filter":"producer=14842","tag":"Youree Henley"}],"Country":[{"id":13306,"filter":"country=13306","tag":"USA"}],"Role":[{"id":14822,"filter":"actor=14822","tag":"Annette Bening","role":"Dorothea Fields","thumb":"http://image.tmdb.org/t/p/original/vVAvoiE6FQ4couqaB0ogaHR6Ef7.jpg"},{"id":14827,"filter":"actor=14827","tag":"Elle Fanning","role":"Julie Miller","thumb":"http://image.tmdb.org/t/p/original/e8CUyxQSE99y5IOfzSLtHC0B0Ch.jpg"},{"id":14830,"filter":"actor=14830","tag":"Greta Gerwig","role":"Abbie Porter","thumb":"http://image.tmdb.org/t/p/original/3H0xzU12GTNJyQTpGysEuI9KyiQ.jpg"},{"id":14834,"filter":"actor=14834","tag":"Lucas Jade Zumann","role":"Jamie Fields","thumb":"http://image.tmdb.org/t/p/original/7ocQJdexgzKx4Yqk0qs9fChIniV.jpg"},{"id":14823,"filter":"actor=14823","tag":"Billy Crudup","role":"William","thumb":"http://image.tmdb.org/t/p/original/2fuCSqWskRaHNBJQsfb0iDPfnWa.jpg"},{"id":14820,"filter":"actor=14820","tag":"Alia Shawkat","role":"Trish","thumb":"http://image.tmdb.org/t/p/original/3A9fLNoFLkbMlSpzoOCWlVIdKKw.jpg"},{"id":14826,"filter":"actor=14826","tag":"Darrell Britt-Gibson","role":"Julian","thumb":"http://image.tmdb.org/t/p/original/cCfTL6qkctE088J3qr8qtgGrZa1.jpg"},{"id":14837,"filter":"actor=14837","tag":"Thea Gill","role":"Gail Porter","thumb":"http://image.tmdb.org/t/p/original/xFG4j3Ll0iVjLaR6jzSNysymxPx.jpg"},{"id":96315,"filter":"actor=96315","tag":"Laura Slade Wiggins","role":"Lynette Winters","thumb":"http://image.tmdb.org/t/p/original/xaDDy9Lsn8CEZe7b1JbdK5GKE8Z.jpg"},{"id":14836,"filter":"actor=14836","tag":"Nathalie Love","role":"Cindy","thumb":"http://image.tmdb.org/t/p/original/8PcM8xE8bSpfQkoNBhVPjPlOX1Z.jpg"},{"id":14821,"filter":"actor=14821","tag":"Alison Elliott","role":"Julie's Mother","thumb":"http://image.tmdb.org/t/p/original/lu5ePooNr1mXNPoEJbxcdmZNqEz.jpg"},{"id":14828,"filter":"actor=14828","tag":"Finn Roberts","role":"Tim Drammer","thumb":"http://image.tmdb.org/t/p/original/pt6b2kHhXpHQ93ROWXAgwfD3YFo.jpg"},{"id":14831,"filter":"actor=14831","tag":"Kirk Bovill","role":"Dorothea's Dinner Guest"},{"id":825,"filter":"actor=825","tag":"Waleed Zuaiter","role":"Charlie","thumb":"http://image.tmdb.org/t/p/original/b7NMq4XyyFkZRKKCag3mpR74jJX.jpg"},{"id":14767,"filter":"actor=14767","tag":"John Billingsley","role":"Doctor","thumb":"http://image.tmdb.org/t/p/original/fHQ6ecMufxLwUAbN3dX3yxFAn5d.jpg"},{"id":14825,"filter":"actor=14825","tag":"Curran Walters","role":"Matt","thumb":"http://image.tmdb.org/t/p/original/aCQvYZwxzteT1gAqHc3eFLYQBDj.jpg"},{"id":14838,"filter":"actor=14838","tag":"Vitaly Andrew LeBeau","role":"Young Jamie"},{"id":14824,"filter":"actor=14824","tag":"Cameron Gellman","role":"Mark","thumb":"http://image.tmdb.org/t/p/original/czeicsWwYVJDTqiZLgx9sDl98O8.jpg"},{"id":14829,"filter":"actor=14829","tag":"Finnegan Seeker Bell","role":"Brian"},{"id":14839,"filter":"actor=14839","tag":"Zoë Nanos","role":"Tanya"},{"id":14833,"filter":"actor=14833","tag":"Lauren Foley","role":"Michelle"},{"id":14835,"filter":"actor=14835","tag":"Matthew Cardarople","role":"Bartender","thumb":"http://image.tmdb.org/t/p/original/1PYYUktSJYQP9JZKeQC2rhmhoYD.jpg"}],"Similar":[{"id":14851,"filter":"similar=14851","tag":"Certain Women"},{"id":14858,"filter":"similar=14858","tag":"Mistress America"},{"id":14860,"filter":"similar=14860","tag":"Paterson"},{"id":14856,"filter":"similar=14856","tag":"Loving"},{"id":14865,"filter":"similar=14865","tag":"Toni Erdmann"},{"id":14854,"filter":"similar=14854","tag":"Frances Ha"},{"id":14857,"filter":"similar=14857","tag":"Maggie's Plan"},{"id":14850,"filter":"similar=14850","tag":"American Honey"},{"id":14855,"filter":"similar=14855","tag":"Jackie"},{"id":14861,"filter":"similar=14861","tag":"Personal Shopper"},{"id":59785,"filter":"similar=59785","tag":"Beginners"},{"id":17005,"filter":"similar=17005","tag":"The Florida Project"},{"id":14862,"filter":"similar=14862","tag":"Sing Street"},{"id":14863,"filter":"similar=14863","tag":"Tangerine"},{"id":16995,"filter":"similar=16995","tag":"Columbus"},{"id":14847,"filter":"similar=14847","tag":"45 Years"},{"id":14852,"filter":"similar=14852","tag":"Christine"},{"id":14848,"filter":"similar=14848","tag":"A Bigger Splash"},{"id":14853,"filter":"similar=14853","tag":"Elle"},
+    {"id":14859,"filter":"similar=14859","tag":"Other People"}]}

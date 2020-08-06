@@ -2,7 +2,7 @@
     "Common": {
         "AppName": "WebTools-NG",
         "SelServer": "Select Server",
-        "Ok": "OK-En",
+        "Ok": "OK",
         "Home": {
             "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
             "Modules": "Tool modules currently available are:",
@@ -54,7 +54,13 @@
                 "menuForum": "Forums",
                 "menuGithub": "Github",
                 "menuManual": "Manual"
-            }
+            },
+            "Modules":{
+                "ET":{
+                    "Settings": "Settings"
+                }
+
+            }            
         }
     },
     "Modules": {
@@ -72,10 +78,30 @@
             "RadioPhotos" : "Photos",
             "RadioOtherVideos": "Other Videos",
             "ErrorNoServerSelected": "No server selected",
+            "LevelInfo": "Export level determines what data is going to be exported.",
+            "ExportLevel": "Export Level",
+            "SelectLevel": "Select level",
+            "BuildInLevels": "*** Buildin levels ***",
+            "CustomLevels": "*** Custom levels ***",
+            "NoLevelFound": "N/A",
+            "TT-ETType": "Here you select the type of library you want to export",
+            "TT-ETLibrary": "Here you select library you want to export",
+            "TT-ETLevel": "Here you select the values you want to export",
+            "Status":{
+                "Idle": "Idle",
+                "Status": "Status: ",
+                "Processing-Chunk": "Processing chunk {current} of {total}",
+                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nItems to export: {urlStr}"                
+
+            },
             "Settings":
             {
                 "Settings": "Settings",
-                "Description": "Here you can define the settings for @:Modules.ET.Name"
+                "Description": "Here you can define the settings for @:Modules.ET.Name",
+                "Browse": "Browse",
+                "SelectOutDir": "Select Output Directory",
+                "ArraySep": "Array Separator:",
+                "ColumnSep": "Column Separator:"
             }
         },
         "About": {

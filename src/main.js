@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig, dialog} from './wtutils'
+import {wtutils, wtconfig} from './wtutils'
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
 import Buefy from 'buefy'
@@ -19,6 +19,11 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueSidebarMenu)
 Vue.use(Buefy);
+Vue.use(BootstrapVue);
+
+
+
+
 
 // Logging start
 // Remember to define log in all components where its used, as in below
@@ -34,13 +39,19 @@ log.transports.file.fileName = wtutils.AppName;
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 
 
+
 console.log = log.log;
 log.info('*********************************') 
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended
 
+if (wtconfig.get("general.version", "") != wtutils.AppVersion){
+	// Config file out of date, so prepopulate with default values if missing	
+	wtutils.UpdateConfigFile()
+}
+
 // Get saved language to use, and default to en
-i18n.locale = wtconfig.get('general.language', 'en')
+i18n.locale = wtconfig.get('General.language', 'en')
 Vue.config.productionTip = false
 
 // App Menu Bar
@@ -51,29 +62,12 @@ require('electron').remote.Menu.setApplicationMenu(menu)
 log.info('App Menu builded')
 
 
-console.log('*********** Ged CASPER start dialog ************');
-console.log('Se main.js linie 61 for at lave en dialog i ET, så');
-console.log('vi kan gemme std. output dir');
-console.log('Gemmes med wtconfig.set("ET.OutPath", <sti til dir>)');
-
-// Nedenstående line slettes nå vi bruger det
-dialog;
-/* 
-
-const outDir = dialog.OpenDirectory('Title', i18n.t('Common.OK'));
-if (outDir)
-{
-  wtconfig.set('ET.OutPath', outDir[0]);
-} */
-
-// for at lave en dialog til at vælge et filnavn, se nedenstående
-//console.log('FileName: ' +  dialog.SaveFile('Title', wtconfig.get('ET.OutPath', wtutils.UserHomeDir), i18n.t('Common.OK')));
 
 
 // ET-EXCEL STUFF
 
 // We export library named "Ged" of the type movie with a level of "Level 3"
-const libName = 'Ged'
+const libName = 'Movies'
 //const level = 'Tommy'
 const level = 'Level 3'
 const libType = 'movie'
@@ -92,7 +86,7 @@ like:
 		"username": "dane22",
 		"language": "en",
 		"rememberlastusername": true,
-		"transfilescopied": "0.1.0"
+		"transfilescopied": "0.0.0"
 	},
 	"Log": {
 		"maxSize": 10485760
@@ -104,7 +98,8 @@ like:
 	},
 	"Developer": {
 		"baseURI": "http://192.168.1.14:32400",
-		"accessToken": "MyAccessToken"
+		"accessToken": "MyAccessToken",
+		"password": "MyPassword"
 	}
 }
 */
@@ -115,15 +110,18 @@ const accessToken = wtconfig.get('Developer.accessToken', 'NO SERVER TOKEN');
 
 // ET Stuff
 import {excel2} from './components/modules/ExportTools/et'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
 // Temp json files to export, until linked called by webpage
-const testimp4 = require('./components/modules/ExportTools/testimp4.json')
-const testimp3 = require('./components/modules/ExportTools/testimp3.json')
-const testimp = require('./components/modules/ExportTools/testimp.json')
-const testimp1 = require('./components/modules/ExportTools/testimp1.json')
-const AllMovies = require('./components/modules/ExportTools/AllMovies.json')
-const Fast = require('./components/modules/ExportTools/2Fast.json')
+const testimp4 = require('./components/modules/ExportTools/Samples/testimp4.json')
+const testimp3 = require('./components/modules/ExportTools/Samples/testimp3.json')
+const testimp = require('./components/modules/ExportTools/Samples/testimp.json')
+const testimp1 = require('./components/modules/ExportTools/Samples/testimp1.json')
+const AllMovies = require('./components/modules/ExportTools/Samples/AllMovies.json')
+const Fast = require('./components/modules/ExportTools/Samples/2Fast.json')
 
 
 

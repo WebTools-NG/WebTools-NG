@@ -1,0 +1,54 @@
+[
+    {
+        "accessible": true,
+        "exists": true,
+        "id": 29652,
+        "key": "/library/parts/29652/1567110629/file.mkv",
+        "duration": 6555328,
+        "file": "/share/CACHEDEV1_DATA/video/old-movies/#/2 Fast 2 Furious (2003)/2 Fast 2 Furious.2003.1080p.[mkvonly].mkv",
+        "size": 5056165150,
+        "audioProfile": "dts",
+        "container": "mkv",
+        "deepAnalysisVersion": "4",
+        "indexes": "sd",
+        "requiredBandwidths": "12566,11762,9535,7249,6673,6673,6673,6673",
+        "videoProfile": "high",
+        "Stream": [            
+        ]
+    },
+    {
+        "id": 42871,
+        "key": "/library/parts/42871/1423608842/file.mkv",
+        "duration": 6410985,
+        "file": "/share/CACHEDEV1_DATA/video/old-movies/f/The Fast and the Furious (2001)/The.Fast.and.the.Furious.2001.1080p.[mkvonly].mkv",
+        "size": 5477082722,
+        "audioProfile": "dts",
+        "container": "mkv",
+        "deepAnalysisVersion": "4",
+        "requiredBandwidths": "13924,11021,9123,7933,7431,7160,7160,7160",
+        "videoProfile": "high"
+    },
+    {
+        "id": 34583,
+        "key": "/library/parts/34583/1423467436/file.mkv",
+        "duration": 6405396,
+        "file": "/share/CACHEDEV1_DATA/video/old-movies/f/Fast and Furious (2009)/Fast.and.Furious.2009.[mkvonly].mkv",
+        "size": 5467565449,
+        "audioProfile": "dts",
+        "container": "mkv",
+        "deepAnalysisVersion": "4",
+        "requiredBandwidths": "17671,13493,9945,8390,8372,8372,8372,8372",
+        "videoProfile": "high"
+    },
+    {
+        "id": 29051,
+        "key": "/library/parts/29051/1423608403/file.mkv",
+        "duration": 6206272,
+        "file": "/share/CACHEDEV1_DATA/video/old-movies/a/Annapolis (2006)/annapolis.720p-x264.mkv",
+        "size": 4695969110,
+        "container": "mkv",
+        "deepAnalysisVersion": "4",
+        "requiredBandwidths": "13531,11830,8166,6975,6588,6484,6484,6484",
+        "videoProfile": "high"
+    }
+]

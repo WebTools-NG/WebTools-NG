@@ -104,7 +104,7 @@ const wtutils = new class WTUtils {
         {
         localHome = __dirname.replace('app.asar', 'locales');
         }        
-        var last = wtconfig.get('general.transfilescopied', "0")
+        var last = wtconfig.get('General.transfilescopied', "0")
         if (!(last == wtutils.AppVersion))
         {
             log.debug('We need to copy translation strings over')            
@@ -124,8 +124,70 @@ const wtutils = new class WTUtils {
                     if (err) return console.error(err)                        
                 });                  
             }        
-            wtconfig.set('general.transfilescopied', wtutils.AppVersion)
+            wtconfig.set('General.transfilescopied', wtutils.AppVersion)
             }                       
+    }
+
+    UpdateConfigFile() {
+        // Update config file with defaults if missing
+        console.log('Updating config file')
+        // General section
+        if ( wtconfig.get('General.username', 'N/A') == 'N/A' ){
+            wtconfig.set('General.username', '')
+        }
+        if ( wtconfig.get('General.language', 'N/A') == 'N/A' ){
+            wtconfig.set('General.language', 'en')
+        }
+        if ( wtconfig.get('General.rememberlastusername', 'N/A') == 'N/A' ){
+            wtconfig.set('General.rememberlastusername', false)
+        }
+        if ( wtconfig.get('General.transfilescopied', 'N/A') == 'N/A' ){
+            wtconfig.set('General.transfilescopied', '')
+        }
+        // Log settings
+        if ( wtconfig.get('Log.maxSize', 'N/A') == 'N/A' ){
+            wtconfig.set('Log.maxSize', '10485760')
+        }
+        if ( wtconfig.get('Log.fileLevel', 'N/A') == 'N/A' ){
+            wtconfig.set('Log.fileLevel', 'info')
+        }
+        if ( wtconfig.get('Log.consoleLevel', 'N/A') == 'N/A' ){
+            wtconfig.set('Log.consoleLevel', 'info')
+        }
+        // PMS Settings
+        if ( wtconfig.get('PMS.TimeOut', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.TimeOut', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.artist', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.artist', 10)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.episode', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.episode', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.movie', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.movie', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.photo', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.photo', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.show', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.show', 20)
+        }
+        // ET Settings
+        if ( wtconfig.get('ET.ArraySep', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.ArraySep', '-')
+        }
+        if ( wtconfig.get('ET.ColumnSep', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.ColumnSep', ',')
+        }        
+        if ( wtconfig.get('ET.OutPath', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.OutPath', '')
+        }
+
+        
+
+        // All done, so stamp version number
+        wtconfig.set('General.version', wtutils.AppVersion)
     }
 
     /* set name(value) {
