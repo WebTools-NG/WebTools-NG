@@ -99,7 +99,9 @@
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "Browse": "Browse",
-                "SelectOutDir": "Select Output Directory"
+                "SelectOutDir": "Select Output Directory",
+                "ArraySep": "Array Separator:",
+                "ColumnSep": "Column Separator:"
             }
         },
         "About": {

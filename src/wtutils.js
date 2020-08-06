@@ -175,7 +175,7 @@ const wtutils = new class WTUtils {
         }
         // ET Settings
         if ( wtconfig.get('ET.ArraySep', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.ArraySep', ' - ')
+            wtconfig.set('ET.ArraySep', '-')
         }
         if ( wtconfig.get('ET.ColumnSep', 'N/A') == 'N/A' ){
             wtconfig.set('ET.ColumnSep', ',')
