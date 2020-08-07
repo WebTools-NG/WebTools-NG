@@ -31,6 +31,10 @@ export default {
       store
     }
   },
+  created() {
+    // Prefetch languages
+    this.$store.dispatch('fetchPOELang');    
+  },
   components:{
     Menu,
     Header,

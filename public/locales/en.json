@@ -11,7 +11,8 @@
         },
         "Language": {
             "Description": "@:Common.Language.Name allows you to change language of the app",
-            "Name": "Language"
+            "Name": "Language",
+            "btnForce": "Force download"
         },
         "Login": {
             "SignIn": "Sign in with plex.tv",
