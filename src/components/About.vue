@@ -33,6 +33,7 @@ export default {
   methods: {
   }, created() {
   this.$store.dispatch('fetchPOEContrib');
+  
   }, computed: {
     poTranslators(){
 

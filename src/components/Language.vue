@@ -3,47 +3,65 @@
     <h1 class="title is-2">{{ $t("Common.Language.Name") }}</h1>    
     <h2 class="subtitle">{{ $t("Common.Language.Description") }}</h2>
     <br>
+    
     <div class="control has-icons-left">
-    <div class="locale-changer select is-dark is-medium" >
-      <select @change="onChange($event)" v-model="$i18n.locale">
-        <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
-      </select>
-    </div>
-        <span class="icon is-medium is-left">
+      <div class="locale-changer select is-dark is-medium" >            
+        <b-form-select id="langselect" @change.native="onChange($event)" v-model="selectedLang" :options="olLangs"></b-form-select>
+      </div>
+      <span class="icon is-medium is-left">
             <i class="fas fa-globe"></i>
-        </span>
+      </span>
+      <button id="btnDownload" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</button>
     </div>
   </section>
 </template>
 
 <script>
 // User Config
-import {wtconfig, wtutils} from '../wtutils';
+import {wtconfig} from '../wtutils';
 const log = require('electron-log');
 
 export default {
   name: 'locale-changer',
   data () {
-    return { langs: [] }
-  },
-   mounted() {
-    this.importAll(wtutils.LangFiles);    
+    return {      
+      olLangs: [],
+      selectedLang: wtconfig.get('General.language')
+    }
+  },  
+  mounted() {
+    log.info("About Mounted");    
+    this.getOnlineLangs();    
   },
   methods: {
-    importAll(r) {
-      for (var i=0; i<r.length; i++) {       
-        this.langs.push(r[i].slice(0,-5))
-      }
+    forcedownload() {      
+      this.$store.dispatch("forceDownload", { "langCode": this.selectedLang});
     },
+    getOnlineLangs() {      
+      var onlineLangs = this.$store.getters.getLanguages      
+      for (var i=0; i<onlineLangs.length; i++) {       
+        var langName = onlineLangs[i]['name'] + ' (' + onlineLangs[i]['percentage'] + '%)';
+        const entry = {}
+        entry['text'] = langName        
+        entry['value'] = onlineLangs[i]['code']
+        this.olLangs.push(entry)
+      }      
+    },    
     onChange(event) {            
-            log.info('language set to:' + event.target.value);
-            wtconfig.set('General.language', event.target.value);            
-        }
+      log.info('language set to:' + event.target.value);
+      wtconfig.set('General.language', event.target.value);            
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .langselect{
+    margin-right:10px;
+  }
+  .btnDownload{
+    margin-left: 10px;
+  }
 
 </style>

@@ -1,9 +1,12 @@
 import axios from 'axios';
 
+
+
+const baseUrl = 'https://api.poeditor.com/v2/'
 const api_token = '5166c4294ff7fb3a82cbdc82958e850e';
 const id = '342617';
 
-const requestBody = {
+let requestBody = {
   id: id,
   api_token: api_token
 }
@@ -14,12 +17,16 @@ const headers = {
 
 const state = {
     contributors: [],
+    languages: []
 };
 
 const mutations = {
     UPDATE_CONTRIBUTORS(state, payload) {
         state.contributors = payload;
     },
+    UPDATE_LANGUAGES(state, payload) {
+      state.languages = payload;
+  },
 };
 
 const qs = require('querystring')
@@ -28,7 +35,7 @@ const actions = {
           const config = {
             headers: headers
           }
-          axios.post('https://api.poeditor.com/v2/contributors/list', qs.stringify(requestBody), config)
+          axios.post( baseUrl + 'contributors/list', qs.stringify(requestBody), config)
             .then((response) => {                
                 commit('UPDATE_CONTRIBUTORS', response.data.result.contributors)
               })
@@ -42,11 +49,53 @@ const actions = {
                     console.log('Error', error.message);
                   }    
               });
+    },
+    async fetchPOELang({ commit }) {         
+      const config = {
+        headers: headers
+      }
+      try {
+        const response = await axios.post(baseUrl +  'languages/list', qs.stringify(requestBody), config)
+        await commit('UPDATE_LANGUAGES', response.data.result.languages)
+      } catch (error) {
+        console.log(error.response.body);
+      }
+    },
+    async forceDownload(state, {langCode}) {       
+      const fs = require('fs') 
+      const wtutils = require('../../wtutils');      
+      const Path = require('path')       
+      const path = Path.resolve(wtutils.wtutils.Home, 'locales', langCode + '.json')
+
+      const config = {
+        headers: headers
+      }      
+      requestBody['language'] = langCode;
+      requestBody['type'] = 'key_value_json';       
+            
+      const response = await axios.post(baseUrl +  'projects/export', qs.stringify(requestBody), config)        
+      const link = await response.data.result.url;
+      console.log('Ged link: ' + link)
+
+      // axios image download with response type "stream"
+      const dwnlresp = await axios({
+        method: 'GET',
+        url: link,
+        responseType: 'stream'
+      })
+
+      var json = JSON.stringify(dwnlresp.data);
+      fs.writeFile(path, json, function(err) {
+        if (err) throw err;
+        console.log('complete');
+      }); 
+            
     }
 }
 
 const getters = {
   getContrib: state => state.contributors,
+  getLanguages: state => state.languages
 };
 
 const serverModule = {
