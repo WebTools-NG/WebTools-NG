@@ -1,28 +1,21 @@
 <template>
   <section class="section">
     <h1 class="title is-3">{{ $t("Modules.ET.Settings.Settings") }}</h1>
-    <h2 class="subtitle">{{ $t("Modules.ET.Settings.Description") }}</h2>
-    <br />
-    <div id="outDir">
-        <p>{{ $t("Modules.ET.Settings.SelectOutDir") }}</p>
-        <input id="outDirbox" name="outDirbox" v-model="outDirVal" :disabled=true v-bind:placeholder="$t('Modules.ET.Settings.SelectOutDir')">                        
-        <button v-on:click="browse">{{ $t("Modules.ET.Settings.Browse") }}</button>        
+    <h2 class="subtitle">{{ $t("Modules.ET.Settings.Description") }}</h2>    
+    <div>
+        <b-input-group id="outDir" :prepend="$t('Modules.ET.Settings.SelectOutDir')" class="mt-3">                    
+            <b-form-input id="outDirbox" name="outDirbox" v-model="outDirVal" :disabled=true v-bind:placeholder="$t('Modules.ET.Settings.SelectOutDir')" />                                    
+            <b-input-group-append>                
+                <b-button variant="info" v-on:click="browse">{{ $t("Modules.ET.Settings.Browse") }}</b-button>
+            </b-input-group-append>
+        </b-input-group>   
     </div>     
-    <div class="form-row" id="row">
-        <div class="col" id="ArraySep">        
-            <p>{{ $t("Modules.ET.Settings.ArraySep") }}</p>
-            <input id="ArraySep" name="ArraySep" type="text" class="form-control, col-md-auto" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()">
-        </div>
-        <div class="col" id="ColumnSep">        
-            <p>{{ $t("Modules.ET.Settings.ColumnSep") }}</p>
-            <input id="ColumnSep" name="ColumnSep" type="text" class="form-control, col-md-auto" v-model="ColumnSep" :disabled=false :maxlength=1 @change="setColumnSep()">
-        </div>        
-        <div class="col" :hidden=true>      
-    </div>
-  </div>
-
- 
-
+    <b-input-group id="ArraySep" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
+        <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>        
+    </b-input-group>
+    <b-input-group id="ColumnSep" :prepend="$t('Modules.ET.Settings.ColumnSep')" class="mt-3">
+        <b-form-input id="ColumnSep" name="ColumnSep" type="text" class="form-control" v-model="ColumnSep" :disabled=false :maxlength=1 @change="setColumnSep()"></b-form-input>
+    </b-input-group>
   </section>
 </template>
 <script>
@@ -62,7 +55,7 @@
 
 </script>
 <style scoped>
-    #outDirbox{
+    .outDirbox{
         margin-right:10px;
     }
     #row{
