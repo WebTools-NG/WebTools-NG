@@ -94,8 +94,7 @@
                 "Idle": "Idle",
                 "Status": "Status: ",
                 "Processing-Chunk": "Processing chunk {current} of {total}",
-                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nItems to export: {urlStr}"                
-
+                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nItems to export: {urlStr}"
             },
             "Settings":
             {
@@ -105,7 +104,7 @@
                 "SelectOutDir": "Select Output Directory",
                 "ArraySep": "Delimiter, with multiple info in same field",
                 "ColumnSep": "Delimiter between fields in CSV file",
-                "TimeOut": "Timeout when requesting info from PMS in sec",
+                "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
                 "OrgTitleNull": "Default Original Title to title, if empty",
                 "SortTitleNull": "Default Sort title to title, if empty",
                 "AutoXLSCol": "Autosize column (xlsx only)",

@@ -16,6 +16,17 @@
     <b-input-group id="ColumnSep" :prepend="$t('Modules.ET.Settings.ColumnSep')" class="mt-3">
         <b-form-input id="ColumnSep" name="ColumnSep" type="text" class="form-control" v-model="ColumnSep" :disabled=false :maxlength=1 @change="setColumnSep()"></b-form-input>
     </b-input-group>
+    <b-input-group id="TimeOut" :prepend="$t('Modules.ET.Settings.TimeOut')" class="mt-3">
+        <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
+    </b-input-group>
+    <b-form-group id="b-form-group">
+      <b-form-checkbox-group
+        stacked
+        :options="cbOptions"
+        v-model="cbSelected"
+        @change.native="filterTable">      
+      </b-form-checkbox-group>
+    </b-form-group>    
   </section>
 </template>
 <script>
@@ -24,15 +35,39 @@
     log, wtutils, wtconfig, dialog
     import i18n from '../../../../i18n'
     export default { 
+        created() {
+            this.getcbDefaults()
+        },
         data() {            
             return {
                 outDirVal: wtconfig.get('ET.OutPath', i18n.t('Modules.ET.Settings.SelectOutDir')),
                 ArraySep: wtconfig.get('ET.ArraySep'),
-                ColumnSep: wtconfig.get('ET.ColumnSep')
-            };      
-        
+                ColumnSep: wtconfig.get('ET.ColumnSep'),
+                TimeOut: wtconfig.get('PMS.TimeOut'),
+                cbSelected: [],
+                cbOptions: [
+                    { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
+                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
+                    { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol' },
+                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow' }
+                ] 
+            };              
         },
         methods: {
+            getcbDefaults(){                
+                const cbItems = ["OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"];
+                for(let i = 0; i < cbItems.length; i++){                     
+                    if (wtconfig.get("ET." + cbItems[i], false)){
+                        this.cbSelected.push(cbItems[i])
+                    }                    
+                }                
+            },
+            filterTable(){
+                this.$nextTick(()=>{console.log(this.cbSelected);}) 
+                for( var cbItem of ["OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){                    
+                    wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem))) 
+                }   
+            },
             browse: function(){
                 log.debug('Start browsing for Output Directory');
                 const outDir = dialog.OpenDirectory( i18n.t("Modules.ET.Settings.SelectOutDir"), i18n.t("Common.Ok"));
@@ -49,7 +84,11 @@
             },
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
+            },
+            setTimeOut: function(){
+                wtconfig.set('PMS.TimeOut', this.TimeOut)
             }
+
         } 
     };    
 
@@ -58,8 +97,8 @@
     .outDirbox{
         margin-right:10px;
     }
-    #row{
-        margin-top: 10px;
+    #b-form-group{
+        margin-top: 20px;
     }
     
 </style>
