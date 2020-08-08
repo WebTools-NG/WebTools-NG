@@ -2,14 +2,13 @@
   <section class="section">
     <h1 class="title is-2">{{ $t("Common.Language.Name") }}</h1>    
     <h2 class="subtitle">{{ $t("Common.Language.Description") }}</h2>
-    <br>
-    
+    <br>     
     <div class="control has-icons-left">
       <div class="locale-changer select is-dark is-medium" >            
-        <b-form-select id="langselect" @change.native="onChange($event)" v-model="selectedLang" :options="olLangs"></b-form-select>
+        <b-form-select id="langselect" @change.native="onChange($event)" v-model="$i18n.locale" :options="olLangs"></b-form-select>
       </div>
       <span class="icon is-medium is-left">
-            <i class="fas fa-globe"></i>
+            <i class="fas fa-globe"></i>            
       </span>
       <button id="btnDownload" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</button>
     </div>

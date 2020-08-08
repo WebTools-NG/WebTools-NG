@@ -21,8 +21,6 @@ import Menu from './components/layout/Menu';
 import Header from './components/layout/Header';
 import store from './store'
 
-
-
 export default {
   name: "app",
   data(){
