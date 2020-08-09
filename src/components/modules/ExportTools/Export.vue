@@ -50,7 +50,7 @@
       </b-form-group>     
     </div>
 
-    <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
+    <!-- <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1> -->
     <div class="buttons">
       <b-button
         type="is-primary"
@@ -59,12 +59,24 @@
         icon-pack="fas"
         :disabled="btnDisable == true"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>    
-    <div name="status">
-      <b-form-input readonly
- id="outDirbox" name="outDirbox" v-model="count" :disabled=true v-bind:placeholder="$t('Modules.ET.Status.Status')" />
-      {{ count }}
-    </div>
+    </div>        
+    <b-container fluid>
+    <b-row>
+      <b-col sm="2">
+        <label for="status">{{ $t('Modules.ET.Status.Status') }}:</label>
+      </b-col>
+      <b-col sm="10">
+        <b-form-textarea
+          id="status"          
+          v-bind:placeholder="$t('Modules.ET.Status.Status')"
+          v-model="count"
+          :disabled=true
+          rows="1"
+          max-rows="8"
+        ></b-form-textarea>
+      </b-col>
+    </b-row>
+  </b-container>
  
   
   </section>
@@ -160,7 +172,7 @@
       return options;              
     },
     count () {      
-      return this.$i18n.t("Modules.ET.Status.Status") + store.getters.getExportStatus
+      return store.getters.getExportStatus
     }
   },
   methods: {

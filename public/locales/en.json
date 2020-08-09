@@ -102,7 +102,7 @@
             "TT-ETLevel":"Here you select the values you want to export",
             "Status":{
                 "Idle":"Idle",
-                "Status":"Status: ",
+                "Status":"Status",
                 "Processing-Chunk":"Processing chunk {current} of {total}",
                 "Processing-Chunk-Detailed":"Processing chunk {current} of {total}.\nItems to export: {urlStr}",
                 "StartExport":"Starting to Export",

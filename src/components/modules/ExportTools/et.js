@@ -370,6 +370,18 @@ const excel2 = new class Excel {
         return sheet
     }
 
+    GetHeader(Level, libType) {
+        const columns = []
+        log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)        
+        // Get level fields
+        const fields = et.getLevelFields(Level, libType)              
+        for (var i=0; i<fields.length; i++) {                        
+            log.verbose(`Column: ${fields[i]}`)                                                                        
+            columns.push(fields[i])            
+        }
+        return columns  
+    }
+
     async AddHeader(Sheet, Level, libType) {
         const columns = []
         log.verbose(`AddHeader sheet: ${Sheet} - level: ${Level} - libType: ${libType}`)        
@@ -710,30 +722,36 @@ const excel2 = new class Excel {
     async createOutFile( {libName, level, libType, outType, baseURL, accessToken} )
     {       
         // First create a WorkBook
-        const workBook = await excel2.NewExcelWorkBook()     
+       // const workBook = await excel2.NewExcelWorkBook()     
         // Create Sheet
-        let sheet = await excel2.NewSheet(workBook, libName, level)        
+       // let sheet = await excel2.NewSheet(workBook, libName, level)        
         // Add the header to the sheet
-        const header = await excel2.AddHeader(sheet, level, libType)
+        //const header = await excel2.AddHeader(sheet, level, libType)
+        const header = excel2.GetHeader(level, libType)
         log.debug(`header: ${header}`);
+        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
+
+
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level)
         
+        outType
+        //outType, call   
         
-        outType, call            
+        
         // Open a file stream
         const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp' })
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
 
+
+        stream.write( strHeader + "\n"); 
+
+
+
         // Get all the items in small chuncks        
-        var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                 
-        
-        log.verbose('*** Returned from section was ***')
-        //log.verbose(JSON.stringify(sectionData))
-        log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
-                  
-        
+        var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                                 
+        log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)                          
         let item
         for (var x=0; x<sectionData.length; x++)                
         {
@@ -744,8 +762,7 @@ const excel2 = new class Excel {
                 for (item of sectionChunk){                                                      
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
                 }
-            } 
-            
+            }             
             else
             {                           
                 // Get ratingKeys in the chunk
@@ -757,9 +774,7 @@ const excel2 = new class Excel {
                 const urlWIthPath = '/library/metadata/' + urlStr                          
                 log.verbose(`Items retrieved`)
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
-                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                
-                //await excel2.addRowsToTmp( { libType: libType, level: level, data: contentsItems, stream: stream } );
-                
+                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                                                
                 for (item of contentsItems){                       
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
                 }
@@ -772,7 +787,9 @@ const excel2 = new class Excel {
             if (err) throw err;
             console.log('renamed complete');
           });
-          store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`)
+        store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`)
+
+
 
         // Save Excel file
         // const result = await excel2.SaveWorkbook(workBook, libName, level, outType)
