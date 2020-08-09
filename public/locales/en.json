@@ -94,8 +94,7 @@
                 "Idle": "Idle",
                 "Status": "Status: ",
                 "Processing-Chunk": "Processing chunk {current} of {total}",
-                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nItems to export: {urlStr}"                
-
+                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nItems to export: {urlStr}"
             },
             "Settings":
             {
@@ -103,8 +102,13 @@
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "Browse": "Browse",
                 "SelectOutDir": "Select Output Directory",
-                "ArraySep": "Array Separator:",
-                "ColumnSep": "Column Separator:"
+                "ArraySep": "Delimiter, with multiple info in same field",
+                "ColumnSep": "Delimiter between fields in CSV file",
+                "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
+                "OrgTitleNull": "Default Original Title to title, if empty",
+                "SortTitleNull": "Default Sort title to title, if empty",
+                "AutoXLSCol": "Autosize column (xlsx only)",
+                "AutoXLSRow": "Autosize row (xlsx only)"
             }
         },
         "About": {

@@ -12,13 +12,8 @@
                     </div>
             </div>
              </div>
-
-
                 <div class="level-item">
-
-
-                    <div class="select is-dark">
-                       
+                    <div class="select is-dark">                       
                         <b-select v-bind:placeholder="$t('Common.SelServer')"
                             v-model="selectedOption"
                             @input="selected">
@@ -29,11 +24,9 @@
                                 {{ option.name }}
                             </option>
                         </b-select>
-
                     </div>
-
-                                        <b-button   id="sync-button" @click="fetchServers" type="is-warning" 
-                                icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
+                    <b-button id="sync-button" @click="fetchServers" type="is-warning" 
+                        icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
                     </b-button>
                 </div>
                 <div class="level-left">
@@ -55,8 +48,6 @@ import store from '../../store';
 import { ptv } from '../modules/General/plextv';
 const log = require('electron-log');
 
-
-
 export default {
     data(){
         return {
@@ -70,23 +61,22 @@ export default {
         },
         active2(e) {
             log.info("active2 called")
-        this.active = e;
-},
+            this.active = e;
+        },
         selected: function () {
             log.info('HEADER: selected server: ' + this.selectedOption.name)
             ptv.checkServerConnect(this.selectedOption)
             this.$store.commit("UPDATE_SELECTED_SERVER", this.selectedOption);
-
         },
         onChange(event) {
               log.info(event.target.selected);
           },
-          getAvatar(){
-                return this.$store.getters.getAvatar
-           },
-           getPlexName(){
-               return this.$store.getters.getPlexName
-           }
+        getAvatar(){
+            return this.$store.getters.getAvatar
+        },
+        getPlexName(){
+            return this.$store.getters.getPlexName
+        }
     },
     created(){
         log.info("menu created")

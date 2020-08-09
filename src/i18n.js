@@ -1,27 +1,30 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import {wtutils} from './wtutils'
+import {wtutils, wtconfig} from './wtutils'
+
 const log = require('electron-log');
+console.log = log.log;
 
 Vue.use(VueI18n)
 
 function loadLocaleMessages () {  
-  wtutils.MoveToHome();  
-  var fs = require('fs');   
+  wtutils.MoveToHome();
   const messages = {}
-  const items = wtutils.LangFiles  
-  const localHome = wtutils.Home + '/locales'
-  log.verbose(`Files count is: ${items.length}`)  
-  for (var i=0; i<items.length; i++) {                                    
-    log.verbose(`found translation file : ${items[i]}`);        
-      let langCode = items[i].split(".")[0];
-      let langFile = localHome + '/' + items[i];
-      messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8'));         
-    }        
-    log.verbose(`********* Done reading translations ***********`)  
+  const fs = require('fs')
+  // Force read en lang, since it's the fallback
+  const langCode = 'en'
+  var langFile = wtutils.Home + '/locales/' + langCode + '.json'  
+  log.debug(`Loading language: ${langCode}`)  
+  messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8')); 
+  if (wtconfig.get('General.language') != 'en'){
+    // We need to preload an additional language
+    const langCode = wtconfig.get('General.language')
+    langFile = wtutils.Home + '/locales/' + langCode + '.json'
+    log.debug(`Loading language: ${langCode}`)
+    messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8'));
+  }
   return messages
 }
-
 
 export default new VueI18n({
   locale: process.env.VUE_APP_I18N_LOCALE || 'en',

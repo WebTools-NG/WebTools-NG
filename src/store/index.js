@@ -4,6 +4,7 @@ import VuexPersistence from 'vuex-persist';
 import plextv from './modules/plextv'
 import poeditor from './modules/poeditor'
 import et from './modules/et'
+import language from './modules/language'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,8 @@ export default new Vuex.Store({
   modules: {
     plextv,
     poeditor,
-    et
+    et,
+    language
   },
   plugins: [vuexLocal.plugin]
 })

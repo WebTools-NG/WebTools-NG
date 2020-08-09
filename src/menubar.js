@@ -6,7 +6,7 @@ import { wtutils} from './wtutils';
 const menuTemplate = [
     {
        // File menu
-      label: i18n.t("Common.Menu.File.menuFile"),      
+      label: i18n.t("Common.Menu.File.menuFile"),        
       submenu:
       [   
         wtutils.isMac ?

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import router from '../../router'
+import {wtconfig} from '../../wtutils'
 
 const log = require('electron-log');
 
@@ -61,14 +62,29 @@ const actions = {
           .then((response) => {
             let result=[];
             log.info('Response from fetchPlexServers recieved')
-          response.data.forEach((req) => {
-          // if (req.owned == true && req.product == "Plex Media Server") {
-            if (req.product == "Plex Media Server") {
-              log.warn('GED&NUGGA : fetchPlexServers : ser ikke owned')
-              log.debug(req)
-              result.push(req);
-            } 
-          })
+            const showNotOwned = wtconfig.get('Developer.showNotOwned', false)
+            response.data.forEach((req) => {
+              if (showNotOwned){
+                if (req.product == "Plex Media Server") {
+                  let pmsServer = {};
+                  pmsServer['name'] = req.name;
+                  pmsServer['accessToken'] = req.accessToken;
+                  pmsServer['connections'] = req.connections;
+                  pmsServer['clientIdentifier'] = req.clientIdentifier                                  
+                  log.warn('fetchPlexServers : ser ikke owned')                  
+                  result.push(pmsServer);
+                }
+              } else {
+                if (req.owned == true && req.product == "Plex Media Server") {                                  
+                  let pmsServer = {};
+                  pmsServer['name'] = req.name;
+                  pmsServer['accessToken'] = req.accessToken;
+                  pmsServer['connections'] = req.connections;
+                  pmsServer['clientIdentifier'] = req.clientIdentifier                                                                      
+                  result.push(pmsServer);
+                }
+              } 
+            })
             commit('UPDATE_PLEX_SERVERS', result)
           })
           .catch(function (error) {
