@@ -86,6 +86,9 @@
   import { et } from "./et";  
   import i18n from '../../../i18n';
   import store from '../../../store';
+  import { wtconfig } from '../../../wtutils';
+
+
   const log = require("electron-log");
   export default {
       data() {
@@ -97,7 +100,7 @@
           selLevelName: "",
           optionsMediaType: [
             { text: 'Movies', value: 'movie', disabled: false },            
-            { text: 'Shows', value: 'show', disabled: false },            
+            { text: 'Shows', value: 'show', disabled: true },            
             { text: 'Artist', value: 'artist', disabled: true },
             { text: 'Photos', value: 'photo', disabled: true },
             { text: 'Other Videos', value: 'other', disabled: true }
@@ -189,7 +192,6 @@
       this.selLibrary = '';
       this.selLevel = '';  
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-
     },
     selectExportLevel: function() {      
       this.enableBtnExport();
@@ -197,6 +199,18 @@
     
     getMedia() {
       log.info("getMedia Called");
+      if (wtconfig.get('ET.OutPath', "") == "")
+      {
+        log.info('ET: No output dir defined')        
+        this.$bvToast.toast(this.$t("Modules.ET.ErrorNoOutDirMsg"), {
+          title: this.$t("Modules.ET.ErrorNoOutDirTitle"),
+          autoHideDelay: 3000,          
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-center' 
+        })        
+        return
+      }
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);      
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
       this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));                     

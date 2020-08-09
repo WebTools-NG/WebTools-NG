@@ -78,6 +78,8 @@
             "RadioOtherVideos":"Other Videos",
             "ErrorServer":"No server",
             "ErrorNoServerSelected":"No server selected",
+            "ErrorNoOutDirTitle":"No Output directory defined",
+            "ErrorNoOutDirMsg":"You need to define an output directory in the settings page first",
             "Settings":{
                 "Settings":"Settings",
                 "Description":"Here you can define the settings for @:Modules.ET.Name",
