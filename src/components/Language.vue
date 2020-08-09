@@ -17,15 +17,14 @@
 
 <script>
 // User Config
-import {wtconfig} from '../wtutils';
+import i18n from '../i18n';
 const log = require('electron-log');
 
 export default {
   name: 'locale-changer',
   data () {
     return {      
-      olLangs: [],
-      selectedLang: wtconfig.get('General.language')
+      olLangs: []      
     }
   },  
   mounted() {
@@ -33,8 +32,8 @@ export default {
     this.getOnlineLangs();    
   },
   methods: {
-    forcedownload() {      
-      this.$store.dispatch("forceDownload", { "langCode": this.selectedLang});
+    forcedownload() {       
+      this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
     },
     getOnlineLangs() {      
       var onlineLangs = this.$store.getters.getLanguages      
@@ -46,9 +45,8 @@ export default {
         this.olLangs.push(entry)
       }      
     },    
-    onChange(event) {            
-      log.info('language set to:' + event.target.value);
-      wtconfig.set('General.language', event.target.value);            
+    onChange(event) {          
+      this.$store.dispatch('updateAndSetLang', { "langCode": event.target.value, "forceDownload": false});
     }
   }
 }

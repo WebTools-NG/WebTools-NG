@@ -66,30 +66,21 @@ const actions = {
       const wtutils = require('../../wtutils');      
       const Path = require('path')       
       const path = Path.resolve(wtutils.wtutils.Home, 'locales', langCode + '.json')
-
       const config = {
         headers: headers
       }      
       requestBody['language'] = langCode;
-      requestBody['type'] = 'key_value_json';       
-            
+      requestBody['type'] = 'key_value_json';             
       const response = await axios.post(baseUrl +  'projects/export', qs.stringify(requestBody), config)        
-      const link = await response.data.result.url;
-      console.log('Ged link: ' + link)
-
+      const link = await response.data.result.url;      
       // axios image download with response type "stream"
       const dwnlresp = await axios({
         method: 'GET',
         url: link,
         responseType: 'stream'
       })
-
       var json = JSON.stringify(dwnlresp.data);
-      fs.writeFile(path, json, function(err) {
-        if (err) throw err;
-        console.log('complete');
-      }); 
-            
+      fs.writeFileSync(path, json);          
     }
 }
 

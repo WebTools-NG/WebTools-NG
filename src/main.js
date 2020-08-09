@@ -70,6 +70,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 new Vue({
   render: h => h(App),
   router: router,
-  i18n,
-  store: store  
+  store: store,
+  i18n    
 }).$mount('#app')
