@@ -59,8 +59,10 @@
         icon-pack="fas"
         :disabled="btnDisable == true"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>
+    </div>    
     <div name="status">
+      <b-form-input readonly
+ id="outDirbox" name="outDirbox" v-model="count" :disabled=true v-bind:placeholder="$t('Modules.ET.Status.Status')" />
       {{ count }}
     </div>
  

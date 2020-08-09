@@ -1,125 +1,123 @@
 {
-    "Common": {
-        "AppName": "WebTools-NG",
-        "SelServer": "Select Server",
-        "Ok": "OK",
-        "Home": {
-            "About": "@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
-            "Modules": "Tool modules currently available are:",
-            "Name": "Home",
-            "Title": "Welcome to @:Common.AppName"
+    "Common":{
+        "AppName":"WebTools-NG",
+        "Home":{
+            "About":"@:Common.AppName is a tool that enables the use of tool modules to help with Plex Server management.",
+            "Modules":"Tool modules currently available are:",
+            "Name":"Home",
+            "Title":"Welcome to @:Common.AppName"
         },
-        "Language": {
-            "Description": "@:Common.Language.Name allows you to change language of the app",
-            "Name": "Language",
-            "btnForce": "Force download"
+        "Language":{
+            "Description":"@:Common.Language.Name allows you to change language of the app",
+            "Name":"Language",
+            "btnForce":"Force download"
         },
-        "Login": {
-            "SignIn": "Sign in with plex.tv",
-            "UseCred": "Use your regular Plex credentials",
-            "Note": "3.Party Auth is not supported!",
-            "Username": "Username",
-            "UsernamePrompt": "Enter your plex.tv Username",
-            "UsernameSave": "Remember Username",
-            "Password": "Password",
-            "PasswordPrompt": "Enter your plex.tv password"
+        "Login":{
+            "SignIn":"Sign in with plex.tv",
+            "UseCred":"Use your regular Plex credentials",
+            "Note":"3.Party Auth is not supported!",
+            "Username":"Username",
+            "UsernamePrompt":"Enter your plex.tv Username",
+            "Password":"Password",
+            "PasswordPrompt":"Enter your plex.tv password",
+            "UsernameSave":"Remember Username"
         },
-        "Menu": {
+        "SelServer":"Select Server",
+        "Menu":{
             "File":{
-                "menuFile": "File",
-                "menuOpenLogDir": "Open Log Directory",
-                "menuQuit": "Quit"
+                "menuFile":"File",
+                "menuOpenLogDir":"Open Log Directory",
+                "menuQuit":"Quit"
             },
             "Edit":{
-                "menuEdit": "Edit",
-                "menuUndo": "Undo",
-                "menuRedo": "Redo",
-                "menuCut": "Cut",
-                "menuCopy": "Copy",
-                "menuPaste": "Paste",
-                "menuDelete": "Delete",
-                "menuSelectAll": "SelectAll"
+                "menuEdit":"Edit",
+                "menuUndo":"Undo",
+                "menuRedo":"Redo",
+                "menuCut":"Cut",
+                "menuCopy":"Copy",
+                "menuPaste":"Paste",
+                "menuDelete":"Delete",
+                "menuSelectAll":"SelectAll"
             },
             "View":{
-                "menuView": "View",
-                "menuReload": "Reload",
-                "menuForceReload": "Force Reload",
-                "menuToggleDeveloperTools": "Toggle Developer Tools",
-                "menuActualSize": "Actual Size",
-                "menuZoomIn": "Zoom In",
-                "menuZoomOut": "Zoom Out",
-                "menuToggleFullScreen": "Toggle Full Screen"
+                "menuView":"View",
+                "menuReload":"Reload",
+                "menuForceReload":"Force Reload",
+                "menuToggleDeveloperTools":"Toggle Developer Tools",
+                "menuActualSize":"Actual Size",
+                "menuZoomIn":"Zoom In",
+                "menuZoomOut":"Zoom Out",
+                "menuToggleFullScreen":"Toggle Full Screen"
             },
             "Help":{
-                "menuHelp": "Help",
-                "menuForum": "Forums",
-                "menuGithub": "Github",
-                "menuManual": "Manual"
+                "menuHelp":"Help",
+                "menuForum":"Forums",
+                "menuGithub":"Github",
+                "menuManual":"Manual"
             },
             "Modules":{
                 "ET":{
-                    "Settings": "Settings"
+                    "Settings":"Settings"
                 }
-
-            }            
-        }
-    },
-    "Modules": {
-        "ET": {
-            "Description": "@:Modules.ET.Name allows you to export some information about the medias in your libraries",
-            "Name": "ExportTool",
-            "ErrorServer": "No server",
-            "HSelectMedia": "Select Media Type",
-            "HSelectSelection": "Select Media Libary",
-            "SelectSelection": "Select Selection",
-            "HExportMedia": "Export Media",
-            "RadioMovies": "Movies",
-            "RadioTVSeries": "TV Series",
-            "RadioMusic": "Music",
-            "RadioPhotos" : "Photos",
-            "RadioOtherVideos": "Other Videos",
-            "ErrorNoServerSelected": "No server selected",
-            "LevelInfo": "Export level determines what data is going to be exported.",
-            "ExportLevel": "Export Level",
-            "SelectLevel": "Select level",
-            "BuildInLevels": "*** Buildin levels ***",
-            "CustomLevels": "*** Custom levels ***",
-            "NoLevelFound": "N/A",
-            "TT-ETType": "Here you select the type of library you want to export",
-            "TT-ETLibrary": "Here you select library you want to export",
-            "TT-ETLevel": "Here you select the values you want to export",
-            "Status":{
-                "StartExport": "Starting to Export",
-                "GetSectionItems": "Initial fetching items of {idx} in chuncks of {chunck}",
-                "Idle": "Idle",
-                "Status": "Status: ",
-                "Processing-Chunk": "Processing chunk {current} of {total}",
-                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nItems to export: {urlStr}"
-            },
-            "Settings":
-            {
-                "Settings": "Settings",
-                "Description": "Here you can define the settings for @:Modules.ET.Name",
-                "Browse": "Browse",
-                "SelectOutDir": "Select Output Directory",
-                "ArraySep": "Delimiter, with multiple info in same field",
-                "ColumnSep": "Delimiter between fields in CSV file",
-                "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
-                "OrgTitleNull": "Default Original Title to title, if empty",
-                "SortTitleNull": "Default Sort title to title, if empty",
-                "AutoXLSCol": "Autosize column (xlsx only)",
-                "AutoXLSRow": "Autosize row (xlsx only)"
             }
         },
-        "About": {
-            "Description": "@:Modules.About.Name",
-            "Name": "About us and credits",
-            "MainDevelopers": "Main Developers",
-            "Devdane22": "Tommy (aka dane22), a Plex community member (ukdtom on GitHub)",
-            "DevCPSO": "Casper (aka CPSO), a soon to be Plex community member (CPSO on GitHub)",
-            "TranslationBetaTestersTitle": "Translators and Beta Testers",
-            "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
-            "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work And our friends at POEditor.com, who provided a free translation site because we are an Open-Source project."
+        "Ok":"OK"
+    },
+    "Modules":{
+        "ET":{
+            "Description":"@:Modules.ET.Name allows you to export some information about the medias in your libraries",
+            "Name":"ExportTool",
+            "HSelectMedia":"Select Media Type",
+            "HSelectSelection":"Select Media Libary",
+            "SelectSelection":"Select Selection",
+            "HExportMedia":"Export Media",
+            "RadioMovies":"Movies",
+            "RadioTVSeries":"TV Series",
+            "RadioMusic":"Music",
+            "RadioPhotos":"Photos",
+            "RadioOtherVideos":"Other Videos",
+            "ErrorServer":"No server",
+            "ErrorNoServerSelected":"No server selected",
+            "Settings":{
+                "Settings":"Settings",
+                "Description":"Here you can define the settings for @:Modules.ET.Name",
+                "Browse":"Browse",
+                "SelectOutDir":"Select Output Directory",
+                "ArraySep":"Delimiter, with multiple info in same field",
+                "ColumnSep":"Delimiter between fields in CSV file",
+                "TimeOut":"Timeout when requesting info from PMS in sec (Global setting)",
+                "OrgTitleNull":"Default Original Title to title, if empty",
+                "SortTitleNull":"Default Sort title to title, if empty",
+                "AutoXLSCol":"Autosize column (xlsx only)",
+                "AutoXLSRow":"Autosize row (xlsx only)"
+            },
+            "LevelInfo":"Export level determines what data is going to be exported.",
+            "ExportLevel":"Export Level",
+            "SelectLevel":"Select level",
+            "BuildInLevels":"*** Buildin levels ***",
+            "CustomLevels":"*** Custom levels ***",
+            "NoLevelFound":"N/A",
+            "TT-ETType":"Here you select the type of library you want to export",
+            "TT-ETLibrary":"Here you select library you want to export",
+            "TT-ETLevel":"Here you select the values you want to export",
+            "Status":{
+                "Idle":"Idle",
+                "Status":"Status: ",
+                "Processing-Chunk":"Processing chunk {current} of {total}",
+                "Processing-Chunk-Detailed":"Processing chunk {current} of {total}.\nItems to export: {urlStr}",
+                "StartExport":"Starting to Export",
+                "GetSectionItems":"Initial fetching items of {idx} in chuncks of {chunck}"
+            }
+        },
+        "About":{
+            "Description":"@:Modules.About.Name",
+            "Name":"About us and credits",
+            "MainDevelopers":"Main Developers",
+            "Devdane22":"Tommy (aka dane22), a Plex community member (ukdtom on GitHub)",
+            "DevCPSO":"Casper (aka CPSO), a soon to be Plex community member (CPSO on GitHub)",
+            "TranslationBetaTestersTitle":"Translators and Beta Testers",
+            "TranslationBetaTestersText":"A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
+            "PlexPoCredits":"And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work And our friends at POEditor.com, who provided a free translation site because we are an Open-Source project."
         }
     }
 }

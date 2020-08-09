@@ -22,9 +22,6 @@ Vue.use(Buefy);
 Vue.use(BootstrapVue);
 
 
-
-
-
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
@@ -37,7 +34,6 @@ log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
 log.transports.file.fileName = wtutils.AppName;
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
-
 
 
 console.log = log.log;

@@ -36,7 +36,8 @@
     import i18n from '../../../../i18n'
     export default { 
         created() {
-            this.getcbDefaults()
+            this.getcbDefaults(),
+            console.log('Ged strOrgTitleNull: ' +  + i18n.t('Modules.ET.Settings.OrgTitleNull'))
         },
         data() {            
             return {
@@ -44,12 +45,12 @@
                 ArraySep: wtconfig.get('ET.ArraySep'),
                 ColumnSep: wtconfig.get('ET.ColumnSep'),
                 TimeOut: wtconfig.get('PMS.TimeOut'),
-                cbSelected: [],
+                cbSelected: [],                
                 cbOptions: [
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol' },
-                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow' }
+                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow' }                    
                 ] 
             };              
         },
