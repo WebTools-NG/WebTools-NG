@@ -16,7 +16,8 @@ function loadLocaleMessages () {
   var langFile = wtutils.Home + '/locales/' + langCode + '.json'  
   log.debug(`Loading language: ${langCode}`)  
   messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8')); 
-  if (wtconfig.get('General.language') != 'en'){
+  log.debug(`Defined language: ${wtconfig.get('General.language')}`)
+  if (wtconfig.get('General.language', 'en') != 'en'){
     // We need to preload an additional language
     const langCode = wtconfig.get('General.language')
     langFile = wtutils.Home + '/locales/' + langCode + '.json'

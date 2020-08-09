@@ -44,105 +44,23 @@ const actions = {
         var baseURL = getters.getSlectedServerAddress
         var accessToken = getters.getSlectedServerToken        
         commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))        
-    },
-    //getMediaMovies({ getters, commit }) {
-    exportMedias({ commit, getters }) {
-
-        //const testimp3 = require('../../components/modules/ExportTools/Samples/testimp3.json')
-        
+    },    
+    exportMedias({ commit, getters }) {                
         // Vars OK
         var baseURL = getters.getSlectedServerAddress
         var accessToken = getters.getSlectedServerToken
         var libType = getters.getLibType
-        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)        
-              
+        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                      
         var key = getters.getSelectedSection
         
         var mediaSize = ''
-        var calcSize = 0
-
-       // var sections = getters.getPmsSections
-
-        
-        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)
-                          
-
+        var calcSize = 0               
+        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)                          
         libName, levelName, libType, 'xlsx', baseURL, accessToken
         excel2
-
-        //excel2.createOutFile( libName, levelName, libType, 'xlsx', testimp3, baseURL, accessToken );
-
-
-
-        axios, commit, key, mediaSize, calcSize
-        /* 
-        axios({
-            method: 'get',
-            baseURL: `${baseURL}`,
-            url: `/library/sections/${key}/all`,
-            responseType: 'json',
-            headers: {
-                'Accept':       "application/json",
-                'X-Plex-Token': getters.getSlectedServerToken
-            },
-            params: {
-                "type": "1",
-                "X-Plex-Container-Start": "0",
-                "X-Plex-Container-Size": "0"
-            }
-        }).then((response) => {
-            mediaSize = response.data.MediaContainer.totalSize;
-            calcSize = Math.ceil(mediaSize/30)
-            log.info('calcSize is: ' + calcSize)
-
-            for (let i = 0; i <= calcSize; i++) {
-                axios({
-                    method: 'get',
-                    baseURL: `${baseURL}`,
-                    url: `/library/sections/${key}/all`,
-                    responseType: 'json',
-                    headers: {
-                        'Accept':       "application/json",
-                        'X-Plex-Token': getters.getSlectedServerToken
-                    },
-                    params: {
-                        "type": "1",
-                        "X-Plex-Container-Start":getters.getContainerSizeMovies * i,
-                        "X-Plex-Container-Size": getters.getContainerSizeMovies
-                    }
-                }).then((response) => {
-                    log.info("NUGGA Calc : I is: " + i + "calc is: " + getters.getContainerSizeMovies * i)
-                    log.info(response.data.MediaContainer.Metadata)
-                    //mediaArray.push(response.data.MediaContainer.Metadata)
-                    
-                    //excel2.createOutFile( libName, level, libType, 'xlsx', response.data.MediaContainer.Metadata, baseURL, getters.getSlectedServerToken );
-                    
-
-
-                    commit('UPDATE_MEDIADATA', response.data.MediaContainer.Metadata)
-                }).catch((error) => {
-                    if (error.response) {                  
-                        // The request was made and tgite server responded with a status code
-                        // that falls out of the range of 2xx
-                        log.info(error.response.data)
-                        log.info(error.response.status)
-                        alert(error.response.data.error)
-                        //this.danger(error.response.status, error.response.data.error);
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        log.info(error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        log.info('Error', error.message);
-                    }
-                }
-            )
-              }
-        }) */
+        axios, commit, key, mediaSize, calcSize       
         excel2.createOutFile( {libName: libName, level: levelName, libType: libType, outType: 'xlsx', baseURL: baseURL, accessToken: accessToken} );
-        //excel2.createOutFile( libName, levelName, libType, 'xlsx', getters.getMediaMovies, baseURL, accessToken );       
+        
     }
 }
 

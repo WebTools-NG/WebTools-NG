@@ -50,7 +50,7 @@
       </b-form-group>     
     </div>
 
-    <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1>
+    <!-- <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1> -->
     <div class="buttons">
       <b-button
         type="is-primary"
@@ -59,10 +59,24 @@
         icon-pack="fas"
         :disabled="btnDisable == true"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>
-    <div name="status">
-      {{ count }}
-    </div>
+    </div>        
+    <b-container fluid>
+    <b-row>
+      <b-col sm="2">
+        <label for="status">{{ $t('Modules.ET.Status.Status') }}:</label>
+      </b-col>
+      <b-col sm="10">
+        <b-form-textarea
+          id="status"          
+          v-bind:placeholder="$t('Modules.ET.Status.Status')"
+          v-model="count"
+          :disabled=true
+          rows="1"
+          max-rows="8"
+        ></b-form-textarea>
+      </b-col>
+    </b-row>
+  </b-container>
  
   
   </section>
@@ -72,6 +86,9 @@
   import { et } from "./et";  
   import i18n from '../../../i18n';
   import store from '../../../store';
+  import { wtconfig } from '../../../wtutils';
+
+
   const log = require("electron-log");
   export default {
       data() {
@@ -83,7 +100,7 @@
           selLevelName: "",
           optionsMediaType: [
             { text: 'Movies', value: 'movie', disabled: false },            
-            { text: 'Shows', value: 'show', disabled: false },            
+            { text: 'Shows', value: 'show', disabled: true },            
             { text: 'Artist', value: 'artist', disabled: true },
             { text: 'Photos', value: 'photo', disabled: true },
             { text: 'Other Videos', value: 'other', disabled: true }
@@ -158,7 +175,7 @@
       return options;              
     },
     count () {      
-      return this.$i18n.t("Modules.ET.Status.Status") + store.getters.getExportStatus
+      return store.getters.getExportStatus
     }
   },
   methods: {
@@ -175,7 +192,6 @@
       this.selLibrary = '';
       this.selLevel = '';  
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-
     },
     selectExportLevel: function() {      
       this.enableBtnExport();
@@ -183,6 +199,18 @@
     
     getMedia() {
       log.info("getMedia Called");
+      if (wtconfig.get('ET.OutPath', "") == "")
+      {
+        log.info('ET: No output dir defined')        
+        this.$bvToast.toast(this.$t("Modules.ET.ErrorNoOutDirMsg"), {
+          title: this.$t("Modules.ET.ErrorNoOutDirTitle"),
+          autoHideDelay: 3000,          
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-center' 
+        })        
+        return
+      }
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);      
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
       this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));                     
