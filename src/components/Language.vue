@@ -29,8 +29,7 @@
         <dd>* {{ $t("Common.Language.LangForce1") }}</dd>       
       </dl>       
     </div>
-    <div>
-      joinPOE
+    <div>      
       <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>      
     </div>
   </section>
