@@ -55,17 +55,14 @@ import i18n from '../../i18n'
                     {
                         href: { path: '/' },
                         title: 'Theme',
-                        icon: 'fas fa-palette'
+                        icon: 'fas fa-palette',
+                        hidden: true
                     },
                     {
                         href: { path: '/' },
                         title: 'Factory Reset',
-                        icon: 'fas fa-power-off'
-                    },
-                    {
-                        href: { path: '/' },
-                        title: 'Logout',
-                        icon: 'fas fa-sign-out-alt'
+                        icon: 'fas fa-power-off',
+                        hidden: true
                     }
                 ], 
                   collapsed: false,
