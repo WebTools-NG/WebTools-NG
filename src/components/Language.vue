@@ -10,7 +10,28 @@
       <span class="icon is-medium is-left">
             <i class="fas fa-globe"></i>            
       </span>
-      <button id="btnDownload" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</button>
+      <b-button id="btnDownload" variant="success" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</b-button>
+    </div>
+    <br/>
+    <div id="poe">
+      <dl>
+        <dt>{{ $t("Common.Language.LangMissing") }}:</dt>
+        <dd>* {{ $t("Common.Language.LangMissing1") }}</dd>
+        <dd>* {{ $t("Common.Language.LangMissing2") }}</dd>
+        <dd>* {{ $t("Common.Language.LangMissing3") }}</dd>
+        <dd>* {{ $t("Common.Language.LangMissing4") }}</dd>
+        <dt>{{ $t("Common.Language.LangSpelling") }}:</dt>
+        <dd>* {{ $t("Common.Language.LangSpelling1") }}</dd> 
+        <dt>{{ $t("Common.Language.LangProcent") }}</dt>
+        <dd>* {{ $t("Common.Language.LangProcent1") }}</dd>
+        <dd>* {{ $t("Common.Language.LangProcent2") }}</dd>
+        <dt>{{ $t("Common.Language.LangForce") }}</dt>
+        <dd>* {{ $t("Common.Language.LangForce1") }}</dd>       
+      </dl>       
+    </div>
+    <div>
+      joinPOE
+      <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>      
     </div>
   </section>
 </template>
@@ -18,6 +39,7 @@
 <script>
 // User Config
 import i18n from '../i18n';
+import { shell } from 'electron';
 const log = require('electron-log');
 
 export default {
@@ -34,6 +56,9 @@ export default {
   methods: {
     forcedownload() {       
       this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
+    },
+    joinPOE() {
+      shell.openExternal("https://poeditor.com/join/project/yFjdfkDfup")
     },
     getOnlineLangs() {      
       var onlineLangs = this.$store.getters.getLanguages      

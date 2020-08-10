@@ -10,7 +10,20 @@
         "Language":{
             "Description":"@:Common.Language.Name allows you to change language of the app",
             "Name":"Language",
-            "btnForce":"Force download"
+            "btnForce":"Force download",
+            "LangMissing": "My language is missing from above",
+            "LangMissing1": "if your project is missing in above list, it means that nobody sadly translated it.",
+            "LangMissing2": "If so, we urge you to not only help us, but also your fellow countrymen using Plex.",
+            "LangMissing3": "Please visit the link below to sign up as a translator!",
+            "LangMissing4": "Doing so, will also list you in the about page ;)",
+            "LangSpelling": "I found a bad translation",
+            "LangSpelling1": "If so, we urge you to join the translation site as well.",
+            "LangProcent": "What does the number after the language means?",
+            "LangProcent1": "The number indicates how much of your language that is translated",
+            "LangProcent2": "If not on 100%, then we need your help",
+            "LangForce": "What does the '@:Common.Language.btnForce' button do?",
+            "LangForce1": "It updates your translations with the newest version avail",
+            "Join": "Become a Translator"
         },
         "Login":{
             "SignIn":"Sign in with plex.tv",
