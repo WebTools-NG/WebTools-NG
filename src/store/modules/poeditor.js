@@ -31,11 +31,11 @@ const mutations = {
 
 const qs = require('querystring')
 const actions = {
-    fetchPOEContrib({ commit }) {         
+    async fetchPOEContrib({ commit }) {         
           const config = {
             headers: headers
           }
-          axios.post( baseUrl + 'contributors/list', qs.stringify(requestBody), config)
+          await axios.post( baseUrl + 'contributors/list', qs.stringify(requestBody), config)
             .then((response) => {                
                 commit('UPDATE_CONTRIBUTORS', response.data.result.contributors)
               })

@@ -10,6 +10,7 @@
       <span class="icon is-medium is-left">
             <i class="fas fa-globe"></i>            
       </span>
+      <p />
       <b-button id="btnDownload" variant="success" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</b-button>
     </div>
     <br/>

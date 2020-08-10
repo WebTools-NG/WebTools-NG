@@ -50,7 +50,6 @@
       </b-form-group>     
     </div>
 
-    <!-- <h1 class="title is-3">{{ $t("Modules.ET.HExportMedia") }}</h1> -->
     <div class="buttons">
       <b-button
         type="is-primary"
@@ -58,6 +57,7 @@
         icon-left="fas fa-file-download"
         icon-pack="fas"
         :disabled="btnDisable == true"
+        variant="success"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
     </div>        
     <b-container fluid>
