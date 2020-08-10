@@ -589,14 +589,14 @@ const excel2 = new class Excel {
             }            
             // If string, put in ""
             if (isNaN(val)){
-                str += `,"${val}"`
+                str += wtconfig.get('ET.ColumnSep') + '"' + val + '"';
             }
             else {
-                str += `,${val}`
+                str += wtconfig.get('ET.ColumnSep') + val;
             }
         }        
         // Remove first character
-        result = str.substr(1);        
+        result = str.substr(1);         
         await stream.write( result + "\n");              
     }
 
@@ -730,8 +730,6 @@ const excel2 = new class Excel {
         const header = excel2.GetHeader(level, libType)
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
-
-
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level)
         
