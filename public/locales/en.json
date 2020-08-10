@@ -12,7 +12,7 @@
             "Name":"Language",
             "btnForce":"Force download",
             "LangMissing": "My language is missing from above",
-            "LangMissing1": "if your project is missing in above list, it means that nobody sadly translated it.",
+            "LangMissing1": "if your language is missing in above list, it means that nobody sadly translated it.",
             "LangMissing2": "If so, we urge you to not only help us, but also your fellow countrymen using Plex.",
             "LangMissing3": "Please visit the link below to sign up as a translator!",
             "LangMissing4": "Doing so, will also list you in the about page ;)",
