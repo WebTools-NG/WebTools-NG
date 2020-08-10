@@ -36,8 +36,7 @@
     import i18n from '../../../../i18n'
     export default { 
         created() {
-            this.getcbDefaults(),
-            console.log('Ged strOrgTitleNull: ' +  + i18n.t('Modules.ET.Settings.OrgTitleNull'))
+            this.getcbDefaults()            
         },
         data() {            
             return {
@@ -80,8 +79,15 @@
                     log.debug(`Selected Directory is ${outDir}`);
                 }               
             },
-            setColumnSep: function(){                
-                wtconfig.set('ET.ColumnSep', this.ColumnSep)
+            setColumnSep: function(){ 
+                if (this.ColumnSep == '9')
+                {
+                    wtconfig.set('ET.ColumnSep', '\t')
+                }
+                else
+                {               
+                    wtconfig.set('ET.ColumnSep', this.ColumnSep)
+                }
             },
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
