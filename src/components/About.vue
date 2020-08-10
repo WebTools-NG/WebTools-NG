@@ -7,10 +7,8 @@
     <br>
     <h1 class="title is-3">{{ $t("Modules.About.TranslationBetaTestersTitle") }}</h1>
     <h2 class="subtitle">{{ $t("Modules.About.TranslationBetaTestersText") }}</h2>
-    <!-- <div class="notification">
-      <p v-for="po in poTranslators" :key="po.name">{{ po.name }} {{po.permissions[0].languages}}</p> -->
     <div>
-      <span v-for="po in poTranslators" :key="po.name">{{ po.name }} {{po.permissions[0].languages}}, </span>
+      <span v-for="po in poTranslators" :key="po.name">{{ po.name }} </span>
     </div>
     <br>
     <h1 class="title is-5">{{ $t("Modules.About.PlexPoCredits") }}</h1>
@@ -38,16 +36,6 @@ export default {
   
   }, computed: {
     poTranslators(){
-
-/*
-      let contip = this.$store.getters.getContrip
-      let list = []
-      contip.forEach(element => {
-        list.push(element.name)
-      });
-      return list
-      */
-
      return this.$store.getters.getContrib
     }
   }
