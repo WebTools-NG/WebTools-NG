@@ -99,7 +99,7 @@
                 "Browse":"Browse",
                 "SelectOutDir":"Select Output Directory",
                 "ArraySep":"Delimiter, with multiple info in same field",
-                "ColumnSep":"Delimiter between fields in CSV file",
+                "ColumnSep":"Delimiter between fields in CSV file (Use 9 for TAB)",
                 "TimeOut":"Timeout when requesting info from PMS in sec (Global setting)",
                 "OrgTitleNull":"Default Original Title to title, if empty",
                 "SortTitleNull":"Default Sort title to title, if empty",
