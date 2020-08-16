@@ -16,12 +16,12 @@ import i18n from '../../i18n'
                 menu: [
                     {
                         href: { path: '/home' },
-                        title: 'Home',
+                        title: i18n.t("Common.Menu.Modules.Home.NavTitle"),
                         icon: 'fa fa-home'
                     },
                     {
                         header: true,
-                        title: 'Tools',
+                        title: i18n.t("Common.Menu.NavSections.Tools"),
                         hiddenOnCollapse: true
                     },
                     {
@@ -39,28 +39,28 @@ import i18n from '../../i18n'
                     },
                     {
                         header: true,
-                        title: 'Options',
+                        title: i18n.t("Common.Menu.NavSections.Options"),
                         hiddenOnCollapse: true
                     },
                     {
                         href: { path: '/language' },
-                        title: 'Language',
+                        title: i18n.t("Common.Menu.Modules.Language.NavTitle"),
                         icon: 'fas fa-language'
                     },
                     {
                         href: { path: '/about' },
-                        title: 'About us',
+                        title: i18n.t("Common.Menu.Modules.About.NavTitle"),
                         icon: 'fas fa-question-circle'
                     },
                     {
                         href: { path: '/' },
-                        title: 'Theme',
+                        title: i18n.t("Common.Menu.Modules.Theme.NavTitle"),
                         icon: 'fas fa-palette',
                         hidden: true
                     },
                     {
                         href: { path: '/' },
-                        title: 'Factory Reset',
+                        title: i18n.t("Common.Menu.Modules.Reset.NavTitle"),
                         icon: 'fas fa-power-off',
                         hidden: true
                     }

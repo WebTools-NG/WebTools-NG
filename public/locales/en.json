@@ -68,9 +68,28 @@
                 "menuGithub": "Github",
                 "menuManual": "Manual"
             },
+            "NavSections":{
+                "Tools": "Tools",
+                "Options": "Options"
+            },
             "Modules": {
                 "ET": {
                     "Settings": "Settings"
+                },
+                "About": {
+                    "NavTitle": "About Us"
+                },
+                "Home":{
+                    "NavTitle": "Home"
+                },
+                "Language":{
+                    "NavTitle": "Language"
+                },
+                "Theme":{
+                    "NavTitle": "Theme"
+                },
+                "Reset":{
+                    "NavTitle": "Factory Reset"
                 }
             }
         },
@@ -126,6 +145,7 @@
         },
         "About": {
             "Description": "@:Modules.About.Name",
+            "NavTitle": "About Us",
             "Name": "About us and credits",
             "MainDevelopers": "Main Developers",
             "Devdane22": "Tommy (aka dane22), a Plex community member (ukdtom on GitHub)",
