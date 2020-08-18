@@ -1,8 +1,10 @@
 <template>
-
-<b-container>
+<b-container class="vw-100 vh-100">
   <b-row class="row justify-content-center align-items-center">
     <b-col id="login-column" col md="6">
+        <b-alert id="alert" show variant="info">
+          {{ $t("Common.Login.SignIn") }} <br> {{ $t("Common.Login.UseCred") }} <br> {{ $t("Common.Login.Note") }}
+        </b-alert>
       <b-col id="login-box" col md="12">
         <b-form-group
           id="fieldset-1"
@@ -145,15 +147,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+#alert{
+  margin-top: 25%;
+}
+
 #login-box {
-  margin-top: 120px;
-  max-width: 600px;
-  height: 320px;
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
 }
  #login-box {
-  padding: 10px;
+  padding: 15px;
 }
 
 </style>

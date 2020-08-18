@@ -68,6 +68,9 @@ export default {
   max-width: 250px !important;
 }
 
+#auth_login {
+  background: #363636;
+}
 
 
 
