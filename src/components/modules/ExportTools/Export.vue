@@ -102,13 +102,12 @@
           selLevel: "",
           selLevelName: "",
           optionsMediaType: [
-            { text: 'Movies', value: 'movie', disabled: false },            
-            { text: 'Shows', value: 'show', disabled: true },            
-            { text: 'Artist', value: 'artist', disabled: true },
-            { text: 'Photos', value: 'photo', disabled: true },
-            { text: 'Other Videos', value: 'other', disabled: true }
-          ]
-          
+            { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
+            { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true },            
+            { text: i18n.t('Modules.ET.RadioMusic'), value: 'artist', disabled: true },
+            { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },
+            { text: i18n.t('Modules.ET.RadioOtherVideos'), value: 'other', disabled: true }
+          ]          
         };
   },
   watch: {
@@ -121,9 +120,7 @@
       this.selLibraryWait = true;             
     },
     selectedServerAddressUpdateInProgress: async function(){
-      this.selLibraryWait = false;
-      
-      console.log('Ged waiting for server addressS')
+      this.selLibraryWait = false;            
     }
   },
   created() {
@@ -204,9 +201,7 @@
         log.error("No Library found");
         result.push["No Library found"];
       }
-      this.selLibraryOptions = result;   
-      console.log('Ged88 section Options: ' + JSON.stringify(this.selLibraryOptions))          
-      console.log('Ged99 section Options: ' + JSON.stringify(result))          
+      this.selLibraryOptions = result;         
     },
     selectSelection: function(selected) {
       log.debug(selected);

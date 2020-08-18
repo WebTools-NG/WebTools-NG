@@ -116,8 +116,7 @@ const et = new class ET {
             subItem['type'] = JSONPath({path: '$..type', json: section})[0];                                                                  
             result.push(subItem)
         }        
-        await Promise.resolve(result)
-        console.log('Ged sections: ' + JSON.stringify(result))
+        await Promise.resolve(result)        
         return  result
     }
     
