@@ -120,9 +120,7 @@
       this.selLibraryWait = true;             
     },
     selectedServerAddressUpdateInProgress: async function(){
-      this.selLibraryWait = false;
-      
-      console.log('Ged waiting for server addressS')
+      this.selLibraryWait = false;            
     }
   },
   created() {
@@ -203,9 +201,7 @@
         log.error("No Library found");
         result.push["No Library found"];
       }
-      this.selLibraryOptions = result;   
-      console.log('Ged88 section Options: ' + JSON.stringify(this.selLibraryOptions))          
-      console.log('Ged99 section Options: ' + JSON.stringify(result))          
+      this.selLibraryOptions = result;         
     },
     selectSelection: function(selected) {
       log.debug(selected);
