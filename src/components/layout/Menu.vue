@@ -16,12 +16,12 @@ import i18n from '../../i18n'
                 menu: [
                     {
                         href: { path: '/home' },
-                        title: i18n.t("Common.Menu.Modules.Home.NavTitle"),
+                        title: i18n.t("Common.Menu.Sidebar.Home.NavTitle"),
                         icon: 'fa fa-home'
                     },
                     {
                         header: true,
-                        title: i18n.t("Common.Menu.NavSections.Tools"),
+                        title: i18n.t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
                     },
                     {
@@ -31,7 +31,7 @@ import i18n from '../../i18n'
                         child: [
                             {                                
                                 href: '/export/settings',
-                                title: i18n.t("Common.Menu.Modules.ET.Settings"),                                
+                                title: i18n.t("Common.Menu.Sidebar.ET.Settings"),                                
                                 icon: 'fa fa-cog'
                             }
                         ]
@@ -39,28 +39,28 @@ import i18n from '../../i18n'
                     },
                     {
                         header: true,
-                        title: i18n.t("Common.Menu.NavSections.Options"),
+                        title: i18n.t("Common.Menu.Sidebar.NavSections.Options"),
                         hiddenOnCollapse: true
                     },
                     {
                         href: { path: '/language' },
-                        title: i18n.t("Common.Menu.Modules.Language.NavTitle"),
+                        title: i18n.t("Common.Menu.Sidebar.Language.NavTitle"),
                         icon: 'fas fa-language'
                     },
                     {
                         href: { path: '/about' },
-                        title: i18n.t("Common.Menu.Modules.About.NavTitle"),
+                        title: i18n.t("Common.Menu.Sidebar.About.NavTitle"),
                         icon: 'fas fa-question-circle'
                     },
                     {
                         href: { path: '/' },
-                        title: i18n.t("Common.Menu.Modules.Theme.NavTitle"),
+                        title: i18n.t("Common.Menu.Sidebar.Theme.NavTitle"),
                         icon: 'fas fa-palette',
                         hidden: true
                     },
                     {
                         href: { path: '/' },
-                        title: i18n.t("Common.Menu.Modules.Reset.NavTitle"),
+                        title: i18n.t("Common.Menu.Sidebar.Reset.NavTitle"),
                         icon: 'fas fa-power-off',
                         hidden: true
                     }
