@@ -117,6 +117,7 @@ const et = new class ET {
             result.push(subItem)
         }        
         await Promise.resolve(result)
+        console.log('Ged sections: ' + JSON.stringify(result))
         return  result
     }
     

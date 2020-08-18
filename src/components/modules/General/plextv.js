@@ -2,52 +2,74 @@ const log = require('electron-log');
 import axios from 'axios'
 import store from '../../../store';
 
+
 const ptv = new class PTV {
     constructor() {                    
     }
-
-    checkServerConnect(server) {
-        log.info("NUGGA : ET : checkServerConnect called")
-        server.connections.forEach((val) => {
-            log.info(val.uri)
-            let baseurl = val.uri
-                axios.get(baseurl + '/identity', {
-                    timeout: 5000
+    async checkServerConnect(server) {
+        log.info(`Checking address for server: ${server.name}`);
+        // Set WaitState
+        store.commit("UPDATE_PLEX_SELECTED_SERVER_STATUS", true);
+        let PMSAddress = '';
+        let local = false;
+        // Start with the local address check first
+        for (var i = 0; i < server.connections.length; i++) {
+        //server.connections.forEach((val) => {
+            let val = server.connections[i];
+            log.info(`Checking: ${val.uri}`);                        
+            let baseurl = val.uri;
+            await axios.get(baseurl + '/identity', {
+                headers: {
+                    Accept: 'application/json'
+                },
+                timeout: 5000
                 })
-                .then(response => {
-                    log.info(response)
-                    if(response.status == 200){
-                        log.info("NUGGA: PTV : checkServerConnect: response status is 200")
-                        log.info("NUGGA : PLT : address for 200 server: " + baseurl)
-                        store.commit("UPDATE_SELECTED_SERVER_ADDRESS", baseurl);
+                .then(response => {                    
+                    if(response.status == 200){                        
+                        log.info(`Address ${baseurl} is alive, so check if local`);
+                        if ( val.local == true){
+                            log.info(`It's a local server, so need to check if correct one`);
+                            const machineIdentifier = response.data['MediaContainer']['machineIdentifier'];
+                            if (machineIdentifier == server.clientIdentifier){
+                                log.info(`Local server found as: ${baseurl}`);                                
+                                PMSAddress = baseurl;
+                                local = true;                                                                
+                            }
+                        }
+                        else
+                        {
+                            // only if we didn't find the local one?
+                            if ( local == false)
+                            {
+                                log.info(`No local server found yet, so checking ${baseurl}`)
+                                const machineIdentifier = response.data['MediaContainer']['machineIdentifier'];
+                                if (machineIdentifier == server.clientIdentifier){
+                                    log.info(`Remote server found as: ${baseurl}`);                                
+                                    PMSAddress = baseurl;                                                                                                  
+                                }
+                            }
+                        }                        
                     }
-                  }).catch((error) => {
+                    }).catch((error) => {
                     if (error.response) {                  
-                        // The request was made and tgite server responded with a status code
-                        // that falls out of the range of 2xx
-                        log.warn(error.response.data)
-                        log.warn(error.response.status)
-                        alert(error.response.data.error)
-                        //this.danger(error.response.status, error.response.data.error);
+                        // The request was made and server responded with a status code
+                        // that falls out of the range of 2xx                        
+                        log.warn(error.response.status)                        
                     } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        log.warn(error.request);
+                        // The request was made but no response was received                                                
+                        log.warn('No response recieved');
                     }
-                     else {
+                        else {
                         // Something happened in setting up the request that triggered an Error
                         log.warn('Error', error.message);
-                    }
-                    log.error(error);
+                    }                    
                 }
             )
-            }
-          )
-       let serverAdress = []
-
-        return serverAdress
+        }
+        log.info(`Returning valid address as: ${PMSAddress}`)
+        store.commit("UPDATE_SELECTED_SERVER_ADDRESS", PMSAddress); 
+        store.commit("UPDATE_PLEX_SELECTED_SERVER_STATUS", false);      
+        return PMSAddress
     }
-
 }
 export {ptv};

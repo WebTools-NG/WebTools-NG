@@ -40,19 +40,18 @@ const mutations = {
 
 const actions = {
     async fetchSections({ commit, getters }) {
-        log.info("fetchSections called")
-        var baseURL = getters.getSlectedServerAddress
-        var accessToken = getters.getSlectedServerToken        
+        log.info("fetchSections called")        
+        var baseURL = getters.getSelectedServerAddress
+        var accessToken = getters.getSelectedServerToken        
         commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))        
     },    
     exportMedias({ commit, getters }) {                
         // Vars OK
         var baseURL = getters.getSlectedServerAddress
-        var accessToken = getters.getSlectedServerToken
+        var accessToken = getters.getSelectedServerToken
         var libType = getters.getLibType
         var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                      
-        var key = getters.getSelectedSection
-        
+        var key = getters.getSelectedSection        
         var mediaSize = ''
         var calcSize = 0               
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)                          
