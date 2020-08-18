@@ -9,6 +9,7 @@
 <script>
 const log = require('electron-log');
 import '@fortawesome/fontawesome-free/css/all.css'
+import etIcon from '@/assets/ET-256.png';
 import i18n from '../../i18n'
     export default {
         data() {
@@ -27,7 +28,12 @@ import i18n from '../../i18n'
                     {
                         href: { path: '/export' },
                         title: 'Export',
-                        icon: 'fas fa-file-export',
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: etIcon },
+                            },
                         child: [
                             {                                
                                 href: '/export/settings',
