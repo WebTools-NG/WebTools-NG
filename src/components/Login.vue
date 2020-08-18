@@ -1,4 +1,40 @@
 <template>
+
+<b-container>
+  <b-row class="row justify-content-center align-items-center">
+    <b-col id="login-column" col md="6">
+      <b-col id="login-box" col md="12">
+        <b-form-group
+          id="fieldset-1"
+          description="Enter your plex username"
+          label="Username"
+          label-for="input-1">
+            <b-form-input id="input-1" v-model="input.username" trim></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          id="fieldset-2"
+          description="Enter your plex password"
+          label="Password"
+          label-for="input-2">
+            <b-form-input type="password" id="input-2" v-model="input.password" trim></b-form-input>
+        </b-form-group>
+
+         <b-form-checkbox
+          id="checkbox-1"
+          v-model="checkbox"
+          name="checkbox-1">
+            Save username
+        </b-form-checkbox>
+
+        <b-button type="submit" variant="primary" v-on:click="plexLogin()">Login</b-button>
+      </b-col>
+    </b-col>
+  </b-row>
+</b-container>
+
+
+<!-- 
 <section class="hero is-dark is-fullheight">
   <div class="hero-body">
     <div class="container">
@@ -46,7 +82,8 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
+
 </template>
 
 
@@ -107,5 +144,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+#login-box {
+  margin-top: 120px;
+  max-width: 600px;
+  height: 320px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+ #login-box {
+  padding: 10px;
+}
 
 </style>
