@@ -8,15 +8,18 @@ const state = {
   plexServers: [],
   selectedServer: 'none',
   selectedServerAddress: '',
+  selectedServerAddressUpdateInProgress: false,
   selectedServerToken: '',
   authenticated: false,
   authToken: '',
   avatar: '',
-  plexname: '',
-  filteredProducts: []
+  plexname: ''  
 };
 
 const mutations = {
+  UPDATE_PLEX_SELECTED_SERVER_STATUS(state, payload) {
+    state.selectedServerAddressUpdateInProgress = payload;
+  },
   UPDATE_PLEX_SERVERS(state, payload) {
     state.plexServers = payload;
   },
@@ -25,8 +28,7 @@ const mutations = {
       state.selectedServerToken = value.accessToken 
   },
   UPDATE_SELECTED_SERVER_ADDRESS(state, value) {
-    state.selectedServerAddress = value
-    log.info('UPDATE_SELECTED_SERVER_ADDRESS: ' + value)
+    state.selectedServerAddress = value    
   },
   UPDATE_AUTHENTICATED(state, value){
     state.authenticated = value
@@ -71,7 +73,7 @@ const actions = {
                   pmsServer['accessToken'] = req.accessToken;
                   pmsServer['connections'] = req.connections;
                   pmsServer['clientIdentifier'] = req.clientIdentifier                                  
-                  log.warn('fetchPlexServers : ser ikke owned')                  
+                  log.warn('fetchPlexServers : See not owned servers as well')                  
                   result.push(pmsServer);
                 }
               } else {
@@ -122,7 +124,7 @@ const actions = {
         commit('UPDATE_AVATAR', response.data.user.thumb)
         commit('UPDATE_PLEXNAME', response.data.user.username)
         router.replace({name: "home"}); 
-})
+    })
       .catch(function (error) {
          if (error.response) {                  
           // The request was made and the server responded with a status code
@@ -140,6 +142,9 @@ const actions = {
           // Something happened in setting up the request that triggered an Error
           log.error('loginToPlex: ' + error.message)
         }})
+  },
+  updatingServerAddress({ commit}, status){    
+    commit('UPDATE_PLEX_SELECTED_SERVER_STATUS', status)
   }
 };
 
@@ -149,8 +154,9 @@ const getters = {
     getAvatar: state => state.avatar,
     getPlexName: state => state.plexname,
     getSelectedServer: state => state.selectedServer,
-    getSlectedServerAddress: state => state.selectedServerAddress,
-    getSlectedServerToken: state => state.selectedServerToken
+    getSelectedServerAddress: state => state.selectedServerAddress,
+    getSelectedServerAddressUpdateInProgress: state => state.selectedServerAddressUpdateInProgress,
+    getSelectedServerToken: state => state.selectedServerToken
 ,
 };
 
