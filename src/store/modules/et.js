@@ -47,7 +47,7 @@ const actions = {
     },    
     exportMedias({ commit, getters }) {                
         // Vars OK
-        var baseURL = getters.getSlectedServerAddress
+        var baseURL = getters.getSelectedServerAddress
         var accessToken = getters.getSelectedServerToken
         var libType = getters.getLibType
         var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                      
