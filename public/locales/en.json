@@ -68,11 +68,11 @@
                 "menuGithub": "Github",
                 "menuManual": "Manual"
             },
-            "NavSections":{
-                "Tools": "Tools",
-                "Options": "Options"
-            },
-            "Modules": {
+            "Sidebar": {
+                "NavSections":{
+                    "Tools": "Tools",
+                    "Options": "Options"
+                },
                 "ET": {
                     "Settings": "Settings"
                 },
