@@ -16,24 +16,9 @@
             "Level 3": 2,
             "Level 4": 2,
             "Level 5": 2,
-            "Level 6": 2,
-            "Tommy": 2            
+            "Level 6": 2                      
         },
-        "level": {  
-            "tommy": [
-                "Title", 
-                "Part Duration"
-
-               
-                                             
-                
-                                                                                                                                              
-            ], 
-            "Inspect": [                                                                
-                "Part Duration" 
-
-
-            ],         
+        "level": {                     
             "level1": [
                 "Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
