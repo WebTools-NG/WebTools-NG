@@ -46,6 +46,7 @@
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 cbSelected: [],                
                 cbOptions: [
+                    { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpExcel' },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol' },
