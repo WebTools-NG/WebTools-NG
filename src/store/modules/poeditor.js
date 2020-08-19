@@ -80,7 +80,9 @@ const actions = {
         responseType: 'stream'
       })
       var json = JSON.stringify(dwnlresp.data);
-      fs.writeFileSync(path, json);          
+      fs.writeFileSync(path, json);
+      // Update lang complete state, if updated
+      await this.dispatch("fetchPOELang");          
     }
 }
 
