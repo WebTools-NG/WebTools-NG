@@ -6,9 +6,7 @@
             "Level 3": "level3",
             "Level 4": "level4",
             "Level 5": "level5",
-            "Level 6": "level6",
-            "Tommy": "tommy"
-
+            "Level 6": "level6"            
         },
         "LevelCount": {
             "Level 1": 1,
@@ -1153,7 +1151,7 @@
                 "Part Duration"                                                                                                                      
             ],
             "level1": [
-                
+
             ]
         },
         "fields": {
