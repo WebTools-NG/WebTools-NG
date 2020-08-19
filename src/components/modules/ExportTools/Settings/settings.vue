@@ -56,7 +56,7 @@
         },
         methods: {
             getcbDefaults(){                
-                const cbItems = ["OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"];
+                const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"];
                 for(let i = 0; i < cbItems.length; i++){                     
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i])
@@ -65,7 +65,7 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);}) 
-                for( var cbItem of ["OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){                    
+                for( var cbItem of ["ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){                    
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem))) 
                 }   
             },
