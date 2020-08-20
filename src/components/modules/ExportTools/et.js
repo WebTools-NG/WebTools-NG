@@ -717,7 +717,109 @@ const excel2 = new class Excel {
         row.forEach(element => {
             excel2.AddRow(sheet, element)                        
         });        
-    }      
+    } 
+
+    async sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }   
+
+     
+    async createXLSXFile( {csvFile, level, libType, libName} )
+    {
+        //const Excel = require('exceljs'); 
+        const fs = require('fs')
+
+        
+
+        // @ts-ignore
+        var csv = require('jquery-csv/src/jquery.csv')
+        
+        csv
+        // This will loop thru a csv file, and add to an xlsx file
+
+
+
+        // First create a WorkBook
+        const workBook = await excel2.NewExcelWorkBook()     
+        // Create Sheet
+        let sheet = await excel2.NewSheet(workBook, libName, level)        
+        // Add the header to the sheet
+        const header = await excel2.AddHeader(sheet, level, libType)
+
+
+        excel2.AddRow(sheet, ['ged1', 'ged2'])
+
+        var readline = require('readline');
+        readline
+//          let row = []
+
+//         var myInterface = readline.createInterface({
+//         input: fs.createReadStream(csvFile)
+//         });
+
+
+//         var lineno = 0;
+//         myInterface.on('line', async function (line) {
+//             lineno++;
+//             console.log('Line number ' + lineno + ': ' + line);
+// /*             var row = line.split(',"');
+//             console.log('Ged1: ' + row[1])
+//             console.log('Ged2: ' + row[2])
+//             console.log('Ged Row: ' + JSON.stringify(row)) */
+
+//             //var lineArray = excel2.csvStringToArray(line)
+
+
+//             row =  csv.toArray(line);
+//             //var lineArray = excel2.CSVToArray(line, ',')
+//             console.log('Ged lineArray: ' + JSON.stringify(row))
+//             console.log('Ged1: ' + row[1])
+//             console.log('Ged2: ' + row[2])
+            
+            
+//             excel2.AddRow(sheet, row)
+//             console.log('Ged wait')
+//             await excel2.sleep(2000)
+//             //await sheet.addRow(lineArray);
+//             console.log('Ged continue')
+//         });
+
+//         myInterface.on('close', function(){
+//             console.log('Ged done reading')
+//         })
+
+        var fd = fs.openSync(csvFile, 'r');
+        var bufferSize = 2048;
+        var buffer = new Buffer(bufferSize);
+
+        var leftOver = '';
+        var read, line, idxStart, idx;
+        while ((read = fs.readSync(fd, buffer, 0, bufferSize, null)) !== 0) {
+        leftOver += buffer.toString('utf8', 0, read);
+        idxStart = 0
+        while ((idx = leftOver.indexOf("\n", idxStart)) !== -1) {
+            line = leftOver.substring(idxStart, idx);
+            console.log("one line read: " + line);
+            idxStart = idx + 1;
+        }
+        leftOver = leftOver.substring(idxStart);
+        }
+
+
+
+
+
+        console.log('GED Pause')
+        await excel2.sleep(4000)
+        console.log('GED Save')
+
+        // Save Excel file
+        await excel2.SaveWorkbook(workBook, libName, level, "xlsx")
+
+        csvFile, header
+    }
 
     async createOutFile( {libName, level, libType, outType, baseURL, accessToken} )
     {       
@@ -781,38 +883,15 @@ const excel2 = new class Excel {
         stream.end();  
         // Rename to real file name
         var newFile = tmpFile.replace('.tmp', '.csv')  
-                            
-        fs.renameSync(tmpFile, newFile)
-            
-        console.log('renamed complete');
-        
-        if (wtconfig.get('ET.ExpExcel'))
-        {
-            // We need xlsx as well
-            console.log('Ged making xlsx file')
-            const workBook = await excel2.NewExcelWorkBook()
-            console.log('Ged xlsx created from: ' + newFile)
-            //const workbook = new Excel.Workbook();
-            let sheet = await excel2.NewSheet(workBook, 'libName', 'level')
-
-           sheet
-
-            fs.promises.readFile(newFile)
-            .then(data => {                
-                workBook.csv.load(data.buffer)
-                    .then()
-                    .catch();
-            }).catch();
-
-            //const worksheet = await workBook.csv.readFile(newFile);
-            console.log('Ged CSV read')
-            //worksheet
-            //await workBook.xlsx.writeFile(newFile + '.xlsx');
-            workBook.xlsx.writeBuffer()
-            .then(buffer => fs.writeFileSync(newFile + '.xlsx', buffer))
-
+        fs.renameSync(tmpFile, newFile);                      
+        console.log('renamed complete');        
+        // Need to export to xlsx as well?
+        if (wtconfig.get('ET.ExpExcel')){
+            console.log('Ged export to excel')
+            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName})
         }
         store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`)
+
 
 
 
