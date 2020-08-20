@@ -33,7 +33,8 @@
             "UsernamePrompt": "Enter your plex.tv Username or Email",
             "Password": "Password",
             "PasswordPrompt": "Enter your plex.tv password",
-            "UsernameSave": "Remember Username"
+            "UsernameSave": "Remember Username",
+            "LoginBtn": "Sign in"
         },
         "SelServer": "Select Server",
         "Menu": {

@@ -40,7 +40,7 @@
           </b-form-checkbox>
         </b-form-group>
 
-        <b-button type="submit"  variant="primary" v-on:click="plexLogin()">Login</b-button>
+        <b-button type="submit"  variant="primary" v-on:click="plexLogin()">{{ $t('Common.Login.LoginBtn') }}</b-button>
       </b-col>
     </b-col>
   </b-row>
