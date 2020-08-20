@@ -32,7 +32,6 @@
     "file-saver": "^2.0.2",
     "file-size": "^1.0.0",
     "is-electron": "^2.2.0",
-    "jquery-csv": "^1.0.11",
     "jsonpath-plus": "^4.0.0",
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.0",

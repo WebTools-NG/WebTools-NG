@@ -399,6 +399,8 @@ const excel2 = new class Excel {
             pattern:'solid',
             fgColor:{ argb:'729fcf' }
             }
+        // Set header font to bold
+        Sheet.getRow(1).font = {bold: true}
 
 /*         Sheet.autoFilter = {
             from: 'A1',
@@ -728,97 +730,30 @@ const excel2 = new class Excel {
      
     async createXLSXFile( {csvFile, level, libType, libName} )
     {
-        //const Excel = require('exceljs'); 
-        const fs = require('fs')
-
-        
-
-        // @ts-ignore
-        var csv = require('jquery-csv/src/jquery.csv')
-        
-        csv
-        // This will loop thru a csv file, and add to an xlsx file
-
-
-
+        // This will loop thru a csv file, and create xlsx file
         // First create a WorkBook
         const workBook = await excel2.NewExcelWorkBook()     
         // Create Sheet
         let sheet = await excel2.NewSheet(workBook, libName, level)        
         // Add the header to the sheet
-        const header = await excel2.AddHeader(sheet, level, libType)
-
-
-        excel2.AddRow(sheet, ['ged1', 'ged2'])
-
-        var readline = require('readline');
-        readline
-//          let row = []
-
-//         var myInterface = readline.createInterface({
-//         input: fs.createReadStream(csvFile)
-//         });
-
-
-//         var lineno = 0;
-//         myInterface.on('line', async function (line) {
-//             lineno++;
-//             console.log('Line number ' + lineno + ': ' + line);
-// /*             var row = line.split(',"');
-//             console.log('Ged1: ' + row[1])
-//             console.log('Ged2: ' + row[2])
-//             console.log('Ged Row: ' + JSON.stringify(row)) */
-
-//             //var lineArray = excel2.csvStringToArray(line)
-
-
-//             row =  csv.toArray(line);
-//             //var lineArray = excel2.CSVToArray(line, ',')
-//             console.log('Ged lineArray: ' + JSON.stringify(row))
-//             console.log('Ged1: ' + row[1])
-//             console.log('Ged2: ' + row[2])
-            
-            
-//             excel2.AddRow(sheet, row)
-//             console.log('Ged wait')
-//             await excel2.sleep(2000)
-//             //await sheet.addRow(lineArray);
-//             console.log('Ged continue')
-//         });
-
-//         myInterface.on('close', function(){
-//             console.log('Ged done reading')
-//         })
-
-        var fd = fs.openSync(csvFile, 'r');
-        var bufferSize = 2048;
-        var buffer = new Buffer(bufferSize);
-
-        var leftOver = '';
-        var read, line, idxStart, idx;
-        while ((read = fs.readSync(fd, buffer, 0, bufferSize, null)) !== 0) {
-        leftOver += buffer.toString('utf8', 0, read);
-        idxStart = 0
-        while ((idx = leftOver.indexOf("\n", idxStart)) !== -1) {
-            line = leftOver.substring(idxStart, idx);
-            console.log("one line read: " + line);
-            idxStart = idx + 1;
+        await excel2.AddHeader(sheet, level, libType)
+        // Read the csv file line by line
+        var lineReader = require('readline').createInterface({
+            input: require('fs').createReadStream(csvFile)
+          });
+          
+        var lineno = 0;
+        lineReader.on('line', async function (line) {                                    
+        // Skip first line
+        if (lineno != 0){
+            var lineArr = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);                           
+            await sheet.addRow(lineArr)
         }
-        leftOver = leftOver.substring(idxStart);
-        }
-
-
-
-
-
-        console.log('GED Pause')
-        await excel2.sleep(4000)
-        console.log('GED Save')
-
-        // Save Excel file
-        await excel2.SaveWorkbook(workBook, libName, level, "xlsx")
-
-        csvFile, header
+        lineno++;        
+        });
+        lineReader.on('close', async function () {
+        await excel2.SaveWorkbook(workBook, libName, level, "xlsx")            
+        });
     }
 
     async createOutFile( {libName, level, libType, outType, baseURL, accessToken} )
