@@ -780,11 +780,38 @@ const excel2 = new class Excel {
         } 
         stream.end();  
         // Rename to real file name
-        var newFile = tmpFile.replace('.tmp', '.csv')                        
-        fs.rename(tmpFile, newFile, function (err) {
-            if (err) throw err;
-            console.log('renamed complete');
-          });
+        var newFile = tmpFile.replace('.tmp', '.csv')  
+                            
+        fs.renameSync(tmpFile, newFile)
+            
+        console.log('renamed complete');
+        
+        if (wtconfig.get('ET.ExpExcel'))
+        {
+            // We need xlsx as well
+            console.log('Ged making xlsx file')
+            const workBook = await excel2.NewExcelWorkBook()
+            console.log('Ged xlsx created from: ' + newFile)
+            //const workbook = new Excel.Workbook();
+            let sheet = await excel2.NewSheet(workBook, 'libName', 'level')
+
+           sheet
+
+            fs.promises.readFile(newFile)
+            .then(data => {                
+                workBook.csv.load(data.buffer)
+                    .then()
+                    .catch();
+            }).catch();
+
+            //const worksheet = await workBook.csv.readFile(newFile);
+            console.log('Ged CSV read')
+            //worksheet
+            //await workBook.xlsx.writeFile(newFile + '.xlsx');
+            workBook.xlsx.writeBuffer()
+            .then(buffer => fs.writeFileSync(newFile + '.xlsx', buffer))
+
+        }
         store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`)
 
 
