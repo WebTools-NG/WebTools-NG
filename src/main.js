@@ -13,7 +13,7 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import i18n from './i18n'
-import  BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -23,6 +23,8 @@ Vue.use(Vuex);
 Vue.use(VueSidebarMenu)
 Vue.use(Buefy);
 Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons)
+
 
 
 // Logging start
