@@ -118,6 +118,7 @@
                 "ArraySep": "Delimiter for multiple info in same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
+                "ExportToExcel": "Export to xlsx as well as csv",
                 "OrgTitleNull": "Default \"Original Title\" to \"Title\", if empty",
                 "SortTitleNull": "Default \"Sort Title\" to \"Title\", if empty",
                 "AutoXLSCol": "Autosize column (xlsx only)",
@@ -141,7 +142,9 @@
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck}"
             },
             "ErrorNoOutDirTitle": "No output directory defined",
-            "ErrorNoOutDirMsg": "You need to define an output directory in the settings page first"
+            "ErrorNoOutDirMsg": "You need to define an output directory in the settings page first",
+            "ErrorBadSepTitle": "Column separator issue",
+            "ErrorBadSep": "Column separator can only be one character"
         },
         "About": {
             "Description": "@:Modules.About.Name",

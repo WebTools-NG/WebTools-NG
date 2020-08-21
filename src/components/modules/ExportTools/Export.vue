@@ -3,6 +3,8 @@
     <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>
     <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
     <br />
+
+
     
     <div> <!-- Media type to export -->      
       <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
@@ -248,11 +250,13 @@
         //await this.$store.dispatch("fetchSections");
       } else {
         log.debug("serverCheck is none");
-        this.$buefy.toast.open({
-          duration: 3000,
-          message: this.$t("Modules.ET.ErrorNoServerSelected"),
-          type: "is-danger"
-        });
+        this.$bvToast.toast(this.$t("Modules.ET.ErrorNoServerSelected"), {
+           // title: this.$t("Modules.ET.ErrorNoServerSelected"),
+            autoHideDelay: 3000,          
+            solid: true,
+            variant: 'danger',
+            //toaster: 'b-toaster-bottom-center'
+        });        
       }
     }
   }

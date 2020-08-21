@@ -58,7 +58,7 @@ const actions = {
         libName, levelName, libType, 'xlsx', baseURL, accessToken
         excel2
         axios, commit, key, mediaSize, calcSize       
-        excel2.createOutFile( {libName: libName, level: levelName, libType: libType, outType: 'xlsx', baseURL: baseURL, accessToken: accessToken} );
+        excel2.createOutFile( {libName: libName, level: levelName, libType: libType, baseURL: baseURL, accessToken: accessToken} );
         
     }
 }
