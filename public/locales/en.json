@@ -142,7 +142,9 @@
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck}"
             },
             "ErrorNoOutDirTitle": "No output directory defined",
-            "ErrorNoOutDirMsg": "You need to define an output directory in the settings page first"
+            "ErrorNoOutDirMsg": "You need to define an output directory in the settings page first",
+            "ErrorBadSepTitle": "Column separator issue",
+            "ErrorBadSep": "Column separator can only be one character"
         },
         "About": {
             "Description": "@:Modules.About.Name",
