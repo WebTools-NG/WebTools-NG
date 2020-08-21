@@ -389,7 +389,7 @@ const excel2 = new class Excel {
         const fields = et.getLevelFields(Level, libType)              
         for (var i=0; i<fields.length; i++) {                        
             log.verbose('Column: ' + fields[i] + ' - ' + fields[i])                                                            
-            let column = { header: fields[i], key: fields[i] }
+            let column = { header: fields[i], key: fields[i], width: 5 }
             columns.push(column)            
         }             
         Sheet.columns = columns
@@ -401,6 +401,9 @@ const excel2 = new class Excel {
             }
         // Set header font to bold
         Sheet.getRow(1).font = {bold: true}
+
+        
+
 
 /*         Sheet.autoFilter = {
             from: 'A1',
@@ -752,7 +755,34 @@ const excel2 = new class Excel {
         lineno++;        
         });
         lineReader.on('close', async function () {
-        await excel2.SaveWorkbook(workBook, libName, level, "xlsx")            
+            if (wtconfig.get('ET.AutoXLSCol', false))
+            {
+                log.info('Setting xlsx column width')
+                sheet.columns.forEach(function(column){
+                    var dataMax = 0;
+                    column.eachCell({ includeEmpty: true }, function(cell){
+                        try {                        
+                            var columnLength = cell.value.length;	
+                            if (columnLength > dataMax) {
+                                dataMax = columnLength;
+                            }
+                        }
+                        catch (error) {
+                            // Failed, since either number or null, so simply ignoring
+                        }
+                    })
+                    column.width = dataMax < 10 ? 10 : dataMax;
+                });
+                log.info('Setting xlsx column width ended')
+            }
+            sheet.autoFilter = {
+                from: 'A1',
+                to: 'H1'
+                }
+            console.log('Ged wait')
+            await excel2.sleep(2000)
+            console.log('Ged wait done')
+            await excel2.SaveWorkbook(workBook, libName, level, "xlsx")            
         });
     }
 
