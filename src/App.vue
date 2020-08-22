@@ -59,7 +59,7 @@ export default {
 #content.collapsed {
   padding-left: 50px;
 }
-#content {
+#content{
   padding-left: 250px;
     transition: 0.3s ease;
 

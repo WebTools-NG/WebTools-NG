@@ -1,4 +1,36 @@
 <template>
+
+
+<div>
+  <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar-brand>
+      <img src="https://placekitten.com/g/48/48" class="d-inline-block align-top" alt="Kitten">
+    </b-navbar-brand>
+
+    <b-navbar-brand>
+        {{ $t("Common.AppName") }}
+    </b-navbar-brand>
+
+    <b-navbar-nav class="ml-auto">
+         <b-nav-form>
+          <b-form-select v-model="selectedOption" :options="pserver"  size="sm" class="mr-sm-2" placeholder="servers"></b-form-select >
+          <b-button size="sm" class="my-2 my-sm-0" type="submit">Reload</b-button>
+        </b-nav-form>
+    </b-navbar-nav>
+
+      <b-navbar-nav class="ml-auto">
+        <b-nav-text >Navbar text</b-nav-text>
+
+        <img src="https://placekitten.com/g/48/48" class="d-inline-block align-top" alt="Kitten">
+      </b-navbar-nav>
+  </b-navbar>
+</div>
+
+
+
+
+
+<!-- 
 <section class="hero is-dark is-small">
 <div class="hero-body">
         <div class="level">
@@ -40,7 +72,8 @@
 
             </div>
         </div>
-</section>
+</section> -->
+
 </template>
 
 <script>
@@ -91,13 +124,5 @@ export default {
 </script>
 
 <style scoped>
-    #title {
-        margin-left: 0.5em;
-    } 
-    #sync-button{
-        margin-left: 0.5em;
-    }
-    #plexname {
-        margin-right: 0.5em;
-    }
+
 </style>

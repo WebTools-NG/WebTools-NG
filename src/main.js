@@ -7,8 +7,8 @@ import store from './store'
 import {wtutils, wtconfig} from './wtutils'
 
 /*Icons - Styling - Design Frameworks - Sidemenu*/
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+//import Buefy from 'buefy'
+//import 'buefy/dist/buefy.css'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -21,7 +21,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueSidebarMenu)
-Vue.use(Buefy);
+//Vue.use(Buefy);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
 
