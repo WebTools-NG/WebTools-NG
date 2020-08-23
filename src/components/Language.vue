@@ -1,10 +1,13 @@
 <template>
   <b-container fluid>
+        <div class="col-lg-9 col-md-12 col-xs-12">
+
     <h1>
       {{ $t("Common.Language.Name") }}<br>
       <small>{{ $t("Common.Language.Description") }}</small>
     </h1>    
-    <br>     
+    <br>
+
     <div class="control has-icons-left">
       <div class="locale-changer select is-dark is-medium" >            
         <b-form-select id="langselect" @change.native="onChange($event)" v-model="$i18n.locale" :options="olLangs"></b-form-select>
@@ -73,6 +76,7 @@
 
     <div>      
       <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>      
+    </div>
     </div>
   </b-container>
 </template>
