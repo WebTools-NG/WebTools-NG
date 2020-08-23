@@ -1,7 +1,9 @@
 <template>
-  <section class="section">
-    <h1 class="title is-2">{{ $t("Common.Language.Name") }}</h1>    
-    <h2 class="subtitle">{{ $t("Common.Language.Description") }}</h2>
+  <b-container fluid>
+    <h1>
+      {{ $t("Common.Language.Name") }}<br>
+      <small>{{ $t("Common.Language.Description") }}</small>
+    </h1>    
     <br>     
     <div class="control has-icons-left">
       <div class="locale-changer select is-dark is-medium" >            
@@ -14,7 +16,45 @@
       <b-button id="btnDownload" variant="success" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</b-button>
     </div>
     <br/>
-    <div id="poe">
+
+    <h4>F.A.Q</h4>
+
+    <div>
+      <ul class="list-unstyled">
+        <li><strong>{{ $t("Common.Language.LangMissing") }}</strong>
+          <ul>
+            <li>{{ $t("Common.Language.LangMissing1") }}</li>
+            <li>{{ $t("Common.Language.LangMissing2") }}</li>
+            <li>{{ $t("Common.Language.LangMissing3") }}</li>
+            <li>{{ $t("Common.Language.LangMissing4") }}</li>
+          </ul>
+        </li>
+
+        <li><strong>{{ $t("Common.Language.LangSpelling") }}</strong>
+          <ul>
+            <li>{{ $t("Common.Language.LangSpelling1") }}</li>
+          </ul>
+        </li>
+
+        <li><strong>{{ $t("Common.Language.LangProcent") }}</strong>
+          <ul>
+            <li>{{ $t("Common.Language.LangProcent1") }}</li>
+            <li>{{ $t("Common.Language.LangProcent2") }}</li>
+          </ul>
+        </li>
+
+        <li><strong>{{ $t("Common.Language.LangForce") }}</strong>
+          <ul>
+            <li>{{ $t("Common.Language.LangForce1") }}</li>
+          </ul>
+        </li>
+
+
+      </ul>
+    </div>
+
+
+    <!-- <div id="poe">
       <dl>
         <dt>{{ $t("Common.Language.LangMissing") }}:</dt>
         <dd>* {{ $t("Common.Language.LangMissing1") }}</dd>
@@ -29,11 +69,12 @@
         <dt>{{ $t("Common.Language.LangForce") }}</dt>
         <dd>* {{ $t("Common.Language.LangForce1") }}</dd>       
       </dl>       
-    </div>
+    </div> -->
+
     <div>      
       <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>      
     </div>
-  </section>
+  </b-container>
 </template>
 
 <script>
