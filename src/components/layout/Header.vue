@@ -1,28 +1,24 @@
 <template>
-
-
 <div>
   <b-navbar toggleable="lg" type="dark" variant="dark">
-    <b-navbar-brand>
-      <img src="https://placekitten.com/g/48/48" class="d-inline-block align-top" alt="Kitten">
-    </b-navbar-brand>
-
-    <b-navbar-brand>
+    <b-navbar-brand href="#">
+      <img src="@/assets/WebTools-32.png"  class="d-inline-block align-top" alt="Kitten">
         {{ $t("Common.AppName") }}
     </b-navbar-brand>
 
-    <b-navbar-nav class="ml-auto">
+    
+
+    <b-navbar-nav class="ml-auto mr-2">
          <b-nav-form>
           <b-form-select v-model="selectedOption" :options="pserver"  size="sm" class="mr-sm-2" placeholder="servers"></b-form-select >
           <b-button size="sm" class="my-2 my-sm-0" type="submit">Reload</b-button>
         </b-nav-form>
     </b-navbar-nav>
 
-      <b-navbar-nav class="ml-auto">
-        <b-nav-text >Navbar text</b-nav-text>
+        <b-navbar-nav class="ml-auto mr-2">
+        </b-navbar-nav>
 
-        <img src="https://placekitten.com/g/48/48" class="d-inline-block align-top" alt="Kitten">
-      </b-navbar-nav>
+
   </b-navbar>
 </div>
 

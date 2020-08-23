@@ -1,30 +1,22 @@
 <template>
-  <section class="section">
-    <h1 class="title is-3">{{ $t("Modules.About.Name") }}</h1>    
-    <h1 class="title is-3">{{ $t("Modules.About.MainDevelopers") }}</h1>
+  <b-container fluid>
+    <h1>{{ $t("Modules.About.Name") }}</h1>    
+    <h2>{{ $t("Modules.About.MainDevelopers") }}</h2>
     <p>{{ $t("Modules.About.Devdane22") }}</p>
     <p>{{ $t("Modules.About.DevCPSO") }}</p>
     <br>
-    <h1 class="title is-3">{{ $t("Modules.About.TranslationBetaTestersTitle") }}</h1>
-    <h2 class="subtitle">{{ $t("Modules.About.TranslationBetaTestersText") }}</h2>
+    <h2>
+      {{ $t("Modules.About.TranslationBetaTestersTitle") }} <br>
+      <small>{{ $t("Modules.About.TranslationBetaTestersText") }}</small>
+    </h2>
     <div>
-      <span v-for="po in poTranslators" :key="po.name">{{ po.name }} </span>
+      <ul class="list-inline">
+          <li class="list-inline-item" v-for="po in poTranslators" :key="po.name">{{ po.name }}</li>
+      </ul>
     </div>
     <br>
-    <h1 class="title is-5">{{ $t("Modules.About.PlexPoCredits") }}</h1>
-
-    <div class="container">
-
-</div>
-
-
-
-
-    
-
-
-
-  </section>
+    <h5>{{ $t("Modules.About.PlexPoCredits") }}</h5>
+  </b-container>
 </template>
 
 <script>
