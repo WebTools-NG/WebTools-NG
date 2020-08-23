@@ -1,5 +1,7 @@
 <template>
-  <section class="section">
+  <b-container fluid>
+          <div class="col-lg-10 col-md-12 col-xs-12">
+
     <h1 class="title is-3">{{ $t("Modules.ET.Settings.Settings") }}</h1>
     <h2 class="subtitle">{{ $t("Modules.ET.Settings.Description") }}</h2>    
     <div>
@@ -26,9 +28,11 @@
         v-model="cbSelected"
         @change.native="filterTable">      
       </b-form-checkbox-group>
-    </b-form-group>    
-  </section>
+    </b-form-group>
+          </div>    
+  </b-container>
 </template>
+
 <script>
     const log = require("electron-log");
     import {wtutils, wtconfig, dialog} from '../../../../wtutils'    

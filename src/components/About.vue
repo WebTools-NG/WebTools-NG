@@ -1,5 +1,7 @@
 <template>
   <b-container fluid>
+    <div class="col-lg-9 col-md-12 col-xs-12">
+
     <h1>{{ $t("Modules.About.Name") }}</h1>    
     <h2>{{ $t("Modules.About.MainDevelopers") }}</h2>
     <p>{{ $t("Modules.About.Devdane22") }}</p>
@@ -16,6 +18,7 @@
     </div>
     <br>
     <h5>{{ $t("Modules.About.PlexPoCredits") }}</h5>
+    </div>
   </b-container>
 </template>
 

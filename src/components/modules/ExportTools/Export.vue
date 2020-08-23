@@ -1,5 +1,6 @@
 <template>
-  <section class="section">
+    <b-container fluid>
+          <div class="col-lg-10 col-md-12 col-xs-12">
     <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>
     <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
     <br />
@@ -77,9 +78,9 @@
       </b-col>
     </b-row>
   </b-container>
- 
+          </div>
+    </b-container>
   
-  </section>
 </template>
 
 <script>
