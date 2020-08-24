@@ -105,7 +105,8 @@
           selLevelName: "",
           optionsMediaType: [
             { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
-            { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true },            
+            { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true }, 
+            { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },             
             { text: i18n.t('Modules.ET.RadioMusic'), value: 'artist', disabled: true },
             { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },
             { text: i18n.t('Modules.ET.RadioOtherVideos'), value: 'other', disabled: true }
@@ -139,9 +140,10 @@
         return this.$store.getters.getSelectedServerAddressUpdateInProgress
     },  
     exportLevels: function() {         
-      et.getLevelDisplayName('My Level', this.selMediaType)
+      et.getLevelDisplayName('My Level', this.selMediaType);
       // Returns valid levels for selected media type
-      const etLevel = et.getLevels(this.selMediaType);
+      let targetType = this.selMediaType;
+      const etLevel = et.getLevels(targetType);
       const etCustomLevel = et.getCustomLevels(this.selMediaType);      
       const options = []
       const item = {}
@@ -183,15 +185,20 @@
     }
   },
   methods: {
-    getPMSSections: async function(){
-      
+    getPMSSections: async function(){      
       this.selLibrary = "Loading...";
       await this.$store.dispatch('fetchSections')
       const sections = await this.$store.getters.getPmsSections;      
-      const result = [];      
+      const result = [];     
+      // If episodes, we need to show shows
+      let targetType = this.selMediaType;
+      if (targetType == 'episode')
+      {
+        targetType = 'show'
+      }      
       if (Array.isArray(sections) && sections.length) {                
         sections.forEach(req => {          
-          if (req.type == this.selMediaType) {
+          if (req.type == targetType) {
             log.debug(`pushing library: ${req.title} to results`);
             let item = [];            
             item['text']=req.title;
@@ -216,7 +223,8 @@
     changeType: function() {
       // Triggers when lib type is changed
       this.selLibrary = '';
-      this.selLevel = '';  
+      this.selLevel = '';      
+      this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
     },
     selectExportLevel: function() {      
