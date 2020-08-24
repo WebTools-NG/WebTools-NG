@@ -2,10 +2,10 @@
   <b-container fluid>
         <div class="col-lg-9 col-md-12 col-xs-12">
 
-    <h1>
+    <h2>
       {{ $t("Common.Language.Name") }}<br>
       <small>{{ $t("Common.Language.Description") }}</small>
-    </h1>    
+    </h2>    
     <br>
 
     <div class="control has-icons-left">
@@ -20,7 +20,7 @@
     </div>
     <br/>
 
-    <h4>F.A.Q</h4>
+    <h5>F.A.Q</h5>
 
     <div>
       <ul class="list-unstyled">

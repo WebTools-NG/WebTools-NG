@@ -1,15 +1,15 @@
 <template>
   <b-container fluid>
-    <h1>
+    <h2>
       {{ $t("Common.Home.Title") }} <br>
       <small>{{ $t("Common.Home.About") }}</small>
-    </h1>
+    </h2>
     <br>
-    <h1>{{ $t("Common.Home.Modules") }}</h1>
-    <h2>
+    <h2>{{ $t("Common.Home.Modules") }}</h2>
+    <h3>
       {{ $t("Modules.ET.Name") }} <br>
       <small>{{ $t("Modules.ET.Description") }}</small>
-    </h2>
+    </h3>
   </b-container>
 </template>
 
