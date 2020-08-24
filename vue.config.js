@@ -18,7 +18,8 @@ module.exports = {
           }
         ],
         linux: {
-          category: "Utility"
+          category: "Utility",
+          icon: 'src/assets/WebTools-512.png'
         },
         win: {
           icon: 'src/assets/WebTools-512.png'
