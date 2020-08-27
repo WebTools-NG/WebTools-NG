@@ -6,11 +6,9 @@
         {{ $t("Common.AppName") }}
     </b-navbar-brand>
 
-    
-
     <b-navbar-nav class="ml-auto mr-2">
         <b-nav-form>
-            <b-form-select v-model="selectedOption" @input="selected" size="sm" class="mr-sm-2" placeholder="servers">
+            <b-form-select  v-model="selectedOption" @input="selected" size="sm" class="mr-sm-2">
                 <option
                     v-for="option in pserver"
                     :value="option"
@@ -26,8 +24,6 @@
 
         <b-navbar-nav class="ml-auto mr-2">
         </b-navbar-nav>
-
-
   </b-navbar>
 </div>
 

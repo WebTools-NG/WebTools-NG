@@ -1,8 +1,9 @@
 <template>
     <b-container fluid>
-          <div class="col-lg-10 col-md-12 col-xs-12">
-    <h1 class="title is-3">{{ $t("Modules.ET.Name") }}</h1>
-    <h2 class="subtitle">{{ $t("Modules.ET.Description") }}</h2>
+    <div class="col-lg-10 col-md-12 col-xs-12">
+    <h2>{{ $t("Modules.ET.Name") }} <br>
+      <small>{{ $t("Modules.ET.Description") }}</small>
+    </h2>
     <br />
     
     <div> <!-- Media type to export -->      
@@ -208,7 +209,7 @@
           autoHideDelay: 3000,          
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-center' 
+          toaster: 'b-toaster-bottom-right' 
         })        
         return
       }
@@ -225,10 +226,12 @@
         this.$store.dispatch("fetchSections");
       } else {
         log.debug("serverCheck is none");
-        this.$buefy.toast.open({
-          duration: 3000,
-          message: this.$t("Modules.ET.ErrorNoServerSelected"),
-          type: "is-danger"
+        this.$bvToast.toast(this.$t("Modules.ET.ErrorNoServerSelectedMsg"), {
+          title: this.$t("Modules.ET.ErrorNoServerSelectedTitle"),
+          autoHideDelay: 4000,          
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right' 
         });
       }
     }

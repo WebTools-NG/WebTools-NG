@@ -9,12 +9,14 @@
     <br>
 
     <div class="control has-icons-left">
-      <div class="locale-changer select is-dark is-medium" >            
+      <div class="locale-changer select is-dark is-medium" >  
+        <b-input-group>
+        <b-input-group-prepend is-text>
+        <b-icon icon="globe2"></b-icon>
+      </b-input-group-prepend>
         <b-form-select id="langselect" @change.native="onChange($event)" v-model="$i18n.locale" :options="olLangs"></b-form-select>
+        </b-input-group>
       </div>
-      <span class="icon is-medium is-left">
-            <i class="fas fa-globe"></i>            
-      </span>
       <p />
       <b-button id="btnDownload" variant="success" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</b-button>
     </div>

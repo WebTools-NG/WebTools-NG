@@ -110,7 +110,8 @@
             "RadioPhotos": "Photos",
             "RadioOtherVideos": "Other Videos",
             "ErrorServer": "No server",
-            "ErrorNoServerSelected": "No server selected",
+            "ErrorNoServerSelectedTitle": "No server selected",
+            "ErrorNoServerSelectedMsg": "You need to select a server to extract from",
             "Settings": {
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
