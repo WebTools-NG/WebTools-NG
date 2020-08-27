@@ -1,5 +1,7 @@
 <template>
   <b-container fluid>
+        <div class="col-lg-9 col-md-12 col-xs-12">
+
     <h2>
       {{ $t("Common.Home.Title") }} <br>
       <small>{{ $t("Common.Home.About") }}</small>
@@ -10,6 +12,7 @@
       {{ $t("Modules.ET.Name") }} <br>
       <small>{{ $t("Modules.ET.Description") }}</small>
     </h3>
+        </div>
   </b-container>
 </template>
 

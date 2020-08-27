@@ -9,9 +9,18 @@
     
 
     <b-navbar-nav class="ml-auto mr-2">
-         <b-nav-form>
-          <b-form-select v-model="selectedOption" :options="pserver"  size="sm" class="mr-sm-2" placeholder="servers"></b-form-select >
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Reload</b-button>
+        <b-nav-form>
+            <b-form-select v-model="selectedOption" @input="selected" size="sm" class="mr-sm-2" placeholder="servers">
+                <option
+                    v-for="option in pserver"
+                    :value="option"
+                    :key="option.clientIdentifier">
+                    {{ option.name }}
+                </option>
+            </b-form-select >
+            <b-button size="sm" class="my-2 my-sm-0" @click="fetchServers" variant="warning">
+                <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon> Reload
+          </b-button>
         </b-nav-form>
     </b-navbar-nav>
 
