@@ -79,7 +79,10 @@ const wtutils = new class WTUtils {
         console.log('wtutils.Home dir is: ' + wtutils.Home);
         console.log('Mac Log dir detected as : ' + wtutils.Home + '/Library/Logs/' + wtutils.AppName);
         console.log('********* Is that correct? ********** ');
-        return wtutils.Home + '/Library/Logs/' + wtutils.AppName;
+        logDir = wtutils.Home.replace('Application Support', 'Logs');
+        //return wtutils.Home + '/Library/Logs/' + wtutils.AppName;
+        console.log('********* Is that correct? ********** : ' + logDir );
+        return logDir;
     }
 
     /* 
