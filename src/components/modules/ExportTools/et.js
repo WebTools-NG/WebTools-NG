@@ -96,7 +96,8 @@ const et = new class ET {
     }
 
     getRealLevelName(level, libType) {
-        // First get the real name of the level, and not just the display name
+        // First get the real name of the level, and not just the display name        
+        console.log('GED getRealLevelName LibType:  ' + libType)
         const levelName = def[libType]['levels'][level]        
         return levelName
     }
@@ -128,7 +129,7 @@ const et = new class ET {
     }
     
     getLevelDisplayName(level, libType){
-        // return displayname fort with buildin levels
+        // return displayname for the buildin levels
         const levels = et.getLevels(libType)        
         let result = '';
         loop1:
@@ -170,7 +171,8 @@ const et = new class ET {
 
     getLevelFields(level, libType) {
         // return fields in a level
-        const out = []                
+        const out = []        
+        console.log('GED getLevelFields LibType:  ' + libType)                
         const levels = def[libType]['level'][et.getRealLevelName(level, libType)]        
         Object.keys(levels).forEach(function(key) {            
             out.push(levels[key])
@@ -187,7 +189,8 @@ const et = new class ET {
 
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
-        const levels = def[libType]['levels']    
+        const levels = def[libType]['levels']   
+        console.log('GED getLevels LibType:  ' + libType)                 
         log.debug('ET LevelNames: ' + JSON.stringify(levels))
         return levels
     }
@@ -203,6 +206,7 @@ const et = new class ET {
     getLevelKeys(libType){
         // Only return the keys for possible levels
         const out = []
+        console.log('GED getLevelKeys LibType:  ' + libType)                 
         const levels = def[libType]['levels']
         Object.keys(levels).forEach(function(key) {            
             out.push(key)
