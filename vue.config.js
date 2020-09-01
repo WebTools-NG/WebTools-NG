@@ -9,27 +9,22 @@ module.exports = {
       enableInSFC: false
     },
     electronBuilder: {
-      builderOptions: {        
+      builderOptions: {
+        appId: "com.webtools.webtools-ng",        
         "extraResources": [
           {
             "from": "./public/locales",
             "to": "locales"
           }
         ],
-        "linux": {
-          "category": "Utility"
+        linux: {
+          category: "Utility",
+          icon: 'src/assets/WebTools-512.png'
+        },
+        win: {
+          icon: 'src/assets/WebTools-512.png'
         }        
       }
     }
   }
-  // ,  
-  // chainWebpack: config => {
-  //   config
-  //       .plugin('html')
-  //       .tap(args => {
-  //         let v = JSON.stringify(require('./package.json').version)
-  //         args[0]['process.env']['VERSION'] = v                    
-  //         return args;
-  //       })
-  // }
 }

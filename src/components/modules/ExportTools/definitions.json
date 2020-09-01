@@ -1134,6 +1134,7 @@
     "episode": {
         "levels": {
             "Level 1": "level1",
+            "Level 2": "level2",
             "Tommy": "tommy"
         },
         "LevelCount": {
@@ -1147,12 +1148,64 @@
         },
         "level": {  
             "tommy": [
-                "Title", 
-                "Part Duration"                                                                                                                      
+                "Media ID"
+                
+                
+            ],
+            "verified": [
+                "Series Title", 
+                "Episode Sort Title",
+                "Episode Title",
+                "Year",
+                "Season",
+                "Episode",
+                "Content Rating",
+                "Summary",
+                "Rating",
+                "User Rating"
+
+            ],
+            "Clear Fields": [
+
+                "Writers",
+                "Duration",
+                "Added",
+                "Updated",
+                "Poster url",
+                "Collection",
+                "Locked Fields",
+                "View Count"               
+            ],
+            "Invalid, belongs to shows": [
+                "Studio",
+                "Originally Aired",
+                "Directors"
+
             ],
             "level1": [
-
+                "Media ID",
+                "Series Title", 
+                "Episode Sort Title",
+                "Episode Title",
+                "Year",
+                "Season",
+                "Episode",
+                "Content Rating",
+                "Summary",
+                "Rating",
+                "User Rating"
+            ],
+            "level2": [                                                
+                "Writers",
+                "Duration",
+                "Added",
+                "Updated",
+                "Poster url",
+                "Collection",
+                "Locked Fields",
+                "View Count"
             ]
+            
         },
         "fields": {
             "Media ID":
@@ -1220,7 +1273,33 @@
                     "key": "$.userRating",
                     "call": 1,
                     "type": "string"                    
-                }
+                },
+            "Studio":
+                {
+                    "key": "$.studio",
+                    "call": 1,
+                    "type": "string"
+                },
+            "Originally Aired":
+                {},
+            "Directors": 
+                {},
+            "Writers": 
+                {},
+            "Duration": 
+                {},
+            "Added": 
+                {},
+            "Updated": 
+                {},
+            "Poster url": 
+                {},
+            "Collection": 
+                {},
+            "Locked Fields": 
+                {},
+            "View Count": 
+                {}
         }
  
 
