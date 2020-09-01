@@ -106,7 +106,8 @@
           optionsMediaType: [
             { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
             { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true }, 
-            { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },             
+            { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },
+            { text: i18n.t('Modules.ET.RadioTVShowEpisodes'), value: 'showepisode', disabled: true },             
             { text: i18n.t('Modules.ET.RadioMusic'), value: 'artist', disabled: true },
             { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },
             { text: i18n.t('Modules.ET.RadioOtherVideos'), value: 'other', disabled: true }
