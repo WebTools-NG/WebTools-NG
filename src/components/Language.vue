@@ -58,7 +58,7 @@ export default {
       this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
     },
     joinPOE() {
-      shell.openExternal("https://poeditor.com/join/project/yFjdfkDfup")
+      shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki/Translator")
     },
     getOnlineLangs() {      
       var onlineLangs = this.$store.getters.getLanguages      
