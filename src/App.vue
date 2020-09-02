@@ -59,7 +59,7 @@ export default {
 #content.collapsed {
   padding-left: 50px;
 }
-#content {
+#content{
   padding-left: 250px;
     transition: 0.3s ease;
 
@@ -68,6 +68,9 @@ export default {
   max-width: 250px !important;
 }
 
+#auth_login {
+  background: #363636;
+}
 
 
 

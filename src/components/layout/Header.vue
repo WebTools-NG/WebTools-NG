@@ -1,4 +1,43 @@
 <template>
+<div>
+  <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar-brand href="#">
+      <img src="@/assets/WebTools-32.png"  class="d-inline-block align-top" alt="Kitten">
+        {{ $t("Common.AppName") }}
+    </b-navbar-brand>
+
+
+
+
+    <b-navbar-nav class="ml-auto mr-2">
+        <b-nav-form>
+            <b-form-select  v-model="selectedOption" @input="selected" size="sm" class="mr-sm-2">
+                <option
+                    v-for="option in pserver"
+                    :value="option"
+                    :key="option.clientIdentifier">
+                    {{ option.name }}
+                </option>
+            </b-form-select >
+            <b-button size="sm" class="my-2 my-sm-0" @click="fetchServers" variant="warning">
+                <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon> Reload
+          </b-button>
+        </b-nav-form>
+    </b-navbar-nav>
+
+        <b-navbar-nav class="ml-auto mr-2">
+                <b-img :src="getAvatar()" rounded="circle" alt="Circle image" width="32" height="32" class="m1"></b-img>    
+        </b-navbar-nav>
+
+
+  </b-navbar>
+</div>
+
+
+
+
+
+<!-- 
 <section class="hero is-dark is-small">
 <div class="hero-body">
         <div class="level">
@@ -40,7 +79,8 @@
 
             </div>
         </div>
-</section>
+</section> -->
+
 </template>
 
 <script>
@@ -91,13 +131,5 @@ export default {
 </script>
 
 <style scoped>
-    #title {
-        margin-left: 0.5em;
-    } 
-    #sync-button{
-        margin-left: 0.5em;
-    }
-    #plexname {
-        margin-right: 0.5em;
-    }
+
 </style>
