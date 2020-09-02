@@ -6,9 +6,7 @@
             "Level 3": "level3",
             "Level 4": "level4",
             "Level 5": "level5",
-            "Level 6": "level6",
-            "Tommy": "tommy"
-
+            "Level 6": "level6"            
         },
         "LevelCount": {
             "Level 1": 1,
@@ -16,24 +14,9 @@
             "Level 3": 2,
             "Level 4": 2,
             "Level 5": 2,
-            "Level 6": 2,
-            "Tommy": 2            
+            "Level 6": 2                     
         },
-        "level": {  
-            "tommy": [
-                "Title", 
-                "Part Duration"
-
-               
-                                             
-                
-                                                                                                                                              
-            ], 
-            "Inspect": [                                                                
-                "Part Duration" 
-
-
-            ],         
+        "level": {                    
             "level1": [
                 "Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
@@ -1148,10 +1131,269 @@
 
         }
     },
+    "episode": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "Tommy": "tommy"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "Level 3": 1,
+            "Level 4": 2,
+            "Level 5": 2,
+            "Level 6": 2,
+            "Tommy": 1            
+        },
+        "level": {  
+            "tommy": [
+                "Media ID"
+                
+                
+            ],
+            "verified": [
+                "Series Title", 
+                "Episode Sort Title",
+                "Episode Title",
+                "Year",
+                "Season",
+                "Episode",
+                "Content Rating",
+                "Summary",
+                "Rating",
+                "User Rating"
+
+            ],
+            "Clear Fields": [
+
+                "Writers",
+                "Duration",
+                "Added",
+                "Updated",
+                "Poster url",
+                "Collection",
+                "Locked Fields",
+                "View Count"               
+            ],
+            "Invalid, belongs to shows": [
+                "Studio",
+                "Originally Aired",
+                "Directors"
+
+            ],
+            "level1": [
+                "Media ID",
+                "Series Title", 
+                "Episode Sort Title",
+                "Episode Title",
+                "Year",
+                "Season",
+                "Episode",
+                "Content Rating",
+                "Summary",
+                "Rating",
+                "User Rating"
+            ],
+            "level2": [                                                
+                "Writers",
+                "Duration",
+                "Added",
+                "Updated",
+                "Poster url",
+                "Collection",
+                "Locked Fields",
+                "View Count"
+            ]
+            
+        },
+        "fields": {
+            "Media ID":
+                {
+                    "key": "$.ratingKey",
+                    "call": 1,
+                    "type": "string"
+                },
+            "Series Title":
+                {
+                    "key": "$.grandparentTitle",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Episode Sort Title":
+                {
+                    "key": "$.titleSort",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Episode Title":
+                {
+                    "key": "$.title",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Year":
+                {
+                    "key": "$.year",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Season":
+                {
+                    "key": "$.parentIndex",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Episode":
+                {
+                    "key": "$.index",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Content Rating":
+                {
+                    "key": "$.contentRating",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Summary":
+                {
+                    "key": "$.summary",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Rating":
+                {
+                    "key": "$.rating",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "User Rating":
+                {
+                    "key": "$.userRating",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Studio":
+                {
+                    "key": "$.studio",
+                    "call": 1,
+                    "type": "string"
+                },
+            "Originally Aired":
+                {},
+            "Directors": 
+                {},
+            "Writers": 
+                {},
+            "Duration": 
+                {},
+            "Added": 
+                {},
+            "Updated": 
+                {},
+            "Poster url": 
+                {},
+            "Collection": 
+                {},
+            "Locked Fields": 
+                {},
+            "View Count": 
+                {}
+        }
+ 
+
+    },
     "show": {
         "levels": {
-            "No Level Yet": "level1"
+            "Level 1": "level1",
+            "Tommy": "tommy"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "Level 3": 1,
+            "Level 4": 2,
+            "Level 5": 2,
+            "Level 6": 2,
+            "Tommy": 1            
+        },
+        "level": {  
+            "tommy": [
+                "Title", 
+                "Part Duration"                                                                                                                      
+            ]
+        },
+        "fields": {
+            "Media ID":
+                {
+                    "key": "$.ratingKey",
+                    "call": 1,
+                    "type": "string"
+                },
+            "Series Title":
+                {
+                    "key": "$.grandparentTitle",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Episode Sort Title":
+                {
+                    "key": "$.titleSort",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Episode Title":
+                {
+                    "key": "$.title",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Year":
+                {
+                    "key": "$.year",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Season":
+                {
+                    "key": "$.parentIndex",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Episode":
+                {
+                    "key": "$.index",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Content Rating":
+                {
+                    "key": "$.contentRating",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Summary":
+                {
+                    "key": "$.summary",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "Rating":
+                {
+                    "key": "$.rating",
+                    "call": 1,
+                    "type": "string"                    
+                },
+            "User Rating":
+                {
+                    "key": "$.userRating",
+                    "call": 1,
+                    "type": "string"                    
+                }
         }
+ 
+
     },
     "artist": {
         "levels": {

@@ -25,7 +25,7 @@ const et = new class ET {
     async getSectionData({sectionName, baseURL, accessToken, libType})
     {
         const sectionData = []
-        log.info(`Starting getSectionData with Name: ${sectionName}`)    
+        log.info(`Starting getSectionData with Name: ${sectionName} and with a type of: ${libType}`)    
         // Get Section Key
         const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})        
         log.debug(`Get SectionKey as: ${libKey}`)
@@ -42,7 +42,14 @@ const et = new class ET {
         const element = '/library/sections/' + libKey
         let size
         do {            
-            postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;            
+            postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+            if (libType == 'episode')
+            {
+                console.log('Ged Episodes needed, so adding the type')
+                console.log('Ged url called: ' + baseURL + element + postURI)
+                postURI += '&type=4'
+            }
+            console.log('GED postURI: ' + postURI)
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});                        
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             log.verbose(`getSectionData chunck size is ${size} and idx is ${idx}`)                      
@@ -89,7 +96,8 @@ const et = new class ET {
     }
 
     getRealLevelName(level, libType) {
-        // First get the real name of the level, and not just the display name
+        // First get the real name of the level, and not just the display name        
+        console.log('GED getRealLevelName LibType:  ' + libType)
         const levelName = def[libType]['levels'][level]        
         return levelName
     }
@@ -116,12 +124,12 @@ const et = new class ET {
             subItem['type'] = JSONPath({path: '$..type', json: section})[0];                                                                  
             result.push(subItem)
         }        
-        await Promise.resolve(result)
+        await Promise.resolve(result)        
         return  result
     }
     
     getLevelDisplayName(level, libType){
-        // return displayname fort with buildin levels
+        // return displayname for the buildin levels
         const levels = et.getLevels(libType)        
         let result = '';
         loop1:
@@ -163,7 +171,8 @@ const et = new class ET {
 
     getLevelFields(level, libType) {
         // return fields in a level
-        const out = []                
+        const out = []        
+        console.log('GED getLevelFields LibType:  ' + libType)                
         const levels = def[libType]['level'][et.getRealLevelName(level, libType)]        
         Object.keys(levels).forEach(function(key) {            
             out.push(levels[key])
@@ -180,7 +189,8 @@ const et = new class ET {
 
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
-        const levels = def[libType]['levels']    
+        const levels = def[libType]['levels']   
+        console.log('GED getLevels LibType:  ' + libType)                 
         log.debug('ET LevelNames: ' + JSON.stringify(levels))
         return levels
     }
@@ -196,6 +206,7 @@ const et = new class ET {
     getLevelKeys(libType){
         // Only return the keys for possible levels
         const out = []
+        console.log('GED getLevelKeys LibType:  ' + libType)                 
         const levels = def[libType]['levels']
         Object.keys(levels).forEach(function(key) {            
             out.push(key)
@@ -389,7 +400,7 @@ const excel2 = new class Excel {
         const fields = et.getLevelFields(Level, libType)              
         for (var i=0; i<fields.length; i++) {                        
             log.verbose('Column: ' + fields[i] + ' - ' + fields[i])                                                            
-            let column = { header: fields[i], key: fields[i] }
+            let column = { header: fields[i], key: fields[i], width: 5 }
             columns.push(column)            
         }             
         Sheet.columns = columns
@@ -399,6 +410,11 @@ const excel2 = new class Excel {
             pattern:'solid',
             fgColor:{ argb:'729fcf' }
             }
+        // Set header font to bold
+        Sheet.getRow(1).font = {bold: true}
+
+        
+
 
 /*         Sheet.autoFilter = {
             from: 'A1',
@@ -478,7 +494,8 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp( { libType, level, data, stream }) {        
-      //  log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                               
+        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`) 
+        console.log('Ged data:  ' + JSON.stringify(data))                              
         let date, year, month, day, hours, minutes, seconds        
         const fields = et.getFields( libType, level)                       
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
@@ -486,7 +503,8 @@ const excel2 = new class Excel {
         let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
             var name = Object.keys(fields[x]);            
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];  
+            console.log('Ged lookup: ' + lookup)          
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
                     val = JSONPath({path: String(lookup), json: data})[0];                    
@@ -717,36 +735,84 @@ const excel2 = new class Excel {
         row.forEach(element => {
             excel2.AddRow(sheet, element)                        
         });        
-    }      
+    } 
 
-    async createOutFile( {libName, level, libType, outType, baseURL, accessToken} )
-    {       
+    async sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }   
+
+     
+    async createXLSXFile( {csvFile, level, libType, libName} )
+    {
+        // This will loop thru a csv file, and create xlsx file
         // First create a WorkBook
-       // const workBook = await excel2.NewExcelWorkBook()     
+        const workBook = await excel2.NewExcelWorkBook()     
         // Create Sheet
-       // let sheet = await excel2.NewSheet(workBook, libName, level)        
+        let sheet = await excel2.NewSheet(workBook, libName, level)        
         // Add the header to the sheet
-        //const header = await excel2.AddHeader(sheet, level, libType)
+        await excel2.AddHeader(sheet, level, libType)
+        
+/*
+        autoFilter sadly doesn't work :(
+         sheet.autoFilter = {
+            from: 'A1', 
+            to: 'E1', 
+            exclude: [1, 2] // excludes columns B and C from showing the AutoFilter button
+        } */
+        // Read the csv file line by line
+        var lineReader = require('readline').createInterface({
+            input: require('fs').createReadStream(csvFile)
+          });
+          
+        var lineno = 0;
+        lineReader.on('line', async function (line) {                                    
+        // Skip first line
+        if (lineno != 0){
+            var lineArr = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);                           
+            await sheet.addRow(lineArr)
+        }
+        lineno++;        
+        });
+        lineReader.on('close', async function () {
+            if (wtconfig.get('ET.AutoXLSCol', false))
+            {
+                log.info('Setting xlsx column width')
+                sheet.columns.forEach(function(column){
+                    var dataMax = 0;
+                    column.eachCell({ includeEmpty: true }, function(cell){
+                        try {                        
+                            var columnLength = cell.value.length;	
+                            if (columnLength > dataMax) {
+                                dataMax = columnLength;
+                            }
+                        }
+                        catch (error) {
+                            // Failed, since either number or null, so simply ignoring
+                        }
+                    })
+                    column.width = dataMax < 10 ? 10 : dataMax;
+                });
+                log.info('Setting xlsx column width ended')
+            }
+            await excel2.SaveWorkbook(workBook, libName, level, "xlsx")            
+        });
+    }
+
+    async createOutFile( {libName, level, libType, baseURL, accessToken} )
+    {        
         const header = excel2.GetHeader(level, libType)
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
         // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level)
-        
-        outType
-        //outType, call   
-        
-        
+        const call = await et.getLevelCall(libType, level)                                        
         // Open a file stream
         const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp' })
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
-
-
-        stream.write( strHeader + "\n"); 
-
-
-
+        // Add the header
+        stream.write( strHeader + "\n");
         // Get all the items in small chuncks        
         var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                                 
         log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)                          
@@ -765,12 +831,11 @@ const excel2 = new class Excel {
             {                           
                 // Get ratingKeys in the chunk
                 const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
-                let urlStr = urls.join(',') 
+                let urlStr = urls.join(','); 
                 log.verbose(`Items to lookup are: ${urlStr}`)
-                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}))
-                //store.commit("UPDATE_EXPORTSTATUS", `Processing chunk ${x} of ${sectionData.length}.\nItems to export: \n${urlStr}`)                 
+                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}))                
                 const urlWIthPath = '/library/metadata/' + urlStr                          
-                log.verbose(`Items retrieved`)
+                log.verbose(`Items retrieved`);
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
                 const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                                                
                 for (item of contentsItems){                       
@@ -780,18 +845,15 @@ const excel2 = new class Excel {
         } 
         stream.end();  
         // Rename to real file name
-        var newFile = tmpFile.replace('.tmp', '.csv')                        
-        fs.rename(tmpFile, newFile, function (err) {
-            if (err) throw err;
-            console.log('renamed complete');
-          });
-        store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`)
-
-
-
-        // Save Excel file
-        // const result = await excel2.SaveWorkbook(workBook, libName, level, outType)
-        // return result    
+        var newFile = tmpFile.replace('.tmp', '.csv')  
+        fs.renameSync(tmpFile, newFile);                      
+        console.log('renamed complete');        
+        // Need to export to xlsx as well?
+        if (wtconfig.get('ET.ExpExcel')){            
+            log.info('We need to create an xlsx file as well')
+            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName})
+        }
+        store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`);
     }       
 }
 

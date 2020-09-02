@@ -74,11 +74,9 @@ const wtutils = new class WTUtils {
     }
 
     get LogMac() {
-        // does this work?
-        console.log('******* Need Help here ***********');
-        console.log('Mac Log dir detected as : ' + wtutils.Home + '/Library/Logs/' + wtutils.AppName);
-        console.log('********* Is that correct? ********** ');
-        return wtutils.Home + '/Library/Logs/' + wtutils.AppName;
+        const logDir = wtutils.Home.replace('Application Support', 'Logs');        
+        log.info(`Log directory on Mac is detected as: ${logDir}`)
+        return logDir;
     }
 
     /* 
@@ -95,9 +93,15 @@ const wtutils = new class WTUtils {
             {
                 localHome = __dirname.replace('node_modules\\electron\\dist\\resources\\electron.asar\\renderer', 'public/locales');
             }
+            else if (wtutils.isMac)
+            {
+                console.log('Ged MAC dir: ' + __dirname)
+                localHome = __dirname.replace('node_modules/electron/dist/Electron.app/Contents/Resources/electron.asar/renderer', 'public/locales');
+            }
             else
             {
                 localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
+
             }                                       
         }
         else

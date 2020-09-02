@@ -101,14 +101,16 @@ export default {
     this.getOnlineLangs();    
   },
   methods: {
-    forcedownload() {       
-      this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
+    async forcedownload() {
+      this.olLangs = [];       
+      await this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
+      this.getOnlineLangs();
     },
     joinPOE() {
-      shell.openExternal("https://poeditor.com/join/project/yFjdfkDfup")
+      shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki/Translator")
     },
-    getOnlineLangs() {      
-      var onlineLangs = this.$store.getters.getLanguages      
+    async getOnlineLangs() {      
+      var onlineLangs = await this.$store.getters.getLanguages      
       for (var i=0; i<onlineLangs.length; i++) {       
         var langName = onlineLangs[i]['name'] + ' (' + onlineLangs[i]['percentage'] + '%)';
         const entry = {}

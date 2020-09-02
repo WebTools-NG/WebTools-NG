@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {excel2} from '../../components/modules/ExportTools/et'
 import {et} from '../../components/modules/ExportTools/et'
 const log = require('electron-log');
@@ -40,27 +39,24 @@ const mutations = {
 
 const actions = {
     async fetchSections({ commit, getters }) {
-        log.info("fetchSections called")
-        var baseURL = getters.getSlectedServerAddress
-        var accessToken = getters.getSlectedServerToken        
+        log.info("fetchSections called")        
+        var baseURL = getters.getSelectedServerAddress
+        var accessToken = getters.getSelectedServerToken        
         commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))        
-    },    
-    exportMedias({ commit, getters }) {                
-        // Vars OK
-        var baseURL = getters.getSlectedServerAddress
-        var accessToken = getters.getSlectedServerToken
+    },               
+    exportMedias({ getters }) {      
+        var baseURL = getters.getSelectedServerAddress
+        var accessToken = getters.getSelectedServerToken
         var libType = getters.getLibType
-        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                      
-        var key = getters.getSelectedSection
-        
-        var mediaSize = ''
-        var calcSize = 0               
-        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)                          
-        libName, levelName, libType, 'xlsx', baseURL, accessToken
-        excel2
-        axios, commit, key, mediaSize, calcSize       
-        excel2.createOutFile( {libName: libName, level: levelName, libType: libType, outType: 'xlsx', baseURL: baseURL, accessToken: accessToken} );
-        
+        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                                  
+        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)                                         
+        excel2.createOutFile( {
+          libName: libName, 
+          level: levelName, 
+          libType: libType, 
+          baseURL: baseURL, 
+          accessToken: accessToken
+        } );        
     }
 }
 

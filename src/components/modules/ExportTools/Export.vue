@@ -5,6 +5,8 @@
       <small>{{ $t("Modules.ET.Description") }}</small>
     </h2>
     <br />
+
+
     
     <div> <!-- Media type to export -->      
       <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
@@ -19,10 +21,12 @@
           name="mediaType"
         ></b-form-radio-group>
       </b-form-group>
-    </div>    
-
-    <div> <!-- Select Library -->
-      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+    </div>
+    <div class="d-flex align-items-center">
+      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">        
+        <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
+          <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+        </div>
         <b-tooltip target="etLibraryGroup" triggers="hover">
           {{ $t('Modules.ET.TT-ETLibrary') }}
         </b-tooltip>
@@ -30,10 +34,10 @@
           v-model="selLibrary"          
           id="selLibrary"
           @change.native="enableBtnExport"
-          :options="pmsSections"
+          :options="selLibraryOptions"
           name="selLibrary">        
         </b-form-select>
-      </b-form-group>
+      </b-form-group>      
     </div>    
 
     <div> <!-- Select Export Level -->    
@@ -89,25 +93,41 @@
   import i18n from '../../../i18n';
   import store from '../../../store';
   import { wtconfig } from '../../../wtutils';
-
-
+  
   const log = require("electron-log");
   export default {
       data() {
-        return {          
+        return {   
+          selLibraryWait: true,              
           btnDisable: true,                  
           selMediaType: "movie",
           selLibrary: "",
+          selLibraryOptions: [],
           selLevel: "",
           selLevelName: "",
           optionsMediaType: [
-            { text: 'Movies', value: 'movie', disabled: false },            
-            { text: 'Shows', value: 'show', disabled: true },            
-            { text: 'Artist', value: 'artist', disabled: true },
-            { text: 'Photos', value: 'photo', disabled: true },
-            { text: 'Other Videos', value: 'other', disabled: true }
-          ]
+            { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
+            { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true }, 
+            { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },
+            { text: i18n.t('Modules.ET.RadioTVShowEpisodes'), value: 'showepisode', disabled: true },             
+            { text: i18n.t('Modules.ET.RadioMusic'), value: 'artist', disabled: true },
+            { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },
+            { text: i18n.t('Modules.ET.RadioOtherVideos'), value: 'other', disabled: true }
+          ]          
         };
+  },
+  watch: {
+    // Watch for when selected server address is updated
+    selectedServerAddress: async function(){
+      // Changed, so we need to update the libraries       
+      this.selLibraryWait = false;      
+      this.selLibrary = '';                                                     
+      await this.getPMSSections();            
+      this.selLibraryWait = true;             
+    },
+    selectedServerAddressUpdateInProgress: async function(){
+      this.selLibraryWait = false;            
+    }
   },
   created() {
     log.info("ET Created");
@@ -116,30 +136,17 @@
     this.fetchSelection();
   },
   computed: {
-    pmsSections: function() {
-      const sections = this.$store.getters.getPmsSections;
-      const result = [];
-      if (Array.isArray(sections) && sections.length) {                
-        sections.forEach(req => {          
-          if (req.type == this.selMediaType) {
-            log.debug(`pushing library: ${req.title} to results`);
-            let item = {};
-            item['text']=req.title;
-            item['value']=req.key;                       
-            result.push(item);
-          }
-        });
-      } else {
-        log.error("No Library found");
-        result.push["No Library found"];
-      }       
-      return result;
-    },    
-    exportLevels: function() {   
-      
-      et.getLevelDisplayName('My Level', this.selMediaType)
+    selectedServerAddress: function(){
+        return this.$store.getters.getSelectedServerAddress
+    },  
+    selectedServerAddressUpdateInProgress(){
+        return this.$store.getters.getSelectedServerAddressUpdateInProgress
+    },  
+    exportLevels: function() {         
+      et.getLevelDisplayName('My Level', this.selMediaType);
       // Returns valid levels for selected media type
-      const etLevel = et.getLevels(this.selMediaType);
+      let targetType = this.selMediaType;
+      const etLevel = et.getLevels(targetType);
       const etCustomLevel = et.getCustomLevels(this.selMediaType);      
       const options = []
       const item = {}
@@ -181,6 +188,33 @@
     }
   },
   methods: {
+    getPMSSections: async function(){      
+      this.selLibrary = "Loading...";
+      await this.$store.dispatch('fetchSections')
+      const sections = await this.$store.getters.getPmsSections;      
+      const result = [];     
+      // If episodes, we need to show shows
+      let targetType = this.selMediaType;
+      if (targetType == 'episode')
+      {
+        targetType = 'show'
+      }      
+      if (Array.isArray(sections) && sections.length) {                
+        sections.forEach(req => {          
+          if (req.type == targetType) {
+            log.debug(`pushing library: ${req.title} to results`);
+            let item = [];            
+            item['text']=req.title;
+            item['value']=req.key;                       
+            result.push(Object.assign({}, item));
+          }
+        });
+      } else {
+        log.error("No Library found");
+        result.push["No Library found"];
+      }
+      this.selLibraryOptions = result;         
+    },
     selectSelection: function(selected) {
       log.debug(selected);
       this.$store.commit("UPDATE_SELECTEDSECTION", selected);
@@ -192,13 +226,13 @@
     changeType: function() {
       // Triggers when lib type is changed
       this.selLibrary = '';
-      this.selLevel = '';  
+      this.selLevel = '';      
+      this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
     },
     selectExportLevel: function() {      
       this.enableBtnExport();
-    },
-    
+    },    
     getMedia() {
       log.info("getMedia Called");
       if (wtconfig.get('ET.OutPath', "") == "")
@@ -218,12 +252,13 @@
       this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));                     
       this.$store.dispatch("exportMedias");
     },
-    fetchSelection() {
+    async fetchSelection() {
       log.debug("fetchSelection");
       let serverCheck = this.$store.getters.getSelectedServer;
       if (serverCheck !== "none") {
         log.debug("serverCheck is not null, running fetchSections ");
-        this.$store.dispatch("fetchSections");
+        this.getPMSSections();
+        //await this.$store.dispatch("fetchSections");
       } else {
         log.debug("serverCheck is none");
         this.$bvToast.toast(this.$t("Modules.ET.ErrorNoServerSelectedMsg"), {
