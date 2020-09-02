@@ -12,8 +12,6 @@
       {{ $t("Modules.ET.Name") }} <br>
       <small>{{ $t("Modules.ET.Description") }}</small>
     </h3>
-
-
     
         </div>
   </b-container>
