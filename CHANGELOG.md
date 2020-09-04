@@ -1,4 +1,4 @@
-# webtools-ng Change log
+# WebTools-ng Change log
 
 ```md
 # V0.1.x
