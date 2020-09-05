@@ -27,15 +27,15 @@ const wtutils = new class WTUtils {
 
     get Platform() {
         let OS = undefined;
-        if (this.isMac())
+        if (this.isMac)
         {
             OS = 'Mac'
         }
-        else if (this.isLinux())
+        else if (this.isLinux)
         {
             OS = 'Linux'
         }
-        else if (this.isWindows())
+        else if (this.isWindows)
         {
             OS = 'Windows'
         }
