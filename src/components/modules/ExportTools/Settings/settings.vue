@@ -15,6 +15,9 @@
     <b-input-group id="ArraySepGrp" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
         <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>        
     </b-input-group>
+    <b-input-group id="NotAvailIndicatorGrp" :prepend="$t('Modules.ET.Settings.NotAvailIndicator')" class="mt-3">
+        <b-form-input id="NotAvailIndicator" name="NotAvailIndicator" type="text" class="form-control" v-model="NotAvailIndicator" :disabled=false @change="setNotAvailIndicator()"></b-form-input>        
+    </b-input-group>
     <b-input-group id="ColumnSepGrp" :prepend="$t('Modules.ET.Settings.ColumnSep')" class="mt-3">
         <b-form-input id="ColumnSep" name="ColumnSep" type="text" class="form-control" v-model="ColumnSep" :disabled=false :maxlength=1 @change="setColumnSep"></b-form-input>
     </b-input-group>
@@ -54,9 +57,8 @@
             return {
                 outDirVal: wtconfig.get('ET.OutPath', i18n.t('Modules.ET.Settings.SelectOutDir')),
                 ArraySep: wtconfig.get('ET.ArraySep'),
-               // ColumnSep: wtconfig.get('ET.ColumnSep'),
-                ColumnSep: '',
-                //ColumnSep1: this.computedColumnSep,
+                NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),               
+                ColumnSep: '',                
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 cbSelected: [],                
                 cbOptions: [
@@ -120,6 +122,9 @@
             },            
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
+            },
+            setNotAvailIndicator: function(){
+                wtconfig.set('ET.NotAvail', this.NotAvailIndicator)
             },
             setTimeOut: function(){
                 wtconfig.set('PMS.TimeOut', this.TimeOut)
