@@ -67,40 +67,7 @@
                     { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow' }                    
                 ] 
             };              
-        },
-        computed: {
-            ColumnSep22: {
-                // getter
-                get: function () {
-                        if ( wtconfig.get('ET.ColumnSep') != '\t' ){
-                        console.log('Ged normal retur')
-                        return wtconfig.get('ET.ColumnSep')
-                    }
-                    else
-                    {
-                        console.log('Ged tab retur')
-                        return '{TAB}'
-                    }
-                },
-                // setter
-                set: function (newValue) {
-                    wtconfig.set('ET.ColumnSep', newValue) 
-                }
-            },
-            computedColumnSep123: function(){
-                if ( wtconfig.get('ET.ColumnSep') != '\t' ){
-                    console.log('Ged normal retur')
-                    return wtconfig.get('ET.ColumnSep')
-                }
-                else
-                {
-                    console.log('Ged tab retur')
-                    return '{TAB}'
-                }
-
-            }
-
-        },
+        },                   
         methods: {
             getcbDefaults(){                
                 const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"];

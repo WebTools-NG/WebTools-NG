@@ -193,7 +193,8 @@
                 {
                     "key": "$.titleSort",
                     "call": 1,
-                    "type": "string"
+                    "type": "string",
+                    "postProcess": true
                 },
             "Studio":
                 {
