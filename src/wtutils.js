@@ -135,8 +135,7 @@ const wtutils = new class WTUtils {
                 localHome = __dirname.replace('node_modules\\electron\\dist\\resources\\electron.asar\\renderer', 'public/locales');
             }
             else if (wtutils.isMac)
-            {
-                console.log('Ged MAC dir: ' + __dirname)
+            {                
                 localHome = __dirname.replace('node_modules/electron/dist/Electron.app/Contents/Resources/electron.asar/renderer', 'public/locales');
             }
             else

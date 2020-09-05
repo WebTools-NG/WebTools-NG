@@ -18,6 +18,7 @@ import axios from 'axios'
 import store from '../../../store';
 
 
+
 const et = new class ET {
     constructor() {
         this.PMSHeader = wtutils.PMSHeader;                
@@ -421,11 +422,10 @@ const excel2 = new class Excel {
         return true
     }
 
-    async postProcess(name, val){
-       // log.silly(`Start postProcess. name: ${name} - val: ${val}`)        
-        const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '))
-        let retArray = []
-        let x, retVal  
+    async postProcess( {name, val, title=""} ){       
+        const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '));
+        let retArray = [];
+        let x, retVal;        
         try {                 
             switch ( String(name) ){            
                 case "MetaDB Link":                                                                                           
@@ -458,11 +458,37 @@ const excel2 = new class Excel {
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break;
-                case "Original Title":                    
-                    for (x=0; x<valArray.length; x++) {                    
-                        retArray.push(valArray[x])
+                case "Original Title":
+                    if (wtconfig.get('ET.OrgTitleNull'))
+                    {                        
+                        // Override with title if not found
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {                                                   
+                            retVal = title;
+                        }
+                        else { retVal = val; }
                     }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    else
+                    {
+                        retVal = val;
+                    }
+                    break;
+                case "Sort title":
+                    if (wtconfig.get('ET.SortTitleNull'))
+                    {
+                        // Override with title if not found
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {                            
+                            retVal = title;
+                        }
+                        else {                              
+                            retVal = val; 
+                        }
+                    }
+                    else
+                    {                        
+                        retVal = val;
+                    }
                     break;
                 default:
                     log.error(`postProcess no hit for: ${name}`)                
@@ -482,7 +508,7 @@ const excel2 = new class Excel {
         let str = ''
         let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
-            var name = Object.keys(fields[x]);            
+            var name = Object.keys(fields[x]);                    
             lookup = JSONPath({path: '$..key', json: fields[x]})[0];                     
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
@@ -581,8 +607,14 @@ const excel2 = new class Excel {
             }
             let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
             if ( doPostProc == 'true')
-            {                     
-                val = await this.postProcess(name, val);                              
+            {                
+                if (!["Original Title","Sort title"].includes(name)){                
+                    const title = JSONPath({path: String('$.title'), json: data})[0];
+                    val = await this.postProcess( {name: name, val: val, title: title} );        
+                }
+                else {                                       
+                    val = await this.postProcess( {name: name, val: val} );                              
+                }                
             }            
             // If string, put in ""
             if (isNaN(val)){
@@ -593,128 +625,9 @@ const excel2 = new class Excel {
             }
         }        
         // Remove first character
-        result = str.substr(1);         
+        result = str.substr(1);             
         await stream.write( result + "\n");              
-    }
-
-    async addRowToSheet(sheet, libType, level, data) {        
-        log.debug(`Start addRowToSheet. libType: ${libType} - level: ${level}`)          
-        // Placeholder for row        
-        let row = []
-        let date, year, month, day, hours, minutes, seconds        
-        const fields = et.getFields( libType, level)         
-        const rowentry = {}        
-        let lookup, val, array, i, valArray, valArrayVal, subType, subKey                          
-        for (var x=0; x<fields.length; x++) {                                   
-            var name = Object.keys(fields[x]);            
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
-            switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
-                case "string":                                                                                            
-                    val = JSONPath({path: String(lookup), json: data})[0];                    
-                    // Make N/A if not found
-                    if (val == null)
-                    {
-                        val = wtconfig.get('ET.NotAvail', 'N/A')
-                    }                    
-                    break;
-                case "array":                                                            
-                    array = JSONPath({path: lookup, json: data});
-                    valArray = []                                       
-                    for (i=0; i<array.length; i++) {                                                                     
-                        subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
-                        subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
-                        switch(String(subType)) {
-                            case "string":                                                                                                                       
-                                valArrayVal = JSONPath({path: String(subKey), json: array[i]})[0];                                
-                                // Make N/A if not found
-                                if (valArrayVal == null || valArrayVal == "")
-                                {
-                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
-                                }
-                                break;
-                            case "time":                                                                                                                        
-                                valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
-                                // Make N/A if not found
-                                if (valArrayVal == null || valArrayVal == "")
-                                {
-                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
-                                }
-                                else
-                                {                                    
-                                    const total = valArrayVal.length                                 
-                                    for (let i=0; i<total; i++) {                                        
-                                        seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();                            
-                                        minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();                            
-                                        hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();                                                                  
-                                        // Will display time in 10:30:23 format                        
-                                        valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                                    }                                    
-                                }
-                                break;
-                            default:
-                                log.error('NO ARRAY HIT (addRowToSheet-array)')                                
-                        }                                            
-                        valArray.push(valArrayVal)
-                    }                    
-                    val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))                                        
-                    break;
-                case "array-count":                                                                                                                        
-                    val = JSONPath({path: String(lookup), json: data}).length;                                                          
-                    break;
-                case "int":                    
-                    val = JSONPath({path: String(lookup), json: data})[0];
-                    break;
-                case "time":                                                     
-                    val = JSONPath({path: String(lookup), json: data});                                                                                                                             
-                    if ( typeof val !== 'undefined' && val )
-                    {
-                        seconds = '0' + (Math.round(val/1000)%60).toString();                            
-                        minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();                            
-                        hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();                                                                  
-                        // Will display time in 10:30:23 format                        
-                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                                           
-                    }
-                    else
-                    {
-                        val = null
-                    }                                            
-                    break;
-                case "datetime":                     
-                    val = JSONPath({path: String(lookup), json: data});                    
-                    if ( typeof val !== 'undefined' && val )
-                    {
-                        // Create a new JavaScript Date object based on the timestamp
-                        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                        date = new Date(val * 1000);                            
-                        year = date.getFullYear().toString();                             
-                        month = ('0' + date.getMonth().toString()).substr(-2);  
-                        day = ('0' +  date.getDate().toString()).substr(-2);                            
-                        hours = date.getHours();                            
-                        minutes = "0" + date.getMinutes();                            
-                        seconds = "0" + date.getSeconds();
-                        // Will display time in 10:30:23 format                                                      
-                        val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);                           
-                    }
-                    else
-                    {
-                        val = null
-                    }                                            
-                    break;
-                default:
-                    log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)                    
-            }
-            let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
-            if ( doPostProc == 'true')
-            {                     
-                val = await this.postProcess(name, val);                              
-            }            
-            rowentry[name[0]] = val
-        }        
-        row.push(rowentry)        
-        row.forEach(element => {
-            excel2.AddRow(sheet, element)                        
-        });        
-    } 
+    }     
 
     async sleep(ms) {
         return new Promise((resolve) => {
