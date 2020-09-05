@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../../router'
-import {wtconfig} from '../../wtutils'
+import {wtconfig, wtutils} from '../../wtutils'
 
 const log = require('electron-log');
 
@@ -46,16 +46,14 @@ const mutations = {
 
 const actions = {
   fetchPlexServers({ commit, getters }) {
+    let header = wtutils.PMSHeader;
+    header['X-Plex-Token'] = getters.getAuthToken;
+      
+
       axios({
           method: 'get',
-          url: 'https://plex.tv/api/v2/resources',
-          responseType: 'json',
-          headers: 
-          {            
-            'X-Plex-Client-Identifier' : 'WebTools-NG',
-            'X-Plex-Token': getters.getAuthToken,
-            'Accept' : 'application/json'
-          },
+          url: 'https://plex.tv/api/v2/resources',          
+          headers: header,
           params: {
             'includeHttps' : '1',
             'includeRelay': '0'
@@ -101,21 +99,16 @@ const actions = {
      }    
    });
   },
-  loginToPlex({ commit }, payload){
+  loginToPlex({ commit }, payload){    
     log.info("loginToPlex called")
     axios({
       method: 'POST',
-      url: 'https://plex.tv/users/sign_in.json',
-      responseType: 'json',
+      url: 'https://plex.tv/users/sign_in.json',      
       auth: {
         username : payload.username,
         password:  payload.password
       },
-      headers: 
-      { 'X-Plex-Product' : 'webtools',
-        'X-Plex-Version' : '1.19.2',
-        'X-Plex-Client-Identifier' : 'WebTools-NG',
-      }
+      headers: wtutils.PMSHeader      
     })  
       .then(function (response) {
         log.info('loginToPlex: Response from fetchPlexServers recieved')
