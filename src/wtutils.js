@@ -14,13 +14,32 @@ const wtutils = new class WTUtils {
     constructor() {      
     }
 
-    get PMSHeader(){
+    get PMSHeader(){        
         var headers = {
             "Accept": "application/json",
             "X-Plex-Client-Identifier": this.X_Plex_Client_Identifier,
-            "X-Plex-Product": this.AppName + '_' + this.AppVersion
+            "X-Plex-Product": this.AppName,
+            "X-Plex-Version": this.AppVersion,
+            "X-Plex-Device": this.Platform                  
         }   
         return headers        
+    }
+
+    get Platform() {
+        let OS = undefined;
+        if (this.isMac())
+        {
+            OS = 'Mac'
+        }
+        else if (this.isLinux())
+        {
+            OS = 'Linux'
+        }
+        else if (this.isWindows())
+        {
+            OS = 'Windows'
+        }
+        return OS
     }
 
     // Get X_Plex_Client_Identifier, or create one if not set
