@@ -227,6 +227,9 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.OutPath', 'N/A') == 'N/A' ){
             wtconfig.set('ET.OutPath', '')
         }
+        if ( wtconfig.get('ET.NotAvail', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.NotAvail', 'N/A')
+        }
 
         
 

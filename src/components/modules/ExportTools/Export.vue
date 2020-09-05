@@ -1,13 +1,10 @@
 <template>
     <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-    <h2>{{ $t("Modules.ET.Name") }} <br>
+    <h3>{{ $t("Modules.ET.Name") }} <br>
       <small>{{ $t("Modules.ET.Description") }}</small>
-    </h2>
-    <br />
-
-
-    
+    </h3>
+    <br />    
     <div> <!-- Media type to export -->      
       <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="etTypeGroup" triggers="hover">
@@ -65,7 +62,8 @@
         :disabled="btnDisable == true"
         variant="success"
       >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>        
+    </div>  
+    <br>      
     <b-container fluid>
     <b-row>
       <b-col sm="2">
@@ -84,7 +82,7 @@
     </b-row>
   </b-container>
           </div>
-    </b-container>
+  </b-container>
   
 </template>
 

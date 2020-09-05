@@ -125,7 +125,8 @@
                 "OrgTitleNull": "Default \"Original Title\" to \"Title\", if empty",
                 "SortTitleNull": "Default \"Sort Title\" to \"Title\", if empty",
                 "AutoXLSCol": "Autosize column (xlsx only)",
-                "AutoXLSRow": "Autosize row (xlsx only)"
+                "AutoXLSRow": "Autosize row (xlsx only)",
+                "NotAvailIndicator": "What to use if a field can't be found"
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",
