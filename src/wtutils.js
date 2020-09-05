@@ -14,6 +14,28 @@ const wtutils = new class WTUtils {
     constructor() {      
     }
 
+    get PMSHeader(){
+        var headers = {
+            "Accept": "application/json",
+            "X-Plex-Client-Identifier": this.X_Plex_Client_Identifier,
+            "X-Plex-Product": this.AppName + '_' + this.AppVersion
+        }   
+        return headers        
+    }
+
+    // Get X_Plex_Client_Identifier, or create one if not set
+    get X_Plex_Client_Identifier() {        
+        let result = wtconfig.get('General.X_Plex_Client_Identifier' )
+        if (result == undefined)
+        {            
+            var uuid = require('uuid');
+            result = uuid.v4();
+            wtconfig.set('General.X_Plex_Client_Identifier', result)
+            log.debug(`Setting X_Plex_Client_Identifier as ${result}`)
+        }        
+        return result;
+    }
+
     get isDev() {
         return require('electron-is-dev');
     }
