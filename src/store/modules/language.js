@@ -27,7 +27,7 @@ export const actions = {
       }      
       const res = await JSON.parse(fs.readFileSync(langFile, 'utf8'));           
       i18n.setLocaleMessage(langCode, res)
-      commit('SET_LANG', langCode)
+      commit('SET_LANG', langCode)      
     }
     catch(e) {
       console.log(e)

@@ -38,33 +38,15 @@ export default {
         if (onlineLangs[i]['code'] == selLang)
         {
           if ( onlineLangs[i]['updated'] != selLangUpdated)
-          {
-            console.log('Ged update needed for : ' + onlineLangs[i]['name'])
-            //const bodyStr = i18n.t("Common.Home.LangUpdateMsg") + '</br>' + i18n.t("Common.Home.LangUpdateMsg2");
-            //const bodyStr = 'Test'
-/*             this.$bvToast.toast("Test"), {
-             // title: this.$t("Common.Home.LangUpdateTitle"),
-              title: "Ged title",
-              autoHideDelay: 3000,          
-              solid: true,
-              //enableHtml: true,
-              variant: 'primary',
-              toaster: 'b-toaster-bottom-right' 
-            }  */
-
-
-            const bodyStr = i18n.t("Common.Home.LangUpdateMsg", [onlineLangs[i]['name']]) + '. ' + i18n.t("Common.Home.LangUpdateMsg2", [i18n.t("Common.Language.btnForce")]);
-
-            //this.$bvToast.toast(this.$t("Modules.ET.ErrorNoServerSelectedMsg"), {
-            this.$bvToast.toast(bodyStr, {
-              //title: this.$t("Modules.ET.ErrorNoServerSelectedTitle"),
+          {            
+            const bodyStr = i18n.t("Common.Home.LangUpdateMsg", [onlineLangs[i]['name']]) + '. ' + i18n.t("Common.Home.LangUpdateMsg2", [i18n.t("Common.Language.btnForce")]);            
+            this.$bvToast.toast(bodyStr, {           
               title: this.$t("Common.Home.LangUpdateTitle"),
               autoHideDelay: 400000,                     
               solid: true,
               variant: 'primary',
               toaster: 'b-toaster-bottom-right' 
             });
-
           }
         }
       }

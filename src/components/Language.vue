@@ -106,9 +106,6 @@ export default {
       this.olLangs = [];       
       await this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
       this.getOnlineLangs();
-
-      console.log('Ged lang time: ' +  i18n.locale)
-      //const langTimeStamp = 'ged223344'
       // Get timeStamp
       let timeStamp = ''
       var onlineLangs = await this.$store.getters.getLanguages      
@@ -117,8 +114,7 @@ export default {
         {
           timeStamp = onlineLangs[i]['updated']
         }
-      }
-      
+      }      
       // Update settings with timestamp
       wtconfig.set(`Languages.${i18n.locale}`, timeStamp)
     },
@@ -137,6 +133,7 @@ export default {
     },    
     onChange(event) {          
       this.$store.dispatch('updateAndSetLang', { "langCode": event.target.value, "forceDownload": false});
+      console.log('Ged lang skiftet')
     }
   }
 }
