@@ -54,6 +54,11 @@ import i18n from '../../i18n'
                         icon: 'fas fa-language'
                     },
                     {
+                        href: '/settings',
+                        title: i18n.t("Common.Menu.Sidebar.Settings.NavTitle"),                                
+                        icon: 'fa fa-cog'
+                    },
+                    {
                         href: { path: '/about' },
                         title: i18n.t("Common.Menu.Sidebar.About.NavTitle"),
                         icon: 'fas fa-question-circle'
