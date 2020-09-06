@@ -4,6 +4,7 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Export from '../components/modules/ExportTools/Export'
 import Language from '../components/Language.vue'
+import GlobalSettings from '../components/GlobalSettings.vue'
 import About from '../components/About'
 import Store from '../store/index.js'
 import ExportSettings from '../components/modules/ExportTools/Settings/settings'
@@ -48,6 +49,12 @@ Vue.use(VueRouter)
     path: '/language',
     name: "language",
     component: Language,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/settings',
+    name: "settings",
+    component: GlobalSettings,
     meta: {requiresAuth: true}
   },
   {

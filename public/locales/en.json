@@ -94,6 +94,9 @@
                 },
                 "Reset":{
                     "NavTitle": "Factory Reset"
+                },
+                "Settings":{
+                    "NavTitle": "Global Settings"                    
                 }
             }
         },
@@ -165,6 +168,17 @@
             "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work! And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
             "WikiDevelopers": "Wiki was made by:",
             "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)"
+        },
+        "GlobalSettings": {
+            "Title": "Global Settings",
+            "Description": "Here you configure the global settings, that influence all modules",
+            "TimeOut": "Timeout when requesting info from PMS in sec",
+            "LogLevelFile": "What file log level to use (Change only if asked by the devs)",
+            "LogLevelConsole": "Console log level (Only used when developing)",
+            "LogSize": "Size of logfile, before rollover",
+            "RestartNeeded": "When changing this setting, a restart is needed"
+
+
         }
     }
 }
