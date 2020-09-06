@@ -7,6 +7,8 @@
     <p>{{ $t("Modules.About.Devdane22") }}</p>
     <p>{{ $t("Modules.About.DevCPSO") }}</p>
     <br>
+    <h3>{{ $t("Modules.About.WikiDevelopers") }}</h3>
+    <p>{{ $t("Modules.About.Wikitrumpy81") }}</p>
     <h3>
       {{ $t("Modules.About.TranslationBetaTestersTitle") }} <br>
       <small>{{ $t("Modules.About.TranslationBetaTestersText") }}</small>
@@ -31,7 +33,8 @@ export default {
   
   }, computed: {
     poTranslators(){
-     return this.$store.getters.getContrib
+
+      return this.$store.getters.getContrib
     }
   }
 }
