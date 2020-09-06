@@ -58,13 +58,7 @@ const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.defa
 require('electron').remote.Menu.setApplicationMenu(menu)
 log.info('App Menu builded')
 
-
 Vue.config.productionTip = false
-
-
-
-
-
 
 new Vue({
   render: h => h(App),

@@ -1,0 +1,56 @@
+{
+    "ratingKey":"2148",
+    "key":"/library/metadata/2148",
+    "parentRatingKey":"2097",
+    "grandparentRatingKey":"2096",
+    "guid":"com.plexapp.agents.thetvdb://296762/3/8?lang=en",
+    "parentGuid":"com.plexapp.agents.thetvdb://296762/3?lang=en",
+    "grandparentGuid":"com.plexapp.agents.thetvdb://296762?lang=en",
+    "type":"episode",
+    "title":"Crisis Theory",
+    "grandparentKey":"/library/metadata/2096",
+    "parentKey":"/library/metadata/2097",
+    "grandparentTitle":"Westworld",
+    "parentTitle":"Season 3",
+    "contentRating":"TV-MA",
+    "summary":"Time to face the music.",
+    "index":8,
+    "parentIndex":3,
+    "year":2020,
+    "thumb":"/library/metadata/2148/thumb/1588809708",
+    "art":"/library/metadata/2096/art/1588809708",
+    "parentThumb":"/library/metadata/2097/thumb/1588809708",
+    "grandparentThumb":"/library/metadata/2096/thumb/1588809708",
+    "grandparentArt":"/library/metadata/2096/art/1588809708",
+    "grandparentTheme":"/library/metadata/2096/theme/1588809708",
+    "duration":4634642,
+    "originallyAvailableAt":"2020-05-03",
+    "addedAt":1588809667,
+    "updatedAt":1588809708,
+    "deletedAt":1590192212,
+    "Media":[
+        {
+            "id":1980,"duration":4634642,"bitrate":5602,"width":1280,
+            "height":720,"aspectRatio":1.78,"audioChannels":6,
+            "audioCodec":"eac3","videoCodec":"h264",
+            "videoResolution":"720","container":"mkv",
+            "videoFrameRate":"24p","videoProfile":"high",
+            "deletedAt":1590192212,
+            "Part":[
+                {
+                    "id":1990,
+                    "key":"/library/parts/1990/1588792405/file.mkv",
+                    "duration":4634642,
+                    "file":"/share/CACHEDEV1_DATA/video/new/shows/Westworld (2016)/Season 3/Westworld.S03E08.WEBDL-720p.mkv",
+                    "size":3245323033,
+                    "container":"mkv",
+                    "videoProfile":"high"
+                }
+            ]
+        }
+    ],
+    "Writer":[
+        {"tag":"Denise Thé"},
+        {"tag":"Jonathan Nolan"}
+    ]
+}

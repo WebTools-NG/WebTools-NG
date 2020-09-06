@@ -87,6 +87,7 @@
 // User Config
 import i18n from '../i18n';
 import { shell } from 'electron';
+import { wtconfig} from '../wtutils'
 const log = require('electron-log');
 
 export default {
@@ -105,6 +106,21 @@ export default {
       this.olLangs = [];       
       await this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
       this.getOnlineLangs();
+
+      console.log('Ged lang time: ' +  i18n.locale)
+      //const langTimeStamp = 'ged223344'
+      // Get timeStamp
+      let timeStamp = ''
+      var onlineLangs = await this.$store.getters.getLanguages      
+      for (var i=0; i<onlineLangs.length; i++) {
+        if (onlineLangs[i]['code'] == i18n.locale)
+        {
+          timeStamp = onlineLangs[i]['updated']
+        }
+      }
+      
+      // Update settings with timestamp
+      wtconfig.set(`Languages.${i18n.locale}`, timeStamp)
     },
     joinPOE() {
       shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki/Translator")

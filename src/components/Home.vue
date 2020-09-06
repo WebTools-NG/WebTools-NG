@@ -18,7 +18,63 @@
 </template>
 
 <script>
+const log = require('electron-log');
+import i18n from '../i18n';
+import {wtutils, wtconfig} from '../wtutils'
 export default {
+  mounted() {
+    log.info("About Mounted");    
+    this.checkLangUpdates();    
+  },
+  methods: {
+    async checkLangUpdates() {
+      // Start by getting the currently selected language
+      const selLang = wtconfig.get('General.language');
+      const selLangUpdated = wtconfig.get(`Languages.${selLang}`, 'N/A')
+      console.log('Ged selLang: ' + selLang)
+      console.log('Ged selLangUpdated: ' + selLangUpdated)
+      var onlineLangs = await this.$store.getters.getLanguages      
+      for (var i=0; i<onlineLangs.length; i++) {
+        if (onlineLangs[i]['code'] == selLang)
+        {
+          if ( onlineLangs[i]['updated'] != selLangUpdated)
+          {
+            console.log('Ged update needed for : ' + onlineLangs[i]['name'])
+            //const bodyStr = i18n.t("Common.Home.LangUpdateMsg") + '</br>' + i18n.t("Common.Home.LangUpdateMsg2");
+            //const bodyStr = 'Test'
+/*             this.$bvToast.toast("Test"), {
+             // title: this.$t("Common.Home.LangUpdateTitle"),
+              title: "Ged title",
+              autoHideDelay: 3000,          
+              solid: true,
+              //enableHtml: true,
+              variant: 'primary',
+              toaster: 'b-toaster-bottom-right' 
+            }  */
+
+
+            const bodyStr = i18n.t("Common.Home.LangUpdateMsg", [onlineLangs[i]['name']]) + '. ' + i18n.t("Common.Home.LangUpdateMsg2", [i18n.t("Common.Language.btnForce")]);
+
+            //this.$bvToast.toast(this.$t("Modules.ET.ErrorNoServerSelectedMsg"), {
+            this.$bvToast.toast(bodyStr, {
+              //title: this.$t("Modules.ET.ErrorNoServerSelectedTitle"),
+              title: this.$t("Common.Home.LangUpdateTitle"),
+              autoHideDelay: 400000,                     
+              solid: true,
+              variant: 'primary',
+              toaster: 'b-toaster-bottom-right' 
+            });
+
+          }
+        }
+      }
+
+
+
+
+      selLang, i18n, wtutils, selLangUpdated
+    }
+  }
 }
 </script>
 

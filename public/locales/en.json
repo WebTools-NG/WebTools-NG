@@ -5,7 +5,10 @@
             "About": "@:Common.AppName provides different tool modules to help with Plex Server management.",
             "Modules": "Currently available tool modules are:",
             "Name": "Home",
-            "Title": "Welcome to @:Common.AppName"
+            "Title": "Welcome to @:Common.AppName",
+            "LangUpdateTitle": "Language update",
+            "LangUpdateMsg": "{0} Language has been updated on the translation site",
+            "LangUpdateMsg2": "Please go to Language section and select '{0}'"
         },
         "Language": {
             "Description": "@:Common.Language.Name allows you to change language of the app",
