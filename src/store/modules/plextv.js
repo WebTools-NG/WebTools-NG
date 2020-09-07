@@ -61,7 +61,7 @@ const actions = {
         })
           .then((response) => {
             let result=[];
-            log.info('Response from fetchPlexServers recieved')
+            log.debug('Response from fetchPlexServers recieved')
             const showNotOwned = wtconfig.get('Developer.showNotOwned', false)
             response.data.forEach((req) => {
               if (showNotOwned){
@@ -71,7 +71,7 @@ const actions = {
                   pmsServer['accessToken'] = req.accessToken;
                   pmsServer['connections'] = req.connections;
                   pmsServer['clientIdentifier'] = req.clientIdentifier                                  
-                  log.warn('fetchPlexServers : See not owned servers as well')                  
+                  log.verbose('fetchPlexServers : See not owned servers as well')                  
                   result.push(pmsServer);
                 }
               } else {
@@ -111,7 +111,7 @@ const actions = {
       headers: wtutils.PMSHeader      
     })  
       .then(function (response) {
-        log.info('loginToPlex: Response from fetchPlexServers recieved')
+        log.debug('loginToPlex: Response from fetchPlexServers recieved')
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)
