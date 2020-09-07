@@ -1,9 +1,8 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-    <h2>{{ $t("Modules.ET.Settings.Settings") }}<br>
-        <small>{{ $t("Modules.ET.Settings.Description") }}</small>
-    </h2>
+    <h1>{{ $t("Modules.ET.Settings.Settings") }}</h1>
+    <p>{{ $t("Modules.ET.Settings.Description") }}</p>    
     <div>
         <b-input-group id="outDir" :prepend="$t('Modules.ET.Settings.SelectOutDir')" class="mt-3">                    
             <b-form-input id="outDirbox" name="outDirbox" v-model="outDirVal" :disabled=true v-bind:placeholder="$t('Modules.ET.Settings.SelectOutDir')" />                                    

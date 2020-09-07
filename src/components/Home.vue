@@ -31,8 +31,6 @@ export default {
       // Start by getting the currently selected language
       const selLang = wtconfig.get('General.language');
       const selLangUpdated = wtconfig.get(`Languages.${selLang}`, 'N/A')
-      console.log('Ged selLang: ' + selLang)
-      console.log('Ged selLangUpdated: ' + selLangUpdated)
       var onlineLangs = await this.$store.getters.getLanguages      
       for (var i=0; i<onlineLangs.length; i++) {
         if (onlineLangs[i]['code'] == selLang)
