@@ -6,7 +6,9 @@
             "Level 3": "level3",
             "Level 4": "level4",
             "Level 5": "level5",
-            "Level 6": "level6"            
+            "Level 6": "level6",
+            "dev tommy": "devTommy"
+
         },
         "LevelCount": {
             "Level 1": 1,
@@ -14,9 +16,14 @@
             "Level 3": 2,
             "Level 4": 2,
             "Level 5": 2,
-            "Level 6": 2                     
+            "Level 6": 2,
+            "devTommy": 2                     
         },
-        "level": {                    
+        "level": {
+            "devTommy": [
+                "Media ID", "Title",
+                "TMDB", "IMDB"
+            ],                    
             "level1": [
                 "Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
@@ -39,6 +46,7 @@
                 "Tagline", "Release Date", "Writers",
                 "Country", "Duration", "Directors",
                 "Roles", "Audience Rating", "User Rating",
+                "TMDB", "IMDB",
                 "Labels", "Locked Fields", "Extras",
                 "Extras-behindthescenes", "Extras-deleted",
                 "Extras-featurette", "Extras-interview",
@@ -296,6 +304,25 @@
                     "subtype": "string",
                     "subkey": "$.tag"
                 },
+            "IMDB":
+                {
+                    "key": "$.Guid[*]",
+                    "call": 1,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey1": "$.id",
+                    "subkey": "[?(@.id contains 'imdb://')]",
+                    "postProcess": true
+                },
+            "TMDB":
+                {
+                    "key": "$.Guid[*]",                    
+                    "call": 1,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "[?(@.id contains 'tmdb://')]",
+                    "postProcess": true
+                },    
             "Audience Rating":
                 {
                     "key": "audienceRating",

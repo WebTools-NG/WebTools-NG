@@ -490,6 +490,14 @@ const excel2 = new class Excel {
                         retVal = val;
                     }
                     break;
+                case "IMDB":                                        
+                    console.log('Ged imdb value: ' + val)
+                    retVal = val;
+                    break;                                            
+                case "TMDB":
+                    console.log('Ged value: ' + val)
+                    retVal = val;
+                    break;                                                  
                 default:
                     log.error(`postProcess no hit for: ${name}`)                
                     break;
