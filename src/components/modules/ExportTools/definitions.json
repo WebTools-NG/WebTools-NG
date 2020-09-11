@@ -311,7 +311,7 @@
                     "type": "array",
                     "subtype": "string",
                     "subkey1": "$.id",
-                    "subkey": "[?(@.id contains 'imdb://')]",
+                    "subkey": "$.id",
                     "postProcess": true
                 },
             "TMDB":
@@ -319,8 +319,8 @@
                     "key": "$.Guid[*]",                    
                     "call": 1,
                     "type": "array",
-                    "subtype": "string",
-                    "subkey": "[?(@.id contains 'tmdb://')]",
+                    "subtype": "string",                    
+                    "subkey": "$.id",
                     "postProcess": true
                 },    
             "Audience Rating":
