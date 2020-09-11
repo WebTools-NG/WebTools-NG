@@ -132,8 +132,7 @@ export default {
       }      
     },    
     onChange(event) {          
-      this.$store.dispatch('updateAndSetLang', { "langCode": event.target.value, "forceDownload": false});
-      console.log('Ged lang skiftet')
+      this.$store.dispatch('updateAndSetLang', { "langCode": event.target.value, "forceDownload": false});      
     }
   }
 }

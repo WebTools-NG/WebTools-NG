@@ -175,8 +175,7 @@
           option['text']=i18n.t('Modules.ET.NoLevelFound');          
           option['disabled'] = true;          
         } 
-        else { option['text'] = key; }
-        console.log('Ged level text: ' + option['text']) 
+        else { option['text'] = key; }        
         if (wtconfig.get('Developer.showDevLevels'))
         {
           options.push(option); 
