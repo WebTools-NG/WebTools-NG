@@ -105,7 +105,7 @@
     "Modules": {
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
-            "Name": "ExportTool",
+            "Name": "ExportTools",
             "HSelectMedia": "Select Library Type",
             "HSelectSelection": "Select Media Libary",            
             "HExportMedia": "Export Media",
