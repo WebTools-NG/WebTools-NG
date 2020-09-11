@@ -425,7 +425,7 @@ const excel2 = new class Excel {
     async postProcess( {name, val, title=""} ){       
         const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '));
         let retArray = [];
-        let x, retVal;        
+        let x, retVal, start, strStart, end, result;        
         try {                 
             switch ( String(name) ){            
                 case "MetaDB Link":                                                                                           
@@ -490,6 +490,32 @@ const excel2 = new class Excel {
                         retVal = val;
                     }
                     break;
+                case "IMDB":                    
+                    start = val.indexOf("imdb://");
+                    strStart = val.substring(start);
+                    end = strStart.indexOf("-");                    
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else 
+                    { result = strStart.substring(7, end) }
+                    if ( result == '')
+                    { retVal = wtconfig.get('ET.NotAvail'); }
+                    else
+                    { retVal = 'https://www.imdb.com/title/' + result; }
+                    break;                                                                                                       
+                case "TMDB":                    
+                    start = val.indexOf("tmdb://");
+                    strStart = val.substring(start);
+                    end = strStart.indexOf("-");                    
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else 
+                    { result = strStart.substring(7, end) }
+                    result = 'https://www.themoviedb.org/movie/' + result;
+                    retVal = result;
+                    break;                                                  
                 default:
                     log.error(`postProcess no hit for: ${name}`)                
                     break;

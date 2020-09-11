@@ -37,8 +37,11 @@
 		}
 	},
 	"Developer": {
-		"baseURI": "http://192.168.1.14:32400",
-		"accessToken": "INSERT TOKEN HERE",
-		"password": "your plex.tv password, when developing"
+		// plex.tv password, so you only need to hit enter
+		"password": "Your Plex.tv Pwd",
+		// Will show servers not owned by you
+		"showNotOwned": true,
+		// For ET, show levels starting with the word 'dev'
+		"showDevLevels": true
 	}
 }
