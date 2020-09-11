@@ -27,7 +27,7 @@ import i18n from '../../i18n'
                     },
                     {
                         href: { path: '/export' },
-                        title: 'Export',
+                        title: i18n.t("Modules.ET.Name"),
                         // icon: 'fas fa-file-export',
                         icon: {
                             //adjust element
