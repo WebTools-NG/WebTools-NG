@@ -53,29 +53,8 @@
             <li>{{ $t("Common.Language.LangForce1") }}</li>
           </ul>
         </li>
-
-
       </ul>
     </div>
-
-
-    <!-- <div id="poe">
-      <dl>
-        <dt>{{ $t("Common.Language.LangMissing") }}:</dt>
-        <dd>* {{ $t("Common.Language.LangMissing1") }}</dd>
-        <dd>* {{ $t("Common.Language.LangMissing2") }}</dd>
-        <dd>* {{ $t("Common.Language.LangMissing3") }}</dd>
-        <dd>* {{ $t("Common.Language.LangMissing4") }}</dd>
-        <dt>{{ $t("Common.Language.LangSpelling") }}:</dt>
-        <dd>* {{ $t("Common.Language.LangSpelling1") }}</dd> 
-        <dt>{{ $t("Common.Language.LangProcent") }}</dt>
-        <dd>* {{ $t("Common.Language.LangProcent1") }}</dd>
-        <dd>* {{ $t("Common.Language.LangProcent2") }}</dd>
-        <dt>{{ $t("Common.Language.LangForce") }}</dt>
-        <dd>* {{ $t("Common.Language.LangForce1") }}</dd>       
-      </dl>       
-    </div> -->
-
     <div>      
       <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>      
     </div>
