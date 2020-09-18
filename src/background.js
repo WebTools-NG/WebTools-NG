@@ -1,6 +1,7 @@
 'use strict'
 import { app, protocol, BrowserWindow, Menu} from 'electron'
 const log = require('electron-log');
+console.log = log.log;
 
 var appName = app.getName(); 
 

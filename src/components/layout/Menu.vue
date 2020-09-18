@@ -8,6 +8,7 @@
 
 <script>
 const log = require('electron-log');
+console.log = log.log;
 import '@fortawesome/fontawesome-free/css/all.css'
 import etIcon from '@/assets/ET-256.png';
 import i18n from '../../i18n'

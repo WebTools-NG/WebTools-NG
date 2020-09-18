@@ -68,6 +68,7 @@ import i18n from '../i18n';
 import { shell } from 'electron';
 import { wtconfig} from '../wtutils'
 const log = require('electron-log');
+console.log = log.log;
 
 export default {
   name: 'locale-changer',
