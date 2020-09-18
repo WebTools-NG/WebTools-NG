@@ -25,6 +25,7 @@ Vue.use(BootstrapVueIcons)
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
+console.log = log.log;
 // Default file log level is info
 log.transports.file.level = wtconfig.get('Log.fileLevel', 'info');
 // Default console level is Silly, since used by us
@@ -32,7 +33,6 @@ log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
 log.transports.file.fileName = wtutils.AppName;
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
-console.log = log.log;
 log.info('*********************************') 
 log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
 // Logging ended

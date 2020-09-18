@@ -87,6 +87,7 @@
 import store from '../../store';
 import { ptv } from '../modules/General/plextv';
 const log = require('electron-log');
+console.log = log.log;
 
 export default {
     data(){

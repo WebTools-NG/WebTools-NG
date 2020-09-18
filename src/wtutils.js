@@ -4,6 +4,7 @@ that we use in our solution.
  */
 
 const log = require('electron-log');
+console.log = log.log;
 const electron = require('electron');
 // User Config 
 const Store = require('electron-store');

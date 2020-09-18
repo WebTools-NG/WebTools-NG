@@ -1,6 +1,7 @@
 /* eslint-disable no-unreachable */
 var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 const log = require('electron-log');
+console.log = log.log;
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 

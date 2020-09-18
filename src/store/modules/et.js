@@ -1,6 +1,7 @@
 import {excel2} from '../../components/modules/ExportTools/et'
 import {et} from '../../components/modules/ExportTools/et'
 const log = require('electron-log');
+console.log = log.log;
 
 const state = {
     sections:   [],
