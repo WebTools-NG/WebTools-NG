@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../../router'
-import {wtconfig, wtutils} from '../../wtutils'
+import {wtconfig, wtutils} from '../../components/modules/General/wtutils'
 
 const log = require('electron-log');
 

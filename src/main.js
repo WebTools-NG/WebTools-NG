@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import {wtutils, wtconfig} from './wtutils'
+import {wtutils, wtconfig} from './components/modules/General/wtutils'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -48,7 +48,7 @@ i18n.locale = wtconfig.get('General.language', 'en')
 
 // App Menu Bar
 log.info('Starting to build App Menu')
-const menuTemplate = require('./menubar.js')
+const menuTemplate = require('./components/layout/script/menubar')
 const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default)
 require('electron').remote.Menu.setApplicationMenu(menu)
 log.info('App Menu builded')

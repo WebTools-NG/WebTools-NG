@@ -19,7 +19,7 @@
 const log = require('electron-log');
 console.log = log.log;
 import i18n from '../../../i18n';
-import {wtutils, wtconfig} from '../../../wtutils'
+import {wtutils, wtconfig} from '../General/wtutils'
 export default {
   mounted() {
     log.info("About Mounted");    

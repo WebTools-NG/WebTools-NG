@@ -106,7 +106,7 @@ import store from '../../../store'
 const log = require('electron-log');
 console.log = log.log;
 // User Config
-import {wtconfig} from '../../../wtutils';
+import {wtconfig} from '../General/wtutils';
 
 var userName = "";
 

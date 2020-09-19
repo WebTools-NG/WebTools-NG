@@ -37,7 +37,8 @@
 
 <script>
     const log = require("electron-log");
-    import {wtutils, wtconfig, dialog} from '../../../../wtutils'    
+    import {wtutils, wtconfig, dialog} from '../../General/wtutils'
+    
     log, wtutils, wtconfig, dialog
     import i18n from '../../../../i18n'
     export default { 

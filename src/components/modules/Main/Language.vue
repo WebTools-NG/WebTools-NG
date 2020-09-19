@@ -66,7 +66,7 @@
 // User Config
 import i18n from '../../../i18n';
 import { shell } from 'electron';
-import { wtconfig} from '../../../wtutils'
+import { wtconfig} from '../General/wtutils'
 const log = require('electron-log');
 console.log = log.log;
 

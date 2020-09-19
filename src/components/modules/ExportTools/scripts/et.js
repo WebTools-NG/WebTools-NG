@@ -7,7 +7,7 @@ const log = require('electron-log');
 console.log = log.log;
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
-import {wtconfig, wtutils} from '../../../../wtutils';
+import {wtconfig, wtutils} from '../../General/wtutils';
 import i18n from '../../../../i18n';
 
 import filesize from 'filesize';

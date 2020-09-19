@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import {wtutils, wtconfig} from './wtutils'
+import {wtutils, wtconfig} from './components/modules/General/wtutils'
 
 const log = require('electron-log');
 console.log = log.log;

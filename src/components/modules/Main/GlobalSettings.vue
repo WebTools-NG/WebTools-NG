@@ -50,7 +50,7 @@
 <script>
     const log = require("electron-log");
     console.log = log.log;
-    import {wtutils, wtconfig, dialog} from '../../../wtutils';
+    import {wtutils, wtconfig, dialog} from '../General/wtutils';
     import i18n from '../../../i18n';
     
     
