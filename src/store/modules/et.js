@@ -1,5 +1,5 @@
-import {excel2} from '../../components/modules/ExportTools/et'
-import {et} from '../../components/modules/ExportTools/et'
+import {et, excel2} from '../../components/modules/ExportTools/scripts/et'
+
 const log = require('electron-log');
 console.log = log.log;
 

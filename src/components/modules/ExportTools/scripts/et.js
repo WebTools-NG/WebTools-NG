@@ -1,19 +1,14 @@
 /* eslint-disable no-unreachable */
 //var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 var def;
-
-
-var defLevels = JSON.parse(JSON.stringify(require('./defs/def-Levels.json')));
-
-
+var defLevels = JSON.parse(JSON.stringify(require('./../defs/def-Levels.json')));
 
 const log = require('electron-log');
 console.log = log.log;
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
-
-import {wtconfig, wtutils} from '../../../wtutils';
-import i18n from '../../../i18n';
+import {wtconfig, wtutils} from '../../../../wtutils';
+import i18n from '../../../../i18n';
 
 import filesize from 'filesize';
 var path = require("path");
@@ -23,7 +18,7 @@ const fetch = require('node-fetch');
 
 const {JSONPath} = require('jsonpath-plus');
 import axios from 'axios'
-import store from '../../../store';
+import store from '../../../../store';
 
 
 
@@ -179,23 +174,23 @@ const et = new class ET {
         switch(libType) {
             case 'movie':
               // code block
-              def = JSON.parse(JSON.stringify(require('./defs/def-Movie.json')));
+              def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
               break;
             case 'episode':
               // code block
-              def = JSON.parse(JSON.stringify(require('./defs/def-Episode.json')));
+              def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
               break;
             case 'show':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./defs/def-Show.json')));
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
                 break;
             case 'artist':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./defs/def-Artist.json')));
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
             case 'photo':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./defs/def-Photo.json')));
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
             default:
               // code block
