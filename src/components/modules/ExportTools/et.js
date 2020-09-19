@@ -1,5 +1,12 @@
 /* eslint-disable no-unreachable */
-var def = JSON.parse(JSON.stringify(require('./definitions.json')));
+//var def = JSON.parse(JSON.stringify(require('./definitions.json')));
+var def;
+
+
+var defLevels = JSON.parse(JSON.stringify(require('./def-Levels.json')));
+
+
+
 const log = require('electron-log');
 console.log = log.log;
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
@@ -38,6 +45,8 @@ const et = new class ET {
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + libType)
         log.debug(`Get Step size as: ${step}`)
+        // Now read the fields and level defs
+        
         // Current item
         let idx = 0
         // Now let's walk the section
@@ -93,7 +102,7 @@ const et = new class ET {
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name                
-        const levelName = def[libType]['levels'][level]        
+        const levelName = defLevels[libType]['levels'][level]        
         return levelName
     }
 
@@ -163,8 +172,35 @@ const et = new class ET {
 
     getLevelFields(level, libType) {
         // return fields in a level
-        const out = []                       
-        const levels = def[libType]['level'][et.getRealLevelName(level, libType)]        
+        const out = [] 
+        const realName = et.getRealLevelName(level, libType);                      
+        console.log('Ged realName: ' + realName)
+        // We need to load fields and defs into def var
+        switch(libType) {
+            case 'movie':
+              // code block
+              def = JSON.parse(JSON.stringify(require('./def-Movie.json')));
+              break;
+            case 'episode':
+              // code block
+              def = JSON.parse(JSON.stringify(require('./def-Episode.json')));
+              break;
+            case 'show':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./def-Show.json')));
+                break;
+            case 'artist':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./def-Artist.json')));
+                break;
+            case 'photo':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./def-Photo.json')));
+                break;
+            default:
+              // code block
+          }
+        const levels = def[libType]['level'][realName];        
         Object.keys(levels).forEach(function(key) {            
             out.push(levels[key])
           });        
@@ -173,14 +209,14 @@ const et = new class ET {
 
     async getLevelCall (libType, level) {
         // this will return number of calls needed
-        const count = await def[libType]['LevelCount'][level]
+        const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)                  
         return count
     }
 
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
-        const levels = def[libType]['levels']                       
+        const levels = defLevels[libType]['levels']                       
         log.debug(`ET LevelNames: ${JSON.stringify(levels)}`);
         return levels
     }
@@ -197,7 +233,7 @@ const et = new class ET {
         // Only return the keys for possible levels
         const out = []
         console.log('GED getLevelKeys LibType:  ' + libType)                 
-        const levels = def[libType]['levels']
+        const levels = defLevels[libType]['levels']
         Object.keys(levels).forEach(function(key) {            
             out.push(key)
           });        
