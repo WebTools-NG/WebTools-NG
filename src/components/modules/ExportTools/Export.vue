@@ -87,10 +87,10 @@
 </template>
 
 <script>
-  import { et } from "./et";  
+  import { et } from "./scripts/et";  
   import i18n from '../../../i18n';
   import store from '../../../store';
-  import { wtconfig } from '../../../wtutils';
+  import { wtconfig } from '../General/wtutils';
   
   const log = require("electron-log");
   export default {

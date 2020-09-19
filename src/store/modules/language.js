@@ -1,7 +1,7 @@
 // mutation.js
 
 import i18n from '../../i18n'
-import {wtutils, wtconfig} from '../../wtutils'
+import {wtutils, wtconfig} from '../../components/modules/General/wtutils'
 import VueI18n from 'vue-i18n';
 const log = require('electron-log');
 console.log = log.log;

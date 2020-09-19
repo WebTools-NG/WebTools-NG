@@ -1,6 +1,6 @@
-import i18n from './i18n'
+import i18n from '../../../i18n'
 import { shell } from 'electron'
-import { wtutils} from './wtutils';
+import { wtutils} from '../../modules/General/wtutils';
 
 // Menu template
 const menuTemplate = [

@@ -63,7 +63,7 @@ const actions = {
     },
     async forceDownload(state, {langCode}) {       
       const fs = require('fs') 
-      const wtutils = require('../../wtutils');      
+      const wtutils = require('../../components/modules/General/wtutils');      
       const Path = require('path')       
       const path = Path.resolve(wtutils.wtutils.Home, 'locales', langCode + '.json')
       const config = {

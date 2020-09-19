@@ -1,5 +1,5 @@
-import {excel2} from '../../components/modules/ExportTools/et'
-import {et} from '../../components/modules/ExportTools/et'
+import {et, excel2} from '../../components/modules/ExportTools/scripts/et'
+
 const log = require('electron-log');
 console.log = log.log;
 
@@ -49,6 +49,7 @@ const actions = {
         var baseURL = getters.getSelectedServerAddress
         var accessToken = getters.getSelectedServerToken
         var libType = getters.getLibType
+
         var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                                  
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)                                         
         excel2.createOutFile( {
