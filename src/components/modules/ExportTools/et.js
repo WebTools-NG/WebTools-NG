@@ -3,7 +3,7 @@
 var def;
 
 
-var defLevels = JSON.parse(JSON.stringify(require('./def-Levels.json')));
+var defLevels = JSON.parse(JSON.stringify(require('./defs/def-Levels.json')));
 
 
 
@@ -179,23 +179,23 @@ const et = new class ET {
         switch(libType) {
             case 'movie':
               // code block
-              def = JSON.parse(JSON.stringify(require('./def-Movie.json')));
+              def = JSON.parse(JSON.stringify(require('./defs/def-Movie.json')));
               break;
             case 'episode':
               // code block
-              def = JSON.parse(JSON.stringify(require('./def-Episode.json')));
+              def = JSON.parse(JSON.stringify(require('./defs/def-Episode.json')));
               break;
             case 'show':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./def-Show.json')));
+                def = JSON.parse(JSON.stringify(require('./defs/def-Show.json')));
                 break;
             case 'artist':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./def-Artist.json')));
+                def = JSON.parse(JSON.stringify(require('./defs/def-Artist.json')));
                 break;
             case 'photo':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./def-Photo.json')));
+                def = JSON.parse(JSON.stringify(require('./defs/def-Photo.json')));
                 break;
             default:
               // code block
