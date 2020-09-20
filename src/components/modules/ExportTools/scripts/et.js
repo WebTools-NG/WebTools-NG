@@ -627,7 +627,7 @@ const excel2 = new class Excel {
                     break;
                 case "time":                                                     
                     val = JSONPath({path: String(lookup), json: data});                                                                                                                             
-                    if ( typeof val !== 'undefined' && val )
+                    if ( typeof val !== 'undefined' && val  && val != '')
                     {
                         seconds = '0' + (Math.round(val/1000)%60).toString();                            
                         minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();                            
@@ -637,7 +637,7 @@ const excel2 = new class Excel {
                     }
                     else
                     {
-                        val = null
+                        val = wtconfig.get('ET.NotAvail', 'N/A')
                     }                                            
                     break;
                 case "datetime":                     

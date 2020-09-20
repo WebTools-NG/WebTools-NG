@@ -71,7 +71,7 @@ const actions = {
                   pmsServer['accessToken'] = req.accessToken;
                   pmsServer['connections'] = req.connections;
                   pmsServer['clientIdentifier'] = req.clientIdentifier                                  
-                  log.verbose('fetchPlexServers : See not owned servers as well')                  
+                  log.debug('fetchPlexServers : See not owned servers as well')                  
                   result.push(pmsServer);
                 }
               } else {

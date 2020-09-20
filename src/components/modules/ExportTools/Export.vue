@@ -261,7 +261,7 @@
       this.$store.dispatch("exportMedias");
     },
     async fetchSelection() {
-      log.debug("fetchSelection");
+      log.debug("fetchSelection started");
       let serverCheck = this.$store.getters.getSelectedServer;
       if (serverCheck !== "none") {
         log.debug("serverCheck is not null, running fetchSections ");
