@@ -105,7 +105,7 @@ export default {
             this.active = e;
         },
         selected: function () {
-            log.info('HEADER: selected server: ' + this.selectedOption.name)
+            log.info('Selected server: ' + this.selectedOption.name)
             ptv.checkServerConnect(this.selectedOption)
             this.$store.commit("UPDATE_SELECTED_SERVER", this.selectedOption);
         },

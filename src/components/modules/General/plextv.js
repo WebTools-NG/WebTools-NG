@@ -7,7 +7,7 @@ const ptv = new class PTV {
     constructor() {                    
     }
     async checkServerConnect(server) {
-        log.info(`Checking address for server: ${server.name}`);
+        log.verbose(`Checking address for server: ${server.name}`);
         // Set WaitState
         store.commit("UPDATE_PLEX_SELECTED_SERVER_STATUS", true);
         let PMSAddress = '';
@@ -16,7 +16,7 @@ const ptv = new class PTV {
         for (var i = 0; i < server.connections.length; i++) {
         //server.connections.forEach((val) => {
             let val = server.connections[i];
-            log.info(`Checking: ${val.uri}`);                        
+            log.verbose(`Checking: ${val.uri}`);                        
             let baseurl = val.uri;
             await axios.get(baseurl + '/identity', {
                 headers: {
@@ -26,12 +26,12 @@ const ptv = new class PTV {
                 })
                 .then(response => {                    
                     if(response.status == 200){                        
-                        log.info(`Address ${baseurl} is alive, so check if local`);
+                        log.verbose(`Address ${baseurl} is alive, so check if local`);
                         if ( val.local == true){
-                            log.info(`It's a local server, so need to check if correct one`);
+                            log.verbose(`It's a local server, so need to check if correct one`);
                             const machineIdentifier = response.data['MediaContainer']['machineIdentifier'];
                             if (machineIdentifier == server.clientIdentifier){
-                                log.info(`Local server found as: ${baseurl}`);                                
+                                log.verbose(`Local server found as: ${baseurl}`);                                
                                 PMSAddress = baseurl;
                                 local = true;                                                                
                             }
@@ -41,10 +41,10 @@ const ptv = new class PTV {
                             // only if we didn't find the local one?
                             if ( local == false)
                             {
-                                log.info(`No local server found yet, so checking ${baseurl}`)
+                                log.verbose(`No local server found yet, so checking ${baseurl}`)
                                 const machineIdentifier = response.data['MediaContainer']['machineIdentifier'];
                                 if (machineIdentifier == server.clientIdentifier){
-                                    log.info(`Remote server found as: ${baseurl}`);                                
+                                    log.verbose(`Remote server found as: ${baseurl}`);                                
                                     PMSAddress = baseurl;                                                                                                  
                                 }
                             }

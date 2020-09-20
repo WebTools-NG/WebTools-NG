@@ -47,11 +47,11 @@ if (wtconfig.get("general.version", "") != wtutils.AppVersion){
 i18n.locale = wtconfig.get('General.language', 'en')
 
 // App Menu Bar
-log.info('Starting to build App Menu')
+log.verbose('Starting to build App Menu')
 const menuTemplate = require('./components/layout/script/menubar')
 const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default)
 require('electron').remote.Menu.setApplicationMenu(menu)
-log.info('App Menu builded')
+log.verbose('App Menu builded')
 
 Vue.config.productionTip = false
 

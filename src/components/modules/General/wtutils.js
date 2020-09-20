@@ -174,8 +174,8 @@ const wtutils = new class WTUtils {
     }
 
     UpdateConfigFile() {
-        // Update config file with defaults if missing
-        console.log('Updating config file')
+        // Update config file with defaults if missing        
+        log.verbose('Updating config file');
         // General section
         if ( wtconfig.get('General.username', 'N/A') == 'N/A' ){
             wtconfig.set('General.username', '')
