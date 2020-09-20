@@ -136,7 +136,8 @@
                 "Duration",
                 "Added",
                 "Updated",
-                "Poster url"
+                "Poster url",
+                "Deleted"
                   
             ],
             "level3": [
@@ -275,6 +276,12 @@
                     "key": "viewCount",
                     "call": 1,
                     "type": "string"
+                },
+            "Deleted":
+                {
+                    "key": "$.deletedAt",
+                    "call": 1,
+                    "type": "datetime"
                 }
         }
     }

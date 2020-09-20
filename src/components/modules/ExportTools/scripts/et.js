@@ -641,8 +641,8 @@ const excel2 = new class Excel {
                     }                                            
                     break;
                 case "datetime":                     
-                    val = JSONPath({path: String(lookup), json: data});                    
-                    if ( typeof val !== 'undefined' && val )
+                    val = JSONPath({path: String(lookup), json: data});                                    
+                    if ( typeof val !== 'undefined' && val && val != '')
                     {
                         // Create a new JavaScript Date object based on the timestamp
                         // multiplied by 1000 so that the argument is in milliseconds, not seconds.
@@ -658,7 +658,7 @@ const excel2 = new class Excel {
                     }
                     else
                     {
-                        val = null
+                        val = wtconfig.get('ET.NotAvail', 'N/A')
                     }                                            
                     break;
                 default:
