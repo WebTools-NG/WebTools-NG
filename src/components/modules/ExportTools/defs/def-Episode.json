@@ -2,18 +2,8 @@
     "episode": {
         "level": {  
             "devtommy": [
-                "Media ID"                
-                ,"Studio"
-                ,"Originally Aired"
-                ,"Directors"
-                ,"Writers"
-                ,"Duration"
-                ,"Added"
-                ,"Updated"
-                ,"Thumbs uri"
-                ,"Collection"
-                ,"Locked Fields"
-                ,"View Count"                                
+                "Media ID"                                                                                
+                                                                                                              
             ],            
             "Clear Fields": [
                 "Media ID"                
@@ -112,9 +102,9 @@
             ],
             "Invalid, belongs to shows": [
                 "Studio",
-                "Originally Aired",
-                "Directors"
-
+                "Directors",
+                "Collection"
+                
             ],
             "level1": [
                 "Media ID",
@@ -129,17 +119,33 @@
                 "Rating",
                 "User Rating"
             ],
-            "level2": [                                                
+            "level2": [
+                "Media ID",
+                "Series Title", 
+                "Episode Sort Title",
+                "Episode Title",
+                "Year",
+                "Season",
+                "Episode",
+                "Content Rating",
+                "Summary",
+                "Rating",
+                "User Rating",
+                "Originally Aired",
                 "Writers",
                 "Duration",
                 "Added",
                 "Updated",
-                "Poster url",
-                "Collection",
-                "Locked Fields",
-                "View Count"
-            ]
-            
+                "Poster url"
+                  
+            ],
+            "level3": [
+
+            ],
+            "level4": [
+                "View Count",
+                "Locked Fields"
+            ]            
         },
         "fields": {
             "Media ID":
@@ -211,29 +217,65 @@
             "Studio":
                 {
                     "key": "$.studio",
-                    "call": 1,
+                    "call": 2,
                     "type": "string"
                 },
             "Originally Aired":
-                {},
+                {
+                    "key": "$..originallyAvailableAt",
+                    "call": 1,
+                    "type": "string"
+                },
             "Directors": 
                 {},
             "Writers": 
-                {},
+                {
+                    "key": "$.Writer[*]",
+                    "call": 1,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.tag"
+                },
             "Duration": 
-                {},
+                {
+                    "key": "$.duration",
+                    "call": 1,
+                    "type": "time"
+                },
             "Added": 
-                {},
+                {
+                    "key": "$.addedAt",
+                    "call": 1,
+                    "type": "datetime"
+                },
             "Updated": 
-                {},
+                {
+                    "key": "$.updatedAt",
+                    "call": 1,
+                    "type": "datetime"
+                },
             "Poster url": 
-                {},
+                {
+                    "key": "$.thumb",
+                    "call": 1,
+                    "type": "string"
+                },
             "Collection": 
                 {},
             "Locked Fields": 
-                {},
+                {
+                    "key": "$.Field[*]",
+                    "call": 2,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.name"
+                },
             "View Count": 
-                {}
+                {
+                    "key": "viewCount",
+                    "call": 1,
+                    "type": "string"
+                }
         }
     }
 }
