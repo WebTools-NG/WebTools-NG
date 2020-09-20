@@ -24,6 +24,8 @@
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
+            "Level 3": "level3",
+            "Level 4": "level4",
             "devTommy": "devtommy"
         },
         "LevelCount": {

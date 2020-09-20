@@ -52,15 +52,16 @@ const et = new class ET {
             postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             if (libType == 'episode')
             {
-                console.log('Ged Episodes needed, so adding the type')
-                console.log('Ged url called: ' + baseURL + element + postURI)
                 postURI += '&type=4'
+                postURI +='&checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1'
+                log.verbose(`Calling url ${baseURL + element + postURI}`)                                
             }            
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});                        
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             log.verbose(`getSectionData chunck size is ${size} and idx is ${idx}`)                      
             store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size}))
-            sectionData.push(chuncks)             
+            sectionData.push(chuncks)
+            log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)             
             idx = idx + step;
         } while (size > 1);        
         return sectionData;        
@@ -168,8 +169,8 @@ const et = new class ET {
     getLevelFields(level, libType) {
         // return fields in a level
         const out = [] 
-        const realName = et.getRealLevelName(level, libType);                      
-        console.log('Ged realName: ' + realName)
+        const realName = et.getRealLevelName(level, libType);                              
+        log.debug(`RealName is ${realName}`)
         // We need to load fields and defs into def var
         switch(libType) {
             case 'movie':
@@ -567,7 +568,7 @@ const excel2 = new class Excel {
         let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
             var name = Object.keys(fields[x]);                    
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];                     
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];             
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
                     val = JSONPath({path: String(lookup), json: data})[0];                    
