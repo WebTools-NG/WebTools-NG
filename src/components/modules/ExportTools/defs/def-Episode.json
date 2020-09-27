@@ -2,7 +2,8 @@
     "episode": {
         "level": {  
             "devtommy": [
-                "Media ID"                                                                                
+                "Media ID",
+                "Writers"                                                                                
                                                                                                               
             ],            
             "Clear Fields": [
@@ -137,8 +138,8 @@
                 "Added",
                 "Updated",
                 "Poster url",
-                "Deleted"
-                  
+                "Deleted",
+                "Content Rating"                  
             ],
             "level3": [
 

@@ -1,5 +1,5 @@
 <template>
-<b-container class="vw-100 vh-100">
+<b-container class="vw-100 vh-100" v-on:keyup.enter="onEnter">
   <b-row class="row justify-content-center align-items-center">
     <b-col id="login-column" col md="6">
 
@@ -128,6 +128,9 @@ export default {
     }
   },
   methods: {
+    onEnter: function() {
+       this.plexLogin();
+    },
     plexLogin(){
       store.dispatch('loginToPlex', {
       username: this.input.username,
