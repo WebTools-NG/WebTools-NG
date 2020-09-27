@@ -585,10 +585,12 @@ const excel2 = new class Excel {
                         subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
                         subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
                         switch(String(subType)) {
-                            case "string":                                                                                                                       
+                            case "string": 
                                 valArrayVal = JSONPath({path: String(subKey), json: array[i]})[0];                                
                                 // Make N/A if not found
+                                console.log('Ged valArrayVal: ' + valArrayVal)
                                 if (valArrayVal == null || valArrayVal == "")
+                                //if ( typeof valArrayVal !== 'undefined' && valArrayVal && valArrayVal != '')
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
