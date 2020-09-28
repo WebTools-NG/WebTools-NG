@@ -34,7 +34,9 @@ log.transports.file.fileName = wtutils.AppName;
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 log.info('*********************************') 
-log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
+log.info(`Starting ${wtutils.AppName} Version: ${wtutils.AppVersion}`);
+log.info(`Running on ${wtutils.RunningOS}`)
+log.info(`Log level set to ${log.transports.file.level}`)
 // Logging ended
 
 // Prepopulate config file with defaults
@@ -47,9 +49,9 @@ if (wtconfig.get("general.version", "") != wtutils.AppVersion){
 var fs = require('fs');
 var prefs = JSON.parse(fs.readFileSync(wtutils.ConfigFileName, 'utf8'));
 delete prefs ['Developer'];
-log.info('***** Prefs *****');
-log.info(prefs);
-log.info('***** Prefs Ended *****');
+log.verbose('***** Prefs *****');
+log.verbose(prefs);
+log.verbose('***** Prefs Ended *****');
 
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('General.language', 'en')
