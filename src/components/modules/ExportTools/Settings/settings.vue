@@ -65,8 +65,8 @@
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpExcel' },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
-                    { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol' },
-                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow' }                    
+                    { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol', disabled: true },
+                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow', disabled: true }                  
                 ] 
             };              
         },                   
