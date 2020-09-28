@@ -34,7 +34,8 @@ log.transports.file.fileName = wtutils.AppName;
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 log.info('*********************************') 
-log.info('Starting ' + wtutils.AppName + ' Version:' + wtutils.AppVersion);
+log.info(`Starting ${wtutils.AppName} Version: ${wtutils.AppVersion}`);
+log.info(`Running on ${wtutils.RunningOS}`)
 // Logging ended
 
 // Prepopulate config file with defaults

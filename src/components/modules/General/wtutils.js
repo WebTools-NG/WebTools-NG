@@ -23,6 +23,11 @@ const wtutils = new class WTUtils {
         return configFileName;
     }
 
+    get RunningOS(){
+
+        return process.platform;
+    }
+
     get PMSHeader(){        
         var headers = {
             "Accept": "application/json",
