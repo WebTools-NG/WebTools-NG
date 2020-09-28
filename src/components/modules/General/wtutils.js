@@ -3,6 +3,8 @@ This file contains different functions and methods
 that we use in our solution.
  */
 
+
+
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -13,6 +15,12 @@ const wtconfig = new Store({name: require('electron').remote.app.getName()});
 const wtutils = new class WTUtils {
 
     constructor() {      
+    }
+
+    get ConfigFileName(){
+        var path = require('path');
+        const configFileName = path.join( this.Home, this.AppName + '.json');                
+        return configFileName;
     }
 
     get PMSHeader(){        

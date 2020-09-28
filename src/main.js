@@ -43,6 +43,14 @@ if (wtconfig.get("general.version", "") != wtutils.AppVersion){
 	wtutils.UpdateConfigFile()
 }
 
+// Log prefs settings
+var fs = require('fs');
+var prefs = JSON.parse(fs.readFileSync(wtutils.ConfigFileName, 'utf8'));
+delete prefs ['Developer'];
+log.info('***** Prefs *****');
+log.info(prefs);
+log.info('***** Prefs Ended *****');
+
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('General.language', 'en')
 
