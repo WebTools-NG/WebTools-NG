@@ -676,14 +676,8 @@ const excel2 = new class Excel {
                 else {                                       
                     val = await this.postProcess( {name: name, val: val} );                              
                 }                
-            }            
-            // If string, put in ""
-            if (isNaN(val)){
-                str += wtconfig.get('ET.ColumnSep') + '"' + val + '"';
             }
-            else {
-                str += wtconfig.get('ET.ColumnSep') + val;
-            }
+            str += wtconfig.get('ET.ColumnSep') + val;
         }        
         // Remove first character
         result = str.substr(1);             
