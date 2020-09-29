@@ -20,7 +20,7 @@
                 </option>
             </b-form-select >
             <b-button size="sm" class="my-2 my-sm-0" @click="fetchServers" variant="warning">
-                <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon> Reload
+                <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon> {{ $t("Common.Reload") }}
           </b-button>
         </b-nav-form>
     </b-navbar-nav>

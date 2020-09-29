@@ -100,7 +100,8 @@
                 }
             }
         },
-        "Ok": "OK"
+        "Ok": "OK",
+        "Reload": "Reload"
     },
     "Modules": {
         "ET": {
