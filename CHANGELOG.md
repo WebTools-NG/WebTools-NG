@@ -5,6 +5,6 @@
 Note:   This version is an Alhpa version, that is not made public
 
 * #157 Login screen
-* [I'm an inline-style link](https://www.google.com)
+[I'm an inline-style link](https://www.google.com)
 
 ```
