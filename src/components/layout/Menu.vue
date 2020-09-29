@@ -52,7 +52,8 @@ import i18n from '../../i18n'
                     {
                         href: { path: '/language' },
                         title: i18n.t("Common.Menu.Sidebar.Language.NavTitle"),
-                        icon: 'fas fa-language'
+                        //icon: 'fas fa-language'
+                        icon: 'fa fa-globe'
                     },
                     {
                         href: '/settings',
