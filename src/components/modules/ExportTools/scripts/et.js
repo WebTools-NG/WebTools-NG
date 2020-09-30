@@ -571,12 +571,14 @@ const excel2 = new class Excel {
             lookup = JSONPath({path: '$..key', json: fields[x]})[0];             
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
-                    val = JSONPath({path: String(lookup), json: data})[0];                    
+                    val = String(JSONPath({path: String(lookup), json: data})[0]);                    
                     // Make N/A if not found
                     if (val == null)
                     {
                         val = wtconfig.get('ET.NotAvail', 'N/A')
                     }                    
+                    // Remove CR, LineFeed ' and " from the string if present
+                    val = val.replace(/(\r\n)|'|"/g, "");
                     break;
                 case "array":                                                            
                     array = JSONPath({path: lookup, json: data});
@@ -586,7 +588,7 @@ const excel2 = new class Excel {
                         subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
                         switch(String(subType)) {
                             case "string": 
-                                valArrayVal = JSONPath({path: String(subKey), json: array[i]})[0];                                
+                                valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);                                
                                 // Make N/A if not found
                                 console.log('Ged valArrayVal: ' + valArrayVal)
                                 if (valArrayVal == null || valArrayVal == "")
@@ -594,6 +596,8 @@ const excel2 = new class Excel {
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
+                                // Remove CR, LineFeed ' and " from the string if present
+                                val = val.replace(/(\r\n)|'|"/g, "");
                                 break;
                             case "time":                                                                                                                        
                                 valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
@@ -717,8 +721,9 @@ const excel2 = new class Excel {
         lineReader.on('line', async function (line) {                                    
         // Skip first line
         if (lineno != 0){
-            var lineArr = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);                           
-            await sheet.addRow(lineArr)
+            //var lineArr = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            var lineArr = line.split( wtconfig.get('ET.ColumnSep', ','));
+            await sheet.addRow(lineArr);
         }
         lineno++;        
         });
