@@ -6,4 +6,6 @@
 
  #157 Login screen
 
-* [#157](https://github.com/WebTools-NG/WebTools-NG/issues/157)
+* [#157 Login screen](https://github.com/WebTools-NG/WebTools-NG/issues/157)
+* [#157 Login screen](#157)
+
