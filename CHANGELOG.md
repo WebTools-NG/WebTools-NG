@@ -1,20 +1,7 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-```md
-# V0.1.15
-Note:   This version is an Alhpa version, that is not made public
+## V0.1.15
+
+**Note**:   This version is an Alhpa version, that is not made public
 
 * #157 Login screen
-[I'm an inline-style link](https://www.google.com)
-
-```
-
-
-
-# testMD
-TestMD
-
-* Item 1
-* [Item2](https://eb.dk)
-
-
