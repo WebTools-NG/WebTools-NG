@@ -5,3 +5,5 @@
 **Note**:   This version is an Alhpa version, that is not made public
 
  #157 Login screen
+
+* [#157](https://github.com/WebTools-NG/WebTools-NG/issues/157)
