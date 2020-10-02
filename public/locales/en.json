@@ -101,7 +101,12 @@
             }
         },
         "Ok": "OK",
-        "Reload": "Reload"
+        "Reload": "Reload",
+        "Update" : {
+            "Title": "Update detected",
+            "Body": "{0} was released on Github on: {1}.",
+            "Body2": "Click here for more info"
+        }
     },
     "Modules": {
         "ET": {

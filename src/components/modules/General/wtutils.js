@@ -3,8 +3,6 @@ This file contains different functions and methods
 that we use in our solution.
  */
 
-
-
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -24,7 +22,6 @@ const wtutils = new class WTUtils {
     }
 
     get RunningOS(){
-
         return process.platform;
     }
 
@@ -260,7 +257,7 @@ const wtutils = new class WTUtils {
     } */
   }  
   
-  const dialog = new class Dialog {
+const dialog = new class Dialog {
     constructor() {                    
     }
 
@@ -296,15 +293,59 @@ const wtutils = new class WTUtils {
             buttonLabel : OKLabel,            
             //Placeholder 3
             filters :[
-             {name: 'ExportTools', extensions: ['xlsx', 'csv']},
-             {name: 'All Files', extensions: ['*']}
+                {name: 'ExportTools', extensions: ['xlsx', 'csv']},
+                {name: 'All Files', extensions: ['*']}
             ]
-           } 
+            } 
         let filename = dialog.showSaveDialogSync(WIN, options)
         log.debug('Returned filename is: ' + filename)
         return filename
     }
+}
 
-  }
+const github = new class GitHub {
+    constructor() {        
+        this.releaseUrl = 'https://api.github.com/repos/WebTools-NG/WebTools-NG/releases';
+    }
 
-export {wtutils, wtconfig, dialog};
+    // Get the releases from GitHub
+    async Releases(){
+        const fetch = require('node-fetch');                
+        const response = await fetch(this.releaseUrl);        
+        const releases = await response.json();
+        return releases;
+    }
+
+    // Is an update present?
+    async UpdatePresentDEAD(){
+        // Get release page from GitHub
+        const releases = await this.Releases();
+        // Walk releases
+        // eslint-disable-next-line no-unused-vars
+        let release = {}
+        for(var i = 0; i < releases.length; i++)
+        {
+            // Check for current release on GitHub
+            if (wtconfig.get('Update.Beta') == releases[i].prerelease){               
+                release = releases[i];
+                if ('v' + wtutils.AppVersion != release.tag_name){
+                    console.log('Ged Update Present');
+                    
+                    //Store.commit("UPDATE_GIT_PRESENT", true);
+                    /* 
+                    store.commit("UPDATE_GIT_NAME", releases[i].name);
+                    store.commit("UPDATE_GIT_VERSION", releases[i].tag_name);
+                    store.commit("UPDATE_GIT_DESCRIPTION", releases[i].body);
+                    store.commit("UPDATE_GIT_DOWNLOADURL", releases[i].url);
+                    store.commit("UPDATE_GIT_PUBLISHEDAT", releases[i].published_at);
+ */
+                }
+                
+                break;
+            }
+        }
+    }
+}
+
+
+export {wtutils, wtconfig, dialog, github};
