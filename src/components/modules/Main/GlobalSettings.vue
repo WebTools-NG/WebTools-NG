@@ -27,22 +27,14 @@
               {{ $t('Modules.GlobalSettings.RestartNeeded') }}
             </b-tooltip>
             <b-form-select id="LogLevelSize" name="LogLevelSize" type="text" class="form-control" v-model="LogLevelSize" :disabled=false :maxlength=4 v-on:change="setLogLevelSize" :options="LogLevelSizes"></b-form-select>
-        </b-input-group> 
+        </b-input-group>   
 
-        <!--                                                       
-        
-        <br>
-        <br>        
-        <div class="text-center my-3">
-            <b-button id="btnReset" variant="danger" v-on:click="factoryReset">
-                {{ $t("Modules.GlobalSettings.FactoryReset") }}
-            </b-button>
-            <b-tooltip target="btnReset" triggers="hover">
-                {{ $t('Modules.GlobalSettings.FactoryResetWarning') }}
+        <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">
+            <b-tooltip target="BetaTesterGrp" triggers="hover">
+              {{ $t('Modules.GlobalSettings.RestartNeeded') }}
             </b-tooltip>
-
-        </div> -->
-
+            <b-form-select id="LogLevel" name="LogLevel" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
+        </b-input-group>
     </div>
   </b-container>
 </template>
@@ -53,9 +45,7 @@
     import {wtutils, wtconfig, dialog} from '../General/wtutils';
     import i18n from '../../../i18n';
     
-    
-
-    log, wtutils, dialog, i18n
+    wtutils, dialog, i18n
 
     export default {
         data() {            
@@ -63,19 +53,16 @@
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 LogLevel: wtconfig.get('Log.fileLevel'),
                 LogLevelConsole: wtconfig.get('Log.consoleLevel'),
-                LogLevelSize: this.getLogFileSize()
+                LogLevelSize: this.getLogFileSize(),
+                BetaTester: wtconfig.get('Update.Beta', false)
             }
         },
         methods: {
             factoryReset() {
                 // Doing a factory reset
-                log.warn('Doing a factory reset');
-                
-
+                log.warn('Doing a factory reset');                
                 require('electron').remote.app.relaunch();
                 require('electron').remote.app.quit();
-
-
             },
             setTimeOut: function(){
                 wtconfig.set('PMS.TimeOut', this.TimeOut)
@@ -83,6 +70,10 @@
             setLogLevel: function(value){                
                 log.info(`Log file level set to ${value}`)
                 wtconfig.set('Log.fileLevel', value)
+            },
+            setBeta: function(value){                
+                log.info(`Beta level set to ${value}`)
+                wtconfig.set('Update.Beta', value)
             },
             setLogLevelConsole: function(value){                
                 log.info(`Log Console level set to ${value}`)
@@ -148,13 +139,17 @@
         },
         computed: {
             logLevels: function() {
-                const options = ['error', 'warn', 'info', 'verbose', 'debug', 'silly']
-                return options
+                const options = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'];
+                return options;
             },
             LogLevelSizes: function() {
-                const options = ['1Mb', '2Mb', '4Mb', '8Mb', '10Mb', '20Mb']
-                return options
-            }            
+                const options = ['1Mb', '2Mb', '4Mb', '8Mb', '10Mb', '20Mb'];
+                return options;
+            },
+            BetaLevels: function() {
+                const options = ['true', 'false'];
+                return options;
+            },            
         }        
     }
 </script>
