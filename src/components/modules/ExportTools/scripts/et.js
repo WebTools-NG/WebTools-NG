@@ -221,7 +221,7 @@ const et = new class ET {
         const notDefined = {"No Level Yet": ""}
         // Returns an json of custom levels for a selected type og medias, like 'movie'
         const levels = wtconfig.get(`ET.CustomLevels.${libType}.levels`, notDefined)        
-        log.debug('ET LevelNames: ' + JSON.stringify(levels))
+        log.debug('ET Custom LevelNames: ' + JSON.stringify(levels))
         return levels
     }
     

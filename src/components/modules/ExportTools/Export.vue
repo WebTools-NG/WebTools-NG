@@ -149,7 +149,7 @@
       const options = []
       const item = {}
       let custLabel = {}
-      custLabel['text']=this.$t('Modules.ET.CustomLevels');      
+      custLabel['text']=this.$t('Modules.ET.Custom.CustomLevels');      
       custLabel['disabled']=true;
       custLabel['value']='';
       options.push(custLabel);      

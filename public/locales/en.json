@@ -113,7 +113,9 @@
         "ET": {
             "Custom": {
                 "Title": "Custom levels",
-                "Description": "A custom level allows you to create your own export levels"
+                "Description": "A custom level allows you to create your own export levels",
+                "NewCustomLevel": "< Define new level >",
+                "CustomLevels": "*** Custom levels ***"
             },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
@@ -148,8 +150,7 @@
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",
             "SelectLevel": "Select level",
-            "BuildInLevels": "*** Built-in levels ***",
-            "CustomLevels": "*** Custom levels ***",
+            "BuildInLevels": "*** Built-in levels ***",            
             "NoLevelFound": "N/A",
             "TT-ETType": "Here you select the type of library you want to export",
             "TT-ETLibrary": "Here you select library you want to export",
