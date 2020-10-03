@@ -54,12 +54,11 @@ export default {
     // Is an update present?
     async UpdatePresent(){      
       // Get release page from GitHub
-      const releases = await github.Releases();
+      const releases = await github.Releases();      
       for(var i = 0; i < releases.length; i++)
       {
           // Check for current release on GitHub
-          if (wtconfig.get('Update.Beta') == releases[i].prerelease){               
-              //release = releases[i];
+          if ( Boolean(wtconfig.get('Update.Beta')) == releases[i].prerelease){                                      
               if ('v' + wtutils.AppVersion != releases[i].tag_name){                    
                   log.info('Update detected');
                   this.body = this.$t('Common.Update.Body', [releases[i].name, releases[i].published_at.substring(0, 10)]),                                                           

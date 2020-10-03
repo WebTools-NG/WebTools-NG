@@ -72,12 +72,12 @@
                 wtconfig.set('Log.fileLevel', value)
             },
             setBeta: function(value){                
-                log.info(`Beta level set to ${value}`)
-                wtconfig.set('Update.Beta', value)
+                log.info(`Beta level set to ${value}`);                
+                wtconfig.set('Update.Beta', value == 'true');
             },
             setLogLevelConsole: function(value){                
-                log.info(`Log Console level set to ${value}`)
-                wtconfig.set('Log.consoleLevel', value)
+                log.info(`Log Console level set to ${value}`);
+                wtconfig.set('Log.consoleLevel', value);
             },
             getLogFileSize: function(){                
                 const logSizeBytes = wtconfig.get('Log.maxSize');

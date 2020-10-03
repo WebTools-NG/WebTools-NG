@@ -315,36 +315,6 @@ const github = new class GitHub {
         const releases = await response.json();
         return releases;
     }
-
-    // Is an update present?
-    async UpdatePresentDEAD(){
-        // Get release page from GitHub
-        const releases = await this.Releases();
-        // Walk releases
-        // eslint-disable-next-line no-unused-vars
-        let release = {}
-        for(var i = 0; i < releases.length; i++)
-        {
-            // Check for current release on GitHub
-            if (wtconfig.get('Update.Beta') == releases[i].prerelease){               
-                release = releases[i];
-                if ('v' + wtutils.AppVersion != release.tag_name){
-                    console.log('Ged Update Present');
-                    
-                    //Store.commit("UPDATE_GIT_PRESENT", true);
-                    /* 
-                    store.commit("UPDATE_GIT_NAME", releases[i].name);
-                    store.commit("UPDATE_GIT_VERSION", releases[i].tag_name);
-                    store.commit("UPDATE_GIT_DESCRIPTION", releases[i].body);
-                    store.commit("UPDATE_GIT_DOWNLOADURL", releases[i].url);
-                    store.commit("UPDATE_GIT_PUBLISHEDAT", releases[i].published_at);
- */
-                }
-                
-                break;
-            }
-        }
-    }
 }
 
 
