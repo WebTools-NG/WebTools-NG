@@ -11,8 +11,7 @@
             <dt>{{ $t("Modules.ET.Name") }}</dt>
               <dd>* {{ $t("Modules.ET.Description") }} </dd>
           </dl>              
-        </div>
-        <!-- <b-modal ref="showUpdate" hide-footer title= {{ updateTitle }} > -->
+        </div>        
         <b-modal ref="showUpdate" hide-footer v-bind:title=this.updateTitle >
           <div class="d-block text-center">
             {{ this.body }}

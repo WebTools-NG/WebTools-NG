@@ -35,6 +35,14 @@
                 </b-form-select>
             </b-form-group>     
         </div>
+
+        <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle >
+          <div class="d-block text-center">
+            {{ this.body }}
+          </div>
+          <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.saveTxt }}</b-button>
+        </b-modal>
+
     </b-container>
     
 </template>
@@ -63,7 +71,10 @@
                 { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }
                 
             ],
-            selLevel: ""  
+            selLevel: "",
+            customTitle: "Ged Title",
+            body: "Ged body",
+            saveTxt: "Ged Save txt"  
         }
       },
       computed: {
@@ -100,18 +111,24 @@
         }
       },
       methods: {
-            changeType: function() {
-                // Triggers when lib type is changed
-                //this.selMediaType = '';            
-                console.log('Ged selMediaType: ' + this.selMediaType);
-            },
-            selectExportLevel: function(value) {      
-                console.log('Ged Custom ExportLevel selected as: ' + value)
-                if ( value == 'NewLevel') {
-                    console.log('Ged new level selected')
-                }
-
+          addNewLevel(){
+            console.log('Ged addNewLevel')                     
+        },
+        changeType: function() {
+            // Triggers when lib type is changed
+            //this.selMediaType = '';            
+            console.log('Ged selMediaType: ' + this.selMediaType);
+        },
+        selectExportLevel: function(value) {      
+            console.log('Ged Custom ExportLevel selected as: ' + value)
+            if ( value == 'NewLevel') {
+                console.log('Ged new level selected')
             }
+            else {
+                console.log('Ged edit level: ' + value)
+            }
+
+        }
       }
     };  
 </script>
