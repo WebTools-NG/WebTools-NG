@@ -1,6 +1,7 @@
 {
   "name": "webtools-ng",
-  "version": "0.1.5",
+  "version": "0.1.6",
+  
   "description": "WebTools Next Generation 4 Plex",
   "author": "dane22 & CPSO",
   "license": "MPL-2.0",

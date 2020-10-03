@@ -3,8 +3,6 @@ This file contains different functions and methods
 that we use in our solution.
  */
 
-
-
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -24,7 +22,6 @@ const wtutils = new class WTUtils {
     }
 
     get RunningOS(){
-
         return process.platform;
     }
 
@@ -260,7 +257,7 @@ const wtutils = new class WTUtils {
     } */
   }  
   
-  const dialog = new class Dialog {
+const dialog = new class Dialog {
     constructor() {                    
     }
 
@@ -296,15 +293,29 @@ const wtutils = new class WTUtils {
             buttonLabel : OKLabel,            
             //Placeholder 3
             filters :[
-             {name: 'ExportTools', extensions: ['xlsx', 'csv']},
-             {name: 'All Files', extensions: ['*']}
+                {name: 'ExportTools', extensions: ['xlsx', 'csv']},
+                {name: 'All Files', extensions: ['*']}
             ]
-           } 
+            } 
         let filename = dialog.showSaveDialogSync(WIN, options)
         log.debug('Returned filename is: ' + filename)
         return filename
     }
+}
 
-  }
+const github = new class GitHub {
+    constructor() {        
+        this.releaseUrl = 'https://api.github.com/repos/WebTools-NG/WebTools-NG/releases';
+    }
 
-export {wtutils, wtconfig, dialog};
+    // Get the releases from GitHub
+    async Releases(){
+        const fetch = require('node-fetch');                
+        const response = await fetch(this.releaseUrl);        
+        const releases = await response.json();
+        return releases;
+    }
+}
+
+
+export {wtutils, wtconfig, dialog, github};
