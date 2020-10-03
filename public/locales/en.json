@@ -78,7 +78,8 @@
                     "Options": "Options"
                 },
                 "ET": {
-                    "Settings": "Settings"
+                    "Settings": "Settings",
+                    "Custom": "Custom Levels"
                 },
                 "About": {
                     "NavTitle": "About Us"
@@ -110,6 +111,10 @@
     },
     "Modules": {
         "ET": {
+            "Custom": {
+                "Title": "Custom levels",
+                "Description": "A custom level allows you to create your own export levels"
+            },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
             "HSelectMedia": "Select Library Type",
