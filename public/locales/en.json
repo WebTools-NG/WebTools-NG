@@ -115,7 +115,11 @@
                 "Title": "Custom levels",
                 "Description": "A custom level allows you to create your own export levels",
                 "NewCustomLevel": "< Define new level >",
-                "CustomLevels": "*** Custom levels ***"
+                "CustomLevels": "*** Custom levels ***",
+                "NewLevelTitle": "Enter name for the new level",
+                "NewLevelName": "< Enter name for new level >",
+                "NewLevelSaveTxt": "Save",
+                "CustomLevel": "Custom Level"
             },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",

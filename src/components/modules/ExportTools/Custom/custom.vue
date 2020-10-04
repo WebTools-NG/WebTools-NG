@@ -21,13 +21,13 @@
         </b-form-group>
 
         <div> <!-- Select Custom Level -->    
-            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0">  
+            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0">  
                 <b-tooltip target="etLevelGroup" triggers="hover">
                     {{ $t('Modules.ET.TT-ETLevel') }}
                 </b-tooltip>            
                 <b-form-select
                     class="form-control"
-                    v-model="selLevel"
+                    :v-model="selLevel"
                     id="selLevel"
                     v-on:change="selectExportLevel"                              
                     :options="exportLevels"
@@ -38,9 +38,9 @@
 
         <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle >
           <div class="d-block text-center">
-            {{ this.body }}
+              <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt ></b-form-input>            
           </div>
-          <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.saveTxt }}</b-button>
+          <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
         </b-modal>
 
     </b-container>
@@ -72,13 +72,15 @@
                 
             ],
             selLevel: "",
-            customTitle: "Ged Title",
-            body: "Ged body",
-            saveTxt: "Ged Save txt"  
+            customTitle: this.$t('Modules.ET.Custom.NewLevelTitle'),
+            NewLevelInputTxt: this.$t('Modules.ET.Custom.NewLevelName'),
+            NewLevelSaveTxt: this.$t('Modules.ET.Custom.NewLevelSaveTxt'),                        
+            NewLevelName: '' 
         }
       },
       computed: {
-          exportLevels: function() {         
+          exportLevels: function() { 
+              console.log('Ged ExportLevels updated');
             et.getLevelDisplayName('My Level', this.selMediaType);
             // Returns valid levels for selected media type
            // let targetType = this.selMediaType;
@@ -111,8 +113,27 @@
         }
       },
       methods: {
-          addNewLevel(){
-            console.log('Ged addNewLevel')                     
+        addNewLevel(){
+            console.log('Ged addNewLevel: ' + this.NewLevelName);
+            // Hide Modal box
+            this.$refs['showNewLevel'].hide();
+            // Get current level names
+            let curLevels = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.levels`);
+            // Add new level to JSON
+            curLevels[this.NewLevelName] = this.NewLevelName;
+            // Save
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.levels`, curLevels);
+            // Get current level counts
+            let curLevelCount = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.LevelCount`);
+            // Add new level to JSON
+            curLevelCount[this.NewLevelName] = 0;
+            // Save
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount`, curLevelCount);
+            // Update combobox
+            this.exportLevels;
+            console.log('Ged combo updated: ' + JSON.stringify(this.selLevel));
+            this.selLevel = this.NewLevelName;      
+
         },
         changeType: function() {
             // Triggers when lib type is changed
@@ -122,7 +143,10 @@
         selectExportLevel: function(value) {      
             console.log('Ged Custom ExportLevel selected as: ' + value)
             if ( value == 'NewLevel') {
-                console.log('Ged new level selected')
+                console.log('Ged new level selected');
+                this.$refs['showNewLevel'].show();
+                console.log('Ged2 new level selected');
+
             }
             else {
                 console.log('Ged edit level: ' + value)

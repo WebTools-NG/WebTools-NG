@@ -241,6 +241,18 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.NotAvail', 'N/A') == 'N/A' ){
             wtconfig.set('ET.NotAvail', 'N/A')
         }
+        if ( wtconfig.get('ET.CustomLevels.episode.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.episode.levels', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.episode.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.episode.LevelCount', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.movie.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.movie.levels', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.movie.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.movie.LevelCount', {})
+        }
 
         
 
