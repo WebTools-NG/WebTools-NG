@@ -29,8 +29,8 @@
                     class="form-control"
                     :v-model="selLevel"
                     id="selLevel"
-                    v-on:change="selectExportLevel"                              
-                    :options="exportLevels"
+                    v-on:change="selectExportLevel"                    
+                    :options="optionsLevels"
                     name="selLevel">         
                 </b-form-select>
             </b-form-group>     
@@ -75,16 +75,20 @@
             customTitle: this.$t('Modules.ET.Custom.NewLevelTitle'),
             NewLevelInputTxt: this.$t('Modules.ET.Custom.NewLevelName'),
             NewLevelSaveTxt: this.$t('Modules.ET.Custom.NewLevelSaveTxt'),                        
-            NewLevelName: '' 
+            NewLevelName: '',
+            optionsLevels: [
+                {'Gummi Ny' : "NewLevel"}
+            ] 
         }
       },
-      computed: {
-          exportLevels: function() { 
-              console.log('Ged ExportLevels updated');
+      mounted() {
+          // Populate combobox          
+          this.genExportLevels();          
+      },     
+      methods: {
+          genExportLevels() {             
             et.getLevelDisplayName('My Level', this.selMediaType);
             // Returns valid levels for selected media type
-           // let targetType = this.selMediaType;
-           // const etLevel = et.getLevels(targetType);
             const etCustomLevel = et.getCustomLevels(this.selMediaType);      
             const options = []
             const item = {}
@@ -109,12 +113,9 @@
                 options.push(option);        
             });      
             item['options']=options;      
-            return options;              
-        }
-      },
-      methods: {
-        addNewLevel(){
-            console.log('Ged addNewLevel: ' + this.NewLevelName);
+            this.optionsLevels = options;                      
+        },        
+        addNewLevel(){            
             // Hide Modal box
             this.$refs['showNewLevel'].hide();
             // Get current level names
@@ -130,28 +131,24 @@
             // Save
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount`, curLevelCount);
             // Update combobox
-            this.exportLevels;
-            console.log('Ged combo updated: ' + JSON.stringify(this.selLevel));
-            this.selLevel = this.NewLevelName;      
-
+            this.genExportLevels();
+            //this.exportLevels;            
+            this.selLevel = this.NewLevelName;
+            console.log ('Ged ********** above doesnt work ***********')
         },
         changeType: function() {
-            // Triggers when lib type is changed
-            //this.selMediaType = '';            
-            console.log('Ged selMediaType: ' + this.selMediaType);
+            // Triggers when lib type is changed                        
+            this.genExportLevels();
         },
         selectExportLevel: function(value) {      
             console.log('Ged Custom ExportLevel selected as: ' + value)
             if ( value == 'NewLevel') {
-                console.log('Ged new level selected');
-                this.$refs['showNewLevel'].show();
-                console.log('Ged2 new level selected');
-
+                // Create new level                
+                this.$refs['showNewLevel'].show();                
             }
             else {
                 console.log('Ged edit level: ' + value)
             }
-
         }
       }
     };  
