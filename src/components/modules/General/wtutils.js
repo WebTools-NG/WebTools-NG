@@ -288,10 +288,8 @@ const dialog = new class Dialog {
         WIN = remote.getCurrentWindow();
         const aboutInformation = 
             (i18n.t("Common.Menu.Help.menuAboutText.menuAboutVersion") +": " + wtutils.AppVersion) +
-            '\nShell: ' + process.versions.electron +
-            '\nRenderer: ' + process.versions.chrome +
-            '\nNode: ' + process.versions.node +
-            '\nArchitecture: ' + process.arch;
+            '\nPlatform: ' + wtutils.Platform +
+            '\nArchitecture: ' + process.arch
         let options = {
             buttonLabel : OKLabel,
             title: Title,
