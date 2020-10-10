@@ -2,6 +2,7 @@
 This file contains different functions and methods
 that we use in our solution.
  */
+import i18n from '../../../i18n'
 
 const log = require('electron-log');
 console.log = log.log;
@@ -276,6 +277,35 @@ const dialog = new class Dialog {
         let dirName = dialog.showOpenDialogSync(WIN, options)
         log.debug('Returned directoryname is: ' + dirName)
         return dirName
+
+    }
+
+    AboutWindow(Title, OKLabel)
+    {
+        log.debug('Open AboutWindow Dialog')
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
+        const aboutInformation = 
+            (i18n.t("Common.Menu.Help.menuAboutText.menuAboutVersion") +": " + wtutils.AppVersion) +
+            '\nShell: ' + process.versions.electron +
+            '\nRenderer: ' + process.versions.chrome +
+            '\nNode: ' + process.versions.node +
+            '\nArchitecture: ' + process.arch;
+        let options = {
+            buttonLabel : OKLabel,
+            title: Title,
+            message: 'WebTools-NG',
+            detail: aboutInformation,
+            type: 'info',
+            noLink: true,
+            
+        }
+        
+        let aboutWindow = dialog.showMessageBox(WIN, options)
+        return aboutWindow
+        
+        
 
     }
             

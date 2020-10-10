@@ -1,6 +1,6 @@
 import i18n from '../../../i18n'
 import { shell } from 'electron'
-import { wtutils} from '../../modules/General/wtutils';
+import { wtutils, dialog} from '../../modules/General/wtutils';
 
 // Menu template
 const menuTemplate = [
@@ -129,6 +129,11 @@ const menuTemplate = [
         {
           label: i18n.t("Common.Menu.Help.menuManual"),
           click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki") }          
+        },
+        {
+          label: i18n.t("Common.Menu.Help.menuAbout"),
+          click: () => { dialog.AboutWindow( i18n.t("Common.Menu.Help.menuAbout"), i18n.t("Common.Ok"));
+        } 
         }
       ]
     }
