@@ -2,7 +2,7 @@
 This file contains different functions and methods
 that we use in our solution.
  */
-import i18n from '../../../i18n'
+import i18n from '../../../i18n';
 
 const log = require('electron-log');
 console.log = log.log;
@@ -280,21 +280,27 @@ const dialog = new class Dialog {
 
     }
 
-    AboutWindow(Title, OKLabel)
+    AboutInformation()
+    {
+        const aboutInformation = 
+            (i18n.t("Common.Menu.Help.menuAboutText.menuAboutVersion") +": " + wtutils.AppVersion) + '\n' +
+            (i18n.t('Common.Menu.Help.menuAboutText.menuAboutPlatform') +": " + wtutils.Platform) +  '\n' +
+            (i18n.t('Common.Menu.Help.menuAboutText.menuAboutArchitecture') +": " + process.arch)
+
+            return aboutInformation
+    }
+
+    AboutWindow(Title, OKLabel, CopyLabel)
     {
         log.debug('Open AboutWindow Dialog')
         const {remote} = require('electron'),
         dialog = remote.dialog,
         WIN = remote.getCurrentWindow();
-        const aboutInformation = 
-            (i18n.t("Common.Menu.Help.menuAboutText.menuAboutVersion") +": " + wtutils.AppVersion) +
-            '\nPlatform: ' + wtutils.Platform +
-            '\nArchitecture: ' + process.arch
         let options = {
-            buttonLabel : OKLabel,
+            buttons: [OKLabel, CopyLabel],
             title: Title,
             message: 'WebTools-NG',
-            detail: aboutInformation,
+            detail: this.AboutInformation(),
             type: 'info',
             noLink: true,
             
@@ -302,6 +308,8 @@ const dialog = new class Dialog {
         
         let aboutWindow = dialog.showMessageBox(WIN, options)
         return aboutWindow
+
+        
         
         
 

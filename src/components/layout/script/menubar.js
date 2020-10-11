@@ -1,5 +1,5 @@
 import i18n from '../../../i18n'
-import { shell } from 'electron'
+import { shell, clipboard } from 'electron'
 import { wtutils, dialog} from '../../modules/General/wtutils';
 
 // Menu template
@@ -132,8 +132,14 @@ const menuTemplate = [
         },
         {
           label: i18n.t("Common.Menu.Help.menuAbout"),
-          click: () => { dialog.AboutWindow( i18n.t("Common.Menu.Help.menuAbout"), i18n.t("Common.Ok"));
-        } 
+          click: () => { dialog.AboutWindow( i18n.t("Common.Menu.Help.menuAbout"), i18n.t("Common.Ok"), i18n.t("Common.Copy")).then(result => {
+          var infoText = dialog.AboutInformation();
+
+          if (result.response === 1) {
+            console.log("copy pressed")
+            clipboard.writeText(infoText);
+          }
+          })} 
         }
       ]
     }
