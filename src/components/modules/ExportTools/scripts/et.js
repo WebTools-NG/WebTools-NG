@@ -1,5 +1,3 @@
-/* eslint-disable no-unreachable */
-//var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 var def;
 var defLevels = JSON.parse(JSON.stringify(require('./../defs/def-Levels.json')));
 
@@ -303,6 +301,42 @@ const et = new class ET {
             out.push(item)
         });        
         return out
+    }
+
+    // Return all field keys defined for a lib type, in a sorted array of json, with an index
+    getAllFields( {libType}) {        
+        // We need to load fields and defs into typeFields var
+        let typeFields;
+        switch(libType) {
+            case 'movie':
+              // code block
+              typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
+              break;
+            case 'episode':
+              // code block
+              typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
+              break;
+            case 'show':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
+                break;
+            case 'artist':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
+                break;
+            case 'photo':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
+                break;
+            default:
+              // code block
+          }
+        // Get all the fields keys
+        var filteredFields = JSONPath({path: '$.' + libType + '.fields.*~', json: typeFields});
+        // Sort them, and add an index as well, so drageble is happy
+        return filteredFields.sort().map((name, index) => {
+            return { name, order: index + 1, fixed: false };
+        });
     }
 
     getFields( libType, level) {

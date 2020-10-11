@@ -43,8 +43,26 @@
           <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
         </b-modal>
 
-    </b-container>
-    
+        <!-- Buttons -->
+        <div class="text-center">
+            <b-button-group >        
+                <b-button display: variant="success" class="mr-1"> {{ $t('Modules.ET.Custom.btnSave') }} </b-button>
+                <b-button display: variant="danger" class="mr-1">{{ $t('Modules.ET.Custom.btnDelete') }}</b-button>
+            </b-button-group>
+        </div>
+
+        <div class="col-md-3">
+            <draggable class="list-group" tag="ul" v-model="fieldList" v-bind="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+                <transition-group type="transition" :name="'flip-list'">
+                    <li class="list-group-item" v-for="element in fieldList" :key="element.order">
+                        <i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>
+                        {{element.name}}
+                        <!-- <span class="badge">{{element.order}}</span> -->
+                    </li>
+                </transition-group>
+            </draggable>
+        </div>
+    </b-container>    
 </template>
 
 <script>
@@ -52,13 +70,18 @@
   import i18n from '../../../../i18n';  
   import store from '../../../../store';
   import { wtconfig } from '../../General/wtutils';  
+  import draggable from 'vuedraggable'
   
   const log = require("electron-log");
 
-  log, et, i18n, store, wtconfig
+  log, i18n, store, wtconfig
+
 
   export default {
-      data() {
+    components: {
+        draggable,
+    },
+    data() {
         return {
             selMediaType: "movie",
             optionsMediaType: [
@@ -68,24 +91,61 @@
                 { text: i18n.t('Modules.ET.RadioTVShowEpisodes'), value: 'showepisode', disabled: true },             
                 { text: i18n.t('Modules.ET.RadioMusic'), value: 'artist', disabled: true },
                 { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },           
-                { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }
-                
+                { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }                
             ],
             selLevel: "",
             customTitle: this.$t('Modules.ET.Custom.NewLevelTitle'),
             NewLevelInputTxt: this.$t('Modules.ET.Custom.NewLevelName'),
             NewLevelSaveTxt: this.$t('Modules.ET.Custom.NewLevelSaveTxt'),                        
-            NewLevelName: '',
-            optionsLevels: [
-                {'Gummi Ny' : "NewLevel"}
-            ] 
+            NewLevelName: '',                                           
+            editable: true,
+            isDragging: false,
+            delayedDragging: false,
+            fieldList: []
+
         }
-      },
-      mounted() {
-          // Populate combobox          
-          this.genExportLevels();          
-      },     
-      methods: {
+    },
+    watch: {
+        isDragging(newValue) {
+            if (newValue) {
+                this.delayedDragging = true;
+                return;
+            }
+            this.$nextTick(() => {
+                this.delayedDragging = false;
+            });
+        }
+    },
+    computed: {
+        dragOptions() {
+            return {
+                animation: 0,
+                group: "description",
+                disabled: !this.editable,
+                ghostClass: "ghost"
+            };
+        },
+        listString() {
+            return JSON.stringify(this.list, null, 2);
+        }
+    },    
+    mounted() {
+        // Populate combobox          
+        this.genExportLevels();          
+    },     
+    methods: {
+        orderList() {
+            this.list = this.list.sort((one, two) => {
+            return one.order - two.order;
+            });
+        },
+        onMove({ relatedContext, draggedContext }) {
+        const relatedElement = relatedContext.element;
+        const draggedElement = draggedContext.element;
+        return (
+            (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+        );
+        },
           genExportLevels() {             
             et.getLevelDisplayName('My Level', this.selMediaType);
             // Returns valid levels for selected media type
@@ -113,7 +173,8 @@
                 options.push(option);        
             });      
             item['options']=options;      
-            this.optionsLevels = options;                      
+            this.optionsLevels = options;                                  
+            this.fieldList = et.getAllFields( {libType: this.selMediaType});                        
         },        
         addNewLevel(){            
             // Hide Modal box
@@ -153,3 +214,48 @@
       }
     };  
 </script>
+
+
+<style scoped>
+.flip-list-move {
+  transition: transform 0.5s;
+}
+ul {
+  display: flex;
+  flex-direction: column;
+  padding: 3px !important;
+  min-height: 70vh;
+  width: 200px;
+  height: 300px;
+  float:left;
+  list-style-type:none;
+  overflow-y:auto;
+  border:2px solid #888;
+  border-radius:0.2em;
+  background:#8adccc;
+  color:#555;
+  margin-right: 5px;
+}
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+.list-group {
+  min-height: 20px;
+}
+.list-group-item {
+  cursor: move;
+}
+.list-group-item i {
+  cursor: pointer;
+}
+#buttons {    
+    width: 200px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+</style>

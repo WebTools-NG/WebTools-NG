@@ -119,7 +119,9 @@
                 "NewLevelTitle": "Enter name for the new level",
                 "NewLevelName": "< Enter name for new level >",
                 "NewLevelSaveTxt": "Save",
-                "CustomLevel": "Custom Level"
+                "CustomLevel": "Custom Level",
+                "btnDelete": "Delete level",
+                "btnSave": "Save level"
             },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
