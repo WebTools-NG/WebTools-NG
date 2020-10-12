@@ -27,7 +27,8 @@
                 </b-tooltip>            
                 <b-form-select
                     class="form-control"
-                    :v-model="selLevel"
+                    :v-model="selCustLevel"
+                    ref="selLevel"
                     id="selLevel"
                     v-on:change="selectExportLevel"                    
                     :options="optionsLevels"
@@ -43,46 +44,63 @@
           <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
         </b-modal>
 
+        <b-modal ref="confirmDeleteLevel" hide-footer v-bind:title=this.deleteLevel >
+          <div class="d-block text-center">
+              {{ $t('Modules.ET.Custom.confirmDelete', [this.selCustLevel]) }}              
+          </div>
+          <b-button class="mt-3" variant="info" block @click="deleteClose">{{ $t('Modules.ET.Custom.Cancel') }}</b-button>
+          <b-button class="mt-3" variant="danger" block @click="deleteCustomLevel">{{ $t('Modules.ET.Custom.Delete') }}</b-button>
+        </b-modal>
+
         <!-- Buttons -->
-        <div class="text-center">
+        <div id="buttons" class="text-center">
             <b-button-group >        
-                <b-button display: variant="success" class="mr-1"> {{ $t('Modules.ET.Custom.btnSave') }} </b-button>
-                <b-button display: variant="danger" class="mr-1">{{ $t('Modules.ET.Custom.btnDelete') }}</b-button>
+                <b-button variant="success" class="mr-1" @click="saveCustomLevel"> {{ $t('Modules.ET.Custom.btnSave') }} </b-button>
+                <b-button variant="danger" class="mr-1" :disabled="this.btnDeleteEnabled == 0" @click="confirmDeleteLevel">{{ $t('Modules.ET.Custom.btnDelete') }}</b-button>
             </b-button-group>
         </div>
 
-        <div class="col-md-3">
-            <draggable class="list-group" tag="ul" v-model="fieldList" v-bind="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-                <transition-group type="transition" :name="'flip-list'">
-                    <li class="list-group-item" v-for="element in fieldList" :key="element.order">
-                        <i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>
-                        {{element.name}}
-                        <!-- <span class="badge">{{element.order}}</span> -->
-                    </li>
-                </transition-group>
-            </draggable>
+        <div class="row">
+            <div class="col-md3">
+                <div id="rowheader" class="font-weight-bold pt-0">
+                    {{ $t('Modules.ET.Custom.availFields') }}                    
+                </div>                
+                <draggable class="list-group" :list="fieldList" group="fields">
+                    <div class="list-group-item" v-for="(element) in fieldList" :key="element.name">
+                        {{ element.name }}
+                    </div>
+                </draggable>
+            </div>
+
+            <div class="col-md3">
+                <div id="rowheader" class="font-weight-bold pt-0">
+                    {{ $t('Modules.ET.Custom.customFields') }}
+                </div>
+                <draggable class="list-group" :list="resultList" group="fields">
+                    <div class="list-group-item" v-for="(element) in resultList" :key="element.name">
+                        {{ element.name }}
+                    </div>
+                </draggable>
+            </div>            
         </div>
+                
     </b-container>    
 </template>
 
 <script>
   import { et } from "../scripts/et";  
   import i18n from '../../../../i18n';  
-  import store from '../../../../store';
   import { wtconfig } from '../../General/wtutils';  
   import draggable from 'vuedraggable'
   
   const log = require("electron-log");
-
-  log, i18n, store, wtconfig
-
 
   export default {
     components: {
         draggable,
     },
     data() {
-        return {
+        return {            
             selMediaType: "movie",
             optionsMediaType: [
                 { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
@@ -93,7 +111,8 @@
                 { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },           
                 { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }                
             ],
-            selLevel: "",
+            selCustLevel: "",
+            deleteLevel: this.$t('Modules.ET.Custom.DeleteLevel'),
             customTitle: this.$t('Modules.ET.Custom.NewLevelTitle'),
             NewLevelInputTxt: this.$t('Modules.ET.Custom.NewLevelName'),
             NewLevelSaveTxt: this.$t('Modules.ET.Custom.NewLevelSaveTxt'),                        
@@ -101,7 +120,10 @@
             editable: true,
             isDragging: false,
             delayedDragging: false,
-            fieldList: []
+            fieldList: [],
+            btnDeleteEnabled: false,
+            optionsLevels: null,
+            resultList: []
 
         }
     },
@@ -130,10 +152,35 @@
         }
     },    
     mounted() {
+        log.debug('Custom level page selected')
         // Populate combobox          
         this.genExportLevels();          
     },     
     methods: {
+        getCustomLevel() {
+            log.debug(`Customlevel ${this.selCustLevel} selected`);
+            // Get fields from config.json file
+            const custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
+            // Add to resultList
+            this.resultList = custLevel.map((name, index) => {
+                    return { name, order: index + 1, fixed: false };
+                });
+            log.debug(`Custom level ${this.selCustLevel} is set as: ${ JSON.stringify(this.resultList) }`);
+            // Now remove already added from avail fields
+            for (var idx in custLevel){
+                console.log('Ged field present: ' + custLevel[idx])
+                for (var availidx in this.fieldList){
+                    if (custLevel[idx] == this.fieldList[availidx].name)
+                    {                        
+                        this.fieldList.splice(availidx,1)                        
+                    }
+                }
+            }
+        },
+        deleteClose() {
+            this.$refs['confirmDeleteLevel'].hide();
+            log.info('Delete aborted');
+        },
         orderList() {
             this.list = this.list.sort((one, two) => {
             return one.order - two.order;
@@ -146,13 +193,13 @@
             (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
         );
         },
-          genExportLevels() {             
+        genExportLevels() {             
             et.getLevelDisplayName('My Level', this.selMediaType);
             // Returns valid levels for selected media type
-            const etCustomLevel = et.getCustomLevels(this.selMediaType);      
-            const options = []
-            const item = {}
-            let custLabel = {}
+            const etCustomLevel = et.getCustomLevels(this.selMediaType);                 
+            const options = [];
+            const item = {};
+            let custLabel = {};
             custLabel['text']=this.$t('Modules.ET.Custom.CustomLevels');      
             custLabel['disabled']=true;
             custLabel['value']='';
@@ -194,22 +241,56 @@
             // Update combobox
             this.genExportLevels();
             //this.exportLevels;            
-            this.selLevel = this.NewLevelName;
+            this.selCustLevel = this.NewLevelName;
             console.log ('Ged ********** above doesnt work ***********')
         },
         changeType: function() {
             // Triggers when lib type is changed                        
             this.genExportLevels();
+            this.btnDeleteEnabled = false; 
+            this.resultList = [];           
+        },
+        deleteCustomLevel() {
+            log.info(`User confirmed to delete custom level: ${this.selCustLevel}`);
+            this.$refs['confirmDeleteLevel'].hide();            
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.levels.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.LevelCount.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
+            this.genExportLevels();
+            this.resultList = [];
+        },
+        saveCustomLevel() {            
+            let result = []
+            for(var k in this.resultList) {
+                result.push(this.resultList[k].name)
+                console.log(this.resultList[k].name);
+            }
+            // Get current level names
+            let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);            
+            // Add new level to JSON            
+            curLevel[this.selCustLevel] = result;   
+            log.info(`Saving custom level ${this.selCustLevel} as ${JSON.stringify(result)}`)                     
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel); 
+            // Now we need to update levelcount for the level
+            console.log('GED ******** TODO Now we need to update levelcount for the level *********')                                               
+        },
+        confirmDeleteLevel() {
+            log.info(`User asked to delete a custom level`);
+            this.$refs['confirmDeleteLevel'].show();
         },
         selectExportLevel: function(value) {      
-            console.log('Ged Custom ExportLevel selected as: ' + value)
+            log.info(`Custom ExportLevel selected as: ${value}`)
             if ( value == 'NewLevel') {
                 // Create new level                
                 this.$refs['showNewLevel'].show();                
             }
-            else {
-                console.log('Ged edit level: ' + value)
+            else {                
+                this.btnDeleteEnabled = true;
+                this.selCustLevel = value;
             }
+            this.resultList = [];
+            this.genExportLevels();
+            this.getCustomLevel();
         }
       }
     };  
@@ -217,28 +298,20 @@
 
 
 <style scoped>
-.flip-list-move {
-  transition: transform 0.5s;
+#rowheader{
+    margin-left: 25px;    
+    margin-bottom: 10px;
 }
-ul {
-  display: flex;
-  flex-direction: column;
-  padding: 3px !important;
-  min-height: 70vh;
-  width: 200px;
-  height: 300px;
-  float:left;
-  list-style-type:none;
-  overflow-y:auto;
-  border:2px solid #888;
-  border-radius:0.2em;
-  background:#8adccc;
-  color:#555;
-  margin-right: 5px;
+.list-group{    
+    width: 350px;
+    height: 250px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    /* -webkit-overflow-scrolling: touch; */
+    margin-right: 10px;
+    margin-left: 10px;
 }
-.no-move {
-  transition: transform 0s;
-}
+
 .ghost {
   opacity: 0.5;
   background: #c8ebfb;
@@ -246,16 +319,18 @@ ul {
 .list-group {
   min-height: 20px;
 }
+
 .list-group-item {
   cursor: move;
 }
 .list-group-item i {
   cursor: pointer;
 }
+
 #buttons {    
-    width: 200px;
+    width: auto;
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 </style>

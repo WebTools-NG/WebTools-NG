@@ -335,7 +335,7 @@ const et = new class ET {
         var filteredFields = JSONPath({path: '$.' + libType + '.fields.*~', json: typeFields});
         // Sort them, and add an index as well, so drageble is happy
         return filteredFields.sort().map((name, index) => {
-            return { name, order: index + 1, fixed: false };
+            return { name, order: index + 1 };
         });
     }
 
