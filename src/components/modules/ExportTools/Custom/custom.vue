@@ -93,7 +93,7 @@
   import { wtconfig } from '../../General/wtutils';  
   import draggable from 'vuedraggable'
   
-  const log = require("electron-log");
+  const log = require("electron-log");  
 
   export default {
     components: {
@@ -167,8 +167,7 @@
                 });
             log.debug(`Custom level ${this.selCustLevel} is set as: ${ JSON.stringify(this.resultList) }`);
             // Now remove already added from avail fields
-            for (var idx in custLevel){
-                console.log('Ged field present: ' + custLevel[idx])
+            for (var idx in custLevel){                
                 for (var availidx in this.fieldList){
                     if (custLevel[idx] == this.fieldList[availidx].name)
                     {                        
@@ -238,11 +237,60 @@
             curLevelCount[this.NewLevelName] = 0;
             // Save
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount`, curLevelCount);
+            // Get current level names
+            let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);
+            // Add new level to JSON
+            curLevel[this.NewLevelName] = [];
+            // Save
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel);
             // Update combobox
             this.genExportLevels();
             //this.exportLevels;            
             this.selCustLevel = this.NewLevelName;
             console.log ('Ged ********** above doesnt work ***********')
+        },
+        updateLevelCount() {            
+            var def;
+            // We need to load fields and defs into def var
+            switch(this.selMediaType) {
+                case 'movie':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
+                break;
+                case 'episode':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
+                break;
+                case 'show':
+                    // code block
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
+                    break;
+                case 'artist':
+                    // code block
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
+                    break;
+                case 'photo':
+                    // code block
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
+                    break;
+                default:
+                // code block
+            }            
+            var fields = def[this.selMediaType]['fields'];
+            // Release def memory again
+            def = null;
+            const levelFields = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
+            let curLevel = 0;
+            levelFields.forEach(function (item) {
+                // Get field level
+                var count = fields[item]['call'];
+                if (count > curLevel)
+                {
+                    curLevel = count;
+                }                
+            });            
+            log.info(`LevelCount for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${curLevel}`);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount.${this.selCustLevel}`, curLevel);
         },
         changeType: function() {
             // Triggers when lib type is changed                        
@@ -262,8 +310,7 @@
         saveCustomLevel() {            
             let result = []
             for(var k in this.resultList) {
-                result.push(this.resultList[k].name)
-                console.log(this.resultList[k].name);
+                result.push(this.resultList[k].name);                
             }
             // Get current level names
             let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);            
@@ -272,7 +319,7 @@
             log.info(`Saving custom level ${this.selCustLevel} as ${JSON.stringify(result)}`)                     
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel); 
             // Now we need to update levelcount for the level
-            console.log('GED ******** TODO Now we need to update levelcount for the level *********')                                               
+            this.updateLevelCount();            
         },
         confirmDeleteLevel() {
             log.info(`User asked to delete a custom level`);
