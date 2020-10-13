@@ -167,7 +167,12 @@ const et = new class ET {
     getLevelFields(level, libType) {
         // return fields in a level
         const out = [] 
-        const realName = et.getRealLevelName(level, libType);                              
+        let realName = et.getRealLevelName(level, libType); 
+        if (realName == undefined)
+        {            
+            // We are dealing with a custom level here
+            realName = level
+        }                              
         log.debug(`RealName is ${realName}`)
         // We need to load fields and defs into def var
         switch(libType) {
@@ -194,7 +199,13 @@ const et = new class ET {
             default:
               // code block
           }
-        const levels = def[libType]['level'][realName];        
+        let levels = def[libType]['level'][realName];
+        if (levels == undefined)
+        {
+            // We are dealing with a custom level
+            levels = wtconfig.get(`ET.CustomLevels.${libType}.level.${realName}`);
+        }
+        console.log('Ged levels: ' + JSON.stringify(levels))        
         Object.keys(levels).forEach(function(key) {            
             out.push(levels[key])
           });        
@@ -602,7 +613,8 @@ const excel2 = new class Excel {
         let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
             var name = Object.keys(fields[x]);                    
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];             
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];   
+            console.log('Ged lookup: ' + lookup);          
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
                     val = String(JSONPath({path: String(lookup), json: data})[0]);                    
@@ -788,7 +800,7 @@ const excel2 = new class Excel {
 
     async createOutFile( {libName, level, libType, baseURL, accessToken} )
     {        
-        const header = excel2.GetHeader(level, libType)
+        const header = excel2.GetHeader(level, libType)        
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
         // Now we need to find out how many calls to make
