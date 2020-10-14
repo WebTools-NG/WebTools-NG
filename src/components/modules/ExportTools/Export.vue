@@ -101,8 +101,7 @@
           selMediaType: "movie",
           selLibrary: "",
           selLibraryOptions: [],
-          selLevel: "",
-          selLevelName: "",
+          selLevel: "",          
           optionsMediaType: [
             { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
             { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true }, 
@@ -149,7 +148,7 @@
       const options = []
       const item = {}
       let custLabel = {}
-      custLabel['text']=this.$t('Modules.ET.CustomLevels');      
+      custLabel['text']=this.$t('Modules.ET.Custom.CustomLevels');      
       custLabel['disabled']=true;
       custLabel['value']='';
       options.push(custLabel);      

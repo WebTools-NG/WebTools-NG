@@ -50,15 +50,15 @@ const actions = {
         var accessToken = getters.getSelectedServerToken
         var libType = getters.getLibType
 
-        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType)                                  
-        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections)                                         
+        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);                          
+        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);                
         excel2.createOutFile( {
           libName: libName, 
           level: levelName, 
           libType: libType, 
           baseURL: baseURL, 
           accessToken: accessToken
-        } );        
+        } );
     }
 }
 

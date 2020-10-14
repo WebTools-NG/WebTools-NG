@@ -40,6 +40,11 @@ import i18n from '../../i18n'
                                 href: '/export/settings',
                                 title: i18n.t("Common.Menu.Sidebar.ET.Settings"),                                
                                 icon: 'fa fa-cog'
+                            },
+                            {                                
+                                href: '/export/custom',
+                                title: i18n.t("Common.Menu.Sidebar.ET.Custom"),                                
+                                icon: 'fa fa-cog'
                             }
                         ]
                         

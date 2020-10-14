@@ -78,7 +78,8 @@
                     "Options": "Options"
                 },
                 "ET": {
-                    "Settings": "Settings"
+                    "Settings": "Settings",
+                    "Custom": "Custom Levels"
                 },
                 "About": {
                     "NavTitle": "About Us"
@@ -110,6 +111,24 @@
     },
     "Modules": {
         "ET": {
+            "Custom": {
+                "Title": "Custom levels",
+                "Description": "A custom level allows you to create your own export levels",
+                "NewCustomLevel": "< Define new level >",
+                "CustomLevels": "*** Custom levels ***",
+                "DeleteLevel": "Do you want to delete selected level?",
+                "NewLevelTitle": "Enter name for the new level",
+                "NewLevelName": "< Enter name for new level >",
+                "NewLevelSaveTxt": "Save",
+                "CustomLevel": "Custom Level",
+                "btnDelete": "Delete level",
+                "btnSave": "Save level",
+                "confirmDelete": "Are you sure you want to delete {0}",
+                "Delete": "Delete",
+                "Cancel": "Cancel",
+                "availFields": "Availible fields:",
+                "customFields": "Custom fields:"
+            },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
             "HSelectMedia": "Select Library Type",
@@ -143,8 +162,7 @@
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",
             "SelectLevel": "Select level",
-            "BuildInLevels": "*** Built-in levels ***",
-            "CustomLevels": "*** Custom levels ***",
+            "BuildInLevels": "*** Built-in levels ***",            
             "NoLevelFound": "N/A",
             "TT-ETType": "Here you select the type of library you want to export",
             "TT-ETLibrary": "Here you select library you want to export",

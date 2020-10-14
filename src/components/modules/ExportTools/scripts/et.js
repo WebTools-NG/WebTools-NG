@@ -1,5 +1,3 @@
-/* eslint-disable no-unreachable */
-//var def = JSON.parse(JSON.stringify(require('./definitions.json')));
 var def;
 var defLevels = JSON.parse(JSON.stringify(require('./../defs/def-Levels.json')));
 
@@ -169,7 +167,12 @@ const et = new class ET {
     getLevelFields(level, libType) {
         // return fields in a level
         const out = [] 
-        const realName = et.getRealLevelName(level, libType);                              
+        let realName = et.getRealLevelName(level, libType); 
+        if (realName == undefined)
+        {            
+            // We are dealing with a custom level here
+            realName = level
+        }                              
         log.debug(`RealName is ${realName}`)
         // We need to load fields and defs into def var
         switch(libType) {
@@ -196,7 +199,12 @@ const et = new class ET {
             default:
               // code block
           }
-        const levels = def[libType]['level'][realName];        
+        let levels = def[libType]['level'][realName];
+        if (levels == undefined)
+        {
+            // We are dealing with a custom level
+            levels = wtconfig.get(`ET.CustomLevels.${libType}.level.${realName}`);
+        }        
         Object.keys(levels).forEach(function(key) {            
             out.push(levels[key])
           });        
@@ -221,14 +229,13 @@ const et = new class ET {
         const notDefined = {"No Level Yet": ""}
         // Returns an json of custom levels for a selected type og medias, like 'movie'
         const levels = wtconfig.get(`ET.CustomLevels.${libType}.levels`, notDefined)        
-        log.debug('ET LevelNames: ' + JSON.stringify(levels))
+        log.debug('ET Custom LevelNames: ' + JSON.stringify(levels))
         return levels
     }
     
     getLevelKeys(libType){
         // Only return the keys for possible levels
-        const out = []
-        console.log('GED getLevelKeys LibType:  ' + libType)                 
+        const out = []        
         const levels = defLevels[libType]['levels']
         Object.keys(levels).forEach(function(key) {            
             out.push(key)
@@ -303,6 +310,42 @@ const et = new class ET {
             out.push(item)
         });        
         return out
+    }
+
+    // Return all field keys defined for a lib type, in a sorted array of json, with an index
+    getAllFields( {libType}) {        
+        // We need to load fields and defs into typeFields var
+        let typeFields;
+        switch(libType) {
+            case 'movie':
+              // code block
+              typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
+              break;
+            case 'episode':
+              // code block
+              typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
+              break;
+            case 'show':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
+                break;
+            case 'artist':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
+                break;
+            case 'photo':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
+                break;
+            default:
+              // code block
+          }
+        // Get all the fields keys
+        var filteredFields = JSONPath({path: '$.' + libType + '.fields.*~', json: typeFields});
+        // Sort them, and add an index as well, so drageble is happy
+        return filteredFields.sort().map((name, index) => {
+            return { name, order: index + 1 };
+        });
     }
 
     getFields( libType, level) {
@@ -562,13 +605,13 @@ const excel2 = new class Excel {
     async addRowToTmp( { libType, level, data, stream }) {        
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                                  
         let date, year, month, day, hours, minutes, seconds        
-        const fields = et.getFields( libType, level)                       
+        const fields = et.getFields( libType, level)        
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
         let str = ''
         let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
-            var name = Object.keys(fields[x]);                    
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];             
+            var name = Object.keys(fields[x]);            
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
                     val = String(JSONPath({path: String(lookup), json: data})[0]);                    
@@ -585,19 +628,18 @@ const excel2 = new class Excel {
                     valArray = []                                       
                     for (i=0; i<array.length; i++) {                                                                     
                         subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
-                        subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
+                        subKey = JSONPath({path: '$..subkey', json: fields[x]});
                         switch(String(subType)) {
                             case "string": 
                                 valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);                                
                                 // Make N/A if not found
-                                console.log('Ged valArrayVal: ' + valArrayVal)
                                 if (valArrayVal == null || valArrayVal == "")
                                 //if ( typeof valArrayVal !== 'undefined' && valArrayVal && valArrayVal != '')
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
                                 // Remove CR, LineFeed ' and " from the string if present
-                                val = val.replace(/(\r\n)|'|"/g, "");
+                                valArrayVal = valArrayVal.replace(/(\r\n)|'|"/g, "");
                                 break;
                             case "time":                                                                                                                        
                                 valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
@@ -669,7 +711,7 @@ const excel2 = new class Excel {
                     break;
                 default:
                     log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)                    
-            }
+            }            
             let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
             if ( doPostProc == 'true')
             {                
@@ -754,7 +796,7 @@ const excel2 = new class Excel {
 
     async createOutFile( {libName, level, libType, baseURL, accessToken} )
     {        
-        const header = excel2.GetHeader(level, libType)
+        const header = excel2.GetHeader(level, libType)        
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
         // Now we need to find out how many calls to make
@@ -789,7 +831,7 @@ const excel2 = new class Excel {
                 const urlWIthPath = '/library/metadata/' + urlStr                          
                 log.verbose(`Items retrieved`);
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
-                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                                                
+                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                 for (item of contentsItems){                       
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
                 }
