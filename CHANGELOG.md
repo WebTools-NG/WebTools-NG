@@ -1,6 +1,12 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V0.1.16
+## V0.1.7
+
+**Note**:   This version is an Alhpa version, that is not made public, and first version with a changelog
+
+* [#21 ET Fields selection for custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/21)
+
+## V0.1.6
 
 **Note**:   This version is an Alhpa version, that is not made public, and first version with a changelog
 
@@ -8,7 +14,7 @@
 * [#103 AutoUpdate](https://github.com/WebTools-NG/WebTools-NG/issues/103)
 * [#21 ET Fields selection for custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/21)
 
-## V0.1.15
+## V0.1.5
 
 **Note**:   This version is an Alhpa version, that is not made public, and first version with a changelog
 
