@@ -101,8 +101,7 @@
           selMediaType: "movie",
           selLibrary: "",
           selLibraryOptions: [],
-          selLevel: "",
-          GEDselLevelName: "",
+          selLevel: "",          
           optionsMediaType: [
             { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },            
             { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true }, 

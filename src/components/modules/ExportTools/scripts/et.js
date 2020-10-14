@@ -204,8 +204,7 @@ const et = new class ET {
         {
             // We are dealing with a custom level
             levels = wtconfig.get(`ET.CustomLevels.${libType}.level.${realName}`);
-        }
-        console.log('Ged levels: ' + JSON.stringify(levels))        
+        }        
         Object.keys(levels).forEach(function(key) {            
             out.push(levels[key])
           });        
@@ -236,8 +235,7 @@ const et = new class ET {
     
     getLevelKeys(libType){
         // Only return the keys for possible levels
-        const out = []
-        console.log('GED getLevelKeys LibType:  ' + libType)                 
+        const out = []        
         const levels = defLevels[libType]['levels']
         Object.keys(levels).forEach(function(key) {            
             out.push(key)
@@ -607,14 +605,13 @@ const excel2 = new class Excel {
     async addRowToTmp( { libType, level, data, stream }) {        
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                                  
         let date, year, month, day, hours, minutes, seconds        
-        const fields = et.getFields( libType, level)                       
+        const fields = et.getFields( libType, level)        
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
         let str = ''
         let result = ''                              
         for (var x=0; x<fields.length; x++) {                                           
-            var name = Object.keys(fields[x]);                    
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];   
-            console.log('Ged lookup: ' + lookup);          
+            var name = Object.keys(fields[x]);            
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
                     val = String(JSONPath({path: String(lookup), json: data})[0]);                    
@@ -631,19 +628,18 @@ const excel2 = new class Excel {
                     valArray = []                                       
                     for (i=0; i<array.length; i++) {                                                                     
                         subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
-                        subKey = JSONPath({path: '$..subkey', json: fields[x]});                        
+                        subKey = JSONPath({path: '$..subkey', json: fields[x]});
                         switch(String(subType)) {
                             case "string": 
                                 valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);                                
                                 // Make N/A if not found
-                                console.log('Ged valArrayVal: ' + valArrayVal)
                                 if (valArrayVal == null || valArrayVal == "")
                                 //if ( typeof valArrayVal !== 'undefined' && valArrayVal && valArrayVal != '')
                                 {
                                     valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
                                 }
                                 // Remove CR, LineFeed ' and " from the string if present
-                                val = val.replace(/(\r\n)|'|"/g, "");
+                                valArrayVal = valArrayVal.replace(/(\r\n)|'|"/g, "");
                                 break;
                             case "time":                                                                                                                        
                                 valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
@@ -715,7 +711,7 @@ const excel2 = new class Excel {
                     break;
                 default:
                     log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)                    
-            }
+            }            
             let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
             if ( doPostProc == 'true')
             {                
@@ -835,7 +831,7 @@ const excel2 = new class Excel {
                 const urlWIthPath = '/library/metadata/' + urlStr                          
                 log.verbose(`Items retrieved`);
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
-                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});                                                
+                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                 for (item of contentsItems){                       
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
                 }
