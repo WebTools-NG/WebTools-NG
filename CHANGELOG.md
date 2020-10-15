@@ -1,14 +1,20 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.1.8
+
+**Note**:   This version is an Alhpa version, that is not made public
+
+* [#173 Sidebar not updated when changing languages](https://github.com/WebTools-NG/WebTools-NG/issues/173)
+
 ## V0.1.7
 
-**Note**:   This version is an Alhpa version, that is not made public, and first version with a changelog
+**Note**:   This version is an Alhpa version, that is not made public
 
 * [#21 ET Fields selection for custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/21) (Custom levels)
 
 ## V0.1.6
 
-**Note**:   This version is an Alhpa version, that is not made public, and first version with a changelog
+**Note**:   This version is an Alhpa version, that is not made public
 
 * [#179 BUG: Text fields spotted in the wild, that corrupts export](https://github.com/WebTools-NG/WebTools-NG/issues/179)
 * [#103 AutoUpdate](https://github.com/WebTools-NG/WebTools-NG/issues/103)
