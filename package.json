@@ -6,8 +6,10 @@
   "license": "MPL-2.0",
   "homepage": "https://github.com/WebTools-NG/WebTools-NG",
   "private": true,
-  "scripts": {
-    "serve": "vue-cli-service electron:serve",
+  "scripts": {    
+    "serve": "run-script-os",
+    "serve:darwin:linux": "chmod +x script/getGitVer.sh && . script/getGitVer.sh && vue-cli-service electron:serve && unset AppRev",
+    "serve:win32": "vue-cli-service electron:serve",
     "build": "run-script-os",
     "build:darwin:linux": "chmod +x script/getGitVer.sh && . script/getGitVer.sh && vue-cli-service electron:build && unset AppRev",
     "build:win32": "vue-cli-service electron:build",

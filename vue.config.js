@@ -18,8 +18,8 @@ module.exports = {
             "to": "locales"
           },
           {
-            "from": "./public/version",
-            "to": "version"
+            "from": "./public/version.json",
+            "to": "version.json"
           }
         ],
         linux: {

@@ -24,4 +24,4 @@ yarn-error.log*
 /dist_electron*
 
 #WebTools-NG speclials
-/public/version
+/public/version.json

@@ -46,6 +46,14 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
+
+  // Set proper title for main window
+  win.webContents.on('did-finish-load', () => {     
+    let rev = require('../public/version.json').rev;    
+    let windowtitle = appName + " v" + process.env.VUE_APP_VERSION + "." + rev;    
+    win.setTitle(windowtitle);
+  })
+
 }
 
 // Quit when all windows are closed.
