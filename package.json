@@ -1,15 +1,16 @@
 {
   "name": "webtools-ng",
   "version": "0.1.6",
-  
   "description": "WebTools Next Generation 4 Plex",
   "author": "dane22 & CPSO",
   "license": "MPL-2.0",
   "homepage": "https://github.com/WebTools-NG/WebTools-NG",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service electron:serve",
-    "build": "vue-cli-service electron:build",
+    "serve": "vue-cli-service electron:serve",        
+    "build": "run-script-os",
+    "build:darwin:linux": "chmod +x script/getGitVer.sh && script/getGitVer.sh && vue-cli-service electron:build",
+    "build:win32": "vue-cli-service electron:build",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
@@ -58,6 +59,7 @@
     "electron": "^7.3.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "run-script-os": "^1.1.1",
     "vue-cli-plugin-electron-builder": "^1.4.6",
     "vue-cli-plugin-i18n": "^1.0.1",
     "vue-template-compiler": "^2.6.11"
