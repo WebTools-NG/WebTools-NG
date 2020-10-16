@@ -8,6 +8,7 @@ import GlobalSettings from '../components/modules/Main/GlobalSettings'
 import About from '../components/modules/Main/About'
 import Store from '../store/index.js'
 import ExportSettings from '../components/modules/ExportTools/Settings/settings'
+import ExportCustom from '../components/modules/ExportTools/Custom/custom'
 Vue.use(VueRouter)
 
   const router = new VueRouter({
@@ -43,6 +44,12 @@ Vue.use(VueRouter)
     path: '/export/settings',
     name: "exportsettings",
     component: ExportSettings,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/export/custom',
+    name: "exportcustom",
+    component: ExportCustom,
     meta: {requiresAuth: true}
   },
   {

@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-NG
+# ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/WebTools-48-NG.png) WebTools-NG
 
 [![GitHub issues](https://img.shields.io/github/issues/WebTools-NG/WebTools-NG.svg?style=flat)](https://github.com/WebTools-NG/WebTools-NG/issues)
 [![Release](https://img.shields.io/github/release/WebTools-NG/WebTools-NG.svg?style=flat)](https://github.com/WebTools-NG/WebTools-NG/releases/latest)
