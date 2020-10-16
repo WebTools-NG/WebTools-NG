@@ -7,9 +7,9 @@
   "homepage": "https://github.com/WebTools-NG/WebTools-NG",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service electron:serve",        
+    "serve": "vue-cli-service electron:serve",
     "build": "run-script-os",
-    "build:darwin:linux": "chmod +x script/getGitVer.sh && script/getGitVer.sh && vue-cli-service electron:build",
+    "build:darwin:linux": "chmod +x script/getGitVer.sh && . script/getGitVer.sh && vue-cli-service electron:build && unset AppRev",
     "build:win32": "vue-cli-service electron:build",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
