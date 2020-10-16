@@ -3,11 +3,12 @@ import { app, protocol, BrowserWindow, Menu} from 'electron'
 const log = require('electron-log');
 console.log = log.log;
 
-var appName = app.getName(); 
+//var appName = app.getName(); 
+var appName = app.name;
 
 // Sadly needs below, since part of main process, so not inherited
 log.transports.file.fileName = appName;
-console.log = log.log;
+
 
 import {
   createProtocol,
