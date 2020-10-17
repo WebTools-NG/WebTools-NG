@@ -13,8 +13,7 @@
     "serve:win32": "vue-cli-service electron:serve",
     "build": "run-script-os",
     "build:darwin:linux": "chmod +x script/getGitVer.sh && . script/getGitVer.sh && vue-cli-service electron:build && unset AppRev",
-    "build:win32": "script\\getGitVer.cmd && vue-cli-service electron:build",
-    
+    "build:win32": "script\\getGitVer.cmd && vue-cli-service electron:build",    
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
