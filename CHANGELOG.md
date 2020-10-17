@@ -5,6 +5,7 @@
 **Note**:   This version is an Alhpa version, that is not made public
 
 * [#173 Sidebar not updated when changing languages](https://github.com/WebTools-NG/WebTools-NG/issues/173)
+* [#184 Get Github Commit into version number](https://github.com/WebTools-NG/WebTools-NG/issues/184)
 
 ## V0.1.7
 
