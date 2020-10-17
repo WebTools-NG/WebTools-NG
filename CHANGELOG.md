@@ -4,6 +4,8 @@
 
 **Note**:   This version is an Alhpa version, that is not made public
 
+**Note2**:  From this version and onwards, the place where settings are stored has changed for Mac and Linux. As an Alpha/Beta tester, consult our Slack for info about how to migrate your settings
+
 * [#173 Sidebar not updated when changing languages](https://github.com/WebTools-NG/WebTools-NG/issues/173)
 * [#184 Get Github Commit into version number](https://github.com/WebTools-NG/WebTools-NG/issues/184)
 
