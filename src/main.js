@@ -13,24 +13,22 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-
 Vue.use(VueRouter);
 Vue.use(Vuex);
-Vue.use(VueSidebarMenu)
+Vue.use(VueSidebarMenu);
 Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons)
-
-
+Vue.use(BootstrapVueIcons);
 
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
+log.transports.file.fileName = wtutils.AppName;
 console.log = log.log;
 // Default file log level is info
 log.transports.file.level = wtconfig.get('Log.fileLevel', 'info');
 // Default console level is Silly, since used by us
 log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
-log.transports.file.fileName = wtutils.AppName;
+
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 log.info('*********************************') 
@@ -70,5 +68,5 @@ new Vue({
   render: h => h(App),
   router: router,
   store: store,
-  i18n 
+  i18n  
 }).$mount('#app')

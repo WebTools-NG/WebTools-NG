@@ -4,6 +4,7 @@ import {wtutils, wtconfig} from './components/modules/General/wtutils'
 
 const log = require('electron-log');
 console.log = log.log;
+log.transports.file.fileName = wtutils.AppName;
 
 Vue.use(VueI18n)
 
