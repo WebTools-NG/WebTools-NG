@@ -362,17 +362,11 @@ const dialog = new class Dialog {
             message: 'WebTools-NG',
             detail: this.AboutInformation(),
             type: 'info',
-            noLink: true,
-            
+            noLink: true,            
         }
         
         let aboutWindow = dialog.showMessageBox(WIN, options)
         return aboutWindow
-
-        
-        
-        
-
     }
             
     SaveFile(title, defaultPath, OKLabel) {        
