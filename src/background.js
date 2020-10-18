@@ -26,7 +26,7 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ width: 1024, height: 768, webPreferences: {
+  win = new BrowserWindow({ width: 1024, height: 768, icon: __dirname + "../src/assets/WebTools-512.png", webPreferences: {
     nodeIntegration: true,
     webSecurity: false
   } })
@@ -49,6 +49,7 @@ function createWindow () {
   win.webContents.on('did-finish-load', () => {    
     let windowtitle = wtutils.AppName + " v" + wtutils.AppVersion;    
     win.setTitle(windowtitle);
+    console.log('Ged __dirname: ' + __dirname)
   })
 
 }

@@ -11,7 +11,10 @@ module.exports = {
     electronBuilder: {
       builderOptions: {        
         appId: "com.webtools.webtools-ng",
-        artifactName: "${productName}-${version}.${env.AppRev}.${ext}",        
+        artifactName: "${productName}-${version}.${env.AppRev}.${ext}",
+        directories: {
+          "buildResources": "src/assets"
+        },        
         "extraResources": [
           {
             "from": "./public/locales",
@@ -24,12 +27,17 @@ module.exports = {
         ],
         linux: {
           category: "Utility",
-          icon: 'src/assets/WebTools-512.png',
+          icon: './src/assets/WebTools-512.png',
           target: 'AppImage'                  
         },
         win: {
-          icon: 'src/assets/WebTools-512.png'
-        }        
+          icon: './src/assets/WebTools-512.png'
+        },
+        mac: {
+          icon: './src/assets/WebTools-512.icns',
+          target: 'dmg'
+        }
+
       }
     }
   }
