@@ -109,6 +109,7 @@
         },
         "Ok": "OK",
         "Reload": "Reload",
+        "Copy": "Copy",
         "Update" : {
             "Title": "Update detected",
             "Body": "{0} was released on Github on: {1}.",
