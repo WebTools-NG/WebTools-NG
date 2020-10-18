@@ -29,7 +29,11 @@ module.exports = {
         },
         win: {
           icon: 'src/assets/WebTools-512.png'
-        }        
+        },
+        darwin: {
+          icon: 'src/assets/WebTools-512.icns'
+        }
+
       }
     }
   }
