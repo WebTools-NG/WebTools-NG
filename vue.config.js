@@ -34,7 +34,8 @@ module.exports = {
           icon: './src/assets/WebTools-512.png'
         },
         mac: {
-          icon: './src/assets/WebTools-512.icns'
+          icon: './src/assets/WebTools-512.icns',
+          target: 'dmg'
         }
 
       }
