@@ -70,7 +70,13 @@
                 "menuHelp": "Help",
                 "menuForum": "Forums",
                 "menuGithub": "Github",
-                "menuManual": "Manual"
+                "menuManual": "Manual",
+                "menuAbout": "About WebTools",
+                "menuAboutText":{
+                    "menuAboutVersion":"Version",
+                    "menuAboutPlatform":"Platform",
+                    "menuAboutArchitecture": "Architecture"
+                }
             },
             "Sidebar": {
                 "NavSections":{
