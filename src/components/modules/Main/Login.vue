@@ -51,11 +51,11 @@
 
 
 <script>
-import store from '../../../store'
+import store from '../../../store';
+import { wtutils, wtconfig } from '../General/wtutils';
 const log = require('electron-log');
 console.log = log.log;
-// User Config
-import {wtconfig} from '../General/wtutils';
+log.transports.file.fileName = wtutils.AppName;
 
 var userName = "";
 
@@ -90,7 +90,7 @@ export default {
         log.verbose(`Save username is: ${this.checkbox}`)
         wtconfig.set('General.rememberlastusername', true )
         wtconfig.set('General.username', this.input.username)      
-      } else {
+      } else {        
         log.verbose(`Save username is: ${this.checkbox}`)
         wtconfig.set('General.rememberlastusername', false )
       }

@@ -1,13 +1,12 @@
 'use strict'
-import { app, protocol, BrowserWindow, Menu} from 'electron'
+import { app, protocol, BrowserWindow, Menu} from 'electron';
+import { wtutils } from '../src/components/modules/General/wtutils';
+
 const log = require('electron-log');
 console.log = log.log;
 
-var appName = app.getName(); 
-
 // Sadly needs below, since part of main process, so not inherited
-log.transports.file.fileName = appName;
-console.log = log.log;
+log.transports.file.fileName = wtutils.AppName;
 
 import {
   createProtocol,
@@ -45,6 +44,13 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
+
+  // Set proper title for main window
+  win.webContents.on('did-finish-load', () => {    
+    let windowtitle = wtutils.AppName + " v" + wtutils.AppVersion;    
+    win.setTitle(windowtitle);
+  })
+
 }
 
 // Quit when all windows are closed.

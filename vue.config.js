@@ -10,11 +10,16 @@ module.exports = {
     },
     electronBuilder: {
       builderOptions: {        
-        appId: "com.webtools.webtools-ng",        
+        appId: "com.webtools.webtools-ng",
+        artifactName: "${productName}-${version}.${env.AppRev}.${ext}",        
         "extraResources": [
           {
             "from": "./public/locales",
             "to": "locales"
+          },
+          {
+            "from": "./public/version.json",
+            "to": "version.json"
           }
         ],
         linux: {

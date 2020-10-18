@@ -10,7 +10,7 @@ console.log = log.log;
 const electron = require('electron');
 // User Config 
 const Store = require('electron-store');
-const wtconfig = new Store({name: require('electron').remote.app.getName()});
+const wtconfig = new Store({ name: (electron.app || electron.remote.app).getName() });
 
 const wtutils = new class WTUtils {
 
@@ -96,12 +96,19 @@ const wtutils = new class WTUtils {
         return (electron.app || electron.remote.app).getPath('documents');
     }
 
-    get AppName() {
-        return (electron.app || electron.remote.app).getName(); 
+    get AppName() {        
+        return (electron.app || electron.remote.app).name; 
     }
 
-    get AppVersion() {
-        return (electron.app || electron.remote.app).getVersion(); 
+    /*
+    This function will return the revision number of the app,
+    based on the current GitHub Branch commit hash */
+    get Rev() {
+        return require('../../../../public/version.json').rev;
+    }
+
+    get AppVersion() {        
+        return (electron.app || electron.remote.app).getVersion() + '.' + this.Rev; 
     }
 
     get LangFiles() {
@@ -131,7 +138,7 @@ const wtutils = new class WTUtils {
         const logDir = wtutils.Home.replace('Application Support', 'Logs');        
         log.info(`Log directory on Mac is detected as: ${logDir}`)
         return logDir;
-    }
+    }    
 
     /* 
     This will move translation files in the app to userdata
@@ -159,7 +166,7 @@ const wtutils = new class WTUtils {
         }
         else
         {
-        localHome = __dirname.replace('app.asar', 'locales');
+            localHome = __dirname.replace('app.asar', 'locales');
         }        
         var last = wtconfig.get('General.transfilescopied', "0")
         if (!(last == wtutils.AppVersion))
@@ -344,7 +351,8 @@ const dialog = new class Dialog {
     OpenDirectory(Title, OKLabel)
     {
         log.debug('Start OpenDirectory Dialog')
-        const {remote} = require('electron'),
+       // const {remote, app} = require('electron'),
+       const {remote} = require('electron'),
         dialog = remote.dialog,
         WIN = remote.getCurrentWindow();
         let options = {
@@ -394,7 +402,7 @@ const github = new class GitHub {
         const response = await fetch(this.releaseUrl);        
         const releases = await response.json();
         return releases;
-    }
+    }    
 }
 
 
