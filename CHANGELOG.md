@@ -17,8 +17,8 @@
 
 **Note**:   This version is an Alhpa version, that is not made public
 
-* [#103 AutoUpdate](https://github.com/WebTools-NG/WebTools-NG/issues/103)
 * [#179 BUG: Text fields spotted in the wild, that corrupts export](https://github.com/WebTools-NG/WebTools-NG/issues/179)
+* [#103 AutoUpdate](https://github.com/WebTools-NG/WebTools-NG/issues/103)
 
 ## V0.1.5
 
