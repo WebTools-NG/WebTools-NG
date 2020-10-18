@@ -70,14 +70,7 @@
                 "menuHelp": "Help",
                 "menuForum": "Forums",
                 "menuGithub": "Github",
-                "menuManual": "Manual",
-                "menuAbout": "About WebTools",
-                "menuAboutText":{
-                    "menuAboutVersion":"Version",
-                    "menuAboutPlatform":"Platform",
-                    "menuAboutArchitecture": "Architecture"
-                }
-                
+                "menuManual": "Manual"
             },
             "Sidebar": {
                 "NavSections":{
@@ -110,7 +103,6 @@
         },
         "Ok": "OK",
         "Reload": "Reload",
-        "Copy": "Copy",
         "Update" : {
             "Title": "Update detected",
             "Body": "{0} was released on Github on: {1}.",
