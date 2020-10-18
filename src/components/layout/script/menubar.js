@@ -1,6 +1,11 @@
 import i18n from '../../../i18n'
-import { shell } from 'electron'
-import { wtutils} from '../../modules/General/wtutils';
+import { shell, clipboard  } from 'electron'
+import { wtutils, dialog } from '../../modules/General/wtutils';
+
+const aboutInformation = 
+            (i18n.t("Common.Menu.Help.menuAboutText.menuAboutVersion") +": " + wtutils.AppVersion) + '\n' +
+            (i18n.t('Common.Menu.Help.menuAboutText.menuAboutPlatform') +": " + wtutils.Platform) +  '\n' +
+            (i18n.t('Common.Menu.Help.menuAboutText.menuAboutArchitecture') +": " + process.arch)
 
 // Menu template
 const menuTemplate = [
@@ -129,6 +134,23 @@ const menuTemplate = [
         {
           label: i18n.t("Common.Menu.Help.menuManual"),
           click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki") }          
+        },
+        {          
+          label: i18n.t("Common.Menu.Help.menuAbout"),
+          click: () => { 
+            dialog.AboutWindow( 
+              i18n.t("Common.Menu.Help.menuAbout"), 
+              i18n.t("Common.Ok"), 
+              i18n.t("Common.Copy"), 
+              aboutInformation).then(
+                result => {
+                  if (result.response === 1) {
+                    console.log("copy pressed")
+                    clipboard.writeText(aboutInformation);
+                  }
+                }
+              )
+          } 
         }
       ]
     }

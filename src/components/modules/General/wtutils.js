@@ -3,6 +3,8 @@ This file contains different functions and methods
 that we use in our solution.
  */
 
+//import i18n from '../../../i18n';
+
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -319,7 +321,25 @@ const wtutils = new class WTUtils {
   
 const dialog = new class Dialog {
     constructor() {                    
-    }
+    }    
+
+    AboutWindow(Title, OKLabel, CopyLabel, aboutInformation)
+    {
+        log.debug('Open AboutWindow Dialog')
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
+        let options = {
+            buttons: [OKLabel, CopyLabel],
+            title: Title,
+            message: 'WebTools-NG',
+            detail: aboutInformation,
+            type: 'info',
+            noLink: true
+        }
+        let aboutWindow = dialog.showMessageBox(WIN, options)
+        return aboutWindow
+    }    
 
     OpenDirectory(Title, OKLabel)
     {
