@@ -8,6 +8,7 @@
 
 * [#173 Sidebar not updated when changing languages](https://github.com/WebTools-NG/WebTools-NG/issues/173)
 * [#184 Get Github Commit into version number](https://github.com/WebTools-NG/WebTools-NG/issues/184)
+* [#154 Added a about page for version, platform, architecture information.](https://github.com/WebTools-NG/WebTools-NG/issues/154)
 
 ## V0.1.7
 
