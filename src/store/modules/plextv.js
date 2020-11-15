@@ -122,8 +122,8 @@ const actions = {
          if (error.response) {                  
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          log.error('loginToPlex: ' + error.response.status)
-          log.error('loginToPlex: ' + error.response.data)
+          log.error('loginToPlex: ' + error.response.status);
+          log.error('loginToPlex: ' + JSON.stringify(error.response.data));
           alert(error.response.data.error)
           //this.danger(error.response.status, error.response.data.error);
         } else if (error.request) {
