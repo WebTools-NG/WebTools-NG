@@ -136,6 +136,40 @@ const actions = {
           log.error('loginToPlex: ' + error.message)
         }})
   },
+  loginToPlexWithToken({ commit }, payload){    
+    log.info("loginToPlex called, using a Token")
+    const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;    
+    axios({
+      method: 'POST',
+      url: url,
+      headers: wtutils.PMSHeader      
+    })  
+      .then(function (response) {
+        log.debug('loginToPlex: Response from fetchPlexServers recieved')
+        commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
+        commit('UPDATE_AUTHENTICATED', true)
+        commit('UPDATE_AVATAR', response.data.user.thumb)
+        commit('UPDATE_PLEXNAME', response.data.user.username)
+        router.replace({name: "home"}); 
+    })
+      .catch(function (error) {
+         if (error.response) {                  
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          log.error('loginToPlex: ' + error.response.status);
+          log.error('loginToPlex: ' + JSON.stringify(error.response.data));
+          alert(error.response.data.error)
+          //this.danger(error.response.status, error.response.data.error);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          log.error('loginToPlex: ' + error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          log.error('loginToPlex: ' + error.message)
+        }})
+  },
   updatingServerAddress({ commit}, status){    
     commit('UPDATE_PLEX_SELECTED_SERVER_STATUS', status)
   }

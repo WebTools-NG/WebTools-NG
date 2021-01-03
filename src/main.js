@@ -37,6 +37,30 @@ log.info(`Running on ${wtutils.RunningOS}`)
 log.info(`Log level set to ${log.transports.file.level}`)
 // Logging ended
 
+// Log Commandline Params
+// This will handle any commandline params that we use
+const params = require('electron').remote.process.argv;        
+params.forEach(param => {    
+    // log.verbose(`Param is: ${param}`);
+    if (param.toLowerCase().startsWith("x-plex-token"))
+    {
+        // SECURITY ISSUE...Do not enable next line, except when debugging
+        // log.verbose(`Found Token as: ${param.split('=')[1]}`)                        
+        store.commit("UPDATE_AUTHTOKEN", param.split('=')[1]);
+    }    
+});
+
+// Handles dev stuff from Json
+const token = wtconfig.get('Developer.X-Plex-Token', '');
+if ( token != ''){
+  log.verbose(`Logging in with Dev Token`)
+  store.commit("UPDATE_AUTHTOKEN", token);
+}
+
+
+
+
+
 // Prepopulate config file with defaults
 if (wtconfig.get("general.version", "") != wtutils.AppVersion){
 	// Config file out of date, so prepopulate with default values if missing	
