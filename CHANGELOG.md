@@ -1,5 +1,13 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.1.9
+
+**Note**:   This version is an Alhpa version, that is not made public
+
+* [#197 Allow Auth via Token provided from command line](https://github.com/WebTools-NG/WebTools-NG/issues/197)
+  * When launched, you can now add the following to the executable file: X-Plex-Token=Your_Token
+    * To find your token, see [this article](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)
+
 ## V0.1.8 (Andy's Birthday present)
 
 **Note**:   This version is an Alhpa version, that is not made public
