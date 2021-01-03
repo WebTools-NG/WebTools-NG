@@ -76,6 +76,14 @@ export default {
       },
     }
   },
+  created() {    
+    if (this.$store.getters.getAuthToken != ''){
+      log.verbose(`We have an Auth Token from cli or dev option`)
+      store.dispatch('loginToPlexWithToken', {
+      token: this.$store.getters.getAuthToken      
+      })
+    }
+  },
   methods: {
     onEnter: function() {
        this.plexLogin();

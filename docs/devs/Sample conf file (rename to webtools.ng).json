@@ -42,6 +42,8 @@
 		// Will show servers not owned by you
 		"showNotOwned": true,
 		// For ET, show levels starting with the word 'dev'
-		"showDevLevels": true
+		"showDevLevels": true,
+		// Use your token if you have enabled 2FA instead of the password
+		"X-Plex-Token": "Your Token"
 	}
 }

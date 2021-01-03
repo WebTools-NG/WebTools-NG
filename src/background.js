@@ -28,7 +28,8 @@ function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({ width: 1024, height: 768, icon: __dirname + "../src/assets/WebTools-512.png", webPreferences: {
     nodeIntegration: true,
-    webSecurity: false
+    webSecurity: false,
+    enableRemoteModule: true
   } })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
