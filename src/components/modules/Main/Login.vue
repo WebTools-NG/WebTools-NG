@@ -31,6 +31,14 @@
             <b-form-input type="password" id="input-2" v-model="input.password" trim></b-form-input>
         </b-form-group>
 
+        <b-form-group
+          id="fieldset-3"
+          :description="$t('Common.Login.twoFAPrompt')"
+          :label="$t('Common.Login.twoFA')"
+          label-for="input-1">
+            <b-form-input id="input-3" v-model="input.twoFA" trim></b-form-input>
+        </b-form-group>
+
         <b-form-group>
           <b-form-checkbox
             id="checkbox-1"
@@ -81,7 +89,7 @@ export default {
       log.verbose(`We have an Auth Token from cli or dev option`)
       store.dispatch('loginToPlexWithToken', {
       token: this.$store.getters.getAuthToken      
-      })
+      })      
     }
   },
   methods: {
@@ -91,7 +99,8 @@ export default {
     plexLogin(){
       store.dispatch('loginToPlex', {
       username: this.input.username,
-      password: this.input.password
+      password: this.input.password,
+      twoFA: this.input.twoFA
       })
             
       if(this.checkbox){

@@ -101,22 +101,24 @@ const actions = {
   },
   loginToPlex({ commit }, payload){    
     log.info("loginToPlex called")
+    var url = 'https://plex.tv/api/v2/users/signin';
+    url = url + '?login=' + payload.username;
+    url = url + '&password=' + payload.password;
+    if ( payload.twoFA ){
+      url = url + '&verificationCode=' + payload.twoFA
+    }    
     axios({
       method: 'POST',
-      url: 'https://plex.tv/users/sign_in.json',      
-      auth: {
-        username : payload.username,
-        password:  payload.password
-      },
+      url: url,      
       headers: wtutils.PMSHeader      
     })  
       .then(function (response) {
-        log.debug('loginToPlex: Response from fetchPlexServers recieved')
-        commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
+        log.debug('loginToPlex: Response from fetchPlexServers recieved')        
+        commit('UPDATE_AUTHTOKEN', response.data.authToken)
         commit('UPDATE_AUTHENTICATED', true)
-        commit('UPDATE_AVATAR', response.data.user.thumb)
-        commit('UPDATE_PLEXNAME', response.data.user.username)
-        router.replace({name: "home"}); 
+        commit('UPDATE_AVATAR', response.data.thumb)
+        commit('UPDATE_PLEXNAME', response.data.username)
+        router.replace({name: "home"});
     })
       .catch(function (error) {
          if (error.response) {                  
