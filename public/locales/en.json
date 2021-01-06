@@ -38,8 +38,9 @@
             "PasswordPrompt": "Enter your plex.tv password",
             "UsernameSave": "Remember Username",
             "LoginBtn": "Sign in",
-            "twoFA": "2Factor Authentication Code",
-            "twoFAPrompt": "If using 2FA, enter your code here, else leave as blank (optional)"
+            "twoFA": "2Factor Authentication verification code",
+            "twoFAPrompt": "If using 2FA, enter your code here, else leave as blank (optional)",
+            "Missing2FACode": "Please enter the verification code"
         },
         "SelServer": "Select Server",
         "Menu": {
