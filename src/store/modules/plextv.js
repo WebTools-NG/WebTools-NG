@@ -1,6 +1,7 @@
 import axios from 'axios';
 import router from '../../router'
 import {wtconfig, wtutils} from '../../components/modules/General/wtutils'
+import i18n from '../../i18n';
 
 const log = require('electron-log');
 
@@ -124,10 +125,21 @@ const actions = {
          if (error.response) {                  
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          log.error('loginToPlex: ' + error.response.status);
-          log.error('loginToPlex: ' + JSON.stringify(error.response.data));
-          alert(error.response.data.error)
-          //this.danger(error.response.status, error.response.data.error);
+          log.error(`loginToPlex status: ${error.response.status}`);
+          log.error(`loginToPlex data: ${JSON.stringify(error.response.data)}`);
+          
+          
+          // alert(error.response.data.message)                              
+          
+          var data = JSON.stringify(error.response.data);
+          var objectValue = JSON.parse(data);
+          var statusCode = JSON.stringify(objectValue.errors[0].code);
+          log.error(`statusCode: ${statusCode}`);
+          if (statusCode == 1029)
+          {
+            log.error('Missing 2FA code');
+            alert(i18n.t('Common.Login.Missing2FACode'))
+          }
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
