@@ -2,7 +2,7 @@
 
 ## V0.1.9
 
-**Note**:   This version is an Alhpa version, that is not made public
+**Note**:   This version is an Alpha version, that is not made public
 
 * [#197 Allow Auth via Token provided from command line](https://github.com/WebTools-NG/WebTools-NG/issues/197)
   * When launched, you can now add the following to the executable file: X-Plex-Token=Your_Token
@@ -11,7 +11,7 @@
 
 ## V0.1.8 (Andy's Birthday present)
 
-**Note**:   This version is an Alhpa version, that is not made public
+**Note**:   This version is an Alpha version, that is not made public
 
 **Note2**:  From this version and onwards, the place where settings are stored has changed for Mac and Linux. As an Alpha/Beta tester, consult our Slack for info about how to migrate your settings
 
@@ -21,20 +21,20 @@
 
 ## V0.1.7
 
-**Note**:   This version is an Alhpa version, that is not made public
+**Note**:   This version is an Alpha version, that is not made public
 
 * [#21 ET Fields selection for custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/21) (Custom levels)
 
 ## V0.1.6
 
-**Note**:   This version is an Alhpa version, that is not made public
+**Note**:   This version is an Alpha version, that is not made public
 
 * [#179 BUG: Text fields spotted in the wild, that corrupts export](https://github.com/WebTools-NG/WebTools-NG/issues/179)
 * [#103 AutoUpdate](https://github.com/WebTools-NG/WebTools-NG/issues/103)
 
 ## V0.1.5
 
-**Note**:   This version is an Alhpa version, that is not made public, and first version with a changelog
+**Note**:   This version is an Alpha version, that is not made public, and first version with a changelog
 
 * [#157 Login screen](https://github.com/WebTools-NG/WebTools-NG/issues/157)
 * Clean up, and disabled ET AutoSize for now
