@@ -49,8 +49,7 @@ function createWindow () {
   // Set proper title for main window
   win.webContents.on('did-finish-load', () => {    
     let windowtitle = wtutils.AppName + " v" + wtutils.AppVersion;    
-    win.setTitle(windowtitle);
-    console.log('Ged __dirname: ' + __dirname)
+    win.setTitle(windowtitle);    
   })
 
 }
