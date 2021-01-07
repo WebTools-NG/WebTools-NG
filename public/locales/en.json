@@ -90,6 +90,9 @@
                     "Settings": "Settings",
                     "Custom": "Custom Levels"
                 },
+                "PMS": {
+                    "Settings": "Settings"
+                },
                 "About": {
                     "NavTitle": "About Us"
                 },
@@ -120,6 +123,12 @@
         }
     },
     "Modules": {
+        "PMS": {
+            "Name": "Plex Media Server",
+            "Description": "@:Modules.PMS.Name module allows you to alter the advanced settings of your server",
+            "ErrorNoServerSelectedTitle": "No server selected",
+            "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen"
+        },
         "ET": {
             "Custom": {
                 "Title": "Custom levels",
