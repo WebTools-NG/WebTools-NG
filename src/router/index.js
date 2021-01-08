@@ -6,7 +6,7 @@ import Export from '../components/modules/ExportTools/Export';
 import ExportSettings from '../components/modules/ExportTools/Settings/settings';
 import ExportCustom from '../components/modules/ExportTools/Custom/custom';
 import PMS from '../components/modules/PMS/PMS';
-import PMSSettings from '../components/modules/ExportTools/Settings/settings';
+import PMSSettings from '../components/modules/PMS/Settings/settings';
 import Language from '../components/modules/Main/Language.vue';
 import GlobalSettings from '../components/modules/Main/GlobalSettings';
 import About from '../components/modules/Main/About';
