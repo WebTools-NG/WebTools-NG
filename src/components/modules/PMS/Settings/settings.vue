@@ -88,7 +88,7 @@
                     Token: this.$store.getters.getAuthToken,
                     Address: this.$store.getters.getSelectedServerAddress}); 
                 log.debug('Options are: ' + JSON.stringify(Object.keys(this.$store.getters.getPMSSettings)))                
-                this.selSectionOptions = Object.keys(this.$store.getters.getPMSSettings);
+                this.selSectionOptions = Object.keys(this.$store.getters.getPMSSettings).sort();
             },
             changedOptions() {
                 log.debug('Updating OnlyHidden Setting');

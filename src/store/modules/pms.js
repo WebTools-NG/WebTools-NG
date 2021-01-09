@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {wtconfig, wtutils} from '../../components/modules/General/wtutils';
+import i18n from '../../i18n';
 
 const log = require('electron-log');
 const {JSONPath} = require('jsonpath-plus');
@@ -48,13 +49,13 @@ const actions = {
                 log.debug('Show all settings');                
               }             
               var PMSSettings = {};
-              PMSSettings['Undefined'] = {};              
+              PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')] = {};              
               filteredResult.forEach(group => {
                 group = JSONPath({path: '$.group', json: group})[0]                
                 if (group !== "") {
                     PMSSettings[group] = {};
                 }
-              })
+              })              
               filteredResult.forEach(element => {
                 var id = JSONPath({path: '$.id', json: element});
                 var jNode = {};
@@ -63,16 +64,18 @@ const actions = {
                 jNode['type'] = JSONPath({path: '$.type', json: element})[0];
                 jNode['default'] = JSONPath({path: '$.default', json: element})[0];
                 jNode['value'] = JSONPath({path: '$.value', json: element})[0];
-                if (JSONPath({path: '$.group', json: element}) == ""){                    
-                    PMSSettings['Undefined'][id] = jNode;                    
+                if (JSONPath({path: '$.group', json: element}) == ""){ 
+                  log.debug('Ged: ' + i18n.t('Modules.PMS.Settings.Undefined'))
+
+                    PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')][id] = jNode;                    
                 }
                 else {                    
                     PMSSettings[JSONPath({path: '$.group', json: element})][id] = jNode;
                 }
               });              
               // Remove undefined category, if empty
-              if (Object.keys(PMSSettings['Undefined']).length === 0){                  
-                delete PMSSettings['Undefined'];
+              if (Object.keys(PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')]).length === 0){                  
+                delete PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')];
               }
               commit('UPDATE_PMS_SETTINGS', PMSSettings);
             })
