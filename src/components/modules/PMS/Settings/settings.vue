@@ -15,12 +15,7 @@
         </b-form-group>
     </div>
     <div class="d-flex align-items-center">
-      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">        
-        <!--         
-        <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
-        <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
-        </div>
-        -->
+      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="etLibraryGroup" triggers="hover">
           {{ $t('Modules.PMS.Settings.TTSelectSettingsSelection') }}
         </b-tooltip>
@@ -33,8 +28,31 @@
         </b-form-select>
       </b-form-group>      
     </div>
+    <div>
+        <b-modal ref="edtSetting" hide-footer v-bind:title=this.newSettingTitle >
+            <div class="d-block text-center">
+                {{ $t('Modules.PMS.Settings.curSetting') }}: {{this.curSetting}}
+                <br>
+                {{ $t('Modules.PMS.Settings.defSetting') }}: {{this.defSetting}}
+                <br>
+                <b-form-input 
+                    v-model="newSettingValue"
+                    v-bind:placeholder=this.newSettingValueTXT >
+                </b-form-input>            
+            </div>
+            <b-button class="mt-3" variant="outline-primary" block @click="saveNewSetting">{{ this.newSettingSaveTxt }}</b-button>
+        </b-modal>
+    </div>
     <div>        
-        <b-table :items="settingsItems" :fields="settingsFields" caption-top>
+        <b-table 
+            striped
+            hover
+            sticky-header 
+            :items="settingsItems" 
+            :fields="settingsFields" 
+            caption-top
+            bordered 
+            @row-clicked="tblRowClicked">
             <template #table-caption>{{ $t('Modules.PMS.Settings.tblCaption') }}</template>
         </b-table>
   </div>
@@ -44,16 +62,21 @@
 <script>
     const log = require("electron-log");
     const {JSONPath} = require('jsonpath-plus');
-    import {wtutils, wtconfig, dialog} from '../../General/wtutils';
+    import {wtconfig} from '../../General/wtutils';
     import i18n from '../../../../i18n';
     import store from '../../../../store';
 
-    wtutils, wtconfig, dialog, i18n, store
     
-
     export default {        
         data() {            
             return {
+                newSettingTitle: "",
+                newSettingValueTXT: this.$t('Modules.PMS.Settings.newSettingValueTXT'),
+                newSettingSaveTxt: this.$t('Modules.ET.Custom.NewLevelSaveTxt'),
+                curSetting: "",
+                defSetting: "",
+                newSettingValue: "",
+                edtSettingKey: "",
                 selSectionOptions: [],
                 selSection : "",
                 cbSelected: [],                
@@ -69,13 +92,7 @@
                     {default: { label: this.$i18n.t('Modules.PMS.Settings.tblDefault') }},
                     {value: { label: this.$i18n.t('Modules.PMS.Settings.tblValue') }}
                 ],
-                settingsItems: [
-                
-                ]         
-                /*         
-                { name: 40, label: 'Dickerson', summary: 'Macdonald', type: 'text' },
-                { name: 21, label: 'Larsen', summery: 'Shaw' },
-                { name: 89, label: 'Geneva', summery: 'Wilson' } */
+                settingsItems: []                
             };              
         },
         created() {
@@ -90,6 +107,36 @@
             }
         },
         methods: {
+            async saveNewSetting() {                
+                log.debug(`Saving setting ${this.newSettingValue} for setting ${this.edtSettingKey}`);
+
+                // Contructing url
+                const url = this.$store.getters.getSelectedServerAddress + '/:/prefs/set?' 
+
+                console.log('URL: ' + url)
+
+                
+ 
+                await store.dispatch('setPMSSetting', {
+                    Token: this.$store.getters.getAuthToken,
+                    Address: this.$store.getters.getSelectedServerAddress,
+                    Setting: this.edtSettingKey,
+                    Value: this.newSettingValue}); 
+ 
+
+                // http://127.0.0.1:32400/:/prefs/set?LogNumFiles=30&X-Plex-Token=TOKEN
+            },
+            tblRowClicked(record) {
+                console.log('Ged Row clicked')
+                console.log('Ged2', record)
+                // Edit Setting
+                log.debug(`Edit Setting: ${record.name}`);
+                this.curSetting = record.value;
+                this.defSetting = record.default;
+                this.edtSettingKey = record.name;                
+                this.newSettingTitle = i18n.t('Modules.PMS.Settings.newSettingTitle', [this.edtSettingKey]);
+                this.$refs['edtSetting'].show();                                            
+            },
             getGroupSelectedItem: function(myarg) {
                 log.debug(`Group changed to: ${myarg}`);
                 // Update the data table with new settings                

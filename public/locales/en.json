@@ -142,7 +142,11 @@
                 "tblSummary": "Summary",
                 "tblDefault": "Default",
                 "tblValue": "Value",
-                "tblType": "Type"
+                "tblType": "Type",
+                "newSettingTitle": "Enter the new setting for: {0}",
+                "curSetting": "Current Setting",
+                "defSetting": "Default Setting",
+                "newSettingValueTXT": "<Enter new value>"
             }
         },
         "ET": {

@@ -20,9 +20,42 @@ const getters = {
 }
 
 const actions = {
+  async setPMSSetting({ commit }, payload) {
+
+    commit
+    
+    let header = wtutils.PMSHeader;
+    header['X-Plex-Token'] = payload.Token;
+    const url = `${payload.Address}/:/prefs?${payload.Setting}=${payload.Value}`;
+    // https://192-168-1-9.650391d27095402bbc83cd077b71fbab.plex.direct:32400/:/prefs?iTunesLibraryXmlPath=testefrans     
+        // https://192-168-1-9.650391d27095402bbc83cd077b71fbab.plex.direct:32400/:/prefs/set?iTunesLibraryXmlPath=ged
+        
+    log.debug(`Setting new setting with url ${url}`);
+    await axios({
+      method: 'put',
+      url: url,          
+      headers: header
+    })
+    .then((response) => {             
+      log.debug('Response from setPMSSetting recieved') 
+      response       
+    })
+    .catch(function (error) {
+      if (error.response) {                  
+          log.error('setPMSSetting: ' + error.response.data)
+          alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message)
+      } else if (error.request) {
+          log.error('setPMSSetting: ' + error.request)
+      } else {
+          log.error('setPMSSetting: ' + error.message)
+      }    
+    });
+  
+  },
+
     async fetchPMSSettings({ commit }, payload) {
         let header = wtutils.PMSHeader;
-        header['X-Plex-Token'] = payload.Token;        
+        header['X-Plex-Token'] = payload.Token;   
         const url = payload.Address + '/:/prefs';
         await axios({
                 method: 'get',
