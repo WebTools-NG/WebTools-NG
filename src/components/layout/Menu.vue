@@ -9,8 +9,9 @@
 <script>
     const log = require('electron-log');
     console.log = log.log;
-    import '@fortawesome/fontawesome-free/css/all.css'
-    import etIcon from '@/assets/ET-256.png';    
+    import '@fortawesome/fontawesome-free/css/all.css';
+    import etIcon from '@/assets/ET-256.png'; 
+    import pmsIcon from '@/assets/plex-pms-icon.png';   
 
     export default {
         data() {
@@ -30,6 +31,23 @@
                         header: true,
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
+                    },
+                    {
+                        href: { path: '/pms' },
+                        title: this.$t("Modules.PMS.Name"),
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: pmsIcon },
+                            },
+                        child: [
+                            {                                
+                                href: '/pms/settings',
+                                title: this.$t("Common.Menu.Sidebar.PMS.Settings"),                                
+                                icon: 'fa fa-cog'
+                            }
+                        ]                        
                     },
                     {
                         href: { path: '/export' },

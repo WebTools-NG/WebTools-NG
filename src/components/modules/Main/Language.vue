@@ -78,7 +78,7 @@ export default {
     }
   },  
   mounted() {
-    log.info("About Mounted");    
+    log.info("Language Created");    
     this.getOnlineLangs();    
   },
   methods: {

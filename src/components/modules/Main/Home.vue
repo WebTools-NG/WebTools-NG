@@ -10,6 +10,8 @@
           <dl>
             <dt>{{ $t("Modules.ET.Name") }}</dt>
               <dd>* {{ $t("Modules.ET.Description") }} </dd>
+            <dt>{{ $t("Modules.PMS.Name") }}</dt>
+              <dd>* {{ $t("Modules.PMS.Description") }} </dd>
           </dl>              
         </div>        
         <b-modal ref="showUpdate" hide-footer v-bind:title=this.updateTitle >
@@ -40,7 +42,7 @@ export default {
     }
   },
   mounted() {
-    log.info("About Mounted");    
+    log.info("Home Created");    
     this.checkLangUpdates();
     this.UpdatePresent();    
   },

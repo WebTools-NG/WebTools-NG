@@ -1,14 +1,17 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from '../components/modules/Main/Login'
-import Home from '../components/modules/Main/Home.vue'
-import Export from '../components/modules/ExportTools/Export'
-import Language from '../components/modules/Main/Language.vue'
-import GlobalSettings from '../components/modules/Main/GlobalSettings'
-import About from '../components/modules/Main/About'
-import Store from '../store/index.js'
-import ExportSettings from '../components/modules/ExportTools/Settings/settings'
-import ExportCustom from '../components/modules/ExportTools/Custom/custom'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Login from '../components/modules/Main/Login';
+import Home from '../components/modules/Main/Home.vue';
+import Export from '../components/modules/ExportTools/Export';
+import ExportSettings from '../components/modules/ExportTools/Settings/settings';
+import ExportCustom from '../components/modules/ExportTools/Custom/custom';
+import PMS from '../components/modules/PMS/PMS';
+import PMSSettings from '../components/modules/PMS/Settings/settings';
+import Language from '../components/modules/Main/Language.vue';
+import GlobalSettings from '../components/modules/Main/GlobalSettings';
+import About from '../components/modules/Main/About';
+import Store from '../store/index.js';
+
 Vue.use(VueRouter)
 
   const router = new VueRouter({
@@ -50,6 +53,18 @@ Vue.use(VueRouter)
     path: '/export/custom',
     name: "exportcustom",
     component: ExportCustom,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/pms',
+    name: "pms",
+    component: PMS,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/pms/settings',
+    name: "pmssettings",
+    component: PMSSettings,
     meta: {requiresAuth: true}
   },
   {

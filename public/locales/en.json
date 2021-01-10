@@ -90,6 +90,9 @@
                     "Settings": "Settings",
                     "Custom": "Custom Levels"
                 },
+                "PMS": {
+                    "Settings": "Settings"
+                },
                 "About": {
                     "NavTitle": "About Us"
                 },
@@ -120,6 +123,32 @@
         }
     },
     "Modules": {
+        "PMS": {
+            "Name": "Plex Media Server",
+            "Description": "@:Modules.PMS.Name module allows you to manage your server",
+            "ErrorNoServerSelectedTitle": "No server selected",
+            "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
+            "Settings": {
+                "Settings": "Settings",
+                "Description": "Here you can define the settings for the selected server",
+                "SelectSettingsSelection": "Select Settings Group",
+                "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
+                "OnlyHidden": "Show only hidden settings",
+                "OnlyAdvanced": "Show only advanced settings",
+                "Undefined": "undefined",
+                "tblCaption": "Settings",
+                "tblName": "Name",
+                "tblLabel": "Label",
+                "tblSummary": "Summary",
+                "tblDefault": "Default",
+                "tblValue": "Value",
+                "tblType": "Type",
+                "newSettingTitle": "Enter the new setting for: {0}",
+                "curSetting": "Current Setting",
+                "defSetting": "Default Setting",
+                "newSettingValueTXT": "<Enter new value>"
+            }
+        },
         "ET": {
             "Custom": {
                 "Title": "Custom levels",
