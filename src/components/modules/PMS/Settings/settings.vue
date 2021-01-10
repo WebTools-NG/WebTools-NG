@@ -93,29 +93,19 @@
             getGroupSelectedItem: function(myarg) {
                 log.debug(`Group changed to: ${myarg}`);
                 // Update the data table with new settings                
-                const filteredResult = JSONPath({path: `$.${myarg}`, json: this.$store.getters.getPMSSettings});
-                log.debug(`filtered settings: ${JSON.stringify(filteredResult)}`);
+                const filteredResult = JSONPath({path: `$.${myarg}`, json: this.$store.getters.getPMSSettings})[0];
+                log.verbose(`filtered settings: ${JSON.stringify(filteredResult)}`);                
                 this.settingsItems = [];
-                var jGed = JSON.parse(filteredResult[0]);
-                log.debug('Ged Cava: ' + JSON.stringify(jGed))
-                for (var i = 0; i < filteredResult.length; i++) {
-                    log.debug('Ged Tommy: ' + JSON.stringify(filteredResult[i]));
+                for (var i = 0; i < filteredResult.length; i++) {                    
+                    var entry = {};
+                    entry['name'] = JSONPath({path: `$.*~`, json: filteredResult[i]})[0];
+                    entry['label'] = JSONPath({path: `$..label`, json: filteredResult[i]})[0];
+                    entry['summary'] = JSONPath({path: `$..summary`, json: filteredResult[i]})[0];
+                    entry['type'] = JSONPath({path: `$..type`, json: filteredResult[i]})[0];
+                    entry['default'] = JSONPath({path: `$..default`, json: filteredResult[i]})[0];
+                    entry['value'] = JSONPath({path: `$..value`, json: filteredResult[i]})[0];
+                    this.settingsItems.push(entry);                                        
                 }
-                var jFilteredResult = JSON.parse(filteredResult[0][0])
-                log.debug('Ged prased: ' + JSON.stringify(jFilteredResult))
-                filteredResult.forEach(function(item){
-                    log.debug('Ged445566: ' + JSON.stringify(item));
-                    var jItem = JSON.parse(item);
-                    log.debug('Ged99: ' + jItem.key)
-                    log.debug('Ged99-1: ' + jItem.value)
-                });
-                //var gedsettingItems = JSON.parse(filteredResult[0]);
-                //log.debug('ged 33: ' + JSON.stringify(gedsettingItems))
-
-                //filteredResult.forEach(item => {
-                  //  log.debug('Ged Item: ' + JSON.stringify(item))
-                    
-                //});
             },
             async serverSelected() {
                 let serverCheck = this.$store.getters.getSelectedServer;

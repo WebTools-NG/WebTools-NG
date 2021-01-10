@@ -135,7 +135,14 @@
                 "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
                 "OnlyHidden": "Show only hidden settings",
                 "OnlyAdvanced": "Show only advanced settings",
-                "Undefined": "undefined"
+                "Undefined": "undefined",
+                "tblCaption": "Settings",
+                "tblName": "Name",
+                "tblLabel": "Label",
+                "tblSummary": "Summary",
+                "tblDefault": "Default",
+                "tblValue": "Value",
+                "tblType": "Type"
             }
         },
         "ET": {
