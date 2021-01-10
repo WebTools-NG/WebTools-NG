@@ -8,6 +8,7 @@
   * When launched, you can now add the following to the executable file: X-Plex-Token=Your_Token
     * To find your token, see [this article](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)
 * [#196 Support for 2FA token](https://github.com/WebTools-NG/WebTools-NG/issues/196)
+* [#195 PMS Settings](https://github.com/WebTools-NG/WebTools-NG/issues/195)
 
 ## V0.1.8 (Andy's Birthday present)
 
