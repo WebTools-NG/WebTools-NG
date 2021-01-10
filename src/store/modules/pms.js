@@ -47,36 +47,41 @@ const actions = {
               }
               else {
                 log.debug('Show all settings');                
-              }             
+              }
+              // Reset PMSSettings             
               var PMSSettings = {};
-              PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')] = {};              
+              // Create Array for undefined
+              PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')] = [];              
+              // Create Arrays for other categories
               filteredResult.forEach(group => {
                 group = JSONPath({path: '$.group', json: group})[0]                
                 if (group !== "") {
-                    PMSSettings[group] = {};
+                    PMSSettings[group] = [];
                 }
-              })              
-              filteredResult.forEach(element => {
+              })
+              // Get the single items             
+              filteredResult.forEach(element => {                
                 var id = JSONPath({path: '$.id', json: element});
+                var itemGroup = JSONPath({path: '$.group', json: element});
+                if (itemGroup == "")
+                {
+                  itemGroup = i18n.t('Modules.PMS.Settings.Undefined');
+                }                
+                var PMSSettingsItem = {}                 
                 var jNode = {};
                 jNode['label'] = JSONPath({path: '$.label', json: element})[0];
                 jNode['summary'] = JSONPath({path: '$.summary', json: element})[0];
                 jNode['type'] = JSONPath({path: '$.type', json: element})[0];
                 jNode['default'] = JSONPath({path: '$.default', json: element})[0];
-                jNode['value'] = JSONPath({path: '$.value', json: element})[0];
-                if (JSONPath({path: '$.group', json: element}) == ""){ 
-                  log.debug('Ged: ' + i18n.t('Modules.PMS.Settings.Undefined'))
-
-                    PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')][id] = jNode;                    
-                }
-                else {                    
-                    PMSSettings[JSONPath({path: '$.group', json: element})][id] = jNode;
-                }
-              });              
+                jNode['value'] = JSONPath({path: '$.value', json: element})[0];                
+                PMSSettingsItem[id] = jNode;                
+                PMSSettings[itemGroup].push(PMSSettingsItem)
+              });                            
               // Remove undefined category, if empty
               if (Object.keys(PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')]).length === 0){                  
                 delete PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')];
               }
+              log.verbose(`PMS Settings are: ${JSON.stringify(PMSSettings)}`)              
               commit('UPDATE_PMS_SETTINGS', PMSSettings);
             })
             .catch(function (error) {

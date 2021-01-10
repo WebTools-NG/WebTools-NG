@@ -26,17 +26,24 @@
         </b-tooltip>
         <b-form-select 
           v-model="selSection"          
-          id="selSection"          
+          id="selSection"
+          v-on:change="getGroupSelectedItem"          
           :options="selSectionOptions"
           name="selSection">        
         </b-form-select>
       </b-form-group>      
     </div>
+    <div>        
+        <b-table :items="settingsItems" :fields="settingsFields" caption-top>
+            <template #table-caption>{{ $t('Modules.PMS.Settings.tblCaption') }}</template>
+        </b-table>
+  </div>
   </b-container>
 </template>
 
 <script>
     const log = require("electron-log");
+    const {JSONPath} = require('jsonpath-plus');
     import {wtutils, wtconfig, dialog} from '../../General/wtutils';
     import i18n from '../../../../i18n';
     import store from '../../../../store';
@@ -53,7 +60,22 @@
                 cbOptions: [
                     { text: i18n.t('Modules.PMS.Settings.OnlyHidden'), value: 'OnlyHidden' },
                     { text: i18n.t('Modules.PMS.Settings.OnlyAdvanced'), value: 'OnlyAdvanced' }                                                         
-                ]                 
+                ],
+                settingsFields: [                    
+                    {name: { label: this.$i18n.t('Modules.PMS.Settings.tblName') }},
+                    {label: { label: this.$i18n.t('Modules.PMS.Settings.tblLabel') }},
+                    {summary: { label: this.$i18n.t('Modules.PMS.Settings.tblSummary') }},
+                    {type: { label: this.$i18n.t('Modules.PMS.Settings.tblType') }},
+                    {default: { label: this.$i18n.t('Modules.PMS.Settings.tblDefault') }},
+                    {value: { label: this.$i18n.t('Modules.PMS.Settings.tblValue') }}
+                ],
+                settingsItems: [
+                
+                ]         
+                /*         
+                { name: 40, label: 'Dickerson', summary: 'Macdonald', type: 'text' },
+                { name: 21, label: 'Larsen', summery: 'Shaw' },
+                { name: 89, label: 'Geneva', summery: 'Wilson' } */
             };              
         },
         created() {
@@ -68,6 +90,33 @@
             }
         },
         methods: {
+            getGroupSelectedItem: function(myarg) {
+                log.debug(`Group changed to: ${myarg}`);
+                // Update the data table with new settings                
+                const filteredResult = JSONPath({path: `$.${myarg}`, json: this.$store.getters.getPMSSettings});
+                log.debug(`filtered settings: ${JSON.stringify(filteredResult)}`);
+                this.settingsItems = [];
+                var jGed = JSON.parse(filteredResult[0]);
+                log.debug('Ged Cava: ' + JSON.stringify(jGed))
+                for (var i = 0; i < filteredResult.length; i++) {
+                    log.debug('Ged Tommy: ' + JSON.stringify(filteredResult[i]));
+                }
+                var jFilteredResult = JSON.parse(filteredResult[0][0])
+                log.debug('Ged prased: ' + JSON.stringify(jFilteredResult))
+                filteredResult.forEach(function(item){
+                    log.debug('Ged445566: ' + JSON.stringify(item));
+                    var jItem = JSON.parse(item);
+                    log.debug('Ged99: ' + jItem.key)
+                    log.debug('Ged99-1: ' + jItem.value)
+                });
+                //var gedsettingItems = JSON.parse(filteredResult[0]);
+                //log.debug('ged 33: ' + JSON.stringify(gedsettingItems))
+
+                //filteredResult.forEach(item => {
+                  //  log.debug('Ged Item: ' + JSON.stringify(item))
+                    
+                //});
+            },
             async serverSelected() {
                 let serverCheck = this.$store.getters.getSelectedServer;
                 if (serverCheck == "none") {
