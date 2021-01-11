@@ -2,7 +2,8 @@
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
         <h1>{{ $t("Modules.PMS.Settings.Settings") }}</h1>
-        <p>{{ $t("Modules.PMS.Settings.Description") }}</p>           
+        <p>{{ $t("Modules.PMS.Settings.Description") }}</p> 
+        <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>           
     </div>
     <div>
         <b-form-group id="b-form-group">
@@ -31,9 +32,40 @@
     <div>
         <b-modal ref="edtSetting" hide-footer v-bind:title=this.newSettingTitle >
             <div class="d-block text-center">
-                {{ $t('Modules.PMS.Settings.curSetting') }}: {{this.curSetting}}
-                <br>
-                {{ $t('Modules.PMS.Settings.defSetting') }}: {{this.defSetting}}
+                <b-alert variant="danger" show>{{ $t('Modules.PMS.Settings.varning') }}</b-alert>
+                <b-container fluid>
+                    <b-row>
+                        <b-col sm="2">
+                        <label for="textarea-curSetting">{{ $t('Modules.PMS.Settings.curSetting') }}:</label>
+                        </b-col>
+                        <b-col sm="10">
+                        <b-form-textarea                            
+                            id="textarea-curSetting"
+                            plaintext
+                            size="sm"
+                            v-model=this.curSetting
+                            rows="1"
+                            max-rows="8"
+                        ></b-form-textarea>
+                        </b-col>
+                    </b-row>
+                    <br>
+                    <b-row>
+                        <b-col sm="2">
+                        <label for="textarea-defSetting">{{ $t('Modules.PMS.Settings.defSetting') }}:</label>
+                        </b-col>
+                        <b-col sm="10">
+                        <b-form-textarea                            
+                            id="textarea-defSetting"
+                            plaintext
+                            size="sm"
+                            v-model=this.defSetting
+                            rows="1"
+                            max-rows="8"
+                        ></b-form-textarea>
+                        </b-col>
+                    </b-row>
+                </b-container>
                 <br>
                 <b-form-input 
                     v-model="newSettingValue"
@@ -116,22 +148,42 @@
                     Setting: this.edtSettingKey,
                     Value: this.newSettingValue});
                 this.$refs['edtSetting'].hide();
+                await this.getServerSettings();
+                this.updateTbl(this.selSection);
             },
             tblRowClicked(record) {
-                console.log('Ged Row clicked')
-                console.log('Ged2', record)
                 // Edit Setting
                 log.debug(`Edit Setting: ${record.name}`);
-                this.curSetting = record.value;
-                this.defSetting = record.default;
+                if (!record.default)
+                {
+                    this.defSetting = 'false';
+                }
+                else if (record.value)
+                {
+                    this.curSetting = 'true';
+                }
+                else{
+                    this.defSetting = record.default;
+                }
+                if (!record.value)
+                {
+                    this.curSetting = 'false';
+                }
+                else if (record.value)
+                {
+                    this.curSetting = 'true';
+                }
+                else{
+                    this.curSetting = record.value;
+                }                               
                 this.edtSettingKey = record.name;                
                 this.newSettingTitle = i18n.t('Modules.PMS.Settings.newSettingTitle', [this.edtSettingKey]);
+                this.newSettingValue = "";
                 this.$refs['edtSetting'].show();                                            
             },
-            getGroupSelectedItem: function(myarg) {
-                log.debug(`Group changed to: ${myarg}`);
+            updateTbl(group) {
                 // Update the data table with new settings                
-                const filteredResult = JSONPath({path: `$.${myarg}`, json: this.$store.getters.getPMSSettings})[0];
+                const filteredResult = JSONPath({path: `$.${group}`, json: this.$store.getters.getPMSSettings})[0];
                 log.verbose(`filtered settings: ${JSON.stringify(filteredResult)}`);                
                 this.settingsItems = [];
                 for (var i = 0; i < filteredResult.length; i++) {                    
@@ -144,6 +196,24 @@
                     entry['value'] = JSONPath({path: `$..value`, json: filteredResult[i]})[0];
                     this.settingsItems.push(entry);                                        
                 }
+            },
+            getGroupSelectedItem: function(myarg) {
+                log.debug(`Group changed to: ${myarg}`);
+                this.updateTbl(myarg);
+                /* // Update the data table with new settings                
+                const filteredResult = JSONPath({path: `$.${myarg}`, json: this.$store.getters.getPMSSettings})[0];
+                log.verbose(`filtered settings: ${JSON.stringify(filteredResult)}`);                
+                this.settingsItems = [];
+                for (var i = 0; i < filteredResult.length; i++) {                    
+                    var entry = {};
+                    entry['name'] = JSONPath({path: `$.*~`, json: filteredResult[i]})[0];
+                    entry['label'] = JSONPath({path: `$..label`, json: filteredResult[i]})[0];
+                    entry['summary'] = JSONPath({path: `$..summary`, json: filteredResult[i]})[0];
+                    entry['type'] = JSONPath({path: `$..type`, json: filteredResult[i]})[0];
+                    entry['default'] = JSONPath({path: `$..default`, json: filteredResult[i]})[0];
+                    entry['value'] = JSONPath({path: `$..value`, json: filteredResult[i]})[0];
+                    this.settingsItems.push(entry);                                        
+                } */
             },
             async serverSelected() {
                 let serverCheck = this.$store.getters.getSelectedServer;
@@ -167,19 +237,20 @@
                 log.debug('Options are: ' + JSON.stringify(Object.keys(this.$store.getters.getPMSSettings)))                
                 this.selSectionOptions = Object.keys(this.$store.getters.getPMSSettings).sort();
             },
-            changedOptions() {
+            async changedOptions() {
                 log.debug('Updating OnlyHidden Setting');
                 //this.$nextTick(()=>{console.log(this.cbSelected);})
                 for( var cbItem of ["OnlyHidden", "OnlyAdvanced"]){                    
                     wtconfig.set("PMS." + cbItem, (this.cbSelected.includes(cbItem))) 
                 }
-                this.getServerSettings();
+                await this.getServerSettings();
+                this.updateTbl(this.selSection);
             },
             getcbDefaults() {
                 log.debug('Get OnlyHidden Setting');                
                 const cbItems = ["OnlyHidden", "OnlyAdvanced"];
                 for(let i = 0; i < cbItems.length; i++){                     
-                    if (wtconfig.get("PMS." + cbItems[i], true)){
+                    if (wtconfig.get("PMS." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i])
                     }                    
                 } 
