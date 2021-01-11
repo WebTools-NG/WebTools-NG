@@ -131,12 +131,13 @@
             "Settings": {
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for the selected server",
+                "Notice": "Note: When changing a server setting you might need to restart the server afterwards",
                 "SelectSettingsSelection": "Select Settings Group",
                 "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
                 "OnlyHidden": "Show only hidden settings",
                 "OnlyAdvanced": "Show only advanced settings",
                 "Undefined": "undefined",
-                "tblCaption": "Settings",
+                "tblCaption": "Settings - click row to change",
                 "tblName": "Name",
                 "tblLabel": "Label",
                 "tblSummary": "Summary",
@@ -146,7 +147,8 @@
                 "newSettingTitle": "Enter the new setting for: {0}",
                 "curSetting": "Current Setting",
                 "defSetting": "Default Setting",
-                "newSettingValueTXT": "<Enter new value>"
+                "newSettingValueTXT": "<Enter new value>",
+                "varning": "Change at your own risk. Any change can lead to malfunction of your plex server"
             }
         },
         "ET": {

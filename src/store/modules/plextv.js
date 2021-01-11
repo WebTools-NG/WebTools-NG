@@ -127,10 +127,7 @@ const actions = {
           // that falls out of the range of 2xx
           log.error(`loginToPlex status: ${error.response.status}`);
           log.error(`loginToPlex data: ${JSON.stringify(error.response.data)}`);
-          
-          
-          // alert(error.response.data.message)                              
-          
+          // alert(error.response.data.message)
           var data = JSON.stringify(error.response.data);
           var objectValue = JSON.parse(data);
           var statusCode = JSON.stringify(objectValue.errors[0].code);
