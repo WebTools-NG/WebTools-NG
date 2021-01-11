@@ -102,9 +102,9 @@ const actions = {
   },
   loginToPlex({ commit }, payload){    
     log.info("loginToPlex called")
-    var url = 'https://plex.tv/api/v2/users/signin';
-    url = url + '?login=' + payload.username;
-    url = url + '&password=' + payload.password;
+    var url = 'https://plex.tv/api/v2/users/signin';    
+    url = url + '?login=' + require('querystring').escape(payload.username);
+    url = url + '&password=' + require('querystring').escape(payload.password);
     if ( payload.twoFA ){
       url = url + '&verificationCode=' + payload.twoFA
     }    
