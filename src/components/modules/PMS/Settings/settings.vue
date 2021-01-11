@@ -109,22 +109,13 @@
         methods: {
             async saveNewSetting() {                
                 log.debug(`Saving setting ${this.newSettingValue} for setting ${this.edtSettingKey}`);
-
-                // Contructing url
-                const url = this.$store.getters.getSelectedServerAddress + '/:/prefs/set?' 
-
-                console.log('URL: ' + url)
-
-                
- 
+                // Save setting               
                 await store.dispatch('setPMSSetting', {
                     Token: this.$store.getters.getAuthToken,
                     Address: this.$store.getters.getSelectedServerAddress,
                     Setting: this.edtSettingKey,
-                    Value: this.newSettingValue}); 
- 
-
-                // http://127.0.0.1:32400/:/prefs/set?LogNumFiles=30&X-Plex-Token=TOKEN
+                    Value: this.newSettingValue});
+                this.$refs['edtSetting'].hide();
             },
             tblRowClicked(record) {
                 console.log('Ged Row clicked')
