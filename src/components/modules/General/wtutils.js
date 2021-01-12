@@ -394,15 +394,59 @@ const dialog = new class Dialog {
 const github = new class GitHub {
     constructor() {        
         this.releaseUrl = 'https://api.github.com/repos/WebTools-NG/WebTools-NG/releases';
+        //this.releaseUrl = 'https://api.github.com/repos/ukdtom/testrel/releases';        
     }
-
+        
     // Get the releases from GitHub
     async Releases(){
+        log.debug('Checking for Github updates')
         const fetch = require('node-fetch');                
         const response = await fetch(this.releaseUrl);        
-        const releases = await response.json();
-        return releases;
-    }    
+        const releases = await response.json();        
+        const rels = {};
+        rels['beta'] = false;
+        rels['rel'] = false;
+        rels['betadate'] = false;
+        rels['reldate'] = false;
+        rels['betadateFull'] = false;
+        rels['reldateFull'] = false;
+
+        for(var i = 0; i < releases.length; i++)
+        {
+            if (rels['beta'] && rels['rel'])
+            {                
+                break;
+            }
+            if (!rels['beta'] && releases[i].prerelease){                
+                log.verbose(`Found beta version ${releases[i].tag_name}`)
+                rels['betaver'] = releases[i].tag_name;
+                rels['beta'] = true;
+                rels['betaname'] = releases[i].name;
+                rels['betaurl'] = releases[i].html_url;
+                rels['betadate'] = releases[i].published_at.substring(0, 10);
+                rels['betadateFull'] = releases[i].published_at;
+            }
+            else if (!rels['rel'] && !releases[i].prerelease){                
+                log.verbose(`Found release version ${releases[i].tag_name}`)
+                rels['relver'] = releases[i].tag_name;
+                rels['rel'] = true;
+                rels['relname'] = releases[i].name;
+                rels['relurl'] = releases[i].html_url;
+                rels['relurl'] = releases[i].html_url;
+                rels['reldate'] = releases[i].published_at.substring(0, 10);
+                rels['reldateFull'] = releases[i].published_at;
+            }
+        }        
+        // If not present, set to zerro
+        if (!rels['reldateFull']){
+            rels['reldateFull'] = 0;
+        }
+        // If not present, set to zerro
+        if (!rels['betadateFull']){
+            rels['betadateFull'] = 0;
+        } 
+        return rels;
+    }
 }
 
 

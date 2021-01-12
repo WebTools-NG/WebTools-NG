@@ -54,22 +54,79 @@ export default {
     },
     // Is an update present?
     async UpdatePresent(){      
-      // Get release page from GitHub
-      const releases = await github.Releases();      
-      for(var i = 0; i < releases.length; i++)
+      // Get release page from GitHub      
+      const releases = await github.Releases();
+      log.verbose('Github releases', JSON.stringify(releases))      
+      if (wtconfig.get('Update.Beta'))
       {
-          // Check for current release on GitHub
-          if ( Boolean(wtconfig.get('Update.Beta')) == releases[i].prerelease){                                      
-              if ('v' + wtutils.AppVersion != releases[i].tag_name){                    
-                  log.info('Update detected');
-                  this.body = this.$t('Common.Update.Body', [releases[i].name, releases[i].published_at.substring(0, 10)]),                                                           
-                  this.name = releases[i].name;                    
-                  this.url = releases[i].html_url
-                  this.$refs['showUpdate'].show()
-              }                
-              break;
-          }
+        // Need to check both beta and rel versions        
+        // Find newest one
+        if (Date.parse(releases['betadateFull']) > Date.parse(releases['reldateFull'])){          
+          this.body = this.$t('Common.Update.Body', [releases['betaname'], releases['betadate']]),                                                           
+          this.name = releases['betaname'];                    
+          this.url = releases['betaurl'];
+          this.ver = releases['betaver'];
+        }
+        else
+        {          
+          this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
+          this.name = releases['relname'];                    
+          this.url = releases['relurl'];
+          this.ver = releases['relver'];
+        }
       }
+      else
+      {        
+        this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
+        this.name = releases['relname'];                    
+        this.url = releases['relurl'];
+        this.ver = releases['relver'];
+      }
+
+      if (wtutils.AppVersion != this.ver && this.ver)
+      {        
+        // Show an update is present
+        log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`)
+        this.$refs['showUpdate'].show();
+      }
+
+
+
+      /* 
+      if (( Boolean(wtconfig.get('Update.Beta')) == releases['beta']))
+      {
+        log.verbose('Need to check for beta updates', releases['betaver'], wtutils.AppVersion)
+        if (releases['betaver'] != wtutils.AppVersion)
+        {
+          console.log('ged beta update avail')
+          log.info('Beta Update detected');
+          this.body = this.$t('Common.Update.Body', [releases['betaname'], releases['betadate']]),                                                           
+          this.name = releases['betaname'];                    
+          this.url = releases['betaurl'];
+          this.$refs['showUpdate'].show();
+        }        
+      }
+      else
+      {
+        console.log('ged rel', releases['relver'] )
+        log.verbose('Need to check for rel updates', releases['relver'], wtutils.AppVersion)
+        
+        
+        if (releases['relver'] === null)
+        {
+          console.log('Ged3344 rel is null')
+        }
+        if ((releases['relver'] != wtutils.AppVersion) ?? (releases['relver'] !== null))
+        {          
+          log.info('Release Update detected');
+          this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
+          this.name = releases['relname'];                    
+          this.url = releases['relurl'];
+          this.$refs['showUpdate'].show();
+        }
+      }
+       */
+
     },
     async checkLangUpdates() {
       // Start by getting the currently selected language
