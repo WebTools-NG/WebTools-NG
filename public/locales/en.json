@@ -125,7 +125,9 @@
     "Modules": {
         "PlexTV": {
             "Name": "PlexTV",
-            "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with"
+            "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with",
+            "SelUsr": "Select User",
+            "TT-User": "Here you select the user to get more info about"
         },
         "PMS": {
             "Name": "Plex Media Server",

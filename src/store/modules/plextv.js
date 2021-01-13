@@ -14,7 +14,8 @@ const state = {
   authenticated: false,
   authToken: '',
   avatar: '',
-  plexname: ''  
+  plexname: '',
+  users: {}  
 };
 
 const mutations = {
@@ -25,32 +26,62 @@ const mutations = {
     state.plexServers = payload;
   },
   UPDATE_SELECTED_SERVER(state, value) {
-      state.selectedServer = value
-      state.selectedServerToken = value.accessToken 
+      state.selectedServer = value;
+      state.selectedServerToken = value.accessToken; 
   },
   UPDATE_SELECTED_SERVER_ADDRESS(state, value) {
-    state.selectedServerAddress = value    
+    state.selectedServerAddress = value;    
   },
   UPDATE_AUTHENTICATED(state, value){
-    state.authenticated = value
+    state.authenticated = value;
   },
   UPDATE_AUTHTOKEN(state, value){
-    state.authToken = value
+    state.authToken = value;
   },
   UPDATE_AVATAR(state, value){
-    state.avatar = value
+    state.avatar = value;
   },
   UPDATE_PLEXNAME(state, value){
-    state.plexname = value
+    state.plexname = value;
+  },
+  UPDATE_USERS(state, value){
+    state.users = value;
   }
 };
 
 const actions = {
+  async fetchUsers( { commit, getters }){
+    log.debug('Getting users from plex.tv');
+    let header = wtutils.PMSHeader;
+    header['X-Plex-Token'] = getters.getAuthToken;    
+    await axios({
+      method: 'get',
+      url: 'https://plex.tv/api/v2/friends',          
+      headers: header
+    })
+      .then((response) => {        
+        const ptvusers = {};
+        log.debug('Response from fetchUsers recieved');        
+        response.data.forEach((req) => {          
+          ptvusers[req.id] = req;
+        })
+        commit('UPDATE_USERS', ptvusers);
+        log.verbose('Users added to store')
+      })
+      .catch(function (error) {
+        if (error.response) {                  
+            log.error('fetchUsers: ' + error.response.data);
+            alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+        } else if (error.request) {
+            log.error('fetchUsers: ' + error.request);
+        } else {
+            log.error('fetchUsers: ' + error.message);
+      }    
+    });
+  },
   fetchPlexServers({ commit, getters }) {
     let header = wtutils.PMSHeader;
-    header['X-Plex-Token'] = getters.getAuthToken;
-      
-
+    header['X-Plex-Token'] = getters.getAuthToken;      
       axios({
           method: 'get',
           url: 'https://plex.tv/api/v2/resources',          
@@ -194,7 +225,8 @@ const getters = {
     getSelectedServer: state => state.selectedServer,
     getSelectedServerAddress: state => state.selectedServerAddress,
     getSelectedServerAddressUpdateInProgress: state => state.selectedServerAddressUpdateInProgress,
-    getSelectedServerToken: state => state.selectedServerToken
+    getSelectedServerToken: state => state.selectedServerToken,
+    getUsers: state => state.users
 ,
 };
 
