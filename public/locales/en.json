@@ -124,7 +124,7 @@
     },
     "Modules": {
         "PlexTV": {
-            "Name": "PlexTV",
+            "Name": "plex.tv",
             "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with",
             "SelUsr": "Select User",
             "TT-User": "Here you select the user to get more info about"

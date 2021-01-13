@@ -21,19 +21,23 @@
             :options="selUserOptions"
             name="selLibrary">        
           </b-form-select>
-        </b-form-group>      
-      </div> 
+        </b-form-group>              
+      </div>
+      <div id=UsrDetails>
+        id: {{ this.usrID }}<br>
+        email: {{ this.usrEmail }}<br>
+        username: {{ this.usrName }}<br>
+        restricted: {{ this.usrRestricted }}<br>
+        thumb link: {{ this.usrThumb }}<br>
+        home: {{ this.usrHome }}<br>
+        status: {{ this.usrStatus }}<br>
+        <!-- <a href="mailto:someone@example.com">Send email</a> -->
+      </div>
     </div>                        
 </template>
 
 <script>  
- // import i18n from '../../../i18n';
-  import store from '../../../store';
-  //import { wtconfig } from '../General/wtutils';
-
- // i18n
-
-  
+   import store from '../../../store'; 
   
   const log = require("electron-log");
   export default {
@@ -41,7 +45,15 @@
         return {
           selUserWait: false,          
           selUser: "",
-          selUserOptions: []                              
+          selUserOptions: [],
+          selUserDetails: {},
+          usrID: "",
+          usrEmail: "",
+          usrName: "",
+          usrRestricted: "",
+          usrThumb: "",
+          usrHome: "",
+          usrStatus: ""
         };
   },  
   async created() {
@@ -56,7 +68,17 @@
       // Changed, so we need to update the libraries
       var userLst = this.$store.getters.getUsers;
       log.verbose(`Watch detected a user was selected as ${JSON.stringify(userLst[this.selUser])}`);           
+      this.selUserDetails = userLst[this.selUser];
+      this.usrEmail = userLst[this.selUser]['email'];
 
+      //this.usrEmail = '<a href="mailto:' + userLst[this.selUser]['email'] + '>' + userLst[this.selUser]['email'] + '</a>'
+
+      this.usrID = userLst[this.selUser]['id'];
+      this.usrName = userLst[this.selUser]['username'];
+      this.usrRestricted = userLst[this.selUser]['restricted'];
+      this.usrThumb = userLst[this.selUser]['thumb'];
+      this.usrHome = userLst[this.selUser]['home'];
+      this.usrStatus = userLst[this.selUser]['status'];
 
     }
   },
