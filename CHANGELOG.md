@@ -7,6 +7,7 @@
 * [#207 Autoudate trigger happy](https://github.com/WebTools-NG/WebTools-NG/issues/207)
 * [#205 Use lang header for all calls towards PMS and plex.tv](https://github.com/WebTools-NG/WebTools-NG/issues/205)
 * [#171 Translator list incomplete](https://github.com/WebTools-NG/WebTools-NG/issues/171)
+* [#188 comma separator between the names](https://github.com/WebTools-NG/WebTools-NG/issues/188)
 
 ## V0.1.9
 
