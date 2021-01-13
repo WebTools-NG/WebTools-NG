@@ -5,6 +5,7 @@
 **Note**:   This version is an Alpha version, that is not made public
 
 * [#207 Autoudate trigger happy](https://github.com/WebTools-NG/WebTools-NG/issues/207)
+* [#205 Use lang header for all calls towards PMS and plex.tv](https://github.com/WebTools-NG/WebTools-NG/issues/205)
 
 ## V0.1.9
 
