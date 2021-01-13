@@ -123,6 +123,10 @@
         }
     },
     "Modules": {
+        "PlexTV": {
+            "Name": "PlexTV",
+            "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with"
+        },
         "PMS": {
             "Name": "Plex Media Server",
             "Description": "@:Modules.PMS.Name module allows you to manage your server",
