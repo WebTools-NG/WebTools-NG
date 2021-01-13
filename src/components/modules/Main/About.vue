@@ -28,12 +28,12 @@
 export default {
   name: 'about',
   methods: {
-  }, created() {
-  this.$store.dispatch('fetchPOEContrib');
-  
-  }, computed: {
+  }, 
+  async created() {
+    await this.$store.dispatch('fetchPOEContrib');
+  },
+  computed: {
     poTranslators(){
-
       return this.$store.getters.getContrib
     }
   }
