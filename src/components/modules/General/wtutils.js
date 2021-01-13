@@ -33,7 +33,8 @@ const wtutils = new class WTUtils {
             "X-Plex-Client-Identifier": this.X_Plex_Client_Identifier,
             "X-Plex-Product": this.AppName,
             "X-Plex-Version": this.AppVersion,
-            "X-Plex-Device": this.Platform                  
+            "X-Plex-Device": this.Platform,
+            "Accept-Language": wtconfig.get('General.language')
         }   
         return headers        
     }

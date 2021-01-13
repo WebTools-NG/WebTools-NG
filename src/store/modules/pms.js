@@ -53,8 +53,6 @@ const actions = {
     async fetchPMSSettings({ commit }, payload) {
         let header = wtutils.PMSHeader;
         header['X-Plex-Token'] = payload.Token;
-        header['Accept-Language'] = wtconfig.get('General.language');   
-
         const url = payload.Address + '/:/prefs';
         await axios({
                 method: 'get',
