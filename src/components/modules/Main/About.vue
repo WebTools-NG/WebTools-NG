@@ -15,7 +15,7 @@
     </h3>
     <div>
       <ul class="list-inline">
-          <li class="list-inline-item" v-for="po in poTranslators" :key="po.name">{{ po.name }}</li>
+          <li class="list-inline-item" v-for="(po, index) in poTranslators" :key="po.name">{{ po.name }}<span v-if="index != (poTranslators.length - 1)">,</span></li>
       </ul>
     </div>
     <br>
