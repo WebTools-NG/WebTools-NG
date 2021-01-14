@@ -23,16 +23,29 @@
           </b-form-select>
         </b-form-group>              
       </div>
-      <div id=UsrDetails>
-        id: {{ this.usrID }}<br>
-        email: {{ this.usrEmail }}<br>
-        username: {{ this.usrName }}<br>
-        restricted: {{ this.usrRestricted }}<br>
-        thumb link: {{ this.usrThumb }}<br>
-        home: {{ this.usrHome }}<br>
-        status: {{ this.usrStatus }}<br>
-        <!-- <a href="mailto:someone@example.com">Send email</a> -->
-      </div>
+      <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
+            <b-form-input id="usrID" name="usrID" type="text" class="form-control" v-model="usrID" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrName')" class="mt-3">
+            <b-form-input id="usrName" name="usrName" type="text" class="form-control" v-model="usrName" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserEmailGrp" :prepend="$t('Modules.PlexTV.UsrEMail')" class="mt-3">
+            <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserRestrictedGrp" :prepend="$t('Modules.PlexTV.UsrRestricted')" class="mt-3">
+            <b-form-input id="usrRestricted" name="usrRestricted" type="text" class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserThumbGrp" :prepend="$t('Modules.PlexTV.UsrThumb')" class="mt-3">
+            <b-form-input id="usrThumb" name="usrThumb" type="text" class="form-control" v-model="usrThumb" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserHomeGrp" :prepend="$t('Modules.PlexTV.UsrHome')" class="mt-3">
+            <b-form-input id="usrHome" name="usrHome" type="text" class="form-control" v-model="usrHome" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserStatusGrp" :prepend="$t('Modules.PlexTV.UsrStatus')" class="mt-3">
+            <b-form-input id="usrStatus" name="usrStatus" type="text" class="form-control" v-model="usrStatus" :disabled=true></b-form-input>
+      </b-input-group>
+
+      
     </div>                        
 </template>
 
