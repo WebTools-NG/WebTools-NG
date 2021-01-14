@@ -1,0 +1,129 @@
+<template>    
+    <div class="col-lg-10 col-md-12 col-xs-12">
+      <h3>{{ $t("Modules.PlexTV.Name") }} <br>      
+      </h3>    
+      {{ $t("Modules.PlexTV.Description") }}
+
+      <br>
+      <br>
+      <!-- Select User -->
+      <div class="d-flex align-items-center">
+        <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">        
+          <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
+            <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+          </div>
+          <b-tooltip target="plexTVUsers" triggers="hover">
+            {{ $t('Modules.PlexTV.TT-User') }}
+          </b-tooltip>
+          <b-form-select 
+            v-model="selUser"          
+            id="selUser"
+            :options="selUserOptions"
+            name="selLibrary">        
+          </b-form-select>
+        </b-form-group>              
+      </div>
+      <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
+            <b-form-input id="usrID" name="usrID" type="text" class="form-control" v-model="usrID" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrName')" class="mt-3">
+            <b-form-input id="usrName" name="usrName" type="text" class="form-control" v-model="usrName" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserEmailGrp" :prepend="$t('Modules.PlexTV.UsrEMail')" class="mt-3">
+            <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserRestrictedGrp" :prepend="$t('Modules.PlexTV.UsrRestricted')" class="mt-3">
+            <b-form-input id="usrRestricted" name="usrRestricted" type="text" class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserThumbGrp" :prepend="$t('Modules.PlexTV.UsrThumb')" class="mt-3">
+            <b-form-input id="usrThumb" name="usrThumb" type="text" class="form-control" v-model="usrThumb" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserHomeGrp" :prepend="$t('Modules.PlexTV.UsrHome')" class="mt-3">
+            <b-form-input id="usrHome" name="usrHome" type="text" class="form-control" v-model="usrHome" :disabled=true></b-form-input>
+      </b-input-group>
+      <b-input-group id="UserStatusGrp" :prepend="$t('Modules.PlexTV.UsrStatus')" class="mt-3">
+            <b-form-input id="usrStatus" name="usrStatus" type="text" class="form-control" v-model="usrStatus" :disabled=true></b-form-input>
+      </b-input-group>
+
+      
+    </div>                        
+</template>
+
+<script>  
+   import store from '../../../store'; 
+  
+  const log = require("electron-log");
+  export default {
+      data() {
+        return {
+          selUserWait: false,          
+          selUser: "",
+          selUserOptions: [],
+          selUserDetails: {},
+          usrID: "",
+          usrEmail: "",
+          usrName: "",
+          usrRestricted: "",
+          usrThumb: "",
+          usrHome: "",
+          usrStatus: ""
+        };
+  },  
+  async created() {
+    log.info("PlexTV Created");
+    // Get users from plex.tv    
+    await store.dispatch('fetchUsers');
+    this.getUsers();    
+  },
+  watch: {
+    // Watch for when selecting a user
+    selUser: async function(){
+      // Changed, so we need to update the libraries
+      var userLst = this.$store.getters.getUsers;
+      log.verbose(`Watch detected a user was selected as ${JSON.stringify(userLst[this.selUser])}`);           
+      this.selUserDetails = userLst[this.selUser];
+      this.usrEmail = userLst[this.selUser]['email'];
+
+      //this.usrEmail = '<a href="mailto:' + userLst[this.selUser]['email'] + '>' + userLst[this.selUser]['email'] + '</a>'
+
+      this.usrID = userLst[this.selUser]['id'];
+      this.usrName = userLst[this.selUser]['username'];
+      this.usrRestricted = userLst[this.selUser]['restricted'];
+      this.usrThumb = userLst[this.selUser]['thumb'];
+      this.usrHome = userLst[this.selUser]['home'];
+      this.usrStatus = userLst[this.selUser]['status'];
+
+    }
+  },
+  methods: {
+    getUsers: async function(){
+      this.selUserWait = false;
+      var userLst = this.$store.getters.getUsers;      
+      // Output store
+      const result = [];
+      // Temp Store, in order to sort the list, case insensitive
+      const unSortedUsr = [];
+      for(var itemNo in userLst){
+        unSortedUsr.push(userLst[itemNo]['title'].toLowerCase() + '-:-' +userLst[itemNo]['title'] + '-:-' + itemNo)
+      }
+      // Add user,id to Output store
+      for(var key in unSortedUsr.sort()){
+        let item = [];
+        item['text']=unSortedUsr[key].split("-:-")[1];
+        item['value']=unSortedUsr[key].split("-:-")[2];
+        result.push(Object.assign({}, item));
+      }
+      this.selUserOptions = result;
+      this.selUserWait = true;      
+    }
+  }
+
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+#sync-button {
+  margin-left: 1em;
+}
+</style>

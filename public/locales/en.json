@@ -123,6 +123,19 @@
         }
     },
     "Modules": {
+        "PlexTV": {
+            "Name": "plex.tv",
+            "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with",
+            "SelUsr": "Select User",
+            "TT-User": "Here you select the user to get more info about",
+            "UsrID": "User ID",
+            "UsrEMail": "User email address",
+            "UsrName": "User name",
+            "UsrRestricted": "User Restricted",
+            "UsrThumb": "Link to User thumb",
+            "UsrHome": "Is user part of your Home",
+            "UsrStatus": "User invite status"
+        },
         "PMS": {
             "Name": "Plex Media Server",
             "Description": "@:Modules.PMS.Name module allows you to manage your server",

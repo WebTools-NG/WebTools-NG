@@ -11,7 +11,8 @@
     console.log = log.log;
     import '@fortawesome/fontawesome-free/css/all.css';
     import etIcon from '@/assets/ET-256.png'; 
-    import pmsIcon from '@/assets/plex-pms-icon.png';   
+    import pmsIcon from '@/assets/plex-pms-icon.png';  
+    import plextvIcon from '@/assets/plex-app-icon.png';   
 
     export default {
         data() {
@@ -31,6 +32,16 @@
                         header: true,
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
+                    },
+                    {
+                        href: { path: '/plextv' },
+                        title: this.$t("Modules.PlexTV.Name"),
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: plextvIcon },
+                            }                                               
                     },
                     {
                         href: { path: '/pms' },

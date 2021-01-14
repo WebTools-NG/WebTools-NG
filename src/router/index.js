@@ -5,6 +5,7 @@ import Home from '../components/modules/Main/Home.vue';
 import Export from '../components/modules/ExportTools/Export';
 import ExportSettings from '../components/modules/ExportTools/Settings/settings';
 import ExportCustom from '../components/modules/ExportTools/Custom/custom';
+import PlexTV from '../components/modules/PlexTV/PlexTV';
 import PMS from '../components/modules/PMS/PMS';
 import PMSSettings from '../components/modules/PMS/Settings/settings';
 import Language from '../components/modules/Main/Language.vue';
@@ -65,6 +66,12 @@ Vue.use(VueRouter)
     path: '/pms/settings',
     name: "pmssettings",
     component: PMSSettings,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/plextv',
+    name: "plextv",
+    component: PlexTV,
     meta: {requiresAuth: true}
   },
   {
