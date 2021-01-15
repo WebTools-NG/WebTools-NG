@@ -153,26 +153,25 @@
             },
             tblRowClicked(record) {
                 // Edit Setting
-                log.debug(`Edit Setting: ${record.name}`);
+                log.debug(`Edit Setting: ${record.name} with a def. setting of ${record.default} and current setting as ${record.value}`);
+                this.defSetting = record.default;
+                this.curSetting = record.value;
                 if (!record.default)
                 {
-                    this.defSetting = 'false';
-                }
-                else if (record.value)
-                {
-                    this.curSetting = 'true';
-                }
+                    this.defSetting = '';
+                }                
                 else{
                     this.defSetting = record.default;
                 }
                 if (!record.value)
                 {
-                    this.curSetting = 'false';
-                }
-                else if (record.value)
-                {
-                    this.curSetting = 'true';
-                }
+                    if (record.type == 'bool'){
+                        this.curSetting = 'false'
+                    }
+                    else {
+                        this.curSetting = '';
+                    }
+                }                
                 else{
                     this.curSetting = record.value;
                 }                               
