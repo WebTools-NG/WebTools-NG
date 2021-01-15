@@ -4,7 +4,7 @@
 
 **Note**:   This version is an Alpha version, that is not made public
 
-Put in something here
+* [#214 Adv. Settings doesn't report correct settings](https://github.com/WebTools-NG/WebTools-NG/issues/214)
 
 ## V0.1.10
 
