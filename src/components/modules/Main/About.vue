@@ -12,30 +12,33 @@
     <h3>
       {{ $t("Modules.About.TranslationBetaTestersTitle") }} <br>
       <small>{{ $t("Modules.About.TranslationBetaTestersText") }}</small>
-    </h3>
+    </h3>      
     <div>
       <ul class="list-inline">
-          <li class="list-inline-item" v-for="(po, index) in poTranslators" :key="po.name">{{ po.name }}<span v-if="index != (poTranslators.length - 1)">,</span></li>
+          <li class="list-inline-item" v-for="(po, index) in poeTranslators" :key="po.name">{{ po.name }}<span v-if="index != (poeTranslators.length - 1)">,</span></li>
       </ul>
     </div>
-    <br>
+    <br> 
     <h6>{{ $t("Modules.About.PlexPoCredits") }}</h6>
     </div>
   </b-container>
 </template>
 
 <script>
-export default {
-  name: 'about',
-  methods: {
-  }, 
+const log = require('electron-log');
+console.log = log.log;
+export default {  
+  data() {
+    return {
+      poeTranslators: []                
+    }
+  },
   async created() {
     await this.$store.dispatch('fetchPOEContrib');
+    this.poeTranslators = await this.$store.getters.getContrib;    
   },
-  computed: {
-    poTranslators(){
-      return this.$store.getters.getContrib
-    }
+  mounted() {
+    log.info("About Created");
   }
 }
 

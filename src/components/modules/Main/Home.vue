@@ -12,11 +12,20 @@
               <dd>* {{ $t("Modules.ET.Description") }} </dd>
             <dt>{{ $t("Modules.PMS.Name") }}</dt>
               <dd>* {{ $t("Modules.PMS.Description") }} </dd>
+            <dt>{{ $t("Modules.PlexTV.Name") }}</dt>
+              <dd>* {{ $t("Modules.PlexTV.Description") }} </dd>
           </dl>              
         </div>        
         <b-modal ref="showUpdate" hide-footer v-bind:title=this.updateTitle >
           <div class="d-block text-center">
-            {{ this.body }}
+            {{ this.body }}              
+            <b-form-checkbox
+                id="SkipVerCB"
+                v-model="cbSelected"
+                name="SkipVerCB"                                                
+              >
+                {{ $t("Common.Update.Skip") }}                
+            </b-form-checkbox>
           </div>
           <b-button class="mt-3" variant="outline-primary" block @click="visitRels">{{ this.body2 }}</b-button>
         </b-modal>
@@ -34,11 +43,26 @@ import { shell } from 'electron';
 export default {
   data() {
     return {
-      updateTitle: this.$t('Common.Update.Title'),
-      //name: '',
+      updateTitle: this.$t('Common.Update.Title'),      
       body: '',
       body2: this.$t('Common.Update.Body2'),
-      url: ''
+      url: '',      
+      cbOptions: [{ text: i18n.t('Common.Update.Skip'), value: 'SkipUpdate' }],
+      cbSelected: '',
+      GitHubVersion: ''      
+    }
+  },
+  watch: {
+    // Watch for when selected server address is updated
+    cbSelected: async function(){      
+      if (Boolean(this.cbSelected) === true){        
+        log.verbose(`Update will skip version: ${this.GitHubVersion}`)
+        wtconfig.set("Update.SkipVer", this.GitHubVersion)
+      }
+      else{
+        log.verbose(`No Update will be skiped`)
+        wtconfig.set("Update.SkipVer", '')
+      }
     }
   },
   mounted() {
@@ -46,49 +70,67 @@ export default {
     this.checkLangUpdates();
     this.UpdatePresent();    
   },
-  methods: {
+  methods: {    
     // Visit GitHub release page
     visitRels(){
       log.info(`User pressed update link, and was directed to: ${this.url}`);
       shell.openExternal(this.url);      
     },
     // Is an update present?
-    async UpdatePresent(){      
-      // Get release page from GitHub      
-      const releases = await github.Releases();
-      log.verbose('Github releases', JSON.stringify(releases))      
-      if (wtconfig.get('Update.Beta'))
-      {
-        // Need to check both beta and rel versions        
-        // Find newest one
-        if (Date.parse(releases['betadateFull']) > Date.parse(releases['reldateFull'])){          
-          this.body = this.$t('Common.Update.Body', [releases['betaname'], releases['betadate']]),                                                           
-          this.name = releases['betaname'];                    
-          this.url = releases['betaurl'];
-          this.ver = releases['betaver'];
+    async UpdatePresent(){
+      if (wtconfig.get('Update.Update', true)){
+        log.verbose(`Check for updates enabled`)        
+        // Get release page from GitHub      
+        const releases = await github.Releases();
+        log.verbose('Github releases', JSON.stringify(releases));        
+        if (wtconfig.get('Update.Beta', true))
+        {
+          // Need to check both beta and rel versions        
+          // Find newest one
+          if (Date.parse(releases['betadateFull']) > Date.parse(releases['reldateFull'])){          
+            this.body = this.$t('Common.Update.Body', [releases['betaname'], releases['betadate']]),                                                           
+            this.name = releases['betaname'];                    
+            this.url = releases['betaurl'];
+            this.ver = releases['betaver'];
+            this.beta = true;
+          }
+          else
+          {          
+            this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
+            this.name = releases['relname'];                    
+            this.url = releases['relurl'];
+            this.ver = releases['relver'];
+            this.beta = false;          
+          }
         }
         else
-        {          
+        {        
           this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
           this.name = releases['relname'];                    
           this.url = releases['relurl'];
           this.ver = releases['relver'];
+          this.beta = false;
+        }
+        if (wtutils.AppVersion != this.ver && this.ver)
+        {        
+          // Show an update is present
+          if (this.ver == wtconfig.get('Update.SkipVer', ''))
+          {
+            log.debug(`Update Deselected by user: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
+          }
+          else
+          {
+            log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
+            console.log('Ged beta or not', this.beta)
+            this.GitHubVersion = this.ver;                    
+            this.$refs['showUpdate'].show();
+          }          
         }
       }
-      else
-      {        
-        this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
-        this.name = releases['relname'];                    
-        this.url = releases['relurl'];
-        this.ver = releases['relver'];
-      }
+      else{
+        log.verbose(`Check for updates disabled`)
+      }       
 
-      if (wtutils.AppVersion != this.ver && this.ver)
-      {        
-        // Show an update is present
-        log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`)
-        this.$refs['showUpdate'].show();
-      }
     },
     async checkLangUpdates() {
       // Start by getting the currently selected language

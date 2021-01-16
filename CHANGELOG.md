@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.1.12
+
+**Note**:   This version is an Alpha version, that is not made public
+
+* [#213 AutoUpdate Notification Ignore](https://github.com/WebTools-NG/WebTools-NG/issues/213)
+
 ## V0.1.11
 
 **Note**:   This version is an Alpha version, that is not made public
