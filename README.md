@@ -12,5 +12,4 @@ NOTE: This is **NOT** ready for production yet....In fact not even in beta ;)
 
 Please see the wiki for futher information
 
-https://github.com/WebTools-NG/WebTools-NG/wiki
-
+[https://github.com/WebTools-NG/WebTools-NG/wiki](https://github.com/WebTools-NG/WebTools-NG/wiki)
