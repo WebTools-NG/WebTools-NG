@@ -119,7 +119,8 @@
         "Update" : {
             "Title": "Update detected",
             "Body": "{0} was released on Github on: {1}.",
-            "Body2": "Click here for more info"
+            "Body2": "Click here for more info",
+            "Skip": "Don't show notification for this version anymore"
         }
     },
     "Modules": {
@@ -257,9 +258,10 @@
             "RestartNeeded": "When changing this setting, a restart is needed",
             "FactoryReset": "Factory Reset",
             "FactoryResetWarning": "Factory Reset will reset this app towards how it was when first installed",
-            "BetaTester": "Subscribe to Beta updates"
-
-
+            "BetaTester": "Subscribe to Beta updates",
+            "Update": "Subscribe to updates (If false, beta updates will also be disabled)",
+            "True": "True",
+            "False": "False"
         }
     }
 }

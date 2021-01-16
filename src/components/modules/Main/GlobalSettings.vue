@@ -29,12 +29,16 @@
             <b-form-select id="LogLevelSize" name="LogLevelSize" type="text" class="form-control" v-model="LogLevelSize" :disabled=false :maxlength=4 v-on:change="setLogLevelSize" :options="LogLevelSizes"></b-form-select>
         </b-input-group>   
 
-        <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">
-            <b-tooltip target="BetaTesterGrp" triggers="hover">
-              {{ $t('Modules.GlobalSettings.RestartNeeded') }}
-            </b-tooltip>
-            <b-form-select id="LogLevel" name="LogLevel" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
+        <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">            
+            <b-form-select id="BetaTester" name="BetaTester" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
         </b-input-group>
+
+        <b-input-group id="Update" :prepend="$t('Modules.GlobalSettings.Update')" class="mt-3">            
+            <b-form-select id="Update" name="Update" type="text" class="form-control" v-model="Update" :disabled=false :maxlength=2 v-on:change="setUpdate" :options="UpdateLevels">
+                {{ this.getUpdate() }}
+            </b-form-select>
+        </b-input-group>
+
     </div>
   </b-container>
 </template>
@@ -54,7 +58,8 @@
                 LogLevel: wtconfig.get('Log.fileLevel'),
                 LogLevelConsole: wtconfig.get('Log.consoleLevel'),
                 LogLevelSize: this.getLogFileSize(),
-                BetaTester: wtconfig.get('Update.Beta', false)
+                BetaTester: this.getBeta(),
+                Update: this.getUpdate()
             }
         },
         methods: {
@@ -63,6 +68,28 @@
                 log.warn('Doing a factory reset');                
                 require('electron').remote.app.relaunch();
                 require('electron').remote.app.quit();
+            },
+            getUpdate: function(){
+                console.log('Ged GetUpdate')
+                if (wtconfig.get('Update.Update', true)){
+                    console.log('Ged Update True')
+                    return i18n.t('Modules.GlobalSettings.True')
+                }
+                else{
+                    console.log('Ged Update False')
+                    return i18n.t('Modules.GlobalSettings.False')
+                }
+            },
+            getBeta: function(){
+                console.log('Ged GetBeta')
+                if (wtconfig.get('Update.Beta', true)){
+                    console.log('Ged Beta True')
+                    return i18n.t('Modules.GlobalSettings.True')
+                }
+                else{
+                    console.log('Ged Beta False')
+                    return i18n.t('Modules.GlobalSettings.False')
+                }
             },
             setTimeOut: function(){
                 wtconfig.set('PMS.TimeOut', this.TimeOut)
@@ -73,7 +100,11 @@
             },
             setBeta: function(value){                
                 log.info(`Beta level set to ${value}`);                
-                wtconfig.set('Update.Beta', value == 'true');
+                wtconfig.set('Update.Beta', value == i18n.t('Modules.GlobalSettings.True'));
+            },
+            setUpdate: function(value){                
+                log.info(`Update set to ${value}`);                
+                wtconfig.set('Update.Update', value == i18n.t('Modules.GlobalSettings.True'));
             },
             setLogLevelConsole: function(value){                
                 log.info(`Log Console level set to ${value}`);
@@ -135,7 +166,6 @@
                 wtconfig.set('Log.maxSize', size);
 
             }
-
         },
         computed: {
             logLevels: function() {
@@ -147,7 +177,11 @@
                 return options;
             },
             BetaLevels: function() {
-                const options = ['true', 'false'];
+                const options = [i18n.t('Modules.GlobalSettings.True'), i18n.t('Modules.GlobalSettings.False')];
+                return options;
+            },
+            UpdateLevels: function() {
+                const options = [i18n.t('Modules.GlobalSettings.True'), i18n.t('Modules.GlobalSettings.False')];
                 return options;
             },            
         }        
