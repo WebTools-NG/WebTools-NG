@@ -29,11 +29,17 @@
             <b-form-select id="LogLevelSize" name="LogLevelSize" type="text" class="form-control" v-model="LogLevelSize" :disabled=false :maxlength=4 v-on:change="setLogLevelSize" :options="LogLevelSizes"></b-form-select>
         </b-input-group>   
 
-        <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">            
+        <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">
+            <b-tooltip target="BetaTesterGrp" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTBetaTester') }}
+            </b-tooltip>
             <b-form-select id="BetaTester" name="BetaTester" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
         </b-input-group>
 
-        <b-input-group id="Update" :prepend="$t('Modules.GlobalSettings.Update')" class="mt-3">            
+        <b-input-group id="Update" :prepend="$t('Modules.GlobalSettings.Update')" class="mt-3">
+            <b-tooltip target="Update" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTUpdate') }}
+            </b-tooltip>
             <b-form-select id="Update" name="Update" type="text" class="form-control" v-model="Update" :disabled=false :maxlength=2 v-on:change="setUpdate" :options="UpdateLevels">
                 {{ this.getUpdate() }}
             </b-form-select>
@@ -82,7 +88,7 @@
             },
             getBeta: function(){
                 console.log('Ged GetBeta')
-                if (wtconfig.get('Update.Beta', true)){
+                if (wtconfig.get('Update.Beta', false)){
                     console.log('Ged Beta True')
                     return i18n.t('Modules.GlobalSettings.True')
                 }

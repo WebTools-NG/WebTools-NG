@@ -259,7 +259,9 @@
             "FactoryReset": "Factory Reset",
             "FactoryResetWarning": "Factory Reset will reset this app towards how it was when first installed",
             "BetaTester": "Subscribe to Beta updates",
+            "TTBetaTester": "When selected, you'll be notified when a new beta version is available",
             "Update": "Subscribe to updates (If false, beta updates will also be disabled)",
+            "TTUpdate": "When selected, you'll be notified when a new update is available",
             "True": "True",
             "False": "False"
         }
