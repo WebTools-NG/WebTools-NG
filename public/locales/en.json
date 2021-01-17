@@ -185,7 +185,9 @@
                 "Delete": "Delete",
                 "Cancel": "Cancel",
                 "availFields": "Availible fields:",
-                "customFields": "Custom fields:"
+                "customFields": "Custom fields:",
+                "AlertSaved": "Custom level saved"
+
             },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
