@@ -220,8 +220,7 @@
                 options.push(option);        
             });      
             item['options']=options;      
-            this.optionsLevels = options;                                  
-            this.fieldList = et.getAllFields( {libType: this.selMediaType});                        
+            this.optionsLevels = options;            
         },        
         addNewLevel(){            
             // Hide Modal box
@@ -296,7 +295,9 @@
             // Triggers when lib type is changed                        
             this.genExportLevels();
             this.btnDeleteEnabled = false; 
-            this.resultList = [];           
+            this.resultList = [];
+            this.selCustLevel = ""; 
+            this.fieldList = [];          
         },
         deleteCustomLevel() {
             log.info(`User confirmed to delete custom level: ${this.selCustLevel}`);
@@ -341,7 +342,8 @@
             }              
             this.resultList = [];
             await this.genExportLevels();
-            this.getCustomLevel();            
+            this.getCustomLevel(); 
+            this.fieldList = et.getAllFields( {libType: this.selMediaType});           
         }
       }
     };  
