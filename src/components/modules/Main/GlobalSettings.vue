@@ -75,25 +75,19 @@
                 require('electron').remote.app.relaunch();
                 require('electron').remote.app.quit();
             },
-            getUpdate: function(){
-                console.log('Ged GetUpdate')
-                if (wtconfig.get('Update.Update', true)){
-                    console.log('Ged Update True')
+            getUpdate: function(){                
+                if (wtconfig.get('Update.Update', true)){                    
                     return i18n.t('Modules.GlobalSettings.True')
                 }
-                else{
-                    console.log('Ged Update False')
+                else{                    
                     return i18n.t('Modules.GlobalSettings.False')
                 }
             },
-            getBeta: function(){
-                console.log('Ged GetBeta')
-                if (wtconfig.get('Update.Beta', false)){
-                    console.log('Ged Beta True')
+            getBeta: function(){                
+                if (wtconfig.get('Update.Beta', false)){                    
                     return i18n.t('Modules.GlobalSettings.True')
                 }
-                else{
-                    console.log('Ged Beta False')
+                else{                    
                     return i18n.t('Modules.GlobalSettings.False')
                 }
             },

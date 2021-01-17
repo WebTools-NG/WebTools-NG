@@ -120,8 +120,7 @@ export default {
           }
           else
           {
-            log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
-            console.log('Ged beta or not', this.beta)
+            log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);            
             this.GitHubVersion = this.ver;                    
             this.$refs['showUpdate'].show();
           }          
