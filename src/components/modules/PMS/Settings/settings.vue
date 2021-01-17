@@ -5,16 +5,22 @@
         <p>{{ $t("Modules.PMS.Settings.Description") }}</p> 
         <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>           
     </div>
-    <div>
-        <b-form-group id="b-form-group">
-            <b-form-checkbox-group
-                stacked
-                :options="cbOptions"
-                v-model="cbSelected"
-                @change.native="changedOptions">      
-            </b-form-checkbox-group>
-        </b-form-group>
+    
+    <div> <!-- Settings to show -->      
+      <b-form-group id="FilterSettingsGroup" v-bind:label="$t('Modules.PMS.Settings.SettingsFilter')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-tooltip target="FilterSettingsGroup" triggers="hover">
+          {{ $t('Modules.PMS.Settings.TTSettingsFilter') }}
+        </b-tooltip>
+        <b-form-radio-group
+          id="FilterSettings"
+          v-model="selFilterSetting"
+          @change.native="changeFilterSetting()"
+          :options="FilterSettingsOptions"
+          name="FilterSettings"
+        ></b-form-radio-group>
+      </b-form-group>      
     </div>
+
     <div class="d-flex align-items-center">
       <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="etLibraryGroup" triggers="hover">
@@ -29,7 +35,7 @@
         </b-form-select>
       </b-form-group>      
     </div>
-    <div>
+    <div> <!-- Modal popup -->
         <b-modal ref="edtSetting" hide-footer v-bind:title=this.newSettingTitle >
             <div class="d-block text-center">
                 <b-alert variant="danger" show>{{ $t('Modules.PMS.Settings.varning') }}</b-alert>
@@ -96,9 +102,7 @@
     const {JSONPath} = require('jsonpath-plus');
     import {wtconfig} from '../../General/wtutils';
     import i18n from '../../../../i18n';
-    import store from '../../../../store';
-
-    
+    import store from '../../../../store';    
     export default {        
         data() {            
             return {
@@ -110,11 +114,12 @@
                 newSettingValue: "",
                 edtSettingKey: "",
                 selSectionOptions: [],
-                selSection : "",
-                cbSelected: [],                
-                cbOptions: [
+                selSection : "",                
+                selFilterSetting: "",                              
+                FilterSettingsOptions: [
                     { text: i18n.t('Modules.PMS.Settings.OnlyHidden'), value: 'OnlyHidden' },
-                    { text: i18n.t('Modules.PMS.Settings.OnlyAdvanced'), value: 'OnlyAdvanced' }                                                         
+                    { text: i18n.t('Modules.PMS.Settings.OnlyAdvanced'), value: 'OnlyAdvanced' },
+                    { text: i18n.t('Modules.PMS.Settings.AllSettings'), value: 'AllSettings' }                                                         
                 ],
                 settingsFields: [                    
                     {name: { label: this.$i18n.t('Modules.PMS.Settings.tblName') }},
@@ -130,6 +135,7 @@
         created() {
             log.info("PMS Settings Created");
             this.serverSelected();
+            this.getFilterSettings();
             this.getServerSettings(); 
             this.getcbDefaults();           
         },
@@ -235,25 +241,16 @@
                     Address: this.$store.getters.getSelectedServerAddress}); 
                 log.debug('Options are: ' + JSON.stringify(Object.keys(this.$store.getters.getPMSSettings)))                
                 this.selSectionOptions = Object.keys(this.$store.getters.getPMSSettings).sort();
-            },
-            async changedOptions() {
-                log.debug('Updating OnlyHidden Setting');
-                //this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["OnlyHidden", "OnlyAdvanced"]){                    
-                    wtconfig.set("PMS." + cbItem, (this.cbSelected.includes(cbItem))) 
-                }
+            },            
+            async changeFilterSetting() {
+                log.debug('Changed FilterSetting');
+                wtconfig.set('PMS.FilterSetting', this.selFilterSetting);                
                 await this.getServerSettings();
                 this.updateTbl(this.selSection);
             },
-            getcbDefaults() {
-                log.debug('Get OnlyHidden Setting');                
-                const cbItems = ["OnlyHidden", "OnlyAdvanced"];
-                for(let i = 0; i < cbItems.length; i++){                     
-                    if (wtconfig.get("PMS." + cbItems[i], false)){
-                        this.cbSelected.push(cbItems[i])
-                    }                    
-                } 
-                log.debug('CBOptions: ' + this.cbSelected)               
+            getFilterSettings() {
+                console.log('Ged get filter settings')
+                this.selFilterSetting = wtconfig.get('PMS.FilterSetting', 'AllSettings');
             }
         }        
     };    

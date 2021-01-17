@@ -62,21 +62,17 @@ const actions = {
             .then((response) => {             
               log.debug('Response from fetchPlexServers recieved')              
               var filteredResult = {}
-              // filteredResult based on hidden or not
-              if (wtconfig.get('PMS.OnlyHidden', true) == true){
-                  log.debug('Show only Hidden settings')                  
-                  filteredResult = JSONPath({path: '$..Setting[?(@.hidden==true)]', json: response.data});                  
-              }
-              else {
-                log.debug('Show non-hidden settings as well')
+              // Filtered result based on hidden, adv or all
+              var curFilter = wtconfig.get('PMS.FilterSetting', 'AllSettings');
+              log.verbose(`Filter set to ${curFilter}`);
+              if (curFilter == 'AllSettings'){
                 filteredResult = JSONPath({path: '$..Setting', json: response.data})[0];
-              }              
-              if (wtconfig.get('PMS.OnlyAdvanced', true) == true){
-                log.debug('Show only OnlyAdvanced settings')
-                filteredResult = JSONPath({path: '$.[?(@.advanced==true)]', json: filteredResult});                
               }
-              else {
-                log.debug('Show all settings');                
+              else if (curFilter == 'OnlyHidden'){
+                filteredResult = JSONPath({path: '$..Setting[?(@.hidden==true)]', json: response.data});
+              }
+              else {                
+                filteredResult = JSONPath({path: '$..Setting[?(@.advanced==true)]', json: response.data});
               }
               // Reset PMSSettings             
               var PMSSettings = {};
