@@ -27,7 +27,7 @@
                 </b-tooltip>            
                 <b-form-select
                     class="form-control"
-                    :v-model="selCustLevel"
+                    v-model="selCustLevel"
                     ref="selLevel"
                     id="selLevel"
                     v-on:change="selectExportLevel"                    
@@ -124,7 +124,6 @@
             btnDeleteEnabled: false,
             optionsLevels: null,
             resultList: []
-
         }
     },
     watch: {
@@ -158,23 +157,25 @@
     },     
     methods: {
         getCustomLevel() {
-            log.debug(`Customlevel ${this.selCustLevel} selected`);
-            // Get fields from config.json file
-            const custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
-            // Add to resultList
-            this.resultList = custLevel.map((name, index) => {
-                    return { name, order: index + 1, fixed: false };
-                });
-            log.debug(`Custom level ${this.selCustLevel} is set as: ${ JSON.stringify(this.resultList) }`);
-            // Now remove already added from avail fields
-            for (var idx in custLevel){                
-                for (var availidx in this.fieldList){
-                    if (custLevel[idx] == this.fieldList[availidx].name)
-                    {                        
-                        this.fieldList.splice(availidx,1)                        
+            log.debug(`Customlevel ${this.selCustLevel} selected`);            
+            if (this.selCustLevel != 'NewLevel'){
+                // Get fields from config.json file
+                const custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
+                // Add to resultList
+                this.resultList = custLevel.map((name, index) => {
+                        return { name, order: index + 1, fixed: false };
+                    });
+                log.debug(`Custom level ${this.selCustLevel} is set as: ${ JSON.stringify(this.resultList) }`);
+                // Now remove already added from avail fields
+                for (var idx in custLevel){                
+                    for (var availidx in this.fieldList){
+                        if (custLevel[idx] == this.fieldList[availidx].name)
+                        {                        
+                            this.fieldList.splice(availidx,1)                        
+                        }
                     }
                 }
-            }
+            }            
         },
         deleteClose() {
             this.$refs['confirmDeleteLevel'].hide();
@@ -246,8 +247,7 @@
             // Update combobox
             this.genExportLevels();
             //this.exportLevels;            
-            this.selCustLevel = this.NewLevelName;
-            console.log ('Ged ********** above doesnt work ***********')
+            this.selCustLevel = this.NewLevelName;            
         },
         updateLevelCount() {            
             var def;
@@ -319,25 +319,29 @@
             log.info(`Saving custom level ${this.selCustLevel} as ${JSON.stringify(result)}`)                     
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel); 
             // Now we need to update levelcount for the level
-            this.updateLevelCount();            
+            this.updateLevelCount();
+            alert( i18n.t("Modules.ET.Custom.AlertSaved"));
+            this.getCustomLevel();
+
         },
         confirmDeleteLevel() {
             log.info(`User asked to delete a custom level`);
             this.$refs['confirmDeleteLevel'].show();
         },
-        selectExportLevel: function(value) {      
-            log.info(`Custom ExportLevel selected as: ${value}`)
+        selectExportLevel: async function(value) {      
+            log.info(`Custom ExportLevel selected as: ${value}`)             
             if ( value == 'NewLevel') {
-                // Create new level                
+                // Create new level 
+                this.NewLevelName = "";               
                 this.$refs['showNewLevel'].show();                
             }
             else {                
                 this.btnDeleteEnabled = true;
                 this.selCustLevel = value;
-            }
+            }              
             this.resultList = [];
-            this.genExportLevels();
-            this.getCustomLevel();
+            await this.genExportLevels();
+            this.getCustomLevel();            
         }
       }
     };  

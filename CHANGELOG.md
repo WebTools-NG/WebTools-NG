@@ -6,6 +6,7 @@
 
 * [#213 AutoUpdate Notification Ignore](https://github.com/WebTools-NG/WebTools-NG/issues/213)
 * [#216 PMS Module and check boxes](https://github.com/WebTools-NG/WebTools-NG/issues/216)
+* [#186 After creating a custom level, I need to select this custom level in the drop down](https://github.com/WebTools-NG/WebTools-NG/issues/186)
 
 ## V0.1.11
 
