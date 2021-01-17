@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.1.13
+
+**Note**:   This version is an Alpha version, that is not made public
+
+* [#222 Update Notifier still to trigger happy](https://github.com/WebTools-NG/WebTools-NG/issues/222)
+
 ## V0.1.12
 
 **Note**:   This version is an Alpha version, that is not made public

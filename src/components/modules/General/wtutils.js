@@ -445,6 +445,21 @@ const github = new class GitHub {
         // If not present, set to zerro
         if (!rels['betadateFull']){
             rels['betadateFull'] = 0;
+        }
+        var s1 = '';
+        if (rels['betaver']){
+            if (rels['betaver'].toUpperCase().startsWith('V'))
+            {
+                s1 = rels['betaver'];
+                rels['betaver'] = s1.substring(1);
+            }
+        }
+        if (rels['relver']){ 
+            if (rels['relver'].toUpperCase().startsWith('V'))
+            {
+                s1 = rels['relver'];
+                rels['relver'] = s1.substring(1);
+            }
         } 
         return rels;
     }
