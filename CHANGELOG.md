@@ -5,6 +5,7 @@
 **Note**:   This version is an Alpha version, that is not made public
 
 * [#213 AutoUpdate Notification Ignore](https://github.com/WebTools-NG/WebTools-NG/issues/213)
+* [#216 PMS Module and check boxes](https://github.com/WebTools-NG/WebTools-NG/issues/216)
 
 ## V0.1.11
 
