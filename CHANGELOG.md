@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.1.14
+
+**Note**:   This version is an Alpha version, that is not made public
+
+* [#229 Bump electron from 7.3.3 to 9.4.0](https://github.com/WebTools-NG/WebTools-NG/pull/229)
+
 ## V0.1.13
 
 **Note**:   This version is an Alpha version, that is not made public
