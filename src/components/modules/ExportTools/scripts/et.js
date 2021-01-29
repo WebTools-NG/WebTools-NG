@@ -481,11 +481,18 @@ const excel2 = new class Excel {
         return true;
     }
 
-    async getFileName({ Library, Level, Type }){
+    async getFileName({ Library, Level, Type }){                
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('ET.OutPath', wtutils.UserHomeDir)
-        const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");          
-        return OutDir + '/' + Library + '_' + Level + '_' + timeStamp + '.' + Type;        
+        const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss"); 
+        const path = require('path');
+        let outFile = store.getters.getSelectedServer.name + '_';
+        outFile += Library + '_';
+        outFile += Level + '_';
+        outFile += timeStamp + '.' + Type;
+        const outFileWithPath = path.join(
+            OutDir, outFile);        
+        return outFileWithPath;
     }
 
     async SaveWorkbook(Workbook, Library, Level, Type) {
