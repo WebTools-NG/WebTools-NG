@@ -5,6 +5,7 @@
 **Note**:   This version is an Alpha version, that is not made public
 
 * [#229 Bump electron from 7.3.3 to 9.4.0](https://github.com/WebTools-NG/WebTools-NG/pull/229)
+* [#227 ET Export filename](https://github.com/WebTools-NG/WebTools-NG/pull/227)
 
 ## V0.1.13
 
