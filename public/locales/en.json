@@ -233,7 +233,8 @@
                 "Processing-Chunk": "Processing chunk {current} of {total}",
                 "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nitems to export: {urlStr}",
                 "StartExport": "Starting to Export",
-                "GetSectionItems": "Fetching items {idx} in chunks of {chunck}"
+                "CreateExlsFile": "Creating Excel file",
+                "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}"
             },
             "ErrorNoOutDirTitle": "No output directory defined",
             "ErrorNoOutDirMsg": "You need to define an output directory in the settings page first",
