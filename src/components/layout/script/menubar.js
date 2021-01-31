@@ -17,18 +17,18 @@ const menuTemplate = [
         wtutils.isMac ?
           {             
               label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-              click: () => { shell.openItem(wtutils.LogMac) }  
+              click: () => { shell.openPath(wtutils.LogMac) }  
           } : 
           { 
             ...wtutils.isLinux ? 
             { 
               label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
-              click: () => { shell.openItem(wtutils.LogLinux) }           
+              click: () => { shell.openPath(wtutils.LogLinux) }           
             } : {
               ...wtutils.isWindows ? 
               { 
                 label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-                click: () => { shell.openItem(wtutils.LogWin) } 
+                click: () => { shell.openPath(wtutils.LogWin) } 
               } : {}
           },
         },
