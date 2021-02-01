@@ -123,10 +123,6 @@
     },
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;            
-    },
-    statusMsg: async function(){
-      console.log('Ged Watch for statusMsg: ' + this.statusMsg())
-      this.statusMsg();
     }
   },
   created() {

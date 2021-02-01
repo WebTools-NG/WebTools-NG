@@ -218,7 +218,8 @@
                 "SortTitleNull": "Default \"Sort Title\" to \"Title\", if empty",
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
-                "NotAvailIndicator": "What to use if a field can't be found"
+                "NotAvailIndicator": "What to use if a field can't be found",
+                "Delimiter": "Delimiter to use with a text based field"
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",
