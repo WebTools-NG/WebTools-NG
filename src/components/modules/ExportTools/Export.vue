@@ -73,7 +73,7 @@
         <b-form-textarea
           id="status"          
           v-bind:placeholder="$t('Modules.ET.Status.Status')"
-          v-model="count"
+          v-model="statusMsg"
           :disabled=true
           rows="1"
           max-rows="8"
@@ -124,6 +124,10 @@
     },
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;            
+    },
+    statusMsg: async function(){
+      console.log('Ged Watch for statusMsg: ' + this.statusMsg())
+      this.statusMsg();
     }
   },
   created() {
@@ -134,10 +138,13 @@
   },
   computed: {
     selectedServerAddress: function(){
-        return this.$store.getters.getSelectedServerAddress
+      return this.$store.getters.getSelectedServerAddress
     },  
     selectedServerAddressUpdateInProgress(){
-        return this.$store.getters.getSelectedServerAddressUpdateInProgress
+      return this.$store.getters.getSelectedServerAddressUpdateInProgress
+    },
+    statusMsg: function(){
+      return this.$store.getters.getExportStatus
     },  
     exportLevels: function() {         
       et.getLevelDisplayName('My Level', this.selMediaType);
@@ -189,9 +196,6 @@
       });      
       item['options']=options;      
       return options;              
-    },
-    count () {      
-      return store.getters.getExportStatus
     }
   },
   methods: {

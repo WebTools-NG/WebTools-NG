@@ -819,18 +819,23 @@ const excel2 = new class Excel {
         var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                                 
         log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)                          
         let item
+        let counter = 1
+        const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});        
         for (var x=0; x<sectionData.length; x++)                
-        {
+        {            
             store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}))                    
             var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});        
             if ( call == 1 )
             {                
-                for (item of sectionChunk){                                                      
+                for (item of sectionChunk){                    
+                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));                    
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                    counter += 1;
+                    await new Promise(resolve => setTimeout(resolve, 1));
                 }
             }             
             else
-            {                           
+            {                                                      
                 // Get ratingKeys in the chunk
                 const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
                 let urlStr = urls.join(','); 
@@ -840,8 +845,11 @@ const excel2 = new class Excel {
                 log.verbose(`Items retrieved`);
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
                 const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
-                for (item of contentsItems){                       
+                for (item of contentsItems){
+                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));                       
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                    counter += 1;
+                    await new Promise(resolve => setTimeout(resolve, 1));
                 }
             }                                            
         } 

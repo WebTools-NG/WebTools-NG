@@ -234,6 +234,7 @@
                 "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nitems to export: {urlStr}",
                 "StartExport": "Starting to Export",
                 "CreateExlsFile": "Creating Excel file",
+                "ProcessItem": "Processing item {count} of {total}",
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}"
             },
             "ErrorNoOutDirTitle": "No output directory defined",
