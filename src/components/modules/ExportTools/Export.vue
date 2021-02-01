@@ -88,8 +88,7 @@
 
 <script>
   import { et } from "./scripts/et";  
-  import i18n from '../../../i18n';
-  import store from '../../../store';
+  import i18n from '../../../i18n';  
   import { wtconfig } from '../General/wtutils';
   
   const log = require("electron-log");
