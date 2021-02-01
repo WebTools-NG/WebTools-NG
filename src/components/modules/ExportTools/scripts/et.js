@@ -52,12 +52,13 @@ const et = new class ET {
             {
                 postURI += '&type=4'
                 postURI +='&checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1'
-                log.verbose(`Calling url ${baseURL + element + postURI}`)                                
+                log.info(`Calling url ${baseURL + element + postURI}`)                                
             }            
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});                        
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
-            log.verbose(`getSectionData chunck size is ${size} and idx is ${idx}`)                      
-            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size}))
+            const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
+            log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)                      
+            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
             sectionData.push(chuncks)
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)             
             idx = idx + step;
@@ -173,7 +174,7 @@ const et = new class ET {
             // We are dealing with a custom level here
             realName = level
         }                              
-        log.debug(`RealName is ${realName}`)
+        // log.debug(`RealName is ${realName}`)
         // We need to load fields and defs into def var
         switch(libType) {
             case 'movie':
@@ -498,7 +499,7 @@ const excel2 = new class Excel {
     async SaveWorkbook(Workbook, Library, Level, Type) {
         const fs = require('fs')
         const name = await this.getFileName( { Library: Library, Level: Level, Type: Type })
-        log.debug('Saving output file as: ' + name)
+        log.info('Saving output file as: ' + name)
         // Save Excel on Hard Disk
         Workbook.xlsx.writeBuffer()
             .then(buffer => fs.writeFileSync(name, buffer))
@@ -610,7 +611,7 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp( { libType, level, data, stream }) {        
-        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                                  
+        // log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                                  
         let date, year, month, day, hours, minutes, seconds        
         const fields = et.getFields( libType, level)        
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
@@ -818,18 +819,23 @@ const excel2 = new class Excel {
         var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})                                 
         log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)                          
         let item
+        let counter = 1
+        const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});        
         for (var x=0; x<sectionData.length; x++)                
-        {
+        {            
             store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}))                    
             var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});        
             if ( call == 1 )
             {                
-                for (item of sectionChunk){                                                      
+                for (item of sectionChunk){                    
+                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));                    
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                    counter += 1;
+                    await new Promise(resolve => setTimeout(resolve, 1));
                 }
             }             
             else
-            {                           
+            {                                                      
                 // Get ratingKeys in the chunk
                 const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
                 let urlStr = urls.join(','); 
@@ -839,8 +845,11 @@ const excel2 = new class Excel {
                 log.verbose(`Items retrieved`);
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
                 const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
-                for (item of contentsItems){                       
+                for (item of contentsItems){
+                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));                       
                     await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                    counter += 1;
+                    await new Promise(resolve => setTimeout(resolve, 1));
                 }
             }                                            
         } 
@@ -852,6 +861,7 @@ const excel2 = new class Excel {
         // Need to export to xlsx as well?
         if (wtconfig.get('ET.ExpExcel')){            
             log.info('We need to create an xlsx file as well')
+            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.CreateExlsFile'))
             await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName})
         }
         store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`);

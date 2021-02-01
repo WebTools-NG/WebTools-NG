@@ -7,6 +7,7 @@
 * [#229 Bump electron from 7.3.3 to 9.4.0](https://github.com/WebTools-NG/WebTools-NG/pull/229)
 * [#227 ET Export filename](https://github.com/WebTools-NG/WebTools-NG/pull/227)
 * [#231 Open LogDir folder failes](https://github.com/WebTools-NG/WebTools-NG/pull/231)
+* [#226 Exporting episodes](https://github.com/WebTools-NG/WebTools-NG/pull/226)
 
 ## V0.1.13
 
