@@ -8,6 +8,8 @@
 * [#227 ET Export filename](https://github.com/WebTools-NG/WebTools-NG/pull/227)
 * [#231 Open LogDir folder failes](https://github.com/WebTools-NG/WebTools-NG/pull/231)
 * [#226 Exporting episodes](https://github.com/WebTools-NG/WebTools-NG/pull/226)
+* [#233 Electron errors after updating](https://github.com/WebTools-NG/WebTools-NG/pull/233)
+* [#234 Editing a custom level](https://github.com/WebTools-NG/WebTools-NG/pull/234)
 
 ## V0.1.13
 

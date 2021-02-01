@@ -23,7 +23,7 @@
         <div> <!-- Select Custom Level -->    
             <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0">  
                 <b-tooltip target="etLevelGroup" triggers="hover">
-                    {{ $t('Modules.ET.TT-ETLevel') }}
+                    {{ $t('Modules.ET.Custom.TT-ETEditLevel') }}
                 </b-tooltip>            
                 <b-form-select
                     class="form-control"
@@ -166,11 +166,11 @@
                         return { name, order: index + 1, fixed: false };
                     });
                 log.debug(`Custom level ${this.selCustLevel} is set as: ${ JSON.stringify(this.resultList) }`);
-                // Now remove already added from avail fields
-                for (var idx in custLevel){                
-                    for (var availidx in this.fieldList){
+                // Now remove already added from avail fields                
+                for (var idx in custLevel){                    
+                    for (var availidx in this.fieldList){                        
                         if (custLevel[idx] == this.fieldList[availidx].name)
-                        {                        
+                        {                                                   
                             this.fieldList.splice(availidx,1)                        
                         }
                     }
@@ -341,9 +341,9 @@
                 this.selCustLevel = value;
             }              
             this.resultList = [];
-            await this.genExportLevels();
-            this.getCustomLevel(); 
+            await this.genExportLevels();            
             this.fieldList = et.getAllFields( {libType: this.selMediaType});           
+            this.getCustomLevel(); 
         }
       }
     };  

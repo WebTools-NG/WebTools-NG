@@ -186,7 +186,8 @@
                 "Cancel": "Cancel",
                 "availFields": "Availible fields:",
                 "customFields": "Custom fields:",
-                "AlertSaved": "Custom level saved"
+                "AlertSaved": "Custom level saved",
+                "TT-ETEditLevel": "Here you select the level to create/delete/edit"
 
             },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
