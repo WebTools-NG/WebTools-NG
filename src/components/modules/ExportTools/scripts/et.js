@@ -616,20 +616,26 @@ const excel2 = new class Excel {
         const fields = et.getFields( libType, level)        
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
         let str = ''
-        let result = ''                              
+        let result = ''
+        let textSep = wtconfig.get('ET.TextSep', '"');
+        if ( textSep === ' ')
+        {
+            textSep = '';
+        }
         for (var x=0; x<fields.length; x++) {                                           
             var name = Object.keys(fields[x]);            
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];
+            lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 case "string":                                                                                            
                     val = String(JSONPath({path: String(lookup), json: data})[0]);                    
                     // Make N/A if not found
                     if (val == null)
                     {
-                        val = wtconfig.get('ET.NotAvail', 'N/A')
+                        val = wtconfig.get('ET.NotAvail', 'N/A');
                     }                    
                     // Remove CR, LineFeed ' and " from the string if present
                     val = val.replace(/(\r\n)|'|"/g, "");
+                    val = textSep + val + textSep;
                     break;
                 case "array":                                                            
                     array = JSONPath({path: lookup, json: data});
@@ -673,7 +679,11 @@ const excel2 = new class Excel {
                         }                                            
                         valArray.push(valArrayVal)
                     }                    
-                    val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))                                        
+                    val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    if ( String(subType) == 'string')
+                    {
+                        val = textSep + val + textSep;
+                    }                                        
                     break;
                 case "array-count":                                                                                                                        
                     val = JSONPath({path: String(lookup), json: data}).length;                                                          
