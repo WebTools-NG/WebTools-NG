@@ -58,11 +58,11 @@
     "@vue/cli-plugin-vuex": "^4.5.10",
     "@vue/cli-service": "~4.3.0",
     "babel-eslint": "^10.1.0",
-    "electron": "^9.4.0",
+    "electron": "^11.2.3",
     "electron-devtools-installer": "^3.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "run-script-os": "^1.1.4",
+    "run-script-os": "^1.1.5",
     "vue-cli-plugin-electron-builder": "^1.4.6",
     "vue-cli-plugin-i18n": "^1.0.1",
     "vue-template-compiler": "^2.6.12"
