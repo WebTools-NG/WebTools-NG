@@ -219,7 +219,7 @@
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
                 "NotAvailIndicator": "What to use if a field can't be found",
-                "Delimiter": "Delimiter to use with a text based field (Use space for none)"
+                "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)"                
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",

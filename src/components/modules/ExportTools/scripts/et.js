@@ -617,7 +617,7 @@ const excel2 = new class Excel {
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey 
         let str = ''
         let result = ''
-        let textSep = wtconfig.get('ET.TextSep', '"');
+        let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
         if ( textSep === ' ')
         {
             textSep = '';
@@ -778,11 +778,20 @@ const excel2 = new class Excel {
           });
           
         var lineno = 0;
+        
+        const TextQualifierCSV = wtconfig.get('ET.TextQualifierCSV', '"');
+        const bReplace = (TextQualifierCSV != '');
+        var newLine;
         lineReader.on('line', async function (line) {                                    
         // Skip first line
-        if (lineno != 0){
-            //var lineArr = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            var lineArr = line.split( wtconfig.get('ET.ColumnSep', ','));
+        if (lineno != 0){            
+            if (bReplace){
+                newLine = line.replaceAll(TextQualifierCSV,'');    
+            }
+            else {
+                newLine = line
+            }
+            var lineArr = newLine.split( wtconfig.get('ET.ColumnSep', ','));            
             await sheet.addRow(lineArr);
         }
         lineno++;        
