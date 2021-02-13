@@ -14,6 +14,9 @@
     <b-input-group id="ArraySepGrp" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
         <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>        
     </b-input-group>
+    <b-input-group id="setTextQualifierCSVGrp" :prepend="$t('Modules.ET.Settings.QualifierCSV')" class="mt-3">
+        <b-form-input id="TextQualifierCSV" name="TextQualifierCSV" type="text" class="form-control" v-model="TextQualifierCSV" :disabled=false :maxlength=1 @change="setTextQualifierCSV()"></b-form-input>        
+    </b-input-group>
     <b-input-group id="NotAvailIndicatorGrp" :prepend="$t('Modules.ET.Settings.NotAvailIndicator')" class="mt-3">
         <b-form-input id="NotAvailIndicator" name="NotAvailIndicator" type="text" class="form-control" v-model="NotAvailIndicator" :disabled=false @change="setNotAvailIndicator()"></b-form-input>        
     </b-input-group>
@@ -57,6 +60,7 @@
             return {
                 outDirVal: wtconfig.get('ET.OutPath', i18n.t('Modules.ET.Settings.SelectOutDir')),
                 ArraySep: wtconfig.get('ET.ArraySep'),
+                TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),                
                 NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),               
                 ColumnSep: '',                
                 TimeOut: wtconfig.get('PMS.TimeOut'),
@@ -122,6 +126,9 @@
             },            
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
+            },
+            setTextQualifierCSV: function(){
+                wtconfig.set('ET.TextQualifierCSV', this.TextQualifierCSV)
             },
             setNotAvailIndicator: function(){
                 wtconfig.set('ET.NotAvail', this.NotAvailIndicator)
