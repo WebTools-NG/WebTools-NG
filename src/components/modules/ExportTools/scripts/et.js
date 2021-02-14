@@ -484,15 +484,17 @@ const excel2 = new class Excel {
 
     async getFileName({ Library, Level, Type }){                
         const dateFormat = require('dateformat');
-        const OutDir = wtconfig.get('ET.OutPath', wtutils.UserHomeDir)
+        const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss"); 
         const path = require('path');
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += Library + '_';
         outFile += Level + '_';
         outFile += timeStamp + '.' + Type;
+        console.log('Ged22', OutDir,wtutils.AppName, i18n.t('Modules.ET.Name'), outFile)
         const outFileWithPath = path.join(
-            OutDir, outFile);        
+            OutDir, wtutils.AppName, i18n.t('Modules.ET.Name'), outFile); 
+        console.log('Ged ExportFile', outFileWithPath)       
         return outFileWithPath;
     }
 

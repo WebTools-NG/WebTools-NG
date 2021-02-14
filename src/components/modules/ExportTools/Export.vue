@@ -241,11 +241,11 @@
     },    
     getMedia() {
       log.info("getMedia Called");
-      if (wtconfig.get('ET.OutPath', "") == "")
+      if (wtconfig.get('General.ExportPath', "") == "")
       {
         log.info('ET: No output dir defined')        
-        this.$bvToast.toast(this.$t("Modules.ET.ErrorNoOutDirMsg"), {
-          title: this.$t("Modules.ET.ErrorNoOutDirTitle"),
+        this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
+          title: this.$t("Common.ErrorNoOutDirTitle"),
           autoHideDelay: 3000,          
           solid: true,
           variant: 'primary',

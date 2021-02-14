@@ -3,7 +3,18 @@
     <div class="col-lg-10 col-md-12 col-xs-12">
         <h1>{{ $t("Modules.GlobalSettings.Title") }}</h1>
         <p>{{ $t("Modules.GlobalSettings.Description") }}</p>
+        <div>
+        <b-input-group id="exportDir" :prepend="$t('Common.ExportDir')" class="mt-3">                    
+            <b-form-input id="exportDirbox" type="text" name="exportDirbox" v-model="ExportDirVal" :disabled=true v-bind:placeholder="$t('Common.ExportDir')" />
+            <b-input-group-append>                
+                <b-button variant="info" v-on:click="browse">{{ $t("Common.Browse") }}</b-button>
+            </b-input-group-append>
+        </b-input-group>        
+        </div>
         
+       
+        
+            
         <b-input-group id="TimeOutGrp" :prepend="$t('Modules.GlobalSettings.TimeOut')" class="mt-3">
             <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
         </b-input-group>
@@ -57,9 +68,10 @@
     
     wtutils, dialog, i18n
 
-    export default {
+    export default {         
         data() {            
             return {
+                ExportDirVal: wtconfig.get('General.ExportPath', i18n.t('Common.ExportDir')),                
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 LogLevel: wtconfig.get('Log.fileLevel'),
                 LogLevelConsole: wtconfig.get('Log.consoleLevel'),
@@ -69,6 +81,25 @@
             }
         },
         methods: {
+            browse: function(){
+                log.debug('Start browsing for Export Directory');
+                const exportDir = dialog.OpenDirectory( i18n.t("Common.ExportDir"), i18n.t("Common.Ok"));                
+                if (exportDir)
+                {
+                    wtconfig.set('General.ExportPath', exportDir[0]);
+                    this.ExportDirVal = exportDir[0];          
+                    log.debug(`Selected Directory is ${exportDir}`);
+                    if (!wtutils.ExportDirPresent)
+                    {
+                        console.log('ged1 globalsetting dir error')
+                        this.ExportDirVal = '*** ERROR ***';
+                    }                    
+                    else
+                    {
+                        console.log('ged123 globalsetting dir ok')
+                    }
+                }               
+            },
             factoryReset() {
                 // Doing a factory reset
                 log.warn('Doing a factory reset');                
@@ -167,7 +198,7 @@
 
             }
         },
-        computed: {
+        computed: {            
             logLevels: function() {
                 const options = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'];
                 return options;
