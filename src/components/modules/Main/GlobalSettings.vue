@@ -91,13 +91,8 @@
                     log.debug(`Selected Directory is ${exportDir}`);
                     if (!wtutils.ExportDirPresent)
                     {
-                        console.log('ged1 globalsetting dir error')
                         this.ExportDirVal = '*** ERROR ***';
                     }                    
-                    else
-                    {
-                        console.log('ged123 globalsetting dir ok')
-                    }
                 }               
             },
             factoryReset() {

@@ -482,7 +482,7 @@ const excel2 = new class Excel {
         return true;
     }
 
-    async getFileName({ Library, Level, Type }){                
+    async getFileName({ Library, Level, Type, Module }){                
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss"); 
@@ -491,16 +491,20 @@ const excel2 = new class Excel {
         outFile += Library + '_';
         outFile += Level + '_';
         outFile += timeStamp + '.' + Type;
-        console.log('Ged22', OutDir,wtutils.AppName, i18n.t('Modules.ET.Name'), outFile)
+        const targetDir = path.join(
+            OutDir, wtutils.AppName, Module);
         const outFileWithPath = path.join(
-            OutDir, wtutils.AppName, i18n.t('Modules.ET.Name'), outFile); 
-        console.log('Ged ExportFile', outFileWithPath)       
+            targetDir, outFile);                
+        // Make sure target dir exists
+        const fs = require('fs')
+        fs.mkdirSync(targetDir);
+        log.info(`OutFile is ${outFileWithPath}`)                     
         return outFileWithPath;
     }
 
     async SaveWorkbook(Workbook, Library, Level, Type) {
         const fs = require('fs')
-        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type })
+        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type, Module: i18n.t('Modules.ET.Name') })
         log.info('Saving output file as: ' + name)
         // Save Excel on Hard Disk
         Workbook.xlsx.writeBuffer()
@@ -831,7 +835,8 @@ const excel2 = new class Excel {
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level)                                        
         // Open a file stream
-        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp' })
+        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name') })
+        console.log('Ged 5 et tmpFile', tmpFile)
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
