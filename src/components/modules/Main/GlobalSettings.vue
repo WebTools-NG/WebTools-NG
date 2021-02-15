@@ -56,6 +56,23 @@
             </b-form-select>
         </b-input-group>
 
+        <!-- Factory Reset -->
+        <b-modal ref="confirmFactoryReset" hide-footer v-bind:title="$t('Modules.GlobalSettings.FactoryResetConfirmTitle')" >
+          <div class="d-block text-center">
+              {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody') }}
+              {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody2', [$t('Common.AppName')]) }}
+          </div>
+          <b-button class="mt-3" variant="info" block @click="factoryResetClose">{{ $t('Modules.GlobalSettings.FactoryResetBtnCancel') }}</b-button>
+          <b-button class="mt-3" variant="danger" block @click="factoryReset">{{ $t('Modules.GlobalSettings.FactoryResetBtnOk') }}</b-button>
+        </b-modal>
+        <br>
+        <br>
+        <div id="buttons" class="text-center">
+            <b-button-group >              
+                <b-button variant="danger" class="mr-1" @click="confirmFactoryReset">{{ $t('Modules.GlobalSettings.FactoryReset') }}</b-button>
+            </b-button-group>
+        </div>
+
     </div>
   </b-container>
 </template>
@@ -95,11 +112,21 @@
                     }                    
                 }               
             },
-            factoryReset() {
+            factoryResetClose() {
+                this.$refs['confirmFactoryReset'].hide();
+            },
+            confirmFactoryReset(){                
+                this.$refs['confirmFactoryReset'].show(); 
+            },
+            factoryReset() {                
                 // Doing a factory reset
-                log.warn('Doing a factory reset');                
-                require('electron').remote.app.relaunch();
-                require('electron').remote.app.quit();
+                log.warn('Doing a factory reset');
+                var fs = require('fs');
+                const postfix = '-' + new Date().toISOString().replaceAll('-','').replaceAll(':','').split('.')[0]+"Z";                
+                fs.copyFileSync(wtutils.ConfigFileName, wtutils.ConfigFileName + postfix);
+                fs.unlinkSync(wtutils.ConfigFileName);                
+                require('electron').remote.app.relaunch();                
+                require('electron').remote.app.exit();
             },
             getUpdate: function(){                
                 if (wtconfig.get('Update.Update', true)){                    

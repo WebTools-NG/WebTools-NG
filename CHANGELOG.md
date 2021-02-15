@@ -1,17 +1,23 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.1.15
+
+**Note**:   This version is an Alpha version, that is not made public
+
+* [#242 Button or setting to restore WebTools-NG default settings](https://github.com/WebTools-NG/WebTools-NG/issues/242)
+
 ## V0.1.14
 
 **Note**:   This version is an Alpha version, that is not made public
 
-* [#229 Bump electron from 7.3.3 to 9.4.0](https://github.com/WebTools-NG/WebTools-NG/pull/229)
-* [#227 ET Export filename](https://github.com/WebTools-NG/WebTools-NG/pull/227)
-* [#231 Open LogDir folder failes](https://github.com/WebTools-NG/WebTools-NG/pull/231)
-* [#226 Exporting episodes](https://github.com/WebTools-NG/WebTools-NG/pull/226)
-* [#233 Electron errors after updating](https://github.com/WebTools-NG/WebTools-NG/pull/233)
-* [#234 Editing a custom level](https://github.com/WebTools-NG/WebTools-NG/pull/234)
-* [#238 We need a Text qualifier](https://github.com/WebTools-NG/WebTools-NG/pull/238)
-* [#239 Does not output if the output folder does NOT exist](https://github.com/WebTools-NG/WebTools-NG/pull/239)
+* [#229 Bump electron from 7.3.3 to 9.4.0](https://github.com/WebTools-NG/WebTools-NG/issues/242)
+* [#227 ET Export filename](https://github.com/WebTools-NG/WebTools-NG/issues/227)
+* [#231 Open LogDir folder failes](https://github.com/WebTools-NG/WebTools-NG/issues/231)
+* [#226 Exporting episodes](https://github.com/WebTools-NG/WebTools-NG/issues/226)
+* [#233 Electron errors after updating](https://github.com/WebTools-NG/WebTools-NG/issues/233)
+* [#234 Editing a custom level](https://github.com/WebTools-NG/WebTools-NG/issues/234)
+* [#238 We need a Text qualifier](https://github.com/WebTools-NG/WebTools-NG/issues/238)
+* [#239 Does not output if the output folder does NOT exist](https://github.com/WebTools-NG/WebTools-NG/issues/239)
 
 ## V0.1.13
 
