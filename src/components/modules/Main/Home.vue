@@ -68,7 +68,8 @@ export default {
   mounted() {
     log.info("Home Created");    
     this.checkLangUpdates();
-    this.UpdatePresent();    
+    this.UpdatePresent();
+    this.CheckExportDir();    
   },
   methods: {    
     // Visit GitHub release page
@@ -152,11 +153,26 @@ export default {
           }
         }
       }
+      selLang, wtutils, selLangUpdated
+    },
+    async CheckExportDir() {      
+      if ( wtutils.ExportDirPresent )
+      {
+        log.info('ExportDir OK');
+      }
+      else
+      {
+        log.error('ExportDir missing');        
+        const bodyStr = i18n.t("Common.ErrorNoOutDirMsg");            
+            this.$bvToast.toast(bodyStr, {           
+              title: this.$t("Common.ErrorNoOutDirTitle"),
+              autoHideDelay: 400000,                     
+              solid: true,
+              variant: 'primary',
+              toaster: 'b-toaster-bottom-right' 
+            });
 
-
-
-
-      selLang, i18n, wtutils, selLangUpdated
+      }
     }
   }
 }

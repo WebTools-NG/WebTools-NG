@@ -121,7 +121,11 @@
             "Body": "{0} was released on Github on: {1}.",
             "Body2": "Click here for more info",
             "Skip": "Don't show notification for this version anymore"
-        }
+        },
+        "ExportDir": "Select Export Directory",
+        "Browse": "Browse",
+        "ErrorNoOutDirMsg": "You need to define an output directory in the global settings page first",
+        "ErrorNoOutDirTitle": "No output directory defined"
     },
     "Modules": {
         "PlexTV": {
@@ -207,9 +211,7 @@
             "ErrorNoServerSelectedMsg": "You need to select a server to extract from",
             "Settings": {
                 "Settings": "Settings",
-                "Description": "Here you can define the settings for @:Modules.ET.Name",
-                "Browse": "Browse",
-                "SelectOutDir": "Select Output Directory",
+                "Description": "Here you can define the settings for @:Modules.ET.Name",                                
                 "ArraySep": "Delimiter for multiple info in same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
@@ -238,9 +240,7 @@
                 "CreateExlsFile": "Creating Excel file",
                 "ProcessItem": "Processing item {count} of {total}",
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}"
-            },
-            "ErrorNoOutDirTitle": "No output directory defined",
-            "ErrorNoOutDirMsg": "You need to define an output directory in the settings page first",
+            },                        
             "ErrorBadSepTitle": "Column separator issue",
             "ErrorBadSep": "Column separator can only be one character"
         },

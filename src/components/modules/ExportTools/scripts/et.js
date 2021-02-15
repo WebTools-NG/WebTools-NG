@@ -482,23 +482,31 @@ const excel2 = new class Excel {
         return true;
     }
 
-    async getFileName({ Library, Level, Type }){                
+    async getFileName({ Library, Level, Type, Module }){                
         const dateFormat = require('dateformat');
-        const OutDir = wtconfig.get('ET.OutPath', wtutils.UserHomeDir)
+        const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss"); 
         const path = require('path');
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += Library + '_';
         outFile += Level + '_';
         outFile += timeStamp + '.' + Type;
+        const targetDir = path.join(
+            OutDir, wtutils.AppName, Module);
         const outFileWithPath = path.join(
-            OutDir, outFile);        
+            targetDir, outFile);                
+        // Make sure target dir exists
+        const fs = require('fs')
+        if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir);
+        }        
+        log.info(`OutFile is ${outFileWithPath}`)                     
         return outFileWithPath;
     }
 
     async SaveWorkbook(Workbook, Library, Level, Type) {
         const fs = require('fs')
-        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type })
+        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type, Module: i18n.t('Modules.ET.Name') })
         log.info('Saving output file as: ' + name)
         // Save Excel on Hard Disk
         Workbook.xlsx.writeBuffer()
@@ -825,11 +833,11 @@ const excel2 = new class Excel {
     {        
         const header = excel2.GetHeader(level, libType)        
         log.debug(`header: ${header}`);
-        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
+        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level)                                        
+        const call = await et.getLevelCall(libType, level);
         // Open a file stream
-        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp' })
+        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name') });
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header

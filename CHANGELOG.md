@@ -11,6 +11,7 @@
 * [#233 Electron errors after updating](https://github.com/WebTools-NG/WebTools-NG/pull/233)
 * [#234 Editing a custom level](https://github.com/WebTools-NG/WebTools-NG/pull/234)
 * [#238 We need a Text qualifier](https://github.com/WebTools-NG/WebTools-NG/pull/238)
+* [#239 Does not output if the output folder does NOT exist](https://github.com/WebTools-NG/WebTools-NG/pull/239)
 
 ## V0.1.13
 

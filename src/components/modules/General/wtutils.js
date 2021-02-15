@@ -23,6 +23,42 @@ const wtutils = new class WTUtils {
         return configFileName;
     }
 
+    get ExportDirPresent(){        
+ 
+
+        log.info('Checking ExportPath')        
+        const ExportPath = wtconfig.get('General.ExportPath', 'N/A');
+        if ( ExportPath == 'N/A' ){
+            log.error('ExportPath not defined');
+            return false;
+        }
+        const fs = require("fs");
+        if (fs.existsSync(ExportPath)) {            
+            const path = require('path');
+            const appExportDir = path.join(ExportPath, wtutils.AppName);
+            if (!fs.existsSync(appExportDir))
+            {
+                log.debug('Export dir existed, but AppDir didnt')                
+                fs.mkdirSync(appExportDir)
+                if (fs.existsSync(appExportDir))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        return false;
+
+             
+    }
+
     get RunningOS(){
         return process.platform;
     }
@@ -245,9 +281,6 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.ColumnSep', 'N/A') == 'N/A' ){
             wtconfig.set('ET.ColumnSep', ',')
         }        
-        if ( wtconfig.get('ET.OutPath', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.OutPath', '')
-        }
         if ( wtconfig.get('ET.NotAvail', 'N/A') == 'N/A' ){
             wtconfig.set('ET.NotAvail', 'N/A')
         }

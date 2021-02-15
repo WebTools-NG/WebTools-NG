@@ -2,15 +2,7 @@
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
     <h1>{{ $t("Modules.ET.Settings.Settings") }}</h1>
-    <p>{{ $t("Modules.ET.Settings.Description") }}</p>    
-    <div>
-        <b-input-group id="outDir" :prepend="$t('Modules.ET.Settings.SelectOutDir')" class="mt-3">                    
-            <b-form-input id="outDirbox" name="outDirbox" v-model="outDirVal" :disabled=true v-bind:placeholder="$t('Modules.ET.Settings.SelectOutDir')" />                                    
-            <b-input-group-append>                
-                <b-button variant="info" v-on:click="browse">{{ $t("Modules.ET.Settings.Browse") }}</b-button>
-            </b-input-group-append>
-        </b-input-group>   
-    </div>     
+    <p>{{ $t("Modules.ET.Settings.Description") }}</p>        
     <b-input-group id="ArraySepGrp" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
         <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>        
     </b-input-group>
@@ -57,8 +49,7 @@
             }         
         },
         data() {            
-            return {
-                outDirVal: wtconfig.get('ET.OutPath', i18n.t('Modules.ET.Settings.SelectOutDir')),
+            return {                
                 ArraySep: wtconfig.get('ET.ArraySep'),
                 TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),                
                 NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),               
@@ -88,17 +79,6 @@
                 for( var cbItem of ["ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){                    
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem))) 
                 }   
-            },
-            browse: function(){
-                log.debug('Start browsing for Output Directory');
-                const outDir = dialog.OpenDirectory( i18n.t("Modules.ET.Settings.SelectOutDir"), i18n.t("Common.Ok"));
-                //const outDir = dialog.OpenDirectory('Title', 'OK');
-                if (outDir)
-                {
-                    wtconfig.set('ET.OutPath', outDir[0]);
-                    this.outDirVal = outDir[0];                    
-                    log.debug(`Selected Directory is ${outDir}`);
-                }               
             },
             setColumnSep(val){
                 if (val.length > 1)
