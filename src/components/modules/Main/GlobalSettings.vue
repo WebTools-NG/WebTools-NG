@@ -122,9 +122,35 @@
                 // Doing a factory reset
                 log.warn('Doing a factory reset');
                 var fs = require('fs');
-                const postfix = '-' + new Date().toISOString().replaceAll('-','').replaceAll(':','').split('.')[0]+"Z";                
-                fs.copyFileSync(wtutils.ConfigFileName, wtutils.ConfigFileName + postfix);
+                const postfix = '-' + new Date().toISOString().replaceAll('-','').replaceAll(':','').split('.')[0]+"Z";
+                // Make backup of conf file
+                fs.copyFileSync(wtutils.ConfigFileName, wtutils.ConfigFileName + postfix);                                
+                var rimraf = require("rimraf");
+                const home = wtutils.Home;
+                const path = require('path');
+                // Remove directories requrcively
+                rimraf.sync(path.join(home, 'blob_storage'));
+                rimraf.sync(path.join(home, 'Cache'));
+                rimraf.sync(path.join(home, 'Code Cache'));
+                rimraf.sync(path.join(home, 'Crash Reports'));
+                rimraf.sync(path.join(home, 'Dictionaries'));
+                rimraf.sync(path.join(home, 'extensions'));
+                rimraf.sync(path.join(home, 'GPUCache'));
+                rimraf.sync(path.join(home, 'IndexedDB'));
+                rimraf.sync(path.join(home, 'locales'));
+                rimraf.sync(path.join(home, 'Local Storage'));
+                rimraf.sync(path.join(home, 'Partitions'));
+                rimraf.sync(path.join(home, 'Session Storage'));
+                rimraf.sync(path.join(home, 'WebTools-NG'));
+                rimraf.sync(path.join(home, 'logs'));
+                // Remove files
                 fs.unlinkSync(wtutils.ConfigFileName);                
+                fs.unlinkSync(path.join(home, 'Cookies'));
+                fs.unlinkSync(path.join(home, 'Cookies-journal'));
+                //fs.unlinkSync(path.join(home, 'DevTools Extensions'));
+                fs.unlinkSync(path.join(home, 'Network Persistent State'));
+                fs.unlinkSync(path.join(home, 'Preferences'));
+                fs.unlinkSync(path.join(home, 'TransportSecurity'));                              
                 require('electron').remote.app.relaunch();                
                 require('electron').remote.app.exit();
             },
