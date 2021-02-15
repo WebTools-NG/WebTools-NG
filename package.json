@@ -41,6 +41,7 @@
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.1",
     "popper.js": "^1.16.1",
+    "rimraf": "^2.7.1",
     "secure-ls": "^1.2.6",
     "uuid": "^8.3.1",
     "vue": "^2.6.12",
