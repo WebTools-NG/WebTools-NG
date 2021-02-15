@@ -267,12 +267,17 @@
             "RestartNeeded": "When changing this setting, a restart is needed",
             "FactoryReset": "Factory Reset",
             "FactoryResetWarning": "Factory Reset will reset this app towards how it was when first installed",
+            "FactoryResetConfirmTitle": "Confirm Factory Reset",
+            "FactoryResetConfirmBody": "Doing a Factory Reset will erase all your settings, as it was when first installed",
+            "FactoryResetConfirmBody2": "After doing a Factory Reset, you must start {0} again",
+            "FactoryResetBtnCancel": "Cancel",
+            "FactoryResetBtnOk": "Do a Factory Reset",
             "BetaTester": "Subscribe to Beta updates",
             "TTBetaTester": "When selected, you'll be notified when a new beta version is available",
             "Update": "Subscribe to updates (If false, beta updates will also be disabled)",
             "TTUpdate": "When selected, you'll be notified when a new update is available",
             "True": "True",
-            "False": "False"
+            "False": "False"            
         }
     }
 }
