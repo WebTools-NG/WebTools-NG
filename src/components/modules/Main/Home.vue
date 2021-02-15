@@ -158,12 +158,11 @@ export default {
     async CheckExportDir() {      
       if ( wtutils.ExportDirPresent )
       {
-        console.log('Ged1 Home ExportDir OK')
-
+        log.info('ExportDir OK');
       }
       else
       {
-        console.log('Ged2 Home ExportDir ERROR')
+        log.error('ExportDir missing');        
         const bodyStr = i18n.t("Common.ErrorNoOutDirMsg");            
             this.$bvToast.toast(bodyStr, {           
               title: this.$t("Common.ErrorNoOutDirTitle"),

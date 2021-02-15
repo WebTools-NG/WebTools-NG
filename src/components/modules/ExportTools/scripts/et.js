@@ -497,7 +497,9 @@ const excel2 = new class Excel {
             targetDir, outFile);                
         // Make sure target dir exists
         const fs = require('fs')
-        fs.mkdirSync(targetDir);
+        if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir);
+        }        
         log.info(`OutFile is ${outFileWithPath}`)                     
         return outFileWithPath;
     }
@@ -831,12 +833,11 @@ const excel2 = new class Excel {
     {        
         const header = excel2.GetHeader(level, libType)        
         log.debug(`header: ${header}`);
-        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','))
+        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level)                                        
+        const call = await et.getLevelCall(libType, level);
         // Open a file stream
-        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name') })
-        console.log('Ged 5 et tmpFile', tmpFile)
+        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name') });
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header

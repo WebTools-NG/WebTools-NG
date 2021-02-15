@@ -249,7 +249,6 @@
                 this.updateTbl(this.selSection);
             },
             getFilterSettings() {
-                console.log('Ged get filter settings')
                 this.selFilterSetting = wtconfig.get('PMS.FilterSetting', 'AllSettings');
             }
         }        
