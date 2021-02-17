@@ -1,7 +1,7 @@
 {
     "episode": {
         "level": {  
-            "devtommy": [
+            "devTommy": [
                 "Media ID",
                 "Writers"                                                                                
                                                                                                               
@@ -141,13 +141,27 @@
                 "Deleted",
                 "Content Rating"                  
             ],
-            "level3": [
-
-            ],
-            "level4": [
-                "View Count",
-                "Locked Fields"
-            ]            
+            "all": [
+                "Media ID",
+                "Series Title", 
+                "Episode Sort Title",
+                "Episode Title",
+                "Year",
+                "Season",
+                "Episode",
+                "Content Rating",
+                "Summary",
+                "Rating",
+                "User Rating",
+                "Originally Aired",
+                "Writers",
+                "Duration",
+                "Added",
+                "Updated",
+                "Poster url",
+                "Deleted",
+                "Content Rating"
+            ]           
         },
         "fields": {
             "Media ID":
