@@ -6,6 +6,7 @@
 
 * [#242 Button or setting to restore WebTools-NG default settings](https://github.com/WebTools-NG/WebTools-NG/issues/242)
 * [#225 Cutdown on buildin levels](https://github.com/WebTools-NG/WebTools-NG/issues/225)
+* [#183 Export description with a linebreak fails](https://github.com/WebTools-NG/WebTools-NG/issues/183)
 
 ## V0.1.14
 

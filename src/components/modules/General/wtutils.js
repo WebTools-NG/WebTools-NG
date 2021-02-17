@@ -279,7 +279,7 @@ const wtutils = new class WTUtils {
             wtconfig.set('ET.ArraySep', '-')
         }
         if ( wtconfig.get('ET.ColumnSep', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.ColumnSep', ',')
+            wtconfig.set('ET.ColumnSep', '|')
         }        
         if ( wtconfig.get('ET.NotAvail', 'N/A') == 'N/A' ){
             wtconfig.set('ET.NotAvail', 'N/A')
