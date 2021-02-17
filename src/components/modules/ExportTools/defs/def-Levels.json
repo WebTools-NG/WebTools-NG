@@ -2,21 +2,15 @@
     "movie": {
         "levels": {
             "Level 1": "level1",
-            "Level 2": "level2",
-            "Level 3": "level3",
-            "Level 4": "level4",
-            "Level 5": "level5",
-            "Level 6": "level6",
+            "Level 2": "level2",            
+            "All": "all",
             "dev tommy": "devTommy"
 
         },
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "Level 3": 2,
-            "Level 4": 2,
-            "Level 5": 2,
-            "Level 6": 2,
+            "All": 2,
             "devTommy": 2                     
         }
     },
@@ -24,31 +18,26 @@
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
+            "All": "all",
             "devTommy": "devtommy"
         },
         "LevelCount": {
             "Level 1": 1,
-            "Level 2": 1,
-            "Level 3": 1,
-            "Level 4": 2,
-            "Level 5": 2,
-            "Level 6": 2,
+            "Level 2": 1,            
+            "All": 2,
             "devTommy": 1            
         }
     },
     "show": {
         "levels": {
             "Level 1": "level1",
-            "Tommy": "tommy"
+            "Level 2": "level2",
+            "devTommy": "devTommy"
         },
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "Level 3": 1,
-            "Level 4": 2,
-            "Level 5": 2,
-            "Level 6": 2,
-            "Tommy": 1            
+            "devTommy": 1            
         }
     },
     "artist": {
