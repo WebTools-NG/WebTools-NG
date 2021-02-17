@@ -110,7 +110,7 @@
             "level1": [
                 "Media ID",
                 "Series Title", 
-                "Episode Sort Title",
+                "Sort title",
                 "Episode Title",
                 "Year",
                 "Season",
@@ -123,7 +123,7 @@
             "level2": [
                 "Media ID",
                 "Series Title", 
-                "Episode Sort Title",
+                "Sort title",
                 "Episode Title",
                 "Year",
                 "Season",
@@ -144,7 +144,7 @@
             "all": [
                 "Media ID",
                 "Series Title", 
-                "Episode Sort Title",
+                "Sort title",
                 "Episode Title",
                 "Year",
                 "Season",
@@ -176,11 +176,12 @@
                     "call": 1,
                     "type": "string"                    
                 },
-            "Episode Sort Title":
+            "Sort title":
                 {
                     "key": "$.titleSort",
                     "call": 1,
-                    "type": "string"                    
+                    "type": "string",
+                    "postProcess": true                    
                 },
             "Episode Title":
                 {

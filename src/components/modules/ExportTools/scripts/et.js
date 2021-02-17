@@ -454,7 +454,7 @@ const excel2 = new class Excel {
 
     async AddHeader(Sheet, Level, libType) {
         const columns = []
-        log.verbose(`AddHeader sheet: ${Sheet} - level: ${Level} - libType: ${libType}`)        
+        log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)        
         // Get level fields
         const fields = et.getLevelFields(Level, libType)              
         for (var i=0; i<fields.length; i++) {                        
@@ -518,7 +518,7 @@ const excel2 = new class Excel {
         const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '));
         let retArray = [];
         let x, retVal, start, strStart, end, result;        
-        try {                 
+        try {                       
             switch ( String(name) ){            
                 case "MetaDB Link":                                                                                           
                     for (x=0; x<valArray.length; x++) {                    
@@ -565,12 +565,12 @@ const excel2 = new class Excel {
                         retVal = val;
                     }
                     break;
-                case "Sort title":
+                case "Sort title":                    
                     if (wtconfig.get('ET.SortTitleNull'))
-                    {
+                    {                        
                         // Override with title if not found
-                        if (val == wtconfig.get('ET.NotAvail'))
-                        {                            
+                        if (val == wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV'))
+                        {                                                     
                             retVal = title;
                         }
                         else {                              
@@ -578,8 +578,14 @@ const excel2 = new class Excel {
                         }
                     }
                     else
-                    {                        
-                        retVal = val;
+                    {
+                        if (val == wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV'))
+                        {                        
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        else {                              
+                            retVal = val; 
+                        }
                     }
                     break;
                 case "IMDB":                    
@@ -742,7 +748,7 @@ const excel2 = new class Excel {
             if ( doPostProc == 'true')
             {                
                 if (!["Original Title","Sort title"].includes(name)){                
-                    const title = JSONPath({path: String('$.title'), json: data})[0];
+                    const title = JSONPath({path: String('$.title'), json: data})[0];                    
                     val = await this.postProcess( {name: name, val: val, title: title} );        
                 }
                 else {                                       
