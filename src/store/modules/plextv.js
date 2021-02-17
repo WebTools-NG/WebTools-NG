@@ -93,8 +93,11 @@ const actions = {
         })
           .then((response) => {
             let result=[];
-            log.debug('Response from fetchPlexServers recieved')
-            const showNotOwned = wtconfig.get('Developer.showNotOwned', false)
+            log.debug('Response from fetchPlexServers recieved');
+            const showNotOwned = wtconfig.get('Developer.showNotOwned', false);
+            if (showNotOwned){
+              log.debug('fetchPlexServers : See not owned servers as well');
+            }
             response.data.forEach((req) => {
               if (showNotOwned){
                 if (req.product == "Plex Media Server") {
@@ -102,8 +105,7 @@ const actions = {
                   pmsServer['name'] = req.name;
                   pmsServer['accessToken'] = req.accessToken;
                   pmsServer['connections'] = req.connections;
-                  pmsServer['clientIdentifier'] = req.clientIdentifier                                  
-                  log.debug('fetchPlexServers : See not owned servers as well')                  
+                  pmsServer['clientIdentifier'] = req.clientIdentifier;
                   result.push(pmsServer);
                 }
               } else {
@@ -117,17 +119,16 @@ const actions = {
                 }
               } 
             })
-            commit('UPDATE_PLEX_SERVERS', result)
+            commit('UPDATE_PLEX_SERVERS', result);
           })
           .catch(function (error) {
             if (error.response) {                  
-                log.error('fetchPlexServers: ' + error.response.data)
-                alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message)
+                log.error('fetchPlexServers: ' + error.response.data);
+                alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
             } else if (error.request) {
-                log.error('fetchPlexServers: ' + error.request)
-
+                log.error('fetchPlexServers: ' + error.request);
             } else {
-                log.error('fetchPlexServers: ' + error.message)
+                log.error('fetchPlexServers: ' + error.message);
      }    
    });
   },
