@@ -526,11 +526,19 @@ const excel2 = new class Excel {
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break;
-                case "MetaData Language":                
-                    for (x=0; x<valArray.length; x++) {                    
-                        retArray.push(path.basename(valArray[x].split("=")[1]))                    
+                case "MetaData Language":
+                    try
+                    {                
+                        for (x=0; x<valArray.length; x++) {                    
+                            retArray.push(path.basename(valArray[x].split("=")[1]))                    
+                        }
+                        retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    catch (error)
+                    {
+                        log.error(`Error getting MetaData Language was ${error} for ${JSON.stringify(valArray)}`);
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
                     break; 
                 case "Part File":                
                     for (x=0; x<valArray.length; x++) {                    
@@ -540,13 +548,25 @@ const excel2 = new class Excel {
                     break; 
                 case "Part File Path":                
                     for (x=0; x<valArray.length; x++) {                    
-                        retArray.push(path.dirname(valArray[x]))                    
+                        retArray.push(path.dirname(valArray[x]));                    
                     }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '));
                     break;
-                case "Part Size": 
-                    for (x=0; x<valArray.length; x++) {                    
-                        retArray.push(filesize(valArray[x]))                    
+                case "Part Size":
+                    for (x=0; x<valArray.length; x++) { 
+                        //let theSize = valArray[x]
+                        let theSize = valArray[x].replaceAll('"', '').replaceAll(wtconfig.get('ET.TextQualifierCSV'),'');
+
+                        if (theSize.startsWith('"')){
+                            theSize = theSize.slice(1,-1);
+                        }                                                                                                                       
+                        try{
+                            retArray.push(filesize(theSize));  
+                        }
+                        catch (error)
+                        {
+                            log.error(`Error getting Part Size was ${error} for ${theSize}`);
+                        }
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break;
@@ -624,6 +644,18 @@ const excel2 = new class Excel {
         return await retVal;
     }
 
+    isEmpty( { val })
+    {        
+        if ([null, 'undefined', ''].indexOf(val) > -1)
+        {
+            return wtconfig.get('ET.NotAvail', 'N/A');
+        }                    
+        else
+        {       
+            return val;
+        }
+    }
+
     async addRowToTmp( { libType, level, data, stream }) {        
         // log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)                                  
         let date, year, month, day, hours, minutes, seconds        
@@ -640,64 +672,65 @@ const excel2 = new class Excel {
             var name = Object.keys(fields[x]);            
             lookup = JSONPath({path: '$..key', json: fields[x]})[0];            
             switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
-                case "string":                                                                                            
-                    val = String(JSONPath({path: String(lookup), json: data})[0]);                    
+                case "string":                                                       
+                    val = String(JSONPath({path: String(lookup), json: data})[0]);
                     // Make N/A if not found
-                    if (val == null)
-                    {
-                        val = wtconfig.get('ET.NotAvail', 'N/A');
-                    }                    
+                    val = this.isEmpty( { val: val });
                     // Remove CR, LineFeed ' and " from the string if present
                     val = val.replace(/(\r\n)|'|"/g, "");
                     val = textSep + val + textSep;
                     break;
-                case "array":                                                            
+                case "array":
                     array = JSONPath({path: lookup, json: data});
-                    valArray = []                                       
-                    for (i=0; i<array.length; i++) {                                                                     
-                        subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
-                        subKey = JSONPath({path: '$..subkey', json: fields[x]});
-                        switch(String(subType)) {
-                            case "string": 
-                                valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);                                
-                                // Make N/A if not found
-                                if (valArrayVal == null || valArrayVal == "")
-                                //if ( typeof valArrayVal !== 'undefined' && valArrayVal && valArrayVal != '')
-                                {
-                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
-                                }
-                                // Remove CR, LineFeed ' and " from the string if present
-                                valArrayVal = valArrayVal.replace(/(\r\n)|'|"/g, "");
-                                break;
-                            case "time":                                                                                                                        
-                                valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
-                                // Make N/A if not found
-                                if (valArrayVal == null || valArrayVal == "")
-                                {
-                                    valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
-                                }
-                                else
-                                {                                    
-                                    const total = valArrayVal.length                                 
-                                    for (let i=0; i<total; i++) {                                        
-                                        seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();                            
-                                        minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();                            
-                                        hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();                                                                  
-                                        // Will display time in 10:30:23 format                        
-                                        valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                                    }                                    
-                                }
-                                break;
-                            default:
-                                log.error('NO ARRAY HIT (addRowToSheet-array)')                                
-                        }                                            
-                        valArray.push(valArrayVal)
-                    }                    
-                    val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))
-                    if ( String(subType) == 'string')
+                    if (array === undefined || array.length == 0) {
+                        val = wtconfig.get('ET.NotAvail', 'N/A');
+                    }
+                    else
                     {
-                        val = textSep + val + textSep;
-                    }                                        
+                        valArray = []                                       
+                        for (i=0; i<array.length; i++) {                                                                     
+                            subType = JSONPath({path: '$..subtype', json: fields[x]});                                                
+                            subKey = JSONPath({path: '$..subkey', json: fields[x]});
+                            switch(String(subType)) {
+                                case "string": 
+                                    valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);
+                                    // Make N/A if not found
+                                    valArrayVal = this.isEmpty( { val: valArrayVal });
+                                    // Remove CR, LineFeed ' and " from the string if present
+                                    valArrayVal = valArrayVal.replace(/(\r\n)|'|"/g, "");
+                                    break;
+                                case "time":                                                                                                                        
+                                    valArrayVal = JSONPath({path: String(subKey), json: array[i]});                                
+                                    // Make N/A if not found
+
+
+                                    if (valArrayVal == null || valArrayVal == "")
+                                    {
+                                        valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                    }
+                                    else
+                                    {                                    
+                                        const total = valArrayVal.length                                 
+                                        for (let i=0; i<total; i++) {                                        
+                                            seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();                            
+                                            minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();                            
+                                            hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();                                                                  
+                                            // Will display time in 10:30:23 format                        
+                                            valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                        }                                    
+                                    }
+                                    break;
+                                default:
+                                    log.error('NO ARRAY HIT (addRowToSheet-array)')                                
+                            }                                            
+                            valArray.push(valArrayVal)
+                        }                    
+                        val = valArray.join(wtconfig.get('ET.ArraySep', ' - '))
+                        if ( String(subType) == 'string')
+                        {
+                            val = textSep + val + textSep;
+                        } 
+                    }                                       
                     break;
                 case "array-count":                                                                                                                        
                     val = JSONPath({path: String(lookup), json: data}).length;                                                          
