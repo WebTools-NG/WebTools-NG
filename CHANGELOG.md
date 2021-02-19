@@ -8,6 +8,7 @@
 * [#225 Cutdown on buildin levels](https://github.com/WebTools-NG/WebTools-NG/issues/225)
 * [#183 Export description with a linebreak fails](https://github.com/WebTools-NG/WebTools-NG/issues/183)
 * [#249 Default "Sort Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/249)
+* [#164 Export Array/String](https://github.com/WebTools-NG/WebTools-NG/issues/164)
 
 ## V0.1.14
 
