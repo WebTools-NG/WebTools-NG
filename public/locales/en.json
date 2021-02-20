@@ -141,8 +141,8 @@
             "UsrThumb": "Link to User thumb",
             "UsrHome": "Is user part of your Home",
             "UsrStatus": "User invite status",
-            "ExportUsr": "Export user",
-            "ExportAllUsr": "Export all users",
+            "ExportUsr": "Export user to CSV",
+            "ExportAllUsr": "Export all users to CSV",
             "AllUsr": "All-Users",
             "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
         },
