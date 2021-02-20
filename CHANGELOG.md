@@ -9,6 +9,8 @@
 * [#183 Export description with a linebreak fails](https://github.com/WebTools-NG/WebTools-NG/issues/183)
 * [#249 Default "Sort Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/249)
 * [#164 Export Array/String](https://github.com/WebTools-NG/WebTools-NG/issues/164)
+* [#247 Export plex.tv result](https://github.com/WebTools-NG/WebTools-NG/issues/247)
+
 
 ## V0.1.14
 
