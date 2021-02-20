@@ -11,7 +11,6 @@
 * [#164 Export Array/String](https://github.com/WebTools-NG/WebTools-NG/issues/164)
 * [#247 Export plex.tv result](https://github.com/WebTools-NG/WebTools-NG/issues/247)
 
-
 ## V0.1.14
 
 **Note**:   This version is an Alpha version, that is not made public
