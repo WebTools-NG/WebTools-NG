@@ -13,116 +13,91 @@ i18n, wtconfig, wtutils, store
 const plextv = new class PlexTV {
     constructor() {
         this.header = [
-            i18n.t('Modules.PlexTV.UsrID'),
+            i18n.t('Modules.PlexTV.UsrID'),            
+            i18n.t('Modules.PlexTV.UsrTitle'),
             i18n.t('Modules.PlexTV.UsrName'),
             i18n.t('Modules.PlexTV.UsrEMail'),
-            i18n.t('Modules.PlexTV.UsrRestricted'),
-            i18n.t('Modules.PlexTV.UsrName'),
+            i18n.t('Modules.PlexTV.UsrRestricted'),            
             i18n.t('Modules.PlexTV.UsrThumb'),
             i18n.t('Modules.PlexTV.UsrHome'),
             i18n.t('Modules.PlexTV.UsrStatus')]
+        this.fields = [
+            'id',
+            'title',
+            'username',
+            'email',
+            'restricted',
+            'thumb',
+            'home',
+            'status'
+        ],
+        this.separator = wtconfig.get('ET.ColumnSep')
     }
     
-    async exportUsr({ Type, Module, Usr, Data }){
+    async exportUsr({ Module, Usr, Data }){
         /*
             Will export selected user to a file    
         */
-
-
-        Type, Data
-
-        console.log('Ged0 start Export')   
-        console.log('Ged1 Data', JSON.stringify(Data))
-        console.log('Ged2 length', Data.length) 
-        console.log('Ged3 count', Data.count) 
-        
-        
-        
+        let strTmp = '';
+        // Set result file to users title
+        let fName = 'All';        
+        if ( typeof(Usr) === "number"){
+            fName = Data['title'];
+        }
         // Open a file stream
-        const tmpFile = await this.getFileName({Type: 'tmp', Module: Module, Usr: Usr});
+        const tmpFile = await this.getFileName({Type: 'tmp', Module: Module, Usr: fName});
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
-        stream.write( this.header + "\n");
-        // Add Data
-/* 
-        let rowStr = ''
-
-
-        for( var x in Data ){
-            console.log('ged99', JSON.stringify(Data[x]))
-            console.log('Ged88', JSON.stringify(Data[x]['title']))
-            rowStr = ''
-            rowStr += ',' + Data[x]['id'];
-            rowStr += ',' + Data[x]['title'];
-
-            
-        }
- */
-        console.log('Ged OP Type', typeof(Usr))
-
-        if ( typeof(Usr) === "string"){
-            console.log('Ged All Users')
-        }
-        else {
-            console.log('Ged Single Usr')
-        }
-
-        /* 
-        Object.keys(Data).forEach(function(key) {
-            console.log('Ged Gummi Key : ' + key + ', Value : ' + Data[key])
-            console.log(typeof Data[key]);
-        })
- */
-
- /* 
-        for (const [key, value] of Object.entries(Data)) {
-            var justAGuy = new Person();
-
-            justAGuy.id = key;
-            justAGuy.title = value['title'];
-
-            if (key == 'title')
-            {
-                console.log('Ged99 Title', value)
-                
-            }
-
-
-            //console.log('Ged543', key, JSON.stringify(value));
-            //console.log('Ged345', JSON.stringify(justAGuy));
+        this.header.forEach(function (item) {
+            strTmp += item + plextv.separator;                
           }
-        
-         */
-
-/* 
-        'Modules.PlexTV.UsrID'),
-            i18n.t('Modules.PlexTV.UsrName'),
-            i18n.t('Modules.PlexTV.UsrEMail'),
-            i18n.t('Modules.PlexTV.UsrRestricted'),
-            i18n.t('Modules.PlexTV.UsrName'),
-            i18n.t('Modules.PlexTV.UsrThumb'),
-            i18n.t('Modules.PlexTV.UsrHome'),
-            i18n.t('Modules.PlexTV.UsrStatus')]
-
-
-             */
-        
-        
-        let str = '';
-
-        str
-
-        Person
-
-        
-        //await stream.write( result + "\n");
-
-
-
-
-        stream.end(); 
-
+        );
+        // Remove last separator and add CR
+        strTmp = strTmp.slice(0,-1) + "\n";
+        // Write header to tmp file
+        stream.write( strTmp );
+        // Add Data
+        if ( typeof(Usr) === "string"){                        
+            Object.keys(Data).forEach(function(key) {
+                strTmp = '';
+                plextv.fields.forEach(function (item) {
+                    let result = Data[key][item];
+                    if (result == null){
+                        result = wtconfig.get('ET.NotAvail'); 
+                    }
+                    strTmp += result + plextv.separator;                
+                  }
+                );
+                // Remove last separator and add CR
+                strTmp = strTmp.slice(0,-1) + "\n";
+                // Write to tmp file
+                stream.write( strTmp );                
+            })
+        }
+        else {            
+            strTmp = '';
+            // Add each field            
+            this.fields.forEach(function (item) {
+                let result = Data[item];
+                if (result == null){
+                    result = wtconfig.get('ET.NotAvail'); 
+                }
+                strTmp += result + plextv.separator;
+                //strTmp += Data[item] + plextv.separator;                
+              }
+            );
+            // Remove last separator and add CR
+            strTmp = strTmp.slice(0,-1) + "\n";
+            // Write to tmp file
+            stream.write( strTmp );        
+        }
+        // Close tmp file
+        stream.end();
+        // Rename to real file name
+        var newFile = tmpFile.replace('.tmp', '.csv');
+        fs.renameSync(tmpFile, newFile);                      
+        console.log('renamed complete');
     }
 
     async getFileName({ Type, Module, Usr }){
@@ -150,21 +125,6 @@ const plextv = new class PlexTV {
     }
 }
 
-class Person {    
-    constructor() {      
-    }    
 
-    set id(param) {
-        this._id = param
-    }
-        
-    set title(param) {
-        this._title = param
-    }
-    get title() {
-        return this._title
-    }
-    
-  }
 
 export {plextv};

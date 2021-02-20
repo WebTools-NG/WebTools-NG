@@ -53,8 +53,10 @@
                 <b-button variant="success" class="mr-1" :disabled="this.selUser == ''" @click="exportUsr"> {{ $t('Modules.PlexTV.ExportUsr') }} </b-button>
                 <b-button variant="success" class="mr-1"  @click="exportAllUsr">{{ $t('Modules.PlexTV.ExportAllUsr') }}</b-button>
             </b-button-group>
-        </div>
-      </div>      
+        </div>         
+      </div> 
+      <br>        
+      <p class="text-center">{{ $t('Modules.PlexTV.Settings') }}</p>
     </div>                        
 </template>
 
@@ -107,17 +109,14 @@
   methods: {
     exportUsr: async function(){      
       log.info(`Export Plex.TV User: ${this.usrName}`);
-      let Data = this.selUserDetails;
-      
-      const filename = await plextv.exportUsr({Type: 'csv', Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
+      let Data = this.selUserDetails;      
+      const filename = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
       filename
     },
     exportAllUsr: async function(){      
       log.info(`Export All Plex.TV Users`)
       let Data = this.$store.getters.getUsers;
-      await plextv.exportUsr({Type: 'csv', Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});
-      
-      
+      await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});            
     },
     getUsers: async function(){
       this.selUserWait = false;

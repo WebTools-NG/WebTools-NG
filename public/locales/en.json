@@ -136,13 +136,15 @@
             "UsrID": "User ID",
             "UsrEMail": "User email address",
             "UsrName": "User name",
+            "UsrTitle": "User title",
             "UsrRestricted": "User Restricted",
             "UsrThumb": "Link to User thumb",
             "UsrHome": "Is user part of your Home",
             "UsrStatus": "User invite status",
             "ExportUsr": "Export user",
             "ExportAllUsr": "Export all users",
-            "AllUsr": "All-Users"
+            "AllUsr": "All-Users",
+            "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
         },
         "PMS": {
             "Name": "Plex Media Server",
