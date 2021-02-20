@@ -44,14 +44,27 @@
       <b-input-group id="UserStatusGrp" :prepend="$t('Modules.PlexTV.UsrStatus')" class="mt-3">
             <b-form-input id="usrStatus" name="usrStatus" type="text" class="form-control" v-model="usrStatus" :disabled=true></b-form-input>
       </b-input-group>
-
-      
+      <br>
+      <div class="buttons">        
+        <br>
+        <!-- Buttons -->
+        <div id="buttons" class="text-center">
+            <b-button-group >        
+                <b-button variant="success" class="mr-1" :disabled="this.selUser == ''" @click="exportUsr"> {{ $t('Modules.PlexTV.ExportUsr') }} </b-button>
+                <b-button variant="success" class="mr-1"  @click="exportAllUsr">{{ $t('Modules.PlexTV.ExportAllUsr') }}</b-button>
+            </b-button-group>
+        </div>
+      </div>      
     </div>                        
 </template>
 
 <script>  
-   import store from '../../../store'; 
+  import store from '../../../store';
+  import { plextv } from "./scripts/plextv"; 
+  import i18n from '../../../i18n';
   
+  plextv
+
   const log = require("electron-log");
   export default {
       data() {
@@ -83,19 +96,29 @@
       log.verbose(`Watch detected a user was selected as ${JSON.stringify(userLst[this.selUser])}`);           
       this.selUserDetails = userLst[this.selUser];
       this.usrEmail = userLst[this.selUser]['email'];
-
-      //this.usrEmail = '<a href="mailto:' + userLst[this.selUser]['email'] + '>' + userLst[this.selUser]['email'] + '</a>'
-
       this.usrID = userLst[this.selUser]['id'];
-      this.usrName = userLst[this.selUser]['username'];
+      this.usrName = userLst[this.selUser]['title'];
       this.usrRestricted = userLst[this.selUser]['restricted'];
       this.usrThumb = userLst[this.selUser]['thumb'];
       this.usrHome = userLst[this.selUser]['home'];
       this.usrStatus = userLst[this.selUser]['status'];
-
     }
   },
   methods: {
+    exportUsr: async function(){      
+      log.info(`Export Plex.TV User: ${this.usrName}`);
+      let Data = this.selUserDetails;
+      
+      const filename = await plextv.exportUsr({Type: 'csv', Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
+      filename
+    },
+    exportAllUsr: async function(){      
+      log.info(`Export All Plex.TV Users`)
+      let Data = this.$store.getters.getUsers;
+      await plextv.exportUsr({Type: 'csv', Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});
+      
+      
+    },
     getUsers: async function(){
       this.selUserWait = false;
       var userLst = this.$store.getters.getUsers;      

@@ -129,7 +129,7 @@
     },
     "Modules": {
         "PlexTV": {
-            "Name": "plex.tv",
+            "Name": "Plex.TV",
             "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with",
             "SelUsr": "Select User",
             "TT-User": "Here you select the user to get more info about",
@@ -139,7 +139,10 @@
             "UsrRestricted": "User Restricted",
             "UsrThumb": "Link to User thumb",
             "UsrHome": "Is user part of your Home",
-            "UsrStatus": "User invite status"
+            "UsrStatus": "User invite status",
+            "ExportUsr": "Export user",
+            "ExportAllUsr": "Export all users",
+            "AllUsr": "All-Users"
         },
         "PMS": {
             "Name": "Plex Media Server",
