@@ -23,7 +23,7 @@ const pmssettings = new class PMSSettings {
             i18n.t('Modules.PMS.Export.Items.Default'),
             i18n.t('Modules.PMS.Export.Items.Value')
         ]
-        this.itemfields = [
+        this.itemfields = [                        
             "label",
             "summary",
             "type",
@@ -36,13 +36,10 @@ const pmssettings = new class PMSSettings {
     async exportSettings({ Module, Grp, Data }){
         /*
             Will export selected user to a file    
-        */
-        let strTmp = i18n.t('Modules.PMS.Export.Items.Category');
-        console.log('Ged Export Group', Grp)
-
-
+        */        
+        let strTmp = '';        
         // Open a file stream
-        const tmpFile = await this.getFileName({Type: 'tmp', Module: Module, Grp: Grp});
+        const tmpFile = await this.getFileName({Type: 'tmp', Module: Module, Grp: Grp});        
         var fs = require('fs');        
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
@@ -54,77 +51,68 @@ const pmssettings = new class PMSSettings {
         strTmp = strTmp.slice(0,-1) + "\n";
         // Write header to tmp file
         stream.write( strTmp );
-
-
-
         // Add Data
-        if ( Grp === "All"){ 
-            console.log('Ged all')                       
-            Object.keys(Data).forEach(function(key) {
-                strTmp = '';
-                pmssettings.fields.forEach(function (item) {
-                    let result = Data[key][item];
-                    if (result == null){
-                        result = wtconfig.get('ET.NotAvail'); 
-                    }
-                    strTmp += result + pmssettings.separator;                
-                  }
-                );
-                // Remove last separator and add CR
-                strTmp = strTmp.slice(0,-1) + "\n";
-                // Write to tmp file
-                stream.write( strTmp );                
-            })
-        }
-        else {
-            console.log('Ged Single Group', Grp)            
-            Data[Grp].forEach(function (item) {
-                Object.keys(item).forEach(function(key) {
-                    strTmp = i18n.t('Modules.PMS.Export.Items.Category');                                    
+        if ( Grp === "All"){
+            Object.keys(Data).forEach(function(category){
+                Data[category].forEach(function (item) {                    
+                    // Category
+                    strTmp = category + pmssettings.separator;
+                    // Name
+                    strTmp += Object.keys(item)[0] + pmssettings.separator;
+                    // Remaining fields
                     pmssettings.itemfields.forEach(function (field) {
-                        console.log('Ged Item Field', field, item[key][field])
-                        let result = item[key][field];
-                        if (result == null){
-                            result = wtconfig.get('ET.NotAvail'); 
+                        try{
+                            let result = item[Object.keys(item)[0]][field];
+                            if (result == null){
+                                result = wtconfig.get('ET.NotAvail'); 
+                            }
+                            strTmp += result + pmssettings.separator;                                                                               
                         }
-                        strTmp += result + pmssettings.separator;                                                                                    
+                        catch (error){
+                            log.error(`PMS Export Single error: ${error}`);                            
+                        }
                     });
                     // Remove last separator and add CR
-                    strTmp = strTmp.slice(0,-1) + "\n";
+                    strTmp = strTmp.slice(0,-1) + "\n";                    
                     // Write to tmp file
-                    stream.write( strTmp ); 
+                    stream.write( strTmp );
+                });
+            });
+        }
+        else {         
+            Data[Grp].forEach(function (item) {
+                Object.keys(item).forEach(function(key) {
+                    // Category
+                    strTmp = Grp + pmssettings.separator;
+                    // Name
+                    strTmp += Object.keys(item)[0] + pmssettings.separator;
+                    // Remaining fields
+                    pmssettings.itemfields.forEach(function (field) {
+                        try{
+                            let result = item[key][field];
+                            if (result == null){
+                                result = wtconfig.get('ET.NotAvail'); 
+                            }
+                            strTmp += result + pmssettings.separator;                                                                               
+                        }
+                        catch (error){
+                            log.error(`PMS Export Single error: ${error}`);                            
+                        }
 
-                    console.log('Ged ******** New line ********')                    
+                    });
+                    // Remove last separator and add CR
+                    strTmp = strTmp.slice(0,-1) + "\n";                    
+                    // Write to tmp file
+                    stream.write( strTmp );
                 });
             });                
         }
-/* 
-        else {            
-            strTmp = '';
-            // Add each field            
-            this.fields.forEach(function (item) {
-                let result = Data[item];
-                if (result == null){
-                    result = wtconfig.get('ET.NotAvail'); 
-                }
-                strTmp += result + pmssettings.separator;
-                //strTmp += Data[item] + plextv.separator;                
-              }
-            );
-            // Remove last separator and add CR
-            strTmp = strTmp.slice(0,-1) + "\n";
-            // Write to tmp file
-            stream.write( strTmp );        
-        }
- */
-
-
         // Close tmp file
         stream.end();
         // Rename to real file name
         var newFile = tmpFile.replace('.tmp', '.csv');
-        fs.renameSync(tmpFile, newFile);                      
-        console.log('renamed complete');
+        fs.renameSync(tmpFile, newFile);
+        log.info('renamed complete');
     }
 
     async getFileName({ Type, Module, Grp }){

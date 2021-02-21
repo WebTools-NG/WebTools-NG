@@ -170,7 +170,10 @@
             exportAllSettings: async function(){      
                 log.info(`Export All Settings: ${this.selSection}`);
 
-                await pmssettings.exportSettings({Module: i18n.t("Modules.PMS.Name"), Grp: 'All', Data: this.$store.getters.getPMSSettings});
+                const path = require('path');
+                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));                
+
+                await pmssettings.exportSettings({Module: dirPath, Grp:'All', Data: this.$store.getters.getPMSSettings});                            
             },
             async saveNewSetting() {                
                 log.debug(`Saving setting ${this.newSettingValue} for setting ${this.edtSettingKey}`);
