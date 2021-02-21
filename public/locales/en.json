@@ -174,7 +174,20 @@
                 "curSetting": "Current Setting",
                 "defSetting": "Default Setting",
                 "newSettingValueTXT": "<Enter new value>",
-                "varning": "Change at your own risk. Any change can lead to malfunction of your plex server"
+                "varning": "Change at your own risk. Any change can lead to malfunction of your plex server",
+                "ExportAllSettings": "Export all settings to CSV",
+                "ExportGroupSettings": "Export selected group settings to CSV"                
+            },
+            "Export":{
+                "Items":{
+                    "Category": "Category",
+                    "Name": "Name",
+                    "Label":"Label",
+                    "Summary":"Summary",
+                    "Type": "Type",
+                    "Default": "Default",
+                    "Value": "Value"
+                }
             }
         },
         "ET": {

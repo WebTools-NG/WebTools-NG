@@ -110,8 +110,7 @@
     exportUsr: async function(){      
       log.info(`Export Plex.TV User: ${this.usrName}`);
       let Data = this.selUserDetails;      
-      const filename = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
-      filename
+      await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
     },
     exportAllUsr: async function(){      
       log.info(`Export All Plex.TV Users`)

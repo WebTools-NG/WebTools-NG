@@ -93,16 +93,30 @@
             @row-clicked="tblRowClicked">
             <template #table-caption>{{ $t('Modules.PMS.Settings.tblCaption') }}</template>
         </b-table>
-  </div>
+    </div>
+    <br>
+    <div class="buttons">        
+        <!-- Buttons -->
+        <div id="buttons" class="text-center">
+            <b-button-group >
+                <b-button variant="success" class="mr-1" :disabled="this.selSection == ''" @click="exportSettings"> {{ $t('Modules.PMS.Settings.ExportGroupSettings') }} </b-button>                
+                <b-button variant="success" class="mr-1"  @click="exportAllSettings">{{ $t('Modules.PMS.Settings.ExportAllSettings') }}</b-button>
+            </b-button-group>
+        </div>         
+    </div> 
+    <br>        
+    <p class="text-center">{{ $t('Modules.PlexTV.Settings') }}</p>
+    {{ this.selSection }}
   </b-container>
 </template>
 
 <script>
     const log = require("electron-log");
-    const {JSONPath} = require('jsonpath-plus');
-    import {wtconfig} from '../../General/wtutils';
+    const {JSONPath} = require('jsonpath-plus');    
+    import {wtconfig} from './../../General/wtutils';
     import i18n from '../../../../i18n';
-    import store from '../../../../store';    
+    import store from '../../../../store';
+    import { pmssettings } from "./scripts/settings";         
     export default {        
         data() {            
             return {
@@ -145,6 +159,22 @@
             }
         },
         methods: {
+            exportSettings: async function(){      
+                log.info(`Export Group Settings: ${this.selSection}`);
+
+                const path = require('path');
+                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));                
+
+                await pmssettings.exportSettings({Module: dirPath, Grp: this.selSection, Data: this.$store.getters.getPMSSettings});
+            },
+            exportAllSettings: async function(){      
+                log.info(`Export All Settings: ${this.selSection}`);
+
+                const path = require('path');
+                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));                
+
+                await pmssettings.exportSettings({Module: dirPath, Grp:'All', Data: this.$store.getters.getPMSSettings});                            
+            },
             async saveNewSetting() {                
                 log.debug(`Saving setting ${this.newSettingValue} for setting ${this.edtSettingKey}`);
                 // Save setting               
@@ -204,21 +234,7 @@
             },
             getGroupSelectedItem: function(myarg) {
                 log.debug(`Group changed to: ${myarg}`);
-                this.updateTbl(myarg);
-                /* // Update the data table with new settings                
-                const filteredResult = JSONPath({path: `$.${myarg}`, json: this.$store.getters.getPMSSettings})[0];
-                log.verbose(`filtered settings: ${JSON.stringify(filteredResult)}`);                
-                this.settingsItems = [];
-                for (var i = 0; i < filteredResult.length; i++) {                    
-                    var entry = {};
-                    entry['name'] = JSONPath({path: `$.*~`, json: filteredResult[i]})[0];
-                    entry['label'] = JSONPath({path: `$..label`, json: filteredResult[i]})[0];
-                    entry['summary'] = JSONPath({path: `$..summary`, json: filteredResult[i]})[0];
-                    entry['type'] = JSONPath({path: `$..type`, json: filteredResult[i]})[0];
-                    entry['default'] = JSONPath({path: `$..default`, json: filteredResult[i]})[0];
-                    entry['value'] = JSONPath({path: `$..value`, json: filteredResult[i]})[0];
-                    this.settingsItems.push(entry);                                        
-                } */
+                this.updateTbl(myarg);                
             },
             async serverSelected() {
                 let serverCheck = this.$store.getters.getSelectedServer;
