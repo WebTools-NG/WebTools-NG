@@ -161,19 +161,31 @@
         methods: {
             exportSettings: async function(){      
                 log.info(`Export Group Settings: ${this.selSection}`);
-
                 const path = require('path');
-                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));                
-
-                await pmssettings.exportSettings({Module: dirPath, Grp: this.selSection, Data: this.$store.getters.getPMSSettings});
+                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));
+                const outFile = await pmssettings.exportSettings({Module: dirPath, Grp: this.selSection, Data: this.$store.getters.getPMSSettings});
+                const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);            
+                this.$bvToast.toast(bodyStr, {           
+                    title: this.$t("Modules.PMS.ExportDoneTitle"),
+                    autoHideDelay: 400000,                     
+                    solid: true,
+                    variant: 'primary',
+                    toaster: 'b-toaster-bottom-right' 
+                });
             },
             exportAllSettings: async function(){      
                 log.info(`Export All Settings: ${this.selSection}`);
-
                 const path = require('path');
-                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));                
-
-                await pmssettings.exportSettings({Module: dirPath, Grp:'All', Data: this.$store.getters.getPMSSettings});                            
+                const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));
+                const outFile = await pmssettings.exportSettings({Module: dirPath, Grp:'All', Data: this.$store.getters.getPMSSettings});
+                const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);            
+                this.$bvToast.toast(bodyStr, {           
+                    title: this.$t("Modules.PMS.ExportDoneTitle"),
+                    autoHideDelay: 400000,                     
+                    solid: true,
+                    variant: 'primary',
+                    toaster: 'b-toaster-bottom-right' 
+                });
             },
             async saveNewSetting() {                
                 log.debug(`Saving setting ${this.newSettingValue} for setting ${this.edtSettingKey}`);
