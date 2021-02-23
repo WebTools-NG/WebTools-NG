@@ -5,6 +5,7 @@
 **Note**:   This version is an Alpha version, that is not made public
 
 * [#257 Plex.TV Export notify when done](https://github.com/WebTools-NG/WebTools-NG/issues/257)
+* [#256 PMS Export notify when done](https://github.com/WebTools-NG/WebTools-NG/issues/256)
 
 ## V0.1.15
 

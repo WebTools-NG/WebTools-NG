@@ -113,6 +113,7 @@ const pmssettings = new class PMSSettings {
         var newFile = tmpFile.replace('.tmp', '.csv');
         fs.renameSync(tmpFile, newFile);
         log.info('renamed complete');
+        return newFile;
     }
 
     async getFileName({ Type, Module, Grp }){
