@@ -110,12 +110,28 @@
     exportUsr: async function(){      
       log.info(`Export Plex.TV User: ${this.usrName}`);
       let Data = this.selUserDetails;      
-      await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
+      const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
+      const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);            
+        this.$bvToast.toast(bodyStr, {           
+          title: this.$t("Modules.PMS.ExportDoneTitle"),
+          autoHideDelay: 400000,                     
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right' 
+        });
     },
     exportAllUsr: async function(){      
       log.info(`Export All Plex.TV Users`)
       let Data = this.$store.getters.getUsers;
-      await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});            
+      const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});
+      const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);            
+        this.$bvToast.toast(bodyStr, {           
+          title: this.$t("Modules.PMS.ExportDoneTitle"),
+          autoHideDelay: 400000,                     
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right' 
+        });
     },
     getUsers: async function(){
       this.selUserWait = false;

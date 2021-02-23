@@ -98,6 +98,7 @@ const plextv = new class PlexTV {
         var newFile = tmpFile.replace('.tmp', '.csv');
         fs.renameSync(tmpFile, newFile);                      
         console.log('renamed complete');
+        return newFile;
     }
 
     async getFileName({ Type, Module, Usr }){
