@@ -164,13 +164,13 @@ export default {
       {
         log.error('ExportDir missing');        
         const bodyStr = i18n.t("Common.ErrorNoOutDirMsg");            
-            this.$bvToast.toast(bodyStr, {           
-              title: this.$t("Common.ErrorNoOutDirTitle"),
-              autoHideDelay: 400000,                     
-              solid: true,
-              variant: 'primary',
-              toaster: 'b-toaster-bottom-right' 
-            });
+        this.$bvToast.toast(bodyStr, {           
+          title: this.$t("Common.ErrorNoOutDirTitle"),
+          autoHideDelay: 400000,                     
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right' 
+        });
 
       }
     }

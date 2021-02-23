@@ -148,6 +148,8 @@
         },
         "PMS": {
             "Name": "Plex Media Server",
+            "ExportDoneBody": "Check {0}",
+            "ExportDoneTitle": "Export finished",
             "Description": "@:Modules.PMS.Name module allows you to manage your server",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
