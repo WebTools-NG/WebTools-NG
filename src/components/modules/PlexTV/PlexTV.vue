@@ -64,8 +64,7 @@
   import store from '../../../store';
   import { plextv } from "./scripts/plextv"; 
   import i18n from '../../../i18n';
-  
-  plextv
+  import { wtconfig } from '../General/wtutils';    
 
   const log = require("electron-log");
   export default {
@@ -107,7 +106,19 @@
     }
   },
   methods: {
-    exportUsr: async function(){      
+    exportUsr: async function(){
+      if (wtconfig.get('General.ExportPath', "") == "")
+      {
+          log.info('ET: No output dir defined')        
+          this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
+          title: this.$t("Common.ErrorNoOutDirTitle"),
+          autoHideDelay: 3000,          
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right' 
+          })        
+          return
+      }      
       log.info(`Export Plex.TV User: ${this.usrName}`);
       let Data = this.selUserDetails;      
       const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
@@ -120,7 +131,19 @@
           toaster: 'b-toaster-bottom-right' 
         });
     },
-    exportAllUsr: async function(){      
+    exportAllUsr: async function(){
+      if (wtconfig.get('General.ExportPath', "") == "")
+      {
+          log.info('ET: No output dir defined')        
+          this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
+          title: this.$t("Common.ErrorNoOutDirTitle"),
+          autoHideDelay: 3000,          
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right' 
+          })        
+          return
+      }      
       log.info(`Export All Plex.TV Users`)
       let Data = this.$store.getters.getUsers;
       const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});

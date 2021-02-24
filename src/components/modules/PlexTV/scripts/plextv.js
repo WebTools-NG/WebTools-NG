@@ -37,7 +37,7 @@ const plextv = new class PlexTV {
     async exportUsr({ Module, Usr, Data }){
         /*
             Will export selected user to a file    
-        */
+        */        
         let strTmp = '';
         // Set result file to users title
         let fName = 'All';        
