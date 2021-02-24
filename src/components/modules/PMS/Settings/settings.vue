@@ -159,7 +159,19 @@
             }
         },
         methods: {
-            exportSettings: async function(){      
+            exportSettings: async function(){
+                if (wtconfig.get('General.ExportPath', "") == "")
+                {
+                    log.info('ET: No output dir defined')        
+                    this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
+                    title: this.$t("Common.ErrorNoOutDirTitle"),
+                    autoHideDelay: 3000,          
+                    solid: true,
+                    variant: 'primary',
+                    toaster: 'b-toaster-bottom-right' 
+                    })        
+                    return
+                }      
                 log.info(`Export Group Settings: ${this.selSection}`);
                 const path = require('path');
                 const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));
@@ -173,7 +185,19 @@
                     toaster: 'b-toaster-bottom-right' 
                 });
             },
-            exportAllSettings: async function(){      
+            exportAllSettings: async function(){
+                if (wtconfig.get('General.ExportPath', "") == "")
+                {
+                    log.info('ET: No output dir defined')        
+                    this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
+                    title: this.$t("Common.ErrorNoOutDirTitle"),
+                    autoHideDelay: 3000,          
+                    solid: true,
+                    variant: 'primary',
+                    toaster: 'b-toaster-bottom-right' 
+                    })        
+                    return
+                }      
                 log.info(`Export All Settings: ${this.selSection}`);
                 const path = require('path');
                 const dirPath = path.join(i18n.t("Modules.PMS.Name"), i18n.t("Modules.PMS.Settings.Settings"));
