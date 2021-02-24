@@ -68,10 +68,28 @@
                 "Updated",
                 "Poster url",
                 "Deleted",
-                "Content Rating"
+                "Content Rating",
+                "Audio Stream Channels",
+                "Video Stream Index"
             ]           
         },
         "fields": {
+            "Video Stream Index":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "index"
+            },
+            "Audio Stream Channels":
+                {                    
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                    "call": 2,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "channels"
+                },
             "Media ID":
                 {
                     "key": "$.ratingKey",

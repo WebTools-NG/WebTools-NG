@@ -607,8 +607,13 @@ const excel2 = new class Excel {
                             retVal = val; 
                         }
                     }
-                    break;
-                case "IMDB":                    
+                    break;                
+                case "IMDB ID":                    
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }                   
                     start = val.indexOf("imdb://");
                     strStart = val.substring(start);
                     end = strStart.indexOf("-");                    
@@ -616,13 +621,48 @@ const excel2 = new class Excel {
                     if (end == -1)
                     { result = strStart.substring(7) }
                     else 
-                    { result = strStart.substring(7, end) }
-                    if ( result == '')
-                    { retVal = wtconfig.get('ET.NotAvail'); }
-                    else
-                    { retVal = 'https://www.imdb.com/title/' + result; }
-                    break;                                                                                                       
-                case "TMDB":                    
+                    { result = strStart.substring(7, end) }                                       
+                    retVal = result;
+                    break;
+                case "IMDB Link":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }                    
+                        start = val.indexOf("imdb://");
+                        strStart = val.substring(start);
+                        end = strStart.indexOf("-");                    
+                        result = ''
+                        if (end == -1)
+                        { result = strStart.substring(7) }
+                        else 
+                        { result = strStart.substring(7, end) }
+                        result = 'https://www.imdb.com/title/' + result;
+                        retVal = result;
+                        break;                                                                                                       
+                case "TMDB ID":                    
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }                   
+                    start = val.indexOf("tmdb://");
+                    strStart = val.substring(start);
+                    end = strStart.indexOf("-");                    
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else 
+                    { result = strStart.substring(7, end) }                                       
+                    retVal = result;
+                    break;
+                case "TMDB Link":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }                    
                     start = val.indexOf("tmdb://");
                     strStart = val.substring(start);
                     end = strStart.indexOf("-");                    

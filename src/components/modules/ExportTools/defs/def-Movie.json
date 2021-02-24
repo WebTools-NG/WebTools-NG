@@ -2,8 +2,7 @@
     "movie": {
         "level": {
             "devTommy": [
-                "Media ID", "Title",
-                "TMDB", "IMDB"
+                "Media ID", "Title"                
             ],                    
             "level1": [
                 "Media ID", "Title", "Sort title", 
@@ -20,6 +19,7 @@
                 "Roles", "Audience Rating", "User Rating"
             ],            
             "all": [
+                "TMDB Link", "TMDB ID",
                 "Media ID", "Title", "Sort title", 
                 "Studio", "Content Rating", "Year",
                 "Rating", "Summary",
@@ -79,10 +79,19 @@
                 "Subtitle Stream Format", "Subtitle Stream Title",
                 "Subtitle Stream Selected", 
                 "Subtitle Stream Required Bandwidths",
-                "Subtitle Header Compression"
+                "Subtitle Header Compression",
+                "Subtitle Stream Index"
             ]
         },
         "fields": {
+            "Subtitle Stream Index":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                    "call": 2,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.index"                
+            },
             "Media ID":
                 {
                     "key": "$.ratingKey",
@@ -201,18 +210,35 @@
                     "type": "array",
                     "subtype": "string",
                     "subkey": "$.tag"
-                },
-            "IMDB":
+                },            
+            "IMDB ID":
+            {
+                "key": "$.Guid[*]",                    
+                "call": 1,
+                "type": "array",
+                "subtype": "string",                    
+                "subkey": "$.id",
+                "postProcess": true
+            },
+            "IMDB Link":
+            {
+                "key": "$.Guid[*]",                    
+                "call": 1,
+                "type": "array",
+                "subtype": "string",                    
+                "subkey": "$.id",
+                "postProcess": true
+            },
+            "TMDB ID":
                 {
-                    "key": "$.Guid[*]",
+                    "key": "$.Guid[*]",                    
                     "call": 1,
                     "type": "array",
-                    "subtype": "string",
-                    "subkey1": "$.id",
+                    "subtype": "string",                    
                     "subkey": "$.id",
                     "postProcess": true
                 },
-            "TMDB":
+            "TMDB Link":
                 {
                     "key": "$.Guid[*]",                    
                     "call": 1,
