@@ -87,10 +87,10 @@
             "Subtitle Stream Index":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
-                    "call": 2,
-                    "type": "array",
-                    "subtype": "string",
-                    "subkey": "$.index"                
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.index"                
             },
             "Media ID":
                 {

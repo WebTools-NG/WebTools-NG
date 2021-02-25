@@ -49,7 +49,7 @@
                 "Deleted",
                 "Content Rating"                  
             ],
-            "all": [
+            "all": [                
                 "Media ID",
                 "Series Title", 
                 "Sort title",
@@ -73,10 +73,42 @@
                 "Video Stream Index",
                 "Video Stream Bitrate",
                 "Audio Stream Sampling Rate",
-                "Audio Stream Required Bandwidths"
+                "Audio Stream Required Bandwidths",
+                "Subtitle Stream Codec",
+                "Subtitle Stream Forced",
+                "Subtitle Stream Index",
+                "Subtitle Stream Language"
             ]           
         },
         "fields": {
+            "Subtitle Stream Language":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.language"
+            },
+            "Subtitle Stream Index":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.index"
+            },
+            "Subtitle Stream Forced":
+            {
+
+            },
+            "Subtitle Stream Codec":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.profile"
+            },
             "Audio Stream Required Bandwidths":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
