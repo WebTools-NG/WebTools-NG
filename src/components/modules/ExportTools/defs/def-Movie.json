@@ -20,7 +20,7 @@
             ],
             "all": [
                 "TMDB Link", "TMDB ID",
-                "Media ID", "Title", "Sort title", 
+                "Media ID", "Title", "Sort title",
                 "Studio", "Content Rating", "Year",
                 "Rating", "Summary",
                 "View Count", "Last Viewed at",
@@ -52,8 +52,8 @@
                 "Part Deep Analysis Version",
                 "Required Bandwidths", "Video Stream Title",
                 "Video Stream Default", "Video Stream Index",
-                "Video Stream Pixel Format", "Video Stream Profile", 
-                "Video Stream Ref Frames", "Video Stream Scan Type", 
+                "Video Stream Pixel Format", "Video Stream Profile",
+                "Video Stream Ref Frames", "Video Stream Scan Type",
                 "Video Stream Stream Identifier", "Video Stream Width",
                 "Video Stream Pixel Aspect Ratio", "Video Stream Height",
                 "Video Stream Has Scaling Matrix", "Video Stream Frame Rate Mode",
@@ -77,13 +77,22 @@
                 "Subtitle Stream Codec", "Subtitle Stream Language",
                 "Subtitle Stream Language Code", "Subtitle Stream Codec ID",
                 "Subtitle Stream Format", "Subtitle Stream Title",
-                "Subtitle Stream Selected", 
+                "Subtitle Stream Selected",
                 "Subtitle Stream Required Bandwidths",
                 "Subtitle Header Compression",
-                "Subtitle Stream Index"
+                "Subtitle Stream Index",
+                "Part Video Profile"
             ]
         },
         "fields": {
+            "Part Video Profile":
+            {
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.videoProfile"
+            },
             "Subtitle Stream Index":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",

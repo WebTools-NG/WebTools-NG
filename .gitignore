@@ -25,3 +25,6 @@ yarn-error.log*
 
 #WebTools-NG speclials
 /public/version.json
+
+# ET Test XML's
+/src/components/modules/ExportTools/defs/DevTest
