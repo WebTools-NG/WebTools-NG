@@ -141,10 +141,17 @@
                 "Audio Stream Bitrate",
                 "Audio Stream Title",
                 "Audio Stream Display Title",
-                "Audio Stream Extended Display Title"
+                "Audio Stream Extended Display Title",
+                "Extras"
             ]
         },
         "fields": {
+            "Extras":
+            {
+                "key": "$.Extras.size",
+                "call": 2,
+                "type": "int"
+            },
             "Audio Stream Extended Display Title":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
@@ -608,7 +615,7 @@
             {
                 "key": "$.Media[*].Part[*]",
                 "call": 2,
-                "type": "array", 
+                "type": "array",
                 "subtype": "string",
                 "subkey": "$.accessible"
             },
@@ -749,7 +756,7 @@
                 "subkey": "index"
             },
             "Audio Stream Channels":
-                {                    
+                {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
