@@ -517,19 +517,30 @@ const excel2 = new class Excel {
     async postProcess( {name, val, title=""} ){       
         const valArray = val.split(wtconfig.get('ET.ArraySep', ' - '));
         let retArray = [];
-        let x, retVal, start, strStart, end, result;        
-        try {                       
-            switch ( String(name) ){            
-                case "MetaDB Link":                                                                                           
-                    for (x=0; x<valArray.length; x++) {                    
-                        retArray.push(path.basename(valArray[x].split("?")[0]))                    
+        let x, retVal, start, strStart, end, result;
+        try {
+            switch ( String(name) ){
+                case "MetaDB Link":
+                    // ["\"com.plexapp.agents.imdb://tt1291580?lang=en\""]
+                    // ["\"com.plexapp.agents.thetvdb://73141/17/5?lang=en\""]
+                    console.log('Ged MetaDB Link', JSON.stringify(valArray))
+                    for (x=0; x<valArray.length; x++) {
+                        //if ( valArray[x].toString().startsWith('com.plexapp.agents.thetvdb'))
+                        if (valArray[x].includes("thetvdb"))
+                        {
+                            retArray.push(wtconfig.get('ET.NotAvail'))
+                        }
+                        else
+                        {
+                            retArray.push(path.basename(valArray[x].split("?")[0]))
+                        }
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break;
                 case "MetaData Language":
                     try
-                    {                
-                        for (x=0; x<valArray.length; x++) {                    
+                    {
+                        for (x=0; x<valArray.length; x++) {
                             retArray.push(path.basename(valArray[x].split("=")[1]))                    
                         }
                         retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
@@ -540,14 +551,14 @@ const excel2 = new class Excel {
                         retVal = wtconfig.get('ET.NotAvail');
                     }
                     break; 
-                case "Part File":                
+                case "Part File":
                     for (x=0; x<valArray.length; x++) {                    
                         retArray.push(path.basename(valArray[x]))                    
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '))
                     break; 
-                case "Part File Path":                
-                    for (x=0; x<valArray.length; x++) {                    
+                case "Part File Path":
+                    for (x=0; x<valArray.length; x++) {
                         retArray.push(path.dirname(valArray[x]));                    
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' - '));
@@ -608,20 +619,25 @@ const excel2 = new class Excel {
                         }
                     }
                     break;                
-                case "IMDB ID":                    
+                case "IMDB ID":
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
                         retVal = val;
                         break;
-                    }                   
+                    }
                     start = val.indexOf("imdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
                     strStart = val.substring(start);
-                    end = strStart.indexOf("-");                    
+                    end = strStart.indexOf("-");
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
-                    else 
-                    { result = strStart.substring(7, end) }                                       
+                    else
+                    { result = strStart.substring(7, end) }
                     retVal = result;
                     break;
                 case "IMDB Link":
@@ -629,25 +645,56 @@ const excel2 = new class Excel {
                         {
                             retVal = val;
                             break;
-                        }                    
+                        }
                         start = val.indexOf("imdb://");
+                        if (start == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
                         strStart = val.substring(start);
-                        end = strStart.indexOf("-");                    
+                        end = strStart.indexOf("-");
                         result = ''
                         if (end == -1)
                         { result = strStart.substring(7) }
-                        else 
+                        else
                         { result = strStart.substring(7, end) }
                         result = 'https://www.imdb.com/title/' + result;
                         retVal = result;
-                        break;                                                                                                       
-                case "TMDB ID":                    
+                        break;
+                case "TVDB ID":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("tvdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    end = strStart.indexOf("-");
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    retVal = result;
+                    break;
+                case "TMDB ID":
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
                         retVal = val;
                         break;
                     }                   
                     start = val.indexOf("tmdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
                     strStart = val.substring(start);
                     end = strStart.indexOf("-");                    
                     result = ''

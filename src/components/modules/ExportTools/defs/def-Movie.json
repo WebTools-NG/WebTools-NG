@@ -870,31 +870,31 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "level"                    
-                },                                                
+                    "subkey": "level"
+                },
             "Audio Stream Selected":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "selected"                    
-                },                                                
+                    "subkey": "selected"
+                },
             "Audio Stream Default":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
-                },                                                
+                    "subkey": "default"
+                },
             "Audio Stream Codec":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "codec"                    
+                    "subkey": "codec"
                 },
             "Audio Stream Index":
                 {
@@ -902,7 +902,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "index"                    
+                    "subkey": "index"
                 },
             "Audio Stream Channels":
                 {
@@ -910,7 +910,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "channels"                    
+                    "subkey": "channels"
                 },
             "Audio Stream Bitrate":
                 {
@@ -918,7 +918,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "bitrate"                    
+                    "subkey": "bitrate"
                 },
             "Audio Stream Language":
                 {
@@ -926,7 +926,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "language"                    
+                    "subkey": "language"
                 },
             "Audio Stream Language Code":
                 {
@@ -934,7 +934,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "languageCode"                    
+                    "subkey": "languageCode"
                 },
             "Audio Stream Audio Channel Layout":
                 {
@@ -942,7 +942,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "audioChannelLayout"                    
+                    "subkey": "audioChannelLayout"
                 },
             "Audio Stream Bit Depth":
                 {
@@ -950,15 +950,15 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "bitDepth"                    
+                    "subkey": "bitDepth"
                 },
             "Audio Stream Bitrate Mode":
                 {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",                    
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.bitrateMode"                    
+                    "subkey": "$.bitrateMode"
                 },
             "Audio Stream Codec ID":
                 {
@@ -966,7 +966,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.codecID"                    
+                    "subkey": "$.codecID"
                 },
             "Audio Stream Duration":
                 {
@@ -974,7 +974,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.duration"                    
+                    "subkey": "$.duration"
                 },
             "Audio Stream Profile":
                 {
@@ -982,7 +982,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.profile"                    
+                    "subkey": "$.profile"
                 },
             "Audio Stream Sampling Rate":
                 {
