@@ -2,11 +2,10 @@
     "movie": {
         "level": {
             "devTommy": [
-                "Media ID", "Title",
-                "TMDB", "IMDB"
-            ],                    
+                "Media ID", "Title"
+            ],
             "level1": [
-                "Media ID", "Title", "Sort title", 
+                "Media ID", "Title", "Sort title",
                 "Studio", "Content Rating", "Year",
                 "Rating", "Summary"
             ],
@@ -18,9 +17,10 @@
                 "Tagline", "Release Date", "Writers",
                 "Country", "Duration", "Directors",
                 "Roles", "Audience Rating", "User Rating"
-            ],            
+            ],
             "all": [
-                "Media ID", "Title", "Sort title", 
+                "TMDB Link", "TMDB ID",
+                "Media ID", "Title", "Sort title",
                 "Studio", "Content Rating", "Year",
                 "Rating", "Summary",
                 "View Count", "Last Viewed at",
@@ -52,8 +52,8 @@
                 "Part Deep Analysis Version",
                 "Required Bandwidths", "Video Stream Title",
                 "Video Stream Default", "Video Stream Index",
-                "Video Stream Pixel Format", "Video Stream Profile", 
-                "Video Stream Ref Frames", "Video Stream Scan Type", 
+                "Video Stream Pixel Format", "Video Stream Profile",
+                "Video Stream Ref Frames", "Video Stream Scan Type",
                 "Video Stream Stream Identifier", "Video Stream Width",
                 "Video Stream Pixel Aspect Ratio", "Video Stream Height",
                 "Video Stream Has Scaling Matrix", "Video Stream Frame Rate Mode",
@@ -77,12 +77,30 @@
                 "Subtitle Stream Codec", "Subtitle Stream Language",
                 "Subtitle Stream Language Code", "Subtitle Stream Codec ID",
                 "Subtitle Stream Format", "Subtitle Stream Title",
-                "Subtitle Stream Selected", 
+                "Subtitle Stream Selected",
                 "Subtitle Stream Required Bandwidths",
-                "Subtitle Header Compression"
+                "Subtitle Header Compression",
+                "Subtitle Stream Index",
+                "Part Video Profile"
             ]
         },
         "fields": {
+            "Part Video Profile":
+            {
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.videoProfile"
+            },
+            "Subtitle Stream Index":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.index"
+            },
             "Media ID":
                 {
                     "key": "$.ratingKey",
@@ -170,7 +188,7 @@
                     "call": 1,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.tag"  
+                    "subkey": "$.tag" 
                 },
             "Country":
                 {
@@ -178,7 +196,7 @@
                     "call": 1,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.tag" 
+                    "subkey": "$.tag"
                 },
             "Duration":
                 {
@@ -192,7 +210,7 @@
                     "call": 1,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.tag" 
+                    "subkey": "$.tag"
                 },
             "Roles":
                 {
@@ -202,25 +220,42 @@
                     "subtype": "string",
                     "subkey": "$.tag"
                 },
-            "IMDB":
+            "IMDB ID":
+            {
+                "key": "$.Guid[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.id",
+                "postProcess": true
+            },
+            "IMDB Link":
+            {
+                "key": "$.Guid[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.id",
+                "postProcess": true
+            },
+            "TMDB ID":
                 {
                     "key": "$.Guid[*]",
                     "call": 1,
                     "type": "array",
                     "subtype": "string",
-                    "subkey1": "$.id",
                     "subkey": "$.id",
                     "postProcess": true
                 },
-            "TMDB":
+            "TMDB Link":
                 {
-                    "key": "$.Guid[*]",                    
+                    "key": "$.Guid[*]",
                     "call": 1,
                     "type": "array",
-                    "subtype": "string",                    
+                    "subtype": "string",
                     "subkey": "$.id",
                     "postProcess": true
-                },    
+                },
             "Audience Rating":
                 {
                     "key": "audienceRating",
@@ -239,7 +274,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.tag"                     
+                    "subkey": "$.tag"
                 },
             "Locked Fields":
                 {
@@ -247,56 +282,56 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.name"                     
+                    "subkey": "$.name"
                 },
             "Extras":
                 {
                     "key": "$.Extras.size",
                     "call": 2,
-                    "type": "int"                    
+                    "type": "int"
                 },
             "Extras-behindthescenes":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='behindTheScenes')].ratingKey",
                     "call": 2,
-                    "type": "array-count"                                                        
+                    "type": "array-count"
                 },
             "Extras-deleted":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='deleted')].ratingKey",                                      
                     "call": 2,
-                    "type": "array-count"                   
+                    "type": "array-count"
                 },
             "Extras-featurette":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='featurette')].ratingKey",                                      
                     "call": 2,
-                    "type": "array-count"                  
+                    "type": "array-count"
                 },
             "Extras-interview":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='interview')].ratingKey",                                      
                     "call": 2,
-                    "type": "array-count"                    
+                    "type": "array-count"
                 },
             "Extras-scene":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",                                      
                     "call": 2,
-                    "type": "array-count"                   
-                },                
+                    "type": "array-count"
+                },
             "Extras-short":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='short')].ratingKey",                                      
                     "call": 2,
-                    "type": "array-count"                    
-                }, 
+                    "type": "array-count"
+                },
             "Extras-trailer":
                 {
                     "key": "$..Extras.Metadata[?(@.subtype=='trailer')].ratingKey",                                      
                     "call": 2,
-                    "type": "array-count"                                       
-                }, 
+                    "type": "array-count"
+                },
             "Collections":
                 {
                     "key": "$.Collection[*]",
@@ -304,47 +339,47 @@
                     "type": "array",
                     "subtype": "string",
                     "subkey": "$.tag"
-                }, 
+                },
             "Original Title":
                 {
                     "key": "$..originalTitle",
                     "call": 2,
                     "type": "string",
-                    "postProcess": true                    
-                }, 
+                    "postProcess": true
+                },
             "Added":
                 {
                     "key": "$.addedAt",
                     "call": 1,
-                    "type": "datetime"                    
-                },                 
+                    "type": "datetime"
+                },
             "Updated":
                 {
                     "key": "$.updatedAt",
                     "call": 1,
-                    "type": "datetime"                    
+                    "type": "datetime"
                 },
             "Audio Languages":
-                {                    
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",                    
-                    "call": 2,
-                    "type": "array",
-                    "subtype": "string",
-                    "subkey": "$.languageCode"                    
-                },
-            "Audio Title":
-                {                    
+                {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.title"                    
+                    "subkey": "$.languageCode"
+                },
+            "Audio Title":
+                {
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                    "call": 2,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.title"
                 },
             "Subtitle Languages":
                 {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",                    
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
-                    "type": "array",    
+                    "type": "array",
                     "subtype": "string",
                     "subkey": "$.languageCode"
                 },
@@ -354,15 +389,15 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.title"                    
+                    "subkey": "$.title"
                 },
             "Subtitle Codec":
                 {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",                    
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.codec"                     
+                    "subkey": "$.codec"
                 },
             "Subtitle Forced":
                 {
@@ -370,55 +405,55 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.forced"                     
+                    "subkey": "$.forced"
                 },
             "Accessible":
-                {                    
-                    "key": "$.Media[*].Part[*]",
-                    "call": 2,
-                    "type": "array", 
-                    "subtype": "string",
-                    "subkey": "$.accessible"                   
-                },
-            "Exists":
-                {                    
+                {
                     "key": "$.Media[*].Part[*]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.exists"                     
+                    "subkey": "$.accessible"
+                },
+            "Exists":
+                {
+                    "key": "$.Media[*].Part[*]",
+                    "call": 2,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.exists"
                 },
             "MetaDB Link":
                 {
                     "key": "$.guid",
                     "call": 2,
                     "type": "string",
-                    "postProcess": true                    
+                    "postProcess": true
                 },
             "MetaData Language":
                 {
                     "key": "$.guid",
                     "call": 2,
                     "type": "string",
-                    "postProcess": true                     
+                    "postProcess": true
                 },
             "Poster url":
-                {                    
+                {
                     "key": "$.thumb",
                     "call": 2,
-                    "type": "string"                    
+                    "type": "string"
                 },
             "Art url":
                 {
                     "key": "$.art",
                     "call": 2,
-                    "type": "string"                    
+                    "type": "string"
                 },
             "Chapter Source":
                 {
                     "key": "$.chapterSource",
                     "call": 2,
-                    "type": "string"                    
+                    "type": "string"
                 },
             "Chapter Title":
                 {
@@ -426,21 +461,21 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.tag" 
+                    "subkey": "$.tag"
                 },
             "Chapter Count":
-                {                    
+                {
                     "key": "$..Chapter[*]",
                     "call": 2,
                     "type": "array-count"
                 },
             "Video Resolution":
-                {                    
+                {
                     "key": "$.Media[*]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.videoResolution"                    
+                    "subkey": "$.videoResolution"
                 },
             "Bitrate":
                 {
@@ -448,7 +483,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.bitrate"                       
+                    "subkey": "$.bitrate"
                 },
             "Width":
                 {
@@ -456,7 +491,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.width"                     
+                    "subkey": "$.width"
                 },
             "Height":
                 {
@@ -464,7 +499,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.height"                     
+                    "subkey": "$.height"
                 },
             "Aspect Ratio":
                 {
@@ -472,7 +507,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.aspectRatio"                    
+                    "subkey": "$.aspectRatio"
                 },
             "Audio Channels":
                 {
@@ -480,7 +515,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.audioChannels"                    
+                    "subkey": "$.audioChannels"
                 },
             "Audio Codec":
                 {
@@ -488,7 +523,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.audioCodec"                     
+                    "subkey": "$.audioCodec"
                 },
             "Video Codec":
                 {
@@ -496,7 +531,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.videoCodec"                     
+                    "subkey": "$.videoCodec"
                 },
             "Container":
                 {
@@ -504,7 +539,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.container"                    
+                    "subkey": "$.container"
                 },
             "Video FrameRate":
                 {
@@ -512,7 +547,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.videoFrameRate"                     
+                    "subkey": "$.videoFrameRate"
                 },
             "Part File Combined":
                 {
@@ -520,7 +555,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.file"                     
+                    "subkey": "$.file"
                 },
             "Part File":
                 {
@@ -529,7 +564,7 @@
                     "type": "array",
                     "postProcess": true,
                     "subtype": "string",
-                    "subkey": "$.file"                    
+                    "subkey": "$.file"
                 },
             "Part File Path":
                 {
@@ -538,24 +573,24 @@
                     "type": "array",
                     "postProcess": true,
                     "subtype": "string",
-                    "subkey": "$.file"                    
+                    "subkey": "$.file"
                 },
             "Part Size":
-                {                    
+                {
                     "key": "$.Media[*].Part[*]",
                     "call": 2,
                     "type": "array",
                     "postProcess": true,
                     "subtype": "string",
-                    "subkey": "$.size"                    
+                    "subkey": "$.size"
                 },
             "Part Size as Bytes":
                 {
                     "key": "$.Media[*].Part[*]",
                     "call": 2,
-                    "type": "array",                    
+                    "type": "array",
                     "subtype": "string",
-                    "subkey": "$.size" 
+                    "subkey": "$.size"
                 },
             "Part Indexed":
                 {
@@ -563,7 +598,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.indexes"                    
+                    "subkey": "$.indexes"
                 },
             "Part Duration":
                 {
@@ -572,7 +607,7 @@
                     "type": "array",
                     "postProcess": false,
                     "subtype": "time",
-                    "subkey": "$.duration" 
+                    "subkey": "$.duration"
                 },
             "Part Container":
                 {
@@ -580,7 +615,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.container"                    
+                    "subkey": "$.container"
                 },
             "Part Optimized for Streaming":
                 {
@@ -588,7 +623,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.optimizedForStreaming"                    
+                    "subkey": "$.optimizedForStreaming"
                 },
             "Part Deep Analysis Version":
                 {
@@ -596,7 +631,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.deepAnalysisVersion"                    
+                    "subkey": "$.deepAnalysisVersion"
                 },
             "Required Bandwidths":
                 {
@@ -604,7 +639,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.requiredBandwidths"                    
+                    "subkey": "$.requiredBandwidths"
                 },
             "Video Stream Title":
                 {
@@ -612,15 +647,15 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "title"                                     
-                },                
+                    "subkey": "title"
+                },
             "Video Stream Default":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
+                    "subkey": "default"
                 },
             "Video Stream Index":
                 {
@@ -628,7 +663,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "index"                    
+                    "subkey": "index"
                 },
             "Video Stream Pixel Format":
                 {
@@ -636,7 +671,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "pixelFormat"                      
+                    "subkey": "pixelFormat"
                 },
             "Video Stream Profile":
                 {
@@ -644,7 +679,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "profile"                    
+                    "subkey": "profile"
                 },
             "Video Stream Ref Frames":
                 {
@@ -652,7 +687,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "refFrames"                    
+                    "subkey": "refFrames"
                 },
             "Video Stream Scan Type":
                 {
@@ -660,7 +695,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "scanType"                    
+                    "subkey": "scanType"
                 },
             "Video Stream Stream Identifier":
                 {
@@ -668,7 +703,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "streamIdentifier"                    
+                    "subkey": "streamIdentifier"
                 },
             "Video Stream Width":
                 {
@@ -676,7 +711,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "width"                    
+                    "subkey": "width"
                 },
             "Video Stream Pixel Aspect Ratio":
                 {
@@ -684,7 +719,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "pixelAspectRatio"                    
+                    "subkey": "pixelAspectRatio"
                 },
             "Video Stream Height":
                 {
@@ -692,7 +727,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "height"                    
+                    "subkey": "height"
                 },
             "Video Stream Has Scaling Matrix":
                 {
@@ -700,7 +735,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "hasScalingMatrix"                    
+                    "subkey": "hasScalingMatrix"
                 },
             "Video Stream Frame Rate Mode":
                 {
@@ -708,7 +743,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "frameRateMode"                    
+                    "subkey": "frameRateMode"
                 },
             "Video Stream Frame Rate":
                 {
@@ -716,7 +751,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "frameRate"                    
+                    "subkey": "frameRate"
                 },
             "Video Stream Codec":
                 {
@@ -724,7 +759,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "codec"                    
+                    "subkey": "codec"
                 },
             "Video Stream Codec ID":
                 {
@@ -732,7 +767,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "codecID"                    
+                    "subkey": "codecID"
                 },
             "Video Stream Chroma Sub Sampling":
                 {
@@ -740,7 +775,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "chromaSubsampling"                    
+                    "subkey": "chromaSubsampling"
                 },
             "Video Stream Color Primaries":
                 {
@@ -748,7 +783,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "colorPrimaries"                    
+                    "subkey": "colorPrimaries"
                 },
             "Video Stream Color Range":
                 {
@@ -756,7 +791,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "colorRange"                    
+                    "subkey": "colorRange"
                 },
             "Video Stream Color Space":
                 {
@@ -764,7 +799,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "colorSpace"                    
+                    "subkey": "colorSpace"
                 },
             "Video Stream Color Trc":
                 {
@@ -772,7 +807,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "colorTrc"                    
+                    "subkey": "colorTrc"
                 },
             "Video Stream Cabac":
                 {
@@ -780,7 +815,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "cabac"                    
+                    "subkey": "cabac"
                 },
             "Video Stream Anamorphic":
                 {
@@ -788,7 +823,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "anamorphic"                    
+                    "subkey": "anamorphic"
                 },
             "Video Stream Language Code":
                 {
@@ -796,7 +831,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "languageCode"                    
+                    "subkey": "languageCode"
                 },
             "Video Stream Language":
                 {
@@ -804,7 +839,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "language"                    
+                    "subkey": "language"
                 },
             "Video Stream Bitrate":
                 {
@@ -812,7 +847,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "bitrate"                    
+                    "subkey": "bitrate"
                 },
             "Video Stream Bit Depth":
                 {
@@ -820,7 +855,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "bitDepth"                    
+                    "subkey": "bitDepth"
                 },
             "Video Stream Duration":
                 {
@@ -828,47 +863,47 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "duration"                    
-                },                                                
+                    "subkey": "duration"
+                },
             "Video Stream Required Bandwidths":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "requiredBandwidths"                    
-                },                                                
+                    "subkey": "requiredBandwidths"
+                },
             "Video Stream Level":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "level"                    
-                },                                                
+                    "subkey": "level"
+                },
             "Audio Stream Selected":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "selected"                    
-                },                                                
+                    "subkey": "selected"
+                },
             "Audio Stream Default":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "default"                    
-                },                                                
+                    "subkey": "default"
+                },
             "Audio Stream Codec":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "codec"                    
+                    "subkey": "codec"
                 },
             "Audio Stream Index":
                 {
@@ -876,7 +911,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "index"                    
+                    "subkey": "index"
                 },
             "Audio Stream Channels":
                 {
@@ -884,7 +919,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "channels"                    
+                    "subkey": "channels"
                 },
             "Audio Stream Bitrate":
                 {
@@ -892,7 +927,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "bitrate"                    
+                    "subkey": "bitrate"
                 },
             "Audio Stream Language":
                 {
@@ -900,7 +935,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "language"                    
+                    "subkey": "language"
                 },
             "Audio Stream Language Code":
                 {
@@ -908,7 +943,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "languageCode"                    
+                    "subkey": "languageCode"
                 },
             "Audio Stream Audio Channel Layout":
                 {
@@ -916,7 +951,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "audioChannelLayout"                    
+                    "subkey": "audioChannelLayout"
                 },
             "Audio Stream Bit Depth":
                 {
@@ -924,15 +959,15 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "bitDepth"                    
+                    "subkey": "bitDepth"
                 },
             "Audio Stream Bitrate Mode":
                 {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",                    
+                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.bitrateMode"                    
+                    "subkey": "$.bitrateMode"
                 },
             "Audio Stream Codec ID":
                 {
@@ -940,7 +975,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.codecID"                    
+                    "subkey": "$.codecID"
                 },
             "Audio Stream Duration":
                 {
@@ -948,7 +983,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.duration"                    
+                    "subkey": "$.duration"
                 },
             "Audio Stream Profile":
                 {
@@ -956,7 +991,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.profile"                    
+                    "subkey": "$.profile"
                 },
             "Audio Stream Sampling Rate":
                 {
@@ -964,7 +999,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.samplingRate"                    
+                    "subkey": "$.samplingRate"
                 },
             "Audio Stream Required Bandwidths":
                 {
@@ -972,7 +1007,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.requiredBandwidths"                    
+                    "subkey": "$.requiredBandwidths"
                 },
             "Subtitle Stream Codec":
                 {
@@ -980,7 +1015,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.profile"                    
+                    "subkey": "$.profile"
                 },
             "Subtitle Stream Language":
                 {
@@ -988,7 +1023,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.language"                    
+                    "subkey": "$.language"
                 },
             "Subtitle Stream Language Code":
                 {
@@ -996,7 +1031,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.languageCode"                    
+                    "subkey": "$.languageCode"
                 },
             "Subtitle Stream Codec ID":
                 {
@@ -1004,7 +1039,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "codecID"                    
+                    "subkey": "codecID"
                 },
             "Subtitle Stream Format":
                 {
@@ -1012,7 +1047,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "format"                    
+                    "subkey": "format"
                 },
             "Subtitle Stream Title":
                 {
@@ -1020,7 +1055,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "title"                    
+                    "subkey": "title"
                 },
             "Subtitle Stream Selected":
                 {
@@ -1028,7 +1063,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "selected"                    
+                    "subkey": "selected"
                 },
             "Subtitle Stream Required Bandwidths":
                 {
@@ -1036,7 +1071,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "requiredBandwidths"                    
+                    "subkey": "requiredBandwidths"
                 },
             "Subtitle Header Compression":
                 {
@@ -1044,7 +1079,7 @@
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "headerCompression"                    
+                    "subkey": "headerCompression"
                 },
             "Subtitle Stream Default":
                 {

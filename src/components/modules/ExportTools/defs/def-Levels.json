@@ -2,7 +2,7 @@
     "movie": {
         "levels": {
             "Level 1": "level1",
-            "Level 2": "level2",            
+            "Level 2": "level2",
             "All": "all",
             "dev tommy": "devTommy"
 
@@ -11,21 +11,19 @@
             "Level 1": 1,
             "Level 2": 1,
             "All": 2,
-            "devTommy": 2                     
+            "devTommy": 2
         }
     },
     "episode": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
-            "All": "all",
-            "devTommy": "devtommy"
+            "All": "all"
         },
         "LevelCount": {
             "Level 1": 1,
-            "Level 2": 1,            
-            "All": 2,
-            "devTommy": 1            
+            "Level 2": 1,
+            "All": 2
         }
     },
     "show": {
@@ -37,7 +35,7 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "devTommy": 1            
+            "devTommy": 1
         }
     },
     "artist": {
