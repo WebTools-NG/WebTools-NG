@@ -23,6 +23,7 @@ import store from '../../../../store';
 const et = new class ET {
     constructor() {
         this.PMSHeader = wtutils.PMSHeader;
+        this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
     }
 
     async getSectionData({sectionName, baseURL, accessToken, libType})
@@ -51,7 +52,7 @@ const et = new class ET {
             if (libType == 'episode')
             {
                 postURI += '&type=4'
-                postURI +='&checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1'
+                postURI += '&' + this.uriParams;
                 log.info(`Calling url ${baseURL + element + postURI}`)
             }
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
@@ -412,6 +413,7 @@ const et = new class ET {
 
 const excel2 = new class Excel {
     constructor() {
+        this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
     }
 
     AddRow(Sheet, Row) {
@@ -993,8 +995,8 @@ const excel2 = new class Excel {
                 const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
                 let urlStr = urls.join(',');
                 log.verbose(`Items to lookup are: ${urlStr}`)
-                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}))
-                const urlWIthPath = '/library/metadata/' + urlStr
+                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}));
+                const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
                 log.verbose(`Items retrieved`);
                 const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
                 const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
