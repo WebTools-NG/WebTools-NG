@@ -1,17 +1,6 @@
 {
     "episode": {
         "level": {
-            "devTommy": [
-                "Media ID",
-                "Writers"
-            ],
-            "Clear Fields": [
-            ],
-            "Invalid, belongs to shows": [
-                "Studio",
-                "Directors",
-                "Collection"
-            ],
             "level1": [
                 "Media ID",
                 "Series Title",
@@ -310,7 +299,7 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.bitrateMode"
+                "subkey": "$.codec"
             },
             "Audio Stream Index":
             {
@@ -326,7 +315,7 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "bitDepth"
+                "subkey": "bitrateMode"
             },
             "Audio Stream Codec ID":
             {
@@ -457,7 +446,11 @@
             },
             "Part Video Profile":
             {
-
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.videoProfile"
             },
             "Part Optimized for Streaming":
             {
@@ -793,7 +786,7 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.profile"
+                "subkey": "$.codec"
             },
             "Audio Stream Required Bandwidths":
             {
@@ -915,7 +908,13 @@
                     "type": "string"
                 },
             "Directors":
-                {},
+                {
+                    "key": "$.Director[*]",
+                    "call": 1,
+                    "type": "array",
+                    "subtype": "string",
+                    "subkey": "$.tag"
+                },
             "Writers":
                 {
                     "key": "$.Writer[*]",
@@ -948,8 +947,6 @@
                     "call": 1,
                     "type": "string"
                 },
-            "Collection":
-                {},
             "Locked Fields":
                 {
                     "key": "$.Field[*]",
