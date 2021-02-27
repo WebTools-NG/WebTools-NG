@@ -546,7 +546,8 @@ const excel2 = new class Excel {
                     }
                     catch (error)
                     {
-                        log.error(`Error getting MetaData Language was ${error} for ${JSON.stringify(valArray)}`);
+                        // Log error removed, since not valid if using native agents
+                        //log.error(`Error getting MetaData Language was ${error} for ${JSON.stringify(valArray)}`);
                         retVal = wtconfig.get('ET.NotAvail');
                     }
                     break;
@@ -761,8 +762,9 @@ const excel2 = new class Excel {
                     val = String(JSONPath({path: String(lookup), json: data})[0]);
                     // Make N/A if not found
                     val = this.isEmpty( { val: val });
-                    // Remove CR, LineFeed ' and " from the string if present
-                    val = val.replace(/(\r\n)|'|"/g, "");
+                    // Remove CR, LineFeed ' and " from the
+                    // string if present, and replace with a space
+                    val = val.replace(/'|"|\r|\n/g, ' ');
                     val = textSep + val + textSep;
                     break;
                 case "array":

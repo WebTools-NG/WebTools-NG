@@ -142,10 +142,82 @@
                 "Audio Stream Title",
                 "Audio Stream Display Title",
                 "Audio Stream Extended Display Title",
-                "Extras"
+                "Extras",
+                "Media Title",
+                "Media Video Profile",
+                "Media Video FrameRate",
+                "Media Container",
+                "Media Video Codec",
+                "Media Audio Codec",
+                "Media Audio Channels",
+                "Media Aspect Ratio"
             ]
         },
         "fields": {
+            "Media Aspect Ratio":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.aspectRatio"
+            },
+            "Media Audio Channels":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.audioChannels"
+            },
+            "Media Audio Codec":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.audioCodec"
+            },
+            "Media Video Codec":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.videoCodec"
+            },
+            "Media Container":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.container"
+            },
+            "Media Video FrameRate":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.videoFrameRate"
+            },
+            "Media Video Profile":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.videoProfile"
+            },
+            "Media Title":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.title"
+            },
             "Extras":
             {
                 "key": "$.Extras.size",
