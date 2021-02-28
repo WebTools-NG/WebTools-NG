@@ -36,6 +36,9 @@
                 "Content Rating"
             ],
             "all": [
+                "Media ID",
+                "Series Title",
+                "Episode Title",
                 "Accessible",
                 "Added",
                 "Audio Stream Audio Channel Layout",
@@ -60,7 +63,6 @@
                 "Content Rating",
                 "Deleted",
                 "Duration",
-                "Episode Title",
                 "Episode",
                 "Exists",
                 "Extras",
@@ -72,7 +74,6 @@
                 "Media Audio Channels",
                 "Media Audio Codec",
                 "Media Container",
-                "Media ID",
                 "Media Title",
                 "Media Video Bitrate",
                 "Media Video Codec",
@@ -99,7 +100,6 @@
                 "Rating",
                 "Required Bandwidths",
                 "Season",
-                "Series Title",
                 "Sort title",
                 "Subtitle Header Compression",
                 "Subtitle Stream Codec ID",
