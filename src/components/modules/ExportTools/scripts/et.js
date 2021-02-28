@@ -24,6 +24,22 @@ const et = new class ET {
     constructor() {
         this.PMSHeader = wtutils.PMSHeader;
         this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
+        this.typeMovie = '1';
+        this.typeShow = '2';
+        this.typeSeason = '3';
+        this.typeEpisode = '4';
+        this.typeTrailer = '5';
+        this.typeComic = '6';
+        this.typePerson = '7';
+        this.typeArtist = '8';
+        this.typeAlbum = '9';
+        this.typeTrack = '10';
+        this.typeClip = '12';
+        this.typePhoto = '13';
+        this.typePhoto_Album = '14';
+        this.typePlaylist = '15';
+        this.typePlaylist_Folder = '16';
+        this.typePodcast = '17';
     }
 
     async getSectionData({sectionName, baseURL, accessToken, libType})
@@ -51,7 +67,7 @@ const et = new class ET {
             postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             if (libType == 'episode')
             {
-                postURI += '&type=4'
+                postURI += '&type' + et.typeEpisode;
                 postURI += '&' + this.uriParams;
                 log.info(`Calling url ${baseURL + element + postURI}`)
             }
