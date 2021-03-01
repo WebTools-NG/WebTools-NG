@@ -5,7 +5,7 @@
                 "Media ID",
                 "Series Title",
                 "Sort title",
-                "Episode Title",
+                "Title",
                 "Year",
                 "Season",
                 "Episode",
@@ -18,7 +18,7 @@
                 "Media ID",
                 "Series Title",
                 "Sort title",
-                "Episode Title",
+                "Title",
                 "Year",
                 "Season",
                 "Episode",
@@ -26,19 +26,17 @@
                 "Summary",
                 "Rating",
                 "User Rating",
-                "Originally Aired",
+                "Release Date",
                 "Writers",
                 "Duration",
                 "Added",
                 "Updated",
                 "Poster url",
-                "Deleted",
-                "Content Rating"
+                "Deleted"
             ],
             "all": [
                 "Media ID",
                 "Series Title",
-                "Episode Title",
                 "Accessible",
                 "Added",
                 "Audio Stream Audio Channel Layout",
@@ -62,6 +60,7 @@
                 "Audio Stream Title",
                 "Content Rating",
                 "Deleted",
+                "Directors",
                 "Duration",
                 "Episode",
                 "Exists",
@@ -70,6 +69,7 @@
                 "IMDB Link",
                 "Intro Start",
                 "Intro Stop",
+                "Locked Fields",
                 "Media Aspect Ratio",
                 "Media Audio Channels",
                 "Media Audio Codec",
@@ -84,7 +84,6 @@
                 "Media Video Resolution",
                 "Media Video Width",
                 "MetaData Language",
-                "Originally Aired",
                 "Part Container",
                 "Part Deep Analysis Version",
                 "Part Duration",
@@ -98,6 +97,7 @@
                 "Part Video Profile",
                 "Poster url",
                 "Rating",
+                "Release Date",
                 "Required Bandwidths",
                 "Season",
                 "Sort title",
@@ -113,6 +113,7 @@
                 "Subtitle Stream Selected",
                 "Subtitle Stream Title",
                 "Summary",
+                "Title",
                 "TMDB ID",
                 "TVDB ID",
                 "Updated",
@@ -909,7 +910,7 @@
                     "type": "string",
                     "postProcess": true
                 },
-            "Episode Title":
+            "Title":
                 {
                     "key": "$.title",
                     "call": 1,
@@ -957,13 +958,7 @@
                     "call": 1,
                     "type": "string"
                 },
-            "Studio":
-                {
-                    "key": "$.studio",
-                    "call": 2,
-                    "type": "string"
-                },
-            "Originally Aired":
+            "Release Date":
                 {
                     "key": "$..originallyAvailableAt",
                     "call": 1,
