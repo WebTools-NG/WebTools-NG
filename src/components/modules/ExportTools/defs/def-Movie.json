@@ -103,7 +103,7 @@
                 "Part Container",
                 "Part Optimized for Streaming",
                 "Part Deep Analysis Version",
-                "Required Bandwidths",
+                "Part Required Bandwidths",
                 "Video Stream Title",
                 "Video Stream Default",
                 "Video Stream Index",
@@ -696,7 +696,7 @@
                     "subtype": "string",
                     "subkey": "$.deepAnalysisVersion"
                 },
-            "Required Bandwidths":
+            "Part Required Bandwidths":
                 {
                     "key": "$.Media[*].Part[*]",
                     "call": 2,

@@ -98,7 +98,7 @@
                 "Poster url",
                 "Rating",
                 "Release Date",
-                "Required Bandwidths",
+                "Part Required Bandwidths",
                 "Season",
                 "Sort title",
                 "Subtitle Header Compression",
@@ -755,7 +755,7 @@
                 "subtype": "string",
                 "subkey": "$.exists"
             },
-            "Required Bandwidths":
+            "Part Required Bandwidths":
             {
                 "key": "$.Media[*].Part[*]",
                 "call": 2,
