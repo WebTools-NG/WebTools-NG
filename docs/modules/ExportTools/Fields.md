@@ -3,7 +3,7 @@
 When a field is left blank, it means we are unsure if it's supported for the type of export-
 
 | Fields  | Movie | Episode |
-| :-------------: | :-------------: | :-------------: |
+| :------------- | :-------------: | :-------------: |
 Accessible|X|X
 Added|X|X
 Art url|X|
