@@ -5,78 +5,157 @@
                 "Media ID", "Title"
             ],
             "level1": [
-                "Media ID", "Title", "Sort title",
-                "Studio", "Content Rating", "Year",
-                "Rating", "Summary"
+                "Media ID",
+                "Title",
+                "Sort title",
+                "Studio",
+                "Content Rating",
+                "Year",
+                "Rating",
+                "Summary"
             ],
             "level2": [
-                "Media ID", "Title", "Sort title", 
-                "Studio", "Content Rating", "Year",
-                "Rating", "Summary",
-                "View Count", "Last Viewed at",
-                "Tagline", "Release Date", "Writers",
-                "Country", "Duration", "Directors",
-                "Roles", "Audience Rating", "User Rating"
+                "Media ID",
+                "Title",
+                "Sort title",
+                "Studio",
+                "Content Rating",
+                "Year",
+                "Rating",
+                "Summary",
+                "View Count",
+                "Last Viewed at",
+                "Tagline",
+                "Release Date",
+                "Writers",
+                "Country",
+                "Duration",
+                "Directors",
+                "Roles",
+                "Audience Rating",
+                "User Rating"
             ],
             "all": [
-                "TMDB Link", "TMDB ID",
-                "Media ID", "Title", "Sort title",
-                "Studio", "Content Rating", "Year",
-                "Rating", "Summary",
-                "View Count", "Last Viewed at",
-                "Tagline", "Release Date", "Writers",
-                "Country", "Duration", "Directors",
-                "Roles", "Audience Rating", "User Rating",
-                "Labels", "Locked Fields", "Extras",
-                "Extras-behindthescenes", "Extras-deleted",
-                "Extras-featurette", "Extras-interview",
-                "Extras-scene", "Extras-short",
-                "Extras-trailer", "Collections",
-                "Original Title", "Added", "Updated",
-                "Audio Languages", "Audio Title",
-                "Subtitle Languages", "Subtitle Title",
-                "Subtitle Codec", "Subtitle Forced",
-                "Accessible", "Exists", "MetaDB Link",
-                "MetaData Language", "Poster url",
-                "Art url", "Chapter Source",
-                "Chapter Title", "Chapter Count",
-                "Video Resolution", "Bitrate",
-                "Width", "Height", "Aspect Ratio",
-                "Audio Channels", "Audio Codec",
-                "Video Codec", "Container",
-                "Video FrameRate", "Part File Combined",
-                "Part File", "Part File Path", "Part Size",
-                "Part Size as Bytes", "Part Indexed",
-                "Part Duration", "Part Container",
+                "TMDB Link",
+                "TMDB ID",
+                "Media ID",
+                "Title",
+                "Sort title",
+                "Studio",
+                "Content Rating",
+                "Year",
+                "Rating",
+                "Summary",
+                "View Count",
+                "Last Viewed at",
+                "Tagline",
+                "Release Date",
+                "Writers",
+                "Country",
+                "Duration",
+                "Directors",
+                "Roles",
+                "Audience Rating",
+                "User Rating",
+                "Labels",
+                "Locked Fields",
+                "Extras",
+                "Extras-behindthescenes",
+                "Extras-deleted",
+                "Extras-featurette",
+                "Extras-interview",
+                "Extras-scene",
+                "Extras-short",
+                "Extras-trailer",
+                "Collections",
+                "Original Title",
+                "Added",
+                "Updated",
+                "Audio Stream Title",
+                "Subtitle Stream Codec",
+                "Subtitle Stream Forced",
+                "Accessible",
+                "Exists",
+                "MetaDB Link",
+                "MetaData Language",
+                "Poster url",
+                "Art url",
+                "Chapter Source",
+                "Chapter Title",
+                "Chapter Count",
+                "Media Video Resolution",
+                "Media Video Bitrate",
+                "Media Video Width",
+                "Media Video Height",
+                "Media Aspect Ratio",
+                "Media Audio Channels",
+                "Media Audio Codec",
+                "Media Video Codec",
+                "Media Container",
+                "Media Video FrameRate",
+                "Part File Combined",
+                "Part File",
+                "Part File Path",
+                "Part Size",
+                "Part Size as Bytes",
+                "Part Indexed",
+                "Part Duration",
+                "Part Container",
                 "Part Optimized for Streaming",
                 "Part Deep Analysis Version",
-                "Required Bandwidths", "Video Stream Title",
-                "Video Stream Default", "Video Stream Index",
-                "Video Stream Pixel Format", "Video Stream Profile",
-                "Video Stream Ref Frames", "Video Stream Scan Type",
-                "Video Stream Stream Identifier", "Video Stream Width",
-                "Video Stream Pixel Aspect Ratio", "Video Stream Height",
-                "Video Stream Has Scaling Matrix", "Video Stream Frame Rate Mode",
-                "Video Stream Frame Rate", "Video Stream Codec",
-                "Video Stream Codec ID", "Video Stream Chroma Sub Sampling",
-                "Video Stream Color Primaries", "Video Stream Color Range",
-                "Video Stream Color Space", "Video Stream Color Trc",
-                "Video Stream Cabac", "Video Stream Anamorphic",
-                "Video Stream Language Code", "Video Stream Language",
-                "Video Stream Bitrate", "Video Stream Bit Depth",
-                "Video Stream Duration", "Video Stream Required Bandwidths",
-                "Video Stream Level", "Audio Stream Selected",
-                "Audio Stream Default", "Audio Stream Codec",
-                "Audio Stream Index", "Audio Stream Channels",
-                "Audio Stream Bitrate", "Audio Stream Language",
-                "Audio Stream Language Code", "Audio Stream Audio Channel Layout",
-                "Audio Stream Bit Depth", "Audio Stream Bitrate Mode",
-                "Audio Stream Codec ID", "Audio Stream Duration",
-                "Audio Stream Profile","Audio Stream Sampling Rate",
+                "Part Required Bandwidths",
+                "Video Stream Title",
+                "Video Stream Default",
+                "Video Stream Index",
+                "Video Stream Pixel Format",
+                "Video Stream Profile",
+                "Video Stream Ref Frames",
+                "Video Stream Scan Type",
+                "Video Stream Stream Identifier",
+                "Video Stream Width",
+                "Video Stream Pixel Aspect Ratio",
+                "Video Stream Height",
+                "Video Stream Has Scaling Matrix",
+                "Video Stream Frame Rate Mode",
+                "Video Stream Frame Rate",
+                "Video Stream Codec",
+                "Video Stream Codec ID",
+                "Video Stream Chroma Sub Sampling",
+                "Video Stream Color Primaries",
+                "Video Stream Color Range",
+                "Video Stream Color Space",
+                "Video Stream Color Trc",
+                "Video Stream Cabac",
+                "Video Stream Anamorphic",
+                "Video Stream Language Code",
+                "Video Stream Language",
+                "Video Stream Bitrate",
+                "Video Stream Bit Depth",
+                "Video Stream Duration",
+                "Video Stream Required Bandwidths",
+                "Video Stream Level",
+                "Audio Stream Selected",
+                "Audio Stream Default",
+                "Audio Stream Codec",
+                "Audio Stream Index",
+                "Audio Stream Channels",
+                "Audio Stream Bitrate",
+                "Audio Stream Language",
+                "Audio Stream Language Code",
+                "Audio Stream Audio Channel Layout",
+                "Audio Stream Bit Depth",
+                "Audio Stream Bitrate Mode",
+                "Audio Stream Codec ID",
+                "Audio Stream Duration",
+                "Audio Stream Profile",
+                "Audio Stream Sampling Rate",
                 "Audio Stream Required Bandwidths",
-                "Subtitle Stream Codec", "Subtitle Stream Language",
-                "Subtitle Stream Language Code", "Subtitle Stream Codec ID",
-                "Subtitle Stream Format", "Subtitle Stream Title",
+                "Subtitle Stream Codec",
+                "Subtitle Stream Language",
+                "Subtitle Stream Language Code",
+                "Subtitle Stream Codec ID",
+                "Subtitle Stream Format",
+                "Subtitle Stream Title",
                 "Subtitle Stream Selected",
                 "Subtitle Stream Required Bandwidths",
                 "Subtitle Header Compression",
@@ -188,7 +267,7 @@
                     "call": 1,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.tag" 
+                    "subkey": "$.tag"
                 },
             "Country":
                 {
@@ -298,37 +377,37 @@
                 },
             "Extras-deleted":
                 {
-                    "key": "$..Extras.Metadata[?(@.subtype=='deleted')].ratingKey",                                      
+                    "key": "$..Extras.Metadata[?(@.subtype=='deleted')].ratingKey",
                     "call": 2,
                     "type": "array-count"
                 },
             "Extras-featurette":
                 {
-                    "key": "$..Extras.Metadata[?(@.subtype=='featurette')].ratingKey",                                      
+                    "key": "$..Extras.Metadata[?(@.subtype=='featurette')].ratingKey",
                     "call": 2,
                     "type": "array-count"
                 },
             "Extras-interview":
                 {
-                    "key": "$..Extras.Metadata[?(@.subtype=='interview')].ratingKey",                                      
+                    "key": "$..Extras.Metadata[?(@.subtype=='interview')].ratingKey",
                     "call": 2,
                     "type": "array-count"
                 },
             "Extras-scene":
                 {
-                    "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",                                      
+                    "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",
                     "call": 2,
                     "type": "array-count"
                 },
             "Extras-short":
                 {
-                    "key": "$..Extras.Metadata[?(@.subtype=='short')].ratingKey",                                      
+                    "key": "$..Extras.Metadata[?(@.subtype=='short')].ratingKey",
                     "call": 2,
                     "type": "array-count"
                 },
             "Extras-trailer":
                 {
-                    "key": "$..Extras.Metadata[?(@.subtype=='trailer')].ratingKey",                                      
+                    "key": "$..Extras.Metadata[?(@.subtype=='trailer')].ratingKey",
                     "call": 2,
                     "type": "array-count"
                 },
@@ -359,15 +438,7 @@
                     "call": 1,
                     "type": "datetime"
                 },
-            "Audio Languages":
-                {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
-                    "call": 2,
-                    "type": "array",
-                    "subtype": "string",
-                    "subkey": "$.languageCode"
-                },
-            "Audio Title":
+            "Audio Stream Title":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                     "call": 2,
@@ -375,15 +446,15 @@
                     "subtype": "string",
                     "subkey": "$.title"
                 },
-            "Subtitle Languages":
+            "Subtitle Stream Language":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
                     "type": "array",
                     "subtype": "string",
-                    "subkey": "$.languageCode"
+                    "subkey": "$.language"
                 },
-            "Subtitle Title":
+            "Subtitle Stream Title":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
@@ -391,15 +462,7 @@
                     "subtype": "string",
                     "subkey": "$.title"
                 },
-            "Subtitle Codec":
-                {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
-                    "call": 2,
-                    "type": "array",
-                    "subtype": "string",
-                    "subkey": "$.codec"
-                },
-            "Subtitle Forced":
+            "Subtitle Stream Forced":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                     "call": 2,
@@ -469,7 +532,7 @@
                     "call": 2,
                     "type": "array-count"
                 },
-            "Video Resolution":
+            "Media Video Resolution":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -477,7 +540,7 @@
                     "subtype": "string",
                     "subkey": "$.videoResolution"
                 },
-            "Bitrate":
+            "Media Video Bitrate":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -485,7 +548,7 @@
                     "subtype": "string",
                     "subkey": "$.bitrate"
                 },
-            "Width":
+            "Media Video Width":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -493,7 +556,7 @@
                     "subtype": "string",
                     "subkey": "$.width"
                 },
-            "Height":
+            "Media Video Height":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -501,7 +564,7 @@
                     "subtype": "string",
                     "subkey": "$.height"
                 },
-            "Aspect Ratio":
+            "Media Aspect Ratio":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -509,7 +572,7 @@
                     "subtype": "string",
                     "subkey": "$.aspectRatio"
                 },
-            "Audio Channels":
+            "Media Audio Channels":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -517,7 +580,7 @@
                     "subtype": "string",
                     "subkey": "$.audioChannels"
                 },
-            "Audio Codec":
+            "Media Audio Codec":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -525,7 +588,7 @@
                     "subtype": "string",
                     "subkey": "$.audioCodec"
                 },
-            "Video Codec":
+            "Media Video Codec":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -533,7 +596,7 @@
                     "subtype": "string",
                     "subkey": "$.videoCodec"
                 },
-            "Container":
+            "Media Container":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -541,7 +604,7 @@
                     "subtype": "string",
                     "subkey": "$.container"
                 },
-            "Video FrameRate":
+            "Media Video FrameRate":
                 {
                     "key": "$.Media[*]",
                     "call": 2,
@@ -633,7 +696,7 @@
                     "subtype": "string",
                     "subkey": "$.deepAnalysisVersion"
                 },
-            "Required Bandwidths":
+            "Part Required Bandwidths":
                 {
                     "key": "$.Media[*].Part[*]",
                     "call": 2,
@@ -1017,14 +1080,6 @@
                     "subtype": "string",
                     "subkey": "$.profile"
                 },
-            "Subtitle Stream Language":
-                {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
-                    "call": 2,
-                    "type": "array",
-                    "subtype": "string",
-                    "subkey": "$.language"
-                },
             "Subtitle Stream Language Code":
                 {
                     "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
@@ -1048,14 +1103,6 @@
                     "type": "array",
                     "subtype": "string",
                     "subkey": "format"
-                },
-            "Subtitle Stream Title":
-                {
-                    "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
-                    "call": 2,
-                    "type": "array",
-                    "subtype": "string",
-                    "subkey": "title"
                 },
             "Subtitle Stream Selected":
                 {

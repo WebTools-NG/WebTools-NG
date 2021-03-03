@@ -7,6 +7,8 @@
 * [#257 Plex.TV Export notify when done](https://github.com/WebTools-NG/WebTools-NG/issues/257)
 * [#256 PMS Export notify when done](https://github.com/WebTools-NG/WebTools-NG/issues/256)
 * [#255 Warn if no output dir](https://github.com/WebTools-NG/WebTools-NG/issues/255)
+* [#262 ET Field naming](https://github.com/WebTools-NG/WebTools-NG/issues/262)
+* [#261 Export fields not named identical in movies vs episodes](https://github.com/WebTools-NG/WebTools-NG/issues/261)
 
 ## V0.1.15
 
