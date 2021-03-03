@@ -1,6 +1,8 @@
 # This is the fields that the ExportTools module handles
 
-When a field is left blank, it means we are unsure if it's supported for the type of export-
+When a field is left blank, it means we are unsure if it's supported for the type of export
+
+If a field is marked as `N/A` it means it doesn't exists for the type of export
 
 | Fields  | Movie | Episode |
 | :------------- | :-------------: | :-------------: |
@@ -16,9 +18,9 @@ Audio Stream Channels|X|X
 Audio Stream Codec ID|X|X
 Audio Stream Codec|X|X
 Audio Stream Default|X|X
-Audio Stream Display Title||X
+Audio Stream Display Title|X|
 Audio Stream Duration|X|X
-Audio Stream Extended Display Title||X
+Audio Stream Extended Display Title|X|
 Audio Stream Index|X|X
 Audio Stream Language Code|X|X
 Audio Stream Language|X|X
@@ -33,10 +35,10 @@ Chapter Title|X|
 Collections|X|
 Content Rating|X|X
 Country|X|
-Deleted||X
+Deleted|X|
 Directors|X|X
 Duration|X|X
-Episode||X
+Episode|X|
 Exists|X|X
 Extras|X|X
 Extras-behindthescenes|X|
@@ -46,10 +48,10 @@ Extras-interview|X|
 Extras-scene|X|
 Extras-short|X|
 Extras-trailer|X|
-IMDB ID||X
-IMDB Link||X
-Intro Start||X
-Intro Stop||X
+IMDB ID|X|
+IMDB Link|X|
+Intro Start|X|
+Intro Stop|X|
 Labels|X|
 Last Viewed at|X|
 Locked Fields|X|X
@@ -58,13 +60,13 @@ Media Audio Channels|X|X
 Media Audio Codec|X|X
 Media Container|X|X
 Media ID|X|X
-Media Title||X
+Media Title|X|
 Media Video Bitrate|X|X
 Media Video Codec|X|X
-Media Video Duration||X
+Media Video Duration|X|
 Media Video FrameRate|X|X
 Media Video Height|X|X
-Media Video Profile||X
+Media Video Profile|X|
 Media Video Resolution|X|X
 Media Video Width|X|X
 MetaData Language|X|X
@@ -86,8 +88,8 @@ Poster url|X|X
 Rating|X|X
 Release Date|X|X
 Roles|X|
-Season|N/A|X
-Series Title|N/A|X
+Season|N/A|X|
+Series Title|N/A|X|
 Sort title|X|X
 Studio|X|N/A
 Subtitle Header Compression|X|X
@@ -104,9 +106,9 @@ Subtitle Stream Title|X|X
 Summary|X|X
 Tagline|X|
 Title|X|X
-TMDB ID||X
+TMDB ID||X|
 TMDB Link|X|N/A
-TVDB ID||X
+TVDB ID||X|
 Updated|X|X
 User Rating|X|X
 Video Stream Anamorphic|X|
@@ -142,4 +144,3 @@ Video Stream Width|X|X
 View Count|X|X
 Writers|X|X
 Year|X|X
-
