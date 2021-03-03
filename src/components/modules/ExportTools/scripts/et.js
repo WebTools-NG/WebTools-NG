@@ -67,7 +67,7 @@ const et = new class ET {
             postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             if (libType == 'episode')
             {
-                postURI += '&type' + et.typeEpisode;
+                postURI += '&type=' + et.typeEpisode;
                 postURI += '&' + this.uriParams;
                 log.info(`Calling url ${baseURL + element + postURI}`)
             }
