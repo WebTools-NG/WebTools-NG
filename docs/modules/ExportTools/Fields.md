@@ -18,9 +18,9 @@ Audio Stream Channels|X|X
 Audio Stream Codec ID|X|X
 Audio Stream Codec|X|X
 Audio Stream Default|X|X
-Audio Stream Display Title|X|
+Audio Stream Display Title||X|
 Audio Stream Duration|X|X
-Audio Stream Extended Display Title|X|
+Audio Stream Extended Display Title||X|
 Audio Stream Index|X|X
 Audio Stream Language Code|X|X
 Audio Stream Language|X|X
@@ -35,10 +35,10 @@ Chapter Title|X|
 Collections|X|
 Content Rating|X|X
 Country|X|
-Deleted|X|
+Deleted||X|
 Directors|X|X
 Duration|X|X
-Episode|X|
+Episode||X|
 Exists|X|X
 Extras|X|X
 Extras-behindthescenes|X|
@@ -48,10 +48,10 @@ Extras-interview|X|
 Extras-scene|X|
 Extras-short|X|
 Extras-trailer|X|
-IMDB ID|X|
-IMDB Link|X|
-Intro Start|X|
-Intro Stop|X|
+IMDB ID||X|
+IMDB Link||X|
+Intro Start||X|
+Intro Stop||X|
 Labels|X|
 Last Viewed at|X|
 Locked Fields|X|X
@@ -60,13 +60,13 @@ Media Audio Channels|X|X
 Media Audio Codec|X|X
 Media Container|X|X
 Media ID|X|X
-Media Title|X|
+Media Title||X|
 Media Video Bitrate|X|X
 Media Video Codec|X|X
-Media Video Duration|X|
+Media Video Duration||X|
 Media Video FrameRate|X|X
 Media Video Height|X|X
-Media Video Profile|X|
+Media Video Profile||X|
 Media Video Resolution|X|X
 Media Video Width|X|X
 MetaData Language|X|X
