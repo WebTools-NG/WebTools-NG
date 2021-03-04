@@ -28,3 +28,6 @@ yarn-error.log*
 
 # ET Test XML's
 /src/components/modules/ExportTools/defs/DevTest
+
+# Other stuff
+.~lock*
