@@ -654,6 +654,14 @@
                 "call": 1,
                 "type": "string"
             },
+        "Subtitle Stream Codec":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.codec"
+            },
         "Subtitle Stream Codec ID":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
@@ -685,6 +693,14 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "format"
+            },
+        "Subtitle Stream Header Compression":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "headerCompression"
             },
         "Subtitle Stream Index":
             {
