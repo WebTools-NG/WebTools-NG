@@ -260,7 +260,7 @@
                 "call": 2,
                 "type": "int"
             },
-            "Extras-behindthescenes":
+        "Extras-behindthescenes":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='behindTheScenes')].ratingKey",
                 "call": 2,
@@ -287,6 +287,12 @@
         "Extras-scene":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",
+                "call": 2,
+                "type": "array-count"
+            },
+        "Extras-sceneOrSample":
+            {
+                "key": "$..Extras.Metadata[?(@.subtype=='sceneOrSample')].ratingKey",
                 "call": 2,
                 "type": "array-count"
             },

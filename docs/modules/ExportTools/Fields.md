@@ -46,6 +46,7 @@ Extras-deleted|X|
 Extras-featurette|X|
 Extras-interview|X|
 Extras-scene|X|
+Extras-sceneOrSample|X|
 Extras-short|X|
 Extras-trailer|X|
 IMDB ID||X|
