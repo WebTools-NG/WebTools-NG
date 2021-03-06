@@ -1,5 +1,6 @@
 var def;
 var defLevels = JSON.parse(JSON.stringify(require('./../defs/def-Levels.json')));
+var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')));
 
 const log = require('electron-log');
 console.log = log.log;
@@ -287,19 +288,20 @@ const et = new class ET {
     }
 
     getField(libType, fieldName) {
-        return def[libType]['fields'][fieldName]
+        return defFields['fields'][fieldName];
     }
 
     getFieldType(libType, fieldName) {
-        return def[libType]['fields'][fieldName]['type']
+        //return def[libType]['fields'][fieldName]['type']
+        return defFields['fields'][fieldName]['type'];
     }
 
     getFieldCall(libType, fieldName) {
-        return def[libType]['fields'][fieldName]['call']
+        return defFields['fields'][fieldName]['call'];
     }
 
     getFieldSubtype(libType, fieldName) {
-        return def[libType]['fields'][fieldName]['subtype']
+        return defFields['fields'][fieldName]['subtype'];
     }
 
 
@@ -359,8 +361,9 @@ const et = new class ET {
               // code block
           }
         // Get all the fields keys
-        var filteredFields = JSONPath({path: '$.' + libType + '.fields.*~', json: typeFields});
+        var filteredFields = JSONPath({path: '$.' + libType + '.level.all.*', json: typeFields});
         // Sort them, and add an index as well, so drageble is happy
+        console.log('ged44', JSON.stringify(filteredFields.sort()))
         return filteredFields.sort().map((name, index) => {
             return { name, order: index + 1 };
         });
@@ -802,13 +805,11 @@ const excel2 = new class Excel {
                                     // Make N/A if not found
                                     valArrayVal = this.isEmpty( { val: valArrayVal });
                                     // Remove CR, LineFeed ' and " from the string if present
-                                    valArrayVal = valArrayVal.replace(/(\r\n)|'|"/g, "");
+                                    valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
                                     break;
                                 case "time":
                                     valArrayVal = JSONPath({path: String(subKey), json: array[i]});
                                     // Make N/A if not found
-
-
                                     if (valArrayVal == null || valArrayVal == "")
                                     {
                                         valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
@@ -879,8 +880,6 @@ const excel2 = new class Excel {
                         val = wtconfig.get('ET.NotAvail', 'N/A')
                     }
                     break;
-                default:
-                    log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)
             }
             let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
             if ( doPostProc == 'true')

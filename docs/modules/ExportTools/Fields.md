@@ -46,6 +46,7 @@ Extras-deleted|X|
 Extras-featurette|X|
 Extras-interview|X|
 Extras-scene|X|
+Extras-sceneOrSample|X|
 Extras-short|X|
 Extras-trailer|X|
 IMDB ID||X|
@@ -92,11 +93,11 @@ Season|N/A|X|
 Series Title|N/A|X|
 Sort title|X|X
 Studio|X|N/A
-Subtitle Header Compression|X|X
 Subtitle Stream Codec ID|X|X
 Subtitle Stream Codec|X|X
 Subtitle Stream Forced|X|X
 Subtitle Stream Format|X|X
+Subtitle Stream Header Compression|X|X
 Subtitle Stream Index|X|X
 Subtitle Stream Language Code|X|X
 Subtitle Stream Language|X|X

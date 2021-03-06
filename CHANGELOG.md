@@ -9,6 +9,7 @@
 * [#255 Warn if no output dir](https://github.com/WebTools-NG/WebTools-NG/issues/255)
 * [#262 ET Field naming](https://github.com/WebTools-NG/WebTools-NG/issues/262)
 * [#261 Export fields not named identical in movies vs episodes](https://github.com/WebTools-NG/WebTools-NG/issues/261)
+* [#265 Consolidate field def into a single spot](https://github.com/WebTools-NG/WebTools-NG/issues/265)
 
 ## V0.1.15
 
