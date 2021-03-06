@@ -810,8 +810,6 @@ const excel2 = new class Excel {
                                 case "time":
                                     valArrayVal = JSONPath({path: String(subKey), json: array[i]});
                                     // Make N/A if not found
-
-
                                     if (valArrayVal == null || valArrayVal == "")
                                     {
                                         valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
@@ -882,8 +880,6 @@ const excel2 = new class Excel {
                         val = wtconfig.get('ET.NotAvail', 'N/A')
                     }
                     break;
-                default:
-                    log.error(`No Hit addRowToSheet for ${String(JSONPath({path: '$..type', json: fields[x]}))}`)
             }
             let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
             if ( doPostProc == 'true')
