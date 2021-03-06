@@ -802,7 +802,7 @@ const excel2 = new class Excel {
                                     // Make N/A if not found
                                     valArrayVal = this.isEmpty( { val: valArrayVal });
                                     // Remove CR, LineFeed ' and " from the string if present
-                                    valArrayVal = valArrayVal.replace(/(\r\n)|'|"/g, "");
+                                    valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
                                     break;
                                 case "time":
                                     valArrayVal = JSONPath({path: String(subKey), json: array[i]});
