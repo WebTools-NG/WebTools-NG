@@ -1,5 +1,6 @@
 var def;
 var defLevels = JSON.parse(JSON.stringify(require('./../defs/def-Levels.json')));
+var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')));
 
 const log = require('electron-log');
 console.log = log.log;
@@ -287,19 +288,20 @@ const et = new class ET {
     }
 
     getField(libType, fieldName) {
-        return def[libType]['fields'][fieldName]
+        return defFields['fields'][fieldName];
     }
 
     getFieldType(libType, fieldName) {
-        return def[libType]['fields'][fieldName]['type']
+        //return def[libType]['fields'][fieldName]['type']
+        return defFields['fields'][fieldName]['type'];
     }
 
     getFieldCall(libType, fieldName) {
-        return def[libType]['fields'][fieldName]['call']
+        return defFields['fields'][fieldName]['call'];
     }
 
     getFieldSubtype(libType, fieldName) {
-        return def[libType]['fields'][fieldName]['subtype']
+        return defFields['fields'][fieldName]['subtype'];
     }
 
 
@@ -359,7 +361,7 @@ const et = new class ET {
               // code block
           }
         // Get all the fields keys
-        var filteredFields = JSONPath({path: '$.' + libType + '.fields.*~', json: typeFields});
+        var filteredFields = JSONPath({path: '$.' + libType + '.level.all.*', json: typeFields});
         // Sort them, and add an index as well, so drageble is happy
         return filteredFields.sort().map((name, index) => {
             return { name, order: index + 1 };
