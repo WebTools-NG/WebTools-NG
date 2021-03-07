@@ -5,6 +5,7 @@
 **Note**:   This version is an Alpha version, that is not made public
 
 * [#269 Levelcount broken for Custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/269)
+* [#107 Allow export of Artist](https://github.com/WebTools-NG/WebTools-NG/issues/107)
 
 ## V0.1.16
 
