@@ -515,13 +515,14 @@ const excel2 = new class Excel {
         return true;
     }
 
-    async getFileName({ Library, Level, Type, Module }){
+    async getFileName({ Library, Level, Type, Module, exType }){
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
         const path = require('path');
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += Library + '_';
+        outFile += exType + '_';
         outFile += Level + '_';
         outFile += timeStamp + '.' + Type;
         const targetDir = path.join(
@@ -533,18 +534,18 @@ const excel2 = new class Excel {
         if (!fs.existsSync(targetDir)) {
             fs.mkdirSync(targetDir);
         }
-        log.info(`OutFile is ${outFileWithPath}`)
+        log.info(`OutFile is ${outFileWithPath}`);
         return outFileWithPath;
     }
 
-    async SaveWorkbook(Workbook, Library, Level, Type) {
-        const fs = require('fs')
-        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type, Module: i18n.t('Modules.ET.Name') })
-        log.info('Saving output file as: ' + name)
+    async SaveWorkbook({ Workbook, Library, Level, Type, exType } ) {
+        const fs = require('fs');
+        const name = await this.getFileName( { Library: Library, Level: Level, Type: Type, Module: i18n.t('Modules.ET.Name'), exType: exType });
+        log.info('Saving output file as: ' + name);
         // Save Excel on Hard Disk
         Workbook.xlsx.writeBuffer()
             .then(buffer => fs.writeFileSync(name, buffer))
-        return true
+        return true;
     }
 
     async postProcess( {name, val, title=""} ){
@@ -918,15 +919,15 @@ const excel2 = new class Excel {
       }
 
 
-    async createXLSXFile( {csvFile, level, libType, libName} )
+    async createXLSXFile( {csvFile, level, libType, libName, exType} )
     {
         // This will loop thru a csv file, and create xlsx file
         // First create a WorkBook
-        const workBook = await excel2.NewExcelWorkBook()
+        const workBook = await excel2.NewExcelWorkBook();
         // Create Sheet
-        let sheet = await excel2.NewSheet(workBook, libName, level)
+        let sheet = await excel2.NewSheet(workBook, libName, level);
         // Add the header to the sheet
-        await excel2.AddHeader(sheet, level, libType)
+        await excel2.AddHeader(sheet, level, libType);
 
 /*
         autoFilter sadly doesn't work :(
@@ -980,19 +981,19 @@ const excel2 = new class Excel {
                 });
                 log.info('Setting xlsx column width ended')
             }
-            await excel2.SaveWorkbook(workBook, libName, level, "xlsx")
+            await excel2.SaveWorkbook( { Workbook: workBook, Library: libName, Level: level, Type: "xlsx", exType: exType});
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken} )
+    async createOutFile( {libName, level, libType, baseURL, accessToken, exType} )
     {
-        const header = excel2.GetHeader(level, libType)
+        const header = excel2.GetHeader(level, libType);
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level);
         // Open a file stream
-        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name') });
+        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
         var fs = require('fs');
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
@@ -1039,12 +1040,11 @@ const excel2 = new class Excel {
         // Rename to real file name
         var newFile = tmpFile.replace('.tmp', '.csv')
         fs.renameSync(tmpFile, newFile);
-        console.log('renamed complete');
         // Need to export to xlsx as well?
         if (wtconfig.get('ET.ExpExcel')){
-            log.info('We need to create an xlsx file as well')
-            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.CreateExlsFile'))
-            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName})
+            log.info('We need to create an xlsx file as well');
+            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.CreateExlsFile'));
+            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType});
         }
         store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`);
     }
