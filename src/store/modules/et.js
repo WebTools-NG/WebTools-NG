@@ -7,7 +7,7 @@ const state = {
     sections:   [],
     mediaData: [],
     selectedSection : "",
-    selectedExportLevel: "",    
+    selectedExportLevel: "",
     selectedLibType: "",
     exportStatus: ""
 };
@@ -15,7 +15,7 @@ const state = {
 const mutations = {
     UPDATE_SECTIONS(state, payload) {
         state.sections = payload;
-        log.info("UPDATE_SECTIONS called")        
+        log.info("UPDATE_SECTIONS called")
       },
       UPDATE_SELECTEDSECTION(state, payload) {
           state.selectedSection = payload
@@ -26,13 +26,13 @@ const mutations = {
       },
       UPDATE_EXPORTSTATUS(state, payload) {
         state.exportStatus = payload
-      },          
+      },
       UPDATE_EXPORTLEVELS(state, payload) {
         state.exportLevels = payload
       },
       UPDATE_SELECTEDLIBTYPE(state, payload) {
         state.selectedLibType = payload
-      },      
+      },
       UPDATE_MEDIADATA(state, payload) {
           state.mediaData.push(payload)
       }
@@ -40,35 +40,36 @@ const mutations = {
 
 const actions = {
     async fetchSections({ commit, getters }) {
-        log.info("fetchSections called")        
-        var baseURL = getters.getSelectedServerAddress
-        var accessToken = getters.getSelectedServerToken        
-        commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))        
-    },               
-    exportMedias({ getters }) {      
+        log.info("fetchSections called")
         var baseURL = getters.getSelectedServerAddress
         var accessToken = getters.getSelectedServerToken
-        var libType = getters.getLibType
-
-        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);                          
-        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);                
+        commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))
+    },
+    exportMedias({ getters }) {
+        var baseURL = getters.getSelectedServerAddress;
+        var accessToken = getters.getSelectedServerToken;
+        var libType = getters.getLibType;
+        var exType = getters.getLibType;
+        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
+        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         excel2.createOutFile( {
-          libName: libName, 
-          level: levelName, 
-          libType: libType, 
-          baseURL: baseURL, 
-          accessToken: accessToken
+          libName: libName,
+          level: levelName,
+          libType: libType,
+          baseURL: baseURL,
+          accessToken: accessToken,
+          exType: exType
         } );
     }
 }
 
 const getters = {
     getPmsSections: state => state.sections,
-    getSelectedSection: state => state.selectedSection,    
+    getSelectedSection: state => state.selectedSection,
     getSelectedExportLevel: state => state.selectedExportLevel,
     getLibType: state  => state.selectedLibType,
     getExportLevels: state => state.exportLevels,
-    getExportStatus: state => state.exportStatus    
+    getExportStatus: state => state.exportStatus
 };
 
 const etModule = {

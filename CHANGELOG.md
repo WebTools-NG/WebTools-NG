@@ -6,6 +6,7 @@
 
 * [#269 Levelcount broken for Custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/269)
 * [#107 Allow export of Artist](https://github.com/WebTools-NG/WebTools-NG/issues/107)
+* [#271 Export Filename missing type](https://github.com/WebTools-NG/WebTools-NG/issues/271)
 
 ## V0.1.16
 
