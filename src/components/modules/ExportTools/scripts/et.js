@@ -41,6 +41,24 @@ const et = new class ET {
         this.typePlaylist = '15';
         this.typePlaylist_Folder = '16';
         this.typePodcast = '17';
+        this.mediaType ={
+            "movie": 1,
+            "show": 2,
+            "season": 3,
+            "episode": 4,
+            "trailer": 5,
+            "comic": 6,
+            "person": 7,
+            "artist": 8,
+            "album": 9,
+            "track": 10,
+            "clip": 12,
+            "photo": 13,
+            "photo_album": 14,
+            "playlist": 15,
+            "playlist_folder": 16,
+            "podcast": 17
+        }
     }
 
     async getSectionData({sectionName, baseURL, accessToken, libType})
@@ -65,13 +83,8 @@ const et = new class ET {
         const element = '/library/sections/' + libKey
         let size
         do {
-            postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            if (libType == 'episode')
-            {
-                postURI += '&type=' + et.typeEpisode;
-                postURI += '&' + this.uriParams;
-                log.info(`Calling url ${baseURL + element + postURI}`)
-            }
+            postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+            log.info(`Calling url ${baseURL + element + postURI}`);
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
