@@ -1,66 +1,69 @@
 # This is the fields that the ExportTools module handles
 
-When a field is left blank, it means we are unsure if it's supported for the type of export
+When a field contains a `?`, it means we are unsure if it's supported for the type of export
 
 If a field is marked as `N/A` it means it doesn't exists for the type of export
 
-| Fields  | Movie | Episode |
-| :------------- | :-------------: | :-------------: |
-Accessible|X|X
-Added|X|X
-Art url|X|
-Audience Rating|X|
-Audio Stream Audio Channel Layout|X|X
-Audio Stream Bit Depth|X|X
-Audio Stream Bitrate Mode|X|X
-Audio Stream Bitrate|X|X
-Audio Stream Channels|X|X
-Audio Stream Codec ID|X|X
-Audio Stream Codec|X|X
-Audio Stream Default|X|X
-Audio Stream Display Title||X|
-Audio Stream Duration|X|X
-Audio Stream Extended Display Title||X|
-Audio Stream Index|X|X
-Audio Stream Language Code|X|X
-Audio Stream Language|X|X
-Audio Stream Profile|X|X
-Audio Stream Required Bandwidths|X|X
-Audio Stream Sampling Rate|X|X
-Audio Stream Selected|X|X
-Audio Stream Title|X|X
-Chapter Count|X|
-Chapter Source|X|
-Chapter Title|X|
-Collections|X|
-Content Rating|X|X
-Country|X|
-Deleted||X|
-Directors|X|X
-Duration|X|X
-Episode||X|
-Exists|X|X
-Extras|X|X
-Extras-behindthescenes|X|
-Extras-deleted|X|
-Extras-featurette|X|
-Extras-interview|X|
-Extras-scene|X|
-Extras-sceneOrSample|X|
-Extras-short|X|
-Extras-trailer|X|
-IMDB ID||X|
-IMDB Link||X|
-Intro Start||X|
-Intro Stop||X|
-Labels|X|
-Last Viewed at|X|
+If a field is marked as `X` it means you can export it for the type of export
+
+| Fields  | Movie | TV Episode | TV Show | Audio Artist|
+| :--- | :---: | :---: | :-------------: | :-------------: |
+Accessible|X|X|?|?|
+Added|X|X|?|X|
+Art url|X|?|?|?
+Audience Rating|X|?|?|?|?
+Audio Stream Audio Channel Layout|X|X|?|N/A
+Audio Stream Bit Depth|X|X|?|N/A
+Audio Stream Bitrate Mode|X|X|?|N/A
+Audio Stream Bitrate|X|X|?|N/A
+Audio Stream Channels|X|X|?|N/A
+Audio Stream Codec ID|X|X|?|N/A
+Audio Stream Codec|X|X|?|N/A
+Audio Stream Default|X|X|?|N/A
+Audio Stream Display Title|?|X|?|N/A
+Audio Stream Duration|X|X|?|N/A
+Audio Stream Extended Display Title|?|X|?|N/A
+Audio Stream Index|X|X|?|N/A
+Audio Stream Language Code|X|X|?|N/A
+Audio Stream Language|X|X|?|N/A
+Audio Stream Profile|X|X|?|N/A
+Audio Stream Required Bandwidths|X|X|?|N/A
+Audio Stream Sampling Rate|X|X|?|N/A
+Audio Stream Selected|X|X|?|N/A
+Audio Stream Title|X|X|?|N/A
+Chapter Count|X|?|?|?
+Chapter Source|X|?|?|?
+Chapter Title|X|?|?|?
+Collections|X|?|?|?
+Content Rating|X|X|?|?
+Country|X|?|?|X
+Deleted|?|X|?|?|
+Directors|X|X|?|?
+Duration|X|X|?|?|?
+Episode|N/A|X|?|?
+Exists|X|X|?|?|N/A
+Extras|X|X|?|?
+Extras-behindthescenes|X|?|?|?
+Extras-deleted|X|?|?|?
+Extras-featurette|X|?|?|?
+Extras-interview|X|?|?|?
+Extras-scene|X|?|?|?
+Extras-sceneOrSample|X|?|?|?
+Extras-short|X|?|?|?
+Extras-trailer|X|?|?|?
+Genre|X|X|?|X|?
+IMDB ID|?|X|?|?
+IMDB Link|?|X|?|?
+Intro Start|N/A|X|?|N/A
+Intro Stop|N/A|X|?|N/A
+Labels|X|?|?|?
+Last Viewed at|X|?|?|X
 Locked Fields|X|X
 Media Aspect Ratio|X|X
 Media Audio Channels|X|X
 Media Audio Codec|X|X
 Media Container|X|X
-Media ID|X|X
+Media ID|X|X||X
 Media Title||X|
 Media Video Bitrate|X|X
 Media Video Codec|X|X
@@ -85,7 +88,7 @@ Part Required Bandwidths|X|X
 Part Size as Bytes|X|X
 Part Size|X|X
 Part Video Profile|X|X
-Poster url|X|X
+Poster url|X|X||X|
 Rating|X|X
 Release Date|X|X
 Roles|X|
@@ -93,24 +96,24 @@ Season|N/A|X|
 Series Title|N/A|X|
 Sort title|X|X
 Studio|X|N/A
-Subtitle Stream Codec ID|X|X
-Subtitle Stream Codec|X|X
-Subtitle Stream Forced|X|X
-Subtitle Stream Format|X|X
-Subtitle Stream Header Compression|X|X
-Subtitle Stream Index|X|X
-Subtitle Stream Language Code|X|X
-Subtitle Stream Language|X|X
-Subtitle Stream Required Bandwidths|X|X
-Subtitle Stream Selected|X|X
-Subtitle Stream Title|X|X
-Summary|X|X
+Subtitle Stream Codec ID|X|X||N/A
+Subtitle Stream Codec|X|X||N/A
+Subtitle Stream Forced|X|X||N/A
+Subtitle Stream Format|X|X||N/A
+Subtitle Stream Header Compression|X|X||N/A
+Subtitle Stream Index|X|X||N/A
+Subtitle Stream Language Code|X|X||N/A
+Subtitle Stream Language|X|X||N/A
+Subtitle Stream Required Bandwidths|X|X||N/A
+Subtitle Stream Selected|X|X||N/A
+Subtitle Stream Title|X|X||N/A
+Summary|X|X||X|
 Tagline|X|
-Title|X|X
-TMDB ID||X|
-TMDB Link|X|N/A
-TVDB ID||X|
-Updated|X|X
+Title|X|X||X
+TMDB ID||X||N/A
+TMDB Link|X|N/A||N/A
+TVDB ID||X||N/A
+Updated|X|X||X
 User Rating|X|X
 Video Stream Anamorphic|X|
 Video Stream Bit Depth|X|X
@@ -126,22 +129,22 @@ Video Stream Color Trc|X|X
 Video Stream Default|X|X
 Video Stream Duration|X|X
 Video Stream Frame Rate Mode|X|X
-Video Stream Frame Rate|X|X
-Video Stream Has Scaling Matrix|X|X
-Video Stream Height|X|X
-Video Stream Index|X|X
-Video Stream Language Code|X|X
-Video Stream Language|X|X
-Video Stream Level|X|X
-Video Stream Pixel Aspect Ratio|X|
-Video Stream Pixel Format|X|X
-Video Stream Profile|X|X
-Video Stream Ref Frames|X|X
-Video Stream Required Bandwidths|X|X
-Video Stream Scan Type|X|X
-Video Stream Stream Identifier|X|
-Video Stream Title|X|X
-Video Stream Width|X|X
-View Count|X|X
-Writers|X|X
-Year|X|X
+Video Stream Frame Rate|X|X|?|N/A
+Video Stream Has Scaling Matrix|X|X|?|N/A
+Video Stream Height|X|X|?|N/A
+Video Stream Index|X|X|?|N/A
+Video Stream Language Code|X|X|?|N/A
+Video Stream Language|X|X|?|N/A
+Video Stream Level|X|X|?|N/A
+Video Stream Pixel Aspect Ratio|X|?|?|N/A
+Video Stream Pixel Format|X|X|?|N/A
+Video Stream Profile|X|X|?|N/A
+Video Stream Ref Frames|X|X|?|N/A
+Video Stream Required Bandwidths|X|X|?|N/A
+Video Stream Scan Type|X|X|?|N/A
+Video Stream Stream Identifier|X|?|?|N/A
+Video Stream Title|X|X|?|N/A
+Video Stream Width|X|X|?|N/A
+View Count|X|X|?|?
+Writers|X|X|?|?
+Year|X|X|?|?|?

@@ -1,1 +1,34 @@
-{}
+{
+    "artist": {
+        "level": {
+            "level1": [
+                "Media ID",
+                "Title",
+                "Sort title",
+                "Summary"
+            ],
+            "level2": [
+                "Media ID",
+                "Title",
+                "Sort title",
+                "Summary",
+                "Poster url",
+                "Added",
+                "Updated",
+                "Genre"
+            ],
+            "all": [
+                "Media ID",
+                "Title",
+                "Sort title",
+                "Summary",
+                "Poster url",
+                "Added",
+                "Updated",
+                "Genre",
+                "Country",
+                "Last Viewed at"
+            ]
+        }
+    }
+}

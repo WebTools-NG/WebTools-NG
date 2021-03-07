@@ -40,7 +40,14 @@
     },
     "artist": {
         "levels": {
-            "No Level Yet": "level1"
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "All": "all"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "All": 2
         }
     },
     "photo": {
