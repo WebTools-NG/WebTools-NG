@@ -18,16 +18,16 @@
                 "Genre"
             ],
             "all": [
+                "Added",
+                "Country",
+                "Genre",
+                "Last Viewed at",
                 "Media ID",
-                "Title",
+                "Poster url",
                 "Sort title",
                 "Summary",
-                "Poster url",
-                "Added",
-                "Updated",
-                "Genre",
-                "Country",
-                "Last Viewed at"
+                "Title",
+                "Updated"
             ]
         }
     }
