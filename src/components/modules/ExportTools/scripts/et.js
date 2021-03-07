@@ -363,7 +363,6 @@ const et = new class ET {
         // Get all the fields keys
         var filteredFields = JSONPath({path: '$.' + libType + '.level.all.*', json: typeFields});
         // Sort them, and add an index as well, so drageble is happy
-        console.log('ged44', JSON.stringify(filteredFields.sort()))
         return filteredFields.sort().map((name, index) => {
             return { name, order: index + 1 };
         });
