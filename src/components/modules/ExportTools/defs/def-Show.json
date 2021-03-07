@@ -1,1 +1,37 @@
-{}
+{
+    "show": {
+        "level": {
+            "level1": [
+                "Media ID",
+                "Title",
+                "Summary"
+            ],
+            "level2": [
+                "Media ID",
+                "Title",
+                "Summary",
+                "Audience Rating",
+                "Content Rating",
+                "Studio"
+            ],
+            "all": [
+                "Added",
+                "Art url",
+                "Audience Rating",
+                "Content Rating",
+                "Duration",
+                "Genre",
+                "Media ID",
+                "Poster url",
+                "Release Date",
+                "Roles",
+                "Studio",
+                "Summary",
+                "Tagline",
+                "Title",
+                "Updated",
+                "Year"
+            ]
+        }
+    }
+}

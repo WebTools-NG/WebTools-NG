@@ -30,12 +30,12 @@
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
-            "devTommy": "devTommy"
+            "All": "all"
         },
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "devTommy": 1
+            "All": 2
         }
     },
     "artist": {
