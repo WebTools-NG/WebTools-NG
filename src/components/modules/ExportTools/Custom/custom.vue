@@ -249,33 +249,9 @@
             this.selCustLevel = this.NewLevelName;
         },
         updateLevelCount() {
-            var def;
             // We need to load fields and defs into def var
-            switch(this.selMediaType) {
-                case 'movie':
-                // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
-                break;
-                case 'episode':
-                // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
-                break;
-                case 'show':
-                    // code block
-                    def = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
-                    break;
-                case 'artist':
-                    // code block
-                    def = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
-                    break;
-                case 'photo':
-                    // code block
-                    def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
-                    break;
-                default:
-                // code block
-            }
-            var fields = def[this.selMediaType]['fields'];
+            var def = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')));
+            var fields = def['fields'];
             // Release def memory again
             def = null;
             const levelFields = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);

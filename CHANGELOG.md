@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.2.01
+
+**Note**:   This version is an Alpha version, that is not made public
+
+* [#269 Levelcount broken for Custom levels](https://github.com/WebTools-NG/WebTools-NG/issues/269)
+
 ## V0.1.16
 
 **Note**:   This version is an Alpha version, that is not made public
