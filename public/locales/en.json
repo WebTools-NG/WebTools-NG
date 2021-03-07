@@ -109,7 +109,7 @@
                     "NavTitle": "Factory Reset"
                 },
                 "Settings":{
-                    "NavTitle": "Global Settings"                    
+                    "NavTitle": "Global Settings"
                 }
             }
         },
@@ -178,7 +178,7 @@
                 "newSettingValueTXT": "<Enter new value>",
                 "varning": "Change at your own risk. Any change can lead to malfunction of your plex server",
                 "ExportAllSettings": "Export all settings to CSV",
-                "ExportGroupSettings": "Export selected group settings to CSV"                
+                "ExportGroupSettings": "Export selected group settings to CSV"
             },
             "Export":{
                 "Items":{
@@ -217,21 +217,22 @@
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
             "HSelectMedia": "Select Library Type",
-            "HSelectSelection": "Select Media Libary",            
+            "HSelectSelection": "Select Media Libary",
             "HExportMedia": "Export Media",
             "RadioMovies": "Movies",
-            "RadioTVSeries": "TV Series",
+            "RadioTVSeries": "TV Shows",
             "RadioTVEpisodes": "TV Episodes",
-            "RadioTVShowEpisodes": "TV Shows and Episodes",
-            "RadioMusic": "Music",
-            "RadioPhotos": "Photos",            
+            "RadioAudioArtist": "Audio Artist",
+            "RadioAudioAlbum": "Audio Album",
+            "RadioAudioTrack": "Audio Track",
+            "RadioPhotos": "Photos",
             "RadioPlayLists": "Playlists",
             "ErrorServer": "No server",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server to extract from",
             "Settings": {
                 "Settings": "Settings",
-                "Description": "Here you can define the settings for @:Modules.ET.Name",                                
+                "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
@@ -241,12 +242,12 @@
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
                 "NotAvailIndicator": "What to use if a field can't be found",
-                "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)"                
+                "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)"
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",
             "SelectLevel": "Select level",
-            "BuildInLevels": "*** Built-in levels ***",            
+            "BuildInLevels": "*** Built-in levels ***",
             "NoLevelFound": "N/A",
             "TT-ETType": "Here you select the type of library you want to export",
             "TT-ETLibrary": "Here you select library you want to export",
@@ -260,7 +261,7 @@
                 "CreateExlsFile": "Creating Excel file",
                 "ProcessItem": "Processing item {count} of {total}",
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}"
-            },                        
+            },
             "ErrorBadSepTitle": "Column separator issue",
             "ErrorBadSep": "Column separator can only be one character"
         },
@@ -297,7 +298,7 @@
             "Update": "Subscribe to updates (If false, beta updates will also be disabled)",
             "TTUpdate": "When selected, you'll be notified when a new update is available",
             "True": "True",
-            "False": "False"            
+            "False": "False"
         }
     }
 }
