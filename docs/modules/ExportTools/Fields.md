@@ -1,8 +1,8 @@
-# This is the fields that the ExportTools module handles
+# These are the fields that the ExportTools module handles
 
 When a field contains a `?`, it means we are unsure if it's supported for the type of export
 
-If a field is marked as `N/A` it means it doesn't exists for the type of export
+If a field is marked as `N/A` it means it does not exist for the type of export
 
 If a field is marked as `X` it means you can export it for the type of export
 
