@@ -96,39 +96,39 @@ Season|N/A|X|
 Series Title|N/A|X|
 Sort title|X|X
 Studio|X|N/A
-Subtitle Stream Codec ID|X|X||N/A
-Subtitle Stream Codec|X|X||N/A
-Subtitle Stream Forced|X|X||N/A
-Subtitle Stream Format|X|X||N/A
-Subtitle Stream Header Compression|X|X||N/A
-Subtitle Stream Index|X|X||N/A
-Subtitle Stream Language Code|X|X||N/A
-Subtitle Stream Language|X|X||N/A
-Subtitle Stream Required Bandwidths|X|X||N/A
-Subtitle Stream Selected|X|X||N/A
-Subtitle Stream Title|X|X||N/A
-Summary|X|X||X|
-Tagline|X|
-Title|X|X||X
-TMDB ID||X||N/A
-TMDB Link|X|N/A||N/A
-TVDB ID||X||N/A
-Updated|X|X||X
-User Rating|X|X
-Video Stream Anamorphic|X|
-Video Stream Bit Depth|X|X
-Video Stream Bitrate|X|X
-Video Stream Cabac|X|X
-Video Stream Chroma Sub Sampling|X|X
-Video Stream Codec ID|X|X
-Video Stream Codec|X|X
-Video Stream Color Primaries|X|X
-Video Stream Color Range|X|X
-Video Stream Color Space|X|X
-Video Stream Color Trc|X|X
-Video Stream Default|X|X
-Video Stream Duration|X|X
-Video Stream Frame Rate Mode|X|X
+Subtitle Stream Codec ID|X|X|?|N/A
+Subtitle Stream Codec|X|X|?|N/A
+Subtitle Stream Forced|X|X|?|N/A
+Subtitle Stream Format|X|X|?|N/A
+Subtitle Stream Header Compression|X|X|?|N/A
+Subtitle Stream Index|X|X|?|N/A
+Subtitle Stream Language Code|X|X|?|N/A
+Subtitle Stream Language|X|X|?|N/A
+Subtitle Stream Required Bandwidths|X|X|?|N/A
+Subtitle Stream Selected|X|X|?|N/A
+Subtitle Stream Title|X|X|?|N/A
+Summary|X|X|?|X|
+Tagline|X|?|?|?
+Title|X|X|?|X
+TMDB ID|?|X|?|N/A
+TMDB Link|X|N/A|?|N/A
+TVDB ID|?|X|?|N/A
+Updated|X|X|?|X
+User Rating|X|X|?|N/A
+Video Stream Anamorphic|X|?|?|N/A
+Video Stream Bit Depth|X|X|?|N/A
+Video Stream Bitrate|X|X|?|N/A
+Video Stream Cabac|X|X|?|N/A
+Video Stream Chroma Sub Sampling|X|X|?|N/A
+Video Stream Codec ID|X|X|?|N/A
+Video Stream Codec|X|X|?|N/A
+Video Stream Color Primaries|X|X|?|N/A
+Video Stream Color Range|X|X|?|N/A
+Video Stream Color Space|X|X|?|N/A
+Video Stream Color Trc|X|X|?|N/A
+Video Stream Default|X|X|?|N/A
+Video Stream Duration|X|X|?|N/A
+Video Stream Frame Rate Mode|X|X|?|N/A
 Video Stream Frame Rate|X|X|?|N/A
 Video Stream Has Scaling Matrix|X|X|?|N/A
 Video Stream Height|X|X|?|N/A
