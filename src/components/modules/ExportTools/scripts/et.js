@@ -224,6 +224,10 @@ const et = new class ET {
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
+            case 'track':
+                    // code block
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
+                    break;
             case 'album':
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Album.json')));
@@ -370,6 +374,10 @@ const et = new class ET {
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
+            case 'track':
+                    // code block
+                    typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
+                    break;
             case 'photo':
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
