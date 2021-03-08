@@ -1,33 +1,33 @@
 {
-    "artist": {
+    "album": {
         "level": {
             "level1": [
                 "Media ID",
                 "Title",
-                "Sort title",
-                "Summary"
+                "Summary",
+                "Studio"
             ],
             "level2": [
                 "Media ID",
                 "Title",
-                "Sort title",
                 "Summary",
-                "Poster url",
-                "Added",
-                "Updated",
-                "Genre"
+                "Studio",
+                "Release Date",
+                "Rating",
+                "Year"
             ],
             "all": [
                 "Added",
-                "Country",
-                "Genre",
-                "Last Viewed at",
+                "Art url",
                 "Media ID",
                 "Poster url",
-                "Sort title",
+                "Release Date",
+                "Studio",
                 "Summary",
                 "Title",
-                "Updated"
+                "Updated",
+                "Rating",
+                "Year"
             ]
         }
     }

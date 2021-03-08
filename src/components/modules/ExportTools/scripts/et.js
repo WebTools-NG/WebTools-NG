@@ -224,6 +224,10 @@ const et = new class ET {
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
+            case 'album':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Album.json')));
+                break;
             case 'photo':
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
