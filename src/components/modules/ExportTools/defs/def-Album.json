@@ -1,0 +1,34 @@
+{
+    "album": {
+        "level": {
+            "level1": [
+                "Media ID",
+                "Title",
+                "Summary",
+                "Studio"
+            ],
+            "level2": [
+                "Media ID",
+                "Title",
+                "Summary",
+                "Studio",
+                "Release Date",
+                "Rating",
+                "Year"
+            ],
+            "all": [
+                "Added",
+                "Art url",
+                "Media ID",
+                "Poster url",
+                "Release Date",
+                "Studio",
+                "Summary",
+                "Title",
+                "Updated",
+                "Rating",
+                "Year"
+            ]
+        }
+    }
+}
