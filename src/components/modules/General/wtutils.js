@@ -260,7 +260,7 @@ const wtutils = new class WTUtils {
             wtconfig.set('PMS.TimeOut', 20)
         }
         if ( wtconfig.get('PMS.ContainerSize.artist', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.artist', 10)
+            wtconfig.set('PMS.ContainerSize.artist', 20)
         }
         if ( wtconfig.get('PMS.ContainerSize.episode', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.episode', 20)
@@ -273,6 +273,12 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('PMS.ContainerSize.show', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.show', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.track', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.track', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.album', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.album', 20)
         }
         // ET Settings
         if ( wtconfig.get('ET.ArraySep', 'N/A') == 'N/A' ){

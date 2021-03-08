@@ -396,6 +396,14 @@
                 "subtype": "string",
                 "subkey": "$.audioCodec"
             },
+        "Media Bitrate":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.bitrate"
+            },
         "Media Container":
             {
                 "key": "$.Media[*]",
@@ -417,14 +425,6 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.title"
-            },
-        "Media Video Bitrate":
-            {
-                "key": "$.Media[*]",
-                "call": 2,
-                "type": "array",
-                "subtype": "string",
-                "subkey": "$.bitrate"
             },
         "Media Video Codec":
             {

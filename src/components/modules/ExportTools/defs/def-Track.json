@@ -1,0 +1,46 @@
+{
+    "track": {
+        "level": {
+            "level1": [
+                "Media ID",
+                "Title",
+                "Summary",
+                "Duration",
+                "Added"
+            ],
+            "level2": [
+                "Media ID",
+                "Title",
+                "Summary",
+                "Duration",
+                "Added",
+                "Part File",
+                "Part File Combined",
+                "Part File Path"
+            ],
+            "all": [
+                "Added",
+                "Art url",
+                "Duration",
+                "Media Audio Channels",
+                "Media Audio Codec",
+                "Media Bitrate",
+                "Media Container",
+                "Media ID",
+                "Part Container",
+                "Part Deep Analysis Version",
+                "Part Duration",
+                "Part File",
+                "Part File Combined",
+                "Part File Path",
+                "Part Required Bandwidths",
+                "Part Size",
+                "Part Size as Bytes",
+                "Poster url",
+                "Summary",
+                "Title",
+                "Updated"
+            ]
+        }
+    }
+}
