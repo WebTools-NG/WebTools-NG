@@ -1,4 +1,40 @@
 {
+    "album": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "All": "all"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "All": 2
+        }
+    },
+    "artist": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "All": "all"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "All": 2
+        }
+    },
+    "episode": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "All": "all"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "All": 2
+        }
+    },
     "movie": {
         "levels": {
             "Level 1": "level1",
@@ -14,31 +50,7 @@
             "devTommy": 2
         }
     },
-    "episode": {
-        "levels": {
-            "Level 1": "level1",
-            "Level 2": "level2",
-            "All": "all"
-        },
-        "LevelCount": {
-            "Level 1": 1,
-            "Level 2": 1,
-            "All": 2
-        }
-    },
     "show": {
-        "levels": {
-            "Level 1": "level1",
-            "Level 2": "level2",
-            "All": "all"
-        },
-        "LevelCount": {
-            "Level 1": 1,
-            "Level 2": 1,
-            "All": 2
-        }
-    },
-    "artist": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",

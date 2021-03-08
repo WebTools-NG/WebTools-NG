@@ -6,6 +6,7 @@ If a field is marked as `N/A` it means it does not exist for the type of export
 
 If a field is marked as `X` it means you can export it for the type of export
 
+
 | Fields  | Movie | TV Episode | TV Show | Audio Artist| Audio Track |
 | :--- | :---: | :---: | :-------------: | :-------------: | :-------------: |
 Accessible|X|X|?|?|?|
@@ -148,3 +149,4 @@ Video Stream Width|X|X|N/A|N/A|N/A|
 View Count|X|X|?|?|?|
 Writers|X|X|?|?|?|
 Year|X|X|?|X|?|N/A|
+

@@ -8,6 +8,7 @@
 * [#107 Allow export of Artist](https://github.com/WebTools-NG/WebTools-NG/issues/107)
 * [#271 Export Filename missing type](https://github.com/WebTools-NG/WebTools-NG/issues/271)
 * [#272 Allow export of TV Shows](https://github.com/WebTools-NG/WebTools-NG/issues/272)
+* [#267 Allow export of Albums](https://github.com/WebTools-NG/WebTools-NG/issues/267)
 
 ## V0.1.16
 
