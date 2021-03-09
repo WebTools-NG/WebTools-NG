@@ -6,147 +6,145 @@ If a field is marked as `N/A` it means it does not exist for the type of export
 
 If a field is marked as `X` it means you can export it for the type of export
 
-
-| Fields  | Movie | TV Episode | TV Show | Audio Artist| Audio Track |
-| :--- | :---: | :---: | :-------------: | :-------------: | :-------------: |
-Accessible|X|X|?|?|?|
-Added|X|X|X|X|X|
-Art url|X|?|X|?|X|
-Audience Rating|X|?|?|X|?|?|
-Audio Stream Audio Channel Layout|X|X|N/A|N/A|?|
-Audio Stream Bit Depth|X|X|N/A|N/A|?|
-Audio Stream Bitrate Mode|X|X|N/A|N/A|?|
-Audio Stream Bitrate|X|X|N/A|N/A|?|
-Audio Stream Channels|X|X|N/A|N/A|?|
-Audio Stream Codec ID|X|X|N/A|N/A|?|
-Audio Stream Codec|X|X|N/A|N/A|?|
-Audio Stream Default|X|X|N/A|N/A|?|
-Audio Stream Display Title|?|X|N/A|N/A|?|
-Audio Stream Duration|X|X|N/A|N/A|?|
-Audio Stream Extended Display Title|?|X|N/A|N/A|?|
-Audio Stream Index|X|X|N/A|N/A|?|
-Audio Stream Language Code|X|X|N/A|N/A|?|
-Audio Stream Language|X|X|N/A|N/A|?|
-Audio Stream Profile|X|X|N/A|N/A|?|
-Audio Stream Required Bandwidths|X|X|N/A|N/A|?|
-Audio Stream Sampling Rate|X|X|N/A|N/A|?|
-Audio Stream Selected|X|X|N/A|N/A|?|
-Audio Stream Title|X|X|N/A|N/A|?|
-Chapter Count|X|?|?|?|N/A|
-Chapter Source|X|?|?|?|?|
-Chapter Title|X|?|?|?|?|
-Collections|X|?|?|?|?|
-Content Rating|X|X|X|?|?|
-Country|X|?|?|X|?|
-Deleted|?|X|?|?|?|
-Directors|X|X|?|?|?|
-Duration|X|X|?|X|?|X|
-Episode|N/A|X|?|?|?|
-Exists|X|X|?|?|N/A|?|
-Extras|X|X|?|?|?|
-Extras-behindthescenes|X|?|?|?|?|
-Extras-deleted|X|?|?|?|?|
-Extras-featurette|X|?|?|?|?|
-Extras-interview|X|?|?|?|?|
-Extras-scene|X|?|?|?|?|
-Extras-sceneOrSample|X|?|?|?|?|
-Extras-short|X|?|?|?|?|
-Extras-trailer|X|?|?|?|?|
-Genre|X|X|?|X|?|?|
-IMDB ID|?|X|?|?|?|
-IMDB Link|?|X|?|?|?|
-Intro Start|N/A|X|?|N/A|?|
-Intro Stop|N/A|X|?|N/A|?|
-Labels|X|?|?|?|?|
-Last Viewed at|X|?|?|X|?|
-Locked Fields|X|X|?|?|?|
-Media Aspect Ratio|X|X|N/A|?|?|
-Media Audio Channels|X|X|N/A|N/A|X|
-Media Audio Codec|X|X|N/A|N/A|X|
-Media Bitrate|X|X|N/A|N/A|X|
-Media Container|X|X|N/A|N/A|X|
-Media ID|X|X|X|X|X|
-Media Title|?|X|N/A|?|?|
-Media Video Codec|X|X|N/A|N/A|?|
-Media Video Duration|?|X|N/A|N/A|?|
-Media Video FrameRate|X|X|N/A|N/A|?|
-Media Video Height|X|X|N/A|N/A|?|
-Media Video Profile|?|X|N/A|N/A|?|
-Media Video Resolution|X|X|N/A|N/A|?|
-Media Video Width|X|X|N/A|N/A|?|
-MetaData Language|X|X|N/A|N/A|?|
-MetaDB Link|X|?|?|?|?|
-Original Title|X|N/A|?|?|?|
-Part Container|X|X|N/A|N/A|X|
-Part Deep Analysis Version|X|X|N/A|N/A|X|
-Part Duration|X|X|N/A|N/A|X|
-Part File|X|X|N/A|N/A|X|
-Part File Combined|X|X|N/A|N/A|X|
-Part File Path|X|X|N/A|N/A|X|
-Part Indexed|X|X|N/A|N/A|?|
-Part Optimized for Streaming|X|X|N/A|N/A|?|
-Part Required Bandwidths|X|X|N/A|N/A|X|
-Part Size as Bytes|X|X|N/A|N/A|X|
-Part Size|X|X|N/A|N/A|X|
-Part Video Profile|X|X|N/A|N/A|?|
-Poster url|X|X|X|X|X|
-Rating|X|X|?|?|?|
-Release Date|X|X|X|?|?|
-Roles|X|?|X|?|?|
-Season|N/A|X|?|N/A|N/A|
-Series Title|N/A|X|?|?|N/A|
-Sort title|X|X|?|?|?|
-Studio|X|N/A|X|?|?|
-Subtitle Stream Codec ID|X|X|N/A|N/A|N/A|
-Subtitle Stream Codec|X|X|N/A|N/A|N/A|
-Subtitle Stream Forced|X|X|N/A|N/A|N/A|
-Subtitle Stream Format|X|X|N/A|N/A|N/A|
-Subtitle Stream Header Compression|X|X|N/A|N/A|N/A|
-Subtitle Stream Index|X|X|N/A|N/A|N/A|
-Subtitle Stream Language Code|X|X|N/A|N/A|N/A|
-Subtitle Stream Language|X|X|N/A|N/A|N/A|
-Subtitle Stream Required Bandwidths|X|X|N/A|N/A|N/A|
-Subtitle Stream Selected|X|X|N/A|N/A|N/A|
-Subtitle Stream Title|X|X|N/A|N/A|N/A|
-Summary|X|X|X|X|X|
-Tagline|X|?|X|?|?|
-Title|X|X|X|X|X|
-TMDB ID|?|X|?|N/A|N/A|
-TMDB Link|X|N/A|?|N/A|N/a|
-TVDB ID|?|X|?|N/A|N/A|
-Updated|X|X|X|X|X|
-User Rating|X|X|?|N/A|?|
-Video Stream Anamorphic|X|?|N/A|N/A|N/A|
-Video Stream Bit Depth|X|X|N/A|N/A|N/A|
-Video Stream Bitrate|X|X|N/A|N/A|N/A|
-Video Stream Cabac|X|X|N/A|N/A|N/A|
-Video Stream Chroma Sub Sampling|X|X|N/A|N/A|N/A|
-Video Stream Codec ID|X|X|N/A|N/A|N/A|
-Video Stream Codec|X|X|N/A|N/A|N/A|
-Video Stream Color Primaries|X|X|N/A|N/A|N/A|
-Video Stream Color Range|X|X|N/A|N/A|N/A|
-Video Stream Color Space|X|X|N/A|N/A|N/A|
-Video Stream Color Trc|X|X|N/A|N/A|N/A|
-Video Stream Default|X|X|N/A|N/A|N/A|
-Video Stream Duration|X|X|N/A|N/A|N/A|
-Video Stream Frame Rate Mode|X|X|N/A|N/A|N/A|
-Video Stream Frame Rate|X|X|N/A|N/A|N/A|
-Video Stream Has Scaling Matrix|X|X|N/A|N/A|N/A|
-Video Stream Height|X|X|N/A|N/A|N/A|
-Video Stream Index|X|X|N/A|N/A|N/A|
-Video Stream Language Code|X|X|N/A|N/A|N/A|
-Video Stream Language|X|X|N/A|N/A|N/A|
-Video Stream Level|X|X|N/A|N/A|N/A|
-Video Stream Pixel Aspect Ratio|X|?|N/A|N/A|N/A|
-Video Stream Pixel Format|X|X|N/A|N/A|N/A|
-Video Stream Profile|X|X|N/A|N/A|N/A|
-Video Stream Ref Frames|X|X|N/A|N/A|N/A|
-Video Stream Required Bandwidths|X|X|N/A|N/A|N/A|
-Video Stream Scan Type|X|X|N/A|N/A|N/A|
-Video Stream Stream Identifier|X|?|N/A|N/A|N/A|
-Video Stream Title|X|X|N/A|N/A|N/A|
-Video Stream Width|X|X|N/A|N/A|N/A|
-View Count|X|X|?|?|?|
-Writers|X|X|?|?|?|
-Year|X|X|?|X|?|N/A|
-
+| Fields | Movie | TV Episode | TV Show | Audio Album |Audio Artist | Audio Track |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+Accessible|X|X|?|?|?|?|
+Added|X|X|X|X|X|X|
+Art url|X|?|X|X|?|X|
+Audience Rating|X|?|X|?|?|?|
+Audio Stream Audio Channel Layout|X|X|?|?|?|?|
+Audio Stream Bit Depth|X|X|?|?|?|?|
+Audio Stream Bitrate|X|X|?|?|?|?|
+Audio Stream Bitrate Mode|X|X|?|?|?|?|
+Audio Stream Channels|X|X|?|?|?|?|
+Audio Stream Codec|X|X|?|?|?|?|
+Audio Stream Codec ID|X|X|?|?|?|?|
+Audio Stream Default|X|X|?|?|?|?|
+Audio Stream Display Title|?|X|?|?|?|?|
+Audio Stream Duration|X|X|?|?|?|?|
+Audio Stream Extended Display Title|?|X|?|?|?|?|
+Audio Stream Index|X|X|?|?|?|?|
+Audio Stream Language|X|X|?|?|?|?|
+Audio Stream Language Code|X|X|?|?|?|?|
+Audio Stream Profile|X|X|?|?|?|?|
+Audio Stream Required Bandwidths|X|X|?|?|?|?|
+Audio Stream Sampling Rate|X|X|?|?|?|?|
+Audio Stream Selected|X|X|?|?|?|?|
+Audio Stream Title|X|X|?|?|?|?|
+Chapter Count|X|?|?|?|?|?|
+Chapter Source|X|?|?|?|?|?|
+Chapter Title|X|?|?|?|?|?|
+Collections|X|N/A|?|?|?|?|
+Content Rating|X|X|X|?|?|?|
+Country|X|?|?|?|X|?|
+Deleted|?|X|?|?|?|?|
+Directors|X|X|?|?|?|?|
+Duration|X|X|X|?|?|X|
+Episode|N/A|X|?|?|?|?|
+Exists|X|X|?|?|?|?|
+Extras|X|X|?|?|?|?|
+Extras-behindthescenes|X|?|?|?|?|?|
+Extras-deleted|X|?|?|?|?|?|
+Extras-featurette|X|?|?|?|?|?|
+Extras-interview|X|?|?|?|?|?|
+Extras-scene|X|?|?|?|?|?|
+Extras-sceneOrSample|X|?|?|?|?|?|
+Extras-short|X|?|?|?|?|?|
+Extras-trailer|X|?|?|?|?|?|
+Genre|?|?|X|?|X|?|
+IMDB ID|?|X|?|?|?|?|
+IMDB Link|?|X|?|?|?|?|
+Intro Start|N/A|X|?|?|?|?|
+Intro Stop|N/A|X|?|?|?|?|
+Labels|X|?|?|?|?|?|
+Last Viewed at|X|?|?|X|X|?|
+Locked Fields|X|X|?|?|?|?|
+Media Aspect Ratio|X|X|?|?|?|?|
+Media Audio Channels|X|X|?|?|?|X|
+Media Audio Codec|X|X|?|?|?|X|
+Media Bitrate|X|X|?|?|?|X|
+Media Container|X|X|?|?|?|X|
+Media ID|X|X|X|X|X|X|
+Media Title|?|X|?|?|?|?|
+Media Video Codec|X|X|?|?|?|?|
+Media Video Duration|?|X|?|?|?|?|
+Media Video FrameRate|X|X|?|?|?|?|
+Media Video Height|X|X|?|?|?|?|
+Media Video Profile|?|X|?|?|?|?|
+Media Video Resolution|X|X|?|?|?|?|
+Media Video Width|X|X|?|?|?|?|
+MetaDB Link|X|?|?|?|?|?|
+MetaData Language|X|X|?|?|?|?|
+Original Title|X|?|?|?|?|?|
+Part Container|X|X|?|?|?|X|
+Part Deep Analysis Version|X|X|?|?|?|X|
+Part Duration|X|X|?|?|?|X|
+Part File|X|X|?|?|?|X|
+Part File Combined|X|X|?|?|?|X|
+Part File Path|X|X|?|?|?|X|
+Part Indexed|X|X|?|?|?|?|
+Part Optimized for Streaming|X|X|?|?|?|?|
+Part Required Bandwidths|X|X|?|?|?|X|
+Part Size|X|X|?|?|?|X|
+Part Size as Bytes|X|X|?|?|?|X|
+Part Video Profile|X|X|?|?|?|?|
+Poster url|X|X|X|X|X|X|
+Rating|X|X|?|X|?|?|
+Release Date|X|X|X|X|?|?|
+Roles|X|?|X|?|?|?|
+Season|N/A|X|?|?|?|?|
+Series Title|N/A|X|?|?|?|?|
+Sort title|X|X|?|?|X|?|
+Studio|X|?|X|X|?|?|
+Subtitle Stream Codec|X|X|?|?|?|?|
+Subtitle Stream Codec ID|X|X|?|?|?|?|
+Subtitle Stream Forced|X|X|?|?|?|?|
+Subtitle Stream Format|X|X|?|?|?|?|
+Subtitle Stream Header Compression|X|X|?|?|?|?|
+Subtitle Stream Index|X|X|?|?|?|?|
+Subtitle Stream Language|X|X|?|?|?|?|
+Subtitle Stream Language Code|X|X|?|?|?|?|
+Subtitle Stream Required Bandwidths|X|X|?|?|?|?|
+Subtitle Stream Selected|X|X|?|?|?|?|
+Subtitle Stream Title|X|X|?|?|?|?|
+Summary|X|X|X|X|X|X|
+TMDB ID|X|X|?|?|?|?|
+TMDB Link|X|N/A|?|?|?|?|
+TVDB ID|N/A|X|?|?|?|?|
+Tagline|X|?|X|X|?|?|
+Title|X|X|X|X|X|X|
+Updated|X|X|X|X|X|X|
+User Rating|X|X|?|?|?|?|
+Video Stream Anamorphic|X|?|?|?|?|?|
+Video Stream Bit Depth|X|X|?|?|?|?|
+Video Stream Bitrate|X|X|?|?|?|?|
+Video Stream Cabac|X|X|?|?|?|?|
+Video Stream Chroma Sub Sampling|X|X|?|?|?|?|
+Video Stream Codec|X|X|?|?|?|?|
+Video Stream Codec ID|X|X|?|?|?|?|
+Video Stream Color Primaries|X|X|?|?|?|?|
+Video Stream Color Range|X|X|?|?|?|?|
+Video Stream Color Space|X|X|?|?|?|?|
+Video Stream Color Trc|X|X|?|?|?|?|
+Video Stream Default|X|X|?|?|?|?|
+Video Stream Duration|X|X|?|?|?|?|
+Video Stream Frame Rate|X|X|?|?|?|?|
+Video Stream Frame Rate Mode|X|X|?|?|?|?|
+Video Stream Has Scaling Matrix|X|X|?|?|?|?|
+Video Stream Height|X|X|?|?|?|?|
+Video Stream Index|X|X|?|?|?|?|
+Video Stream Language|X|X|?|?|?|?|
+Video Stream Language Code|X|X|?|?|?|?|
+Video Stream Level|X|X|?|?|?|?|
+Video Stream Pixel Aspect Ratio|X|?|?|?|?|?|
+Video Stream Pixel Format|X|X|?|?|?|?|
+Video Stream Profile|X|X|?|?|?|?|
+Video Stream Ref Frames|X|X|?|?|?|?|
+Video Stream Required Bandwidths|X|X|?|?|?|?|
+Video Stream Scan Type|X|X|?|?|?|?|
+Video Stream Stream Identifier|X|?|?|?|?|?|
+Video Stream Title|X|X|?|?|?|?|
+Video Stream Width|X|X|?|?|?|?|
+View Count|X|?|?|?|?|?|
+Writers|X|X|?|?|?|?|
+Year|X|X|X|X|?|?|

@@ -21,12 +21,12 @@
                 "Art url",
                 "Media ID",
                 "Poster url",
+                "Rating",
                 "Release Date",
                 "Studio",
                 "Summary",
                 "Title",
                 "Updated",
-                "Rating",
                 "Year"
             ]
         }
