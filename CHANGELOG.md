@@ -11,7 +11,7 @@
 * [#267 Allow export of Albums](https://github.com/WebTools-NG/WebTools-NG/issues/267)
 * [#268 Allow export of Tracks](https://github.com/WebTools-NG/WebTools-NG/issues/268)
 * [#280 Enable custom level for Audio Track](https://github.com/WebTools-NG/WebTools-NG/issues/280)
-
+* [#279 Enable custom level for Audio Album](https://github.com/WebTools-NG/WebTools-NG/issues/279)
 
 ## V0.1.16
 
