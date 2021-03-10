@@ -104,7 +104,7 @@
             selMediaType: "movie",
             optionsMediaType: [
                 { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },
-                { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true },
+                { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: false },
                 { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioArtist'), value: 'artist', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: false },
