@@ -108,7 +108,7 @@
                 { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioArtist'), value: 'artist', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: true },
-                { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: true },
+                { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
                 { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },
                 { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }
             ],
@@ -228,6 +228,8 @@
             this.$refs['showNewLevel'].hide();
             // Get current level names
             let curLevels = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.levels`);
+
+            console.log('Ged curLevels', JSON.stringify(curLevels), this.selMediaType)
             // Add new level to JSON
             curLevels[this.NewLevelName] = this.NewLevelName;
             // Save
@@ -300,7 +302,6 @@
             this.updateLevelCount();
             alert( i18n.t("Modules.ET.Custom.AlertSaved"));
             this.getCustomLevel();
-
         },
         confirmDeleteLevel() {
             log.info(`User asked to delete a custom level`);

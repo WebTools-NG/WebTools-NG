@@ -1,4 +1,4 @@
-/* 
+/*
 This file contains different functions and methods
 that we use in our solution.
  */
@@ -8,37 +8,37 @@ that we use in our solution.
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
-// User Config 
+// User Config
 const Store = require('electron-store');
 const wtconfig = new Store({ name: (electron.app || electron.remote.app).getName() });
 
 const wtutils = new class WTUtils {
 
-    constructor() {      
+    constructor() {
     }
 
     get ConfigFileName(){
         var path = require('path');
-        const configFileName = path.join( this.Home, this.AppName + '.json');                
+        const configFileName = path.join( this.Home, this.AppName + '.json');
         return configFileName;
     }
 
-    get ExportDirPresent(){        
- 
+    get ExportDirPresent(){
 
-        log.info('Checking ExportPath')        
+
+        log.info('Checking ExportPath')
         const ExportPath = wtconfig.get('General.ExportPath', 'N/A');
         if ( ExportPath == 'N/A' ){
             log.error('ExportPath not defined');
             return false;
         }
         const fs = require("fs");
-        if (fs.existsSync(ExportPath)) {            
+        if (fs.existsSync(ExportPath)) {
             const path = require('path');
             const appExportDir = path.join(ExportPath, wtutils.AppName);
             if (!fs.existsSync(appExportDir))
             {
-                log.debug('Export dir existed, but AppDir didnt')                
+                log.debug('Export dir existed, but AppDir didnt')
                 fs.mkdirSync(appExportDir)
                 if (fs.existsSync(appExportDir))
                 {
@@ -56,14 +56,14 @@ const wtutils = new class WTUtils {
         }
         return false;
 
-             
+
     }
 
     get RunningOS(){
         return process.platform;
     }
 
-    get PMSHeader(){        
+    get PMSHeader(){
         var headers = {
             "Accept": "application/json",
             "X-Plex-Client-Identifier": this.X_Plex_Client_Identifier,
@@ -71,8 +71,8 @@ const wtutils = new class WTUtils {
             "X-Plex-Version": this.AppVersion,
             "X-Plex-Device": this.Platform,
             "Accept-Language": wtconfig.get('General.language')
-        }   
-        return headers        
+        }
+        return headers
     }
 
     get Platform() {
@@ -93,15 +93,15 @@ const wtutils = new class WTUtils {
     }
 
     // Get X_Plex_Client_Identifier, or create one if not set
-    get X_Plex_Client_Identifier() {        
+    get X_Plex_Client_Identifier() {
         let result = wtconfig.get('General.X_Plex_Client_Identifier' )
         if (result == undefined)
-        {            
+        {
             var uuid = require('uuid');
             result = uuid.v4();
             wtconfig.set('General.X_Plex_Client_Identifier', result)
             log.debug(`Setting X_Plex_Client_Identifier as ${result}`)
-        }        
+        }
         return result;
     }
 
@@ -110,7 +110,7 @@ const wtutils = new class WTUtils {
     }
 
     get isMac() {
-       return process.platform === 'darwin' 
+       return process.platform === 'darwin'
     }
 
     get isLinux() {
@@ -120,7 +120,7 @@ const wtutils = new class WTUtils {
     get isWindows() {
         return process.platform === 'win32'
     }
-  
+
     get Home() {
       return (electron.app || electron.remote.app).getPath('userData');
     }
@@ -133,8 +133,8 @@ const wtutils = new class WTUtils {
         return (electron.app || electron.remote.app).getPath('documents');
     }
 
-    get AppName() {        
-        return (electron.app || electron.remote.app).name; 
+    get AppName() {
+        return (electron.app || electron.remote.app).name;
     }
 
     /*
@@ -144,22 +144,22 @@ const wtutils = new class WTUtils {
         return require('../../../../public/version.json').rev;
     }
 
-    get AppVersion() {        
-        return (electron.app || electron.remote.app).getVersion() + '.' + this.Rev; 
+    get AppVersion() {
+        return (electron.app || electron.remote.app).getVersion() + '.' + this.Rev;
     }
 
     get LangFiles() {
         const langFiles = []
-        var fs = require('fs');    
-        const localHome = wtutils.Home + '/locales' 
-        log.verbose(`LocalHome detected as: ${localHome}`)            
-        const items = fs.readdirSync(localHome)  
-        log.verbose(`Files count is: ${items.length}`)        
-        for (var i=0; i<items.length; i++) {                                    
-            log.verbose(`found translation file : ${items[i]}`);        
+        var fs = require('fs');
+        const localHome = wtutils.Home + '/locales'
+        log.verbose(`LocalHome detected as: ${localHome}`)
+        const items = fs.readdirSync(localHome)
+        log.verbose(`Files count is: ${items.length}`)
+        for (var i=0; i<items.length; i++) {
+            log.verbose(`found translation file : ${items[i]}`);
             langFiles.push(items[i]);
         }
-        log.verbose(`********* Done reading translations ***********`)          
+        log.verbose(`********* Done reading translations ***********`)
         return langFiles
     }
 
@@ -172,15 +172,15 @@ const wtutils = new class WTUtils {
     }
 
     get LogMac() {
-        const logDir = wtutils.Home.replace('Application Support', 'Logs');        
+        const logDir = wtutils.Home.replace('Application Support', 'Logs');
         log.info(`Log directory on Mac is detected as: ${logDir}`)
         return logDir;
-    }    
+    }
 
-    /* 
+    /*
     This will move translation files in the app to userdata
-    directory in a sub-folder named locales 
-    It will only do so if this has not been done before or 
+    directory in a sub-folder named locales
+    It will only do so if this has not been done before or
     this is a new version of our app
      */
     MoveToHome() {
@@ -192,45 +192,45 @@ const wtutils = new class WTUtils {
                 localHome = __dirname.replace('node_modules\\electron\\dist\\resources\\electron.asar\\renderer', 'public/locales');
             }
             else if (wtutils.isMac)
-            {                
+            {
                 localHome = __dirname.replace('node_modules/electron/dist/Electron.app/Contents/Resources/electron.asar/renderer', 'public/locales');
             }
             else
             {
                 localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
 
-            }                                       
+            }
         }
         else
         {
             localHome = __dirname.replace('app.asar', 'locales');
-        }        
+        }
         var last = wtconfig.get('General.transfilescopied', "0")
         if (!(last == wtutils.AppVersion))
         {
-            log.debug('We need to copy translation strings over')            
+            log.debug('We need to copy translation strings over')
             var fs = require('fs');
             // Check if userdata/locales exists, and create if not
             var TargetDir = wtutils.Home + '/locales';
             if (!fs.existsSync(TargetDir)){
                 log.debug('locales directory needs to be created');
                 fs.mkdirSync(TargetDir);
-            } 
-            const items = fs.readdirSync(localHome)                                      
-            for (var i=0; i<items.length; i++) {                                    
-                var SourceFile = localHome + '/' + items[i];                                 
+            }
+            const items = fs.readdirSync(localHome)
+            for (var i=0; i<items.length; i++) {
+                var SourceFile = localHome + '/' + items[i];
                 var TargetFile = TargetDir + '/' + items[i];
                 log.debug('Copying ' + SourceFile + ' to ' + TargetFile);
-                fs.copyFile(SourceFile, TargetFile, err => {  
-                    if (err) return console.error(err)                        
-                });                  
-            }        
+                fs.copyFile(SourceFile, TargetFile, err => {
+                    if (err) return console.error(err)
+                });
+            }
             wtconfig.set('General.transfilescopied', wtutils.AppVersion)
-            }                       
+            }
     }
 
     UpdateConfigFile() {
-        // Update config file with defaults if missing        
+        // Update config file with defaults if missing
         log.verbose('Updating config file');
         // General section
         if ( wtconfig.get('General.username', 'N/A') == 'N/A' ){
@@ -286,7 +286,7 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('ET.ColumnSep', 'N/A') == 'N/A' ){
             wtconfig.set('ET.ColumnSep', '|')
-        }        
+        }
         if ( wtconfig.get('ET.NotAvail', 'N/A') == 'N/A' ){
             wtconfig.set('ET.NotAvail', 'N/A')
         }
@@ -317,15 +317,6 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.CustomLevels.show.level', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.show.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.showepisode.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.showepisode.levels', {})
-        }
-        if ( wtconfig.get('ET.CustomLevels.showepisode.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.showepisode.LevelCount', {})
-        }
-        if ( wtconfig.get('ET.CustomLevels.showepisode.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.showepisode.level', {})
-        }
         if ( wtconfig.get('ET.CustomLevels.artist.levels', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.artist.levels', {})
         }
@@ -334,6 +325,15 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('ET.CustomLevels.artist.level', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.artist.level', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.track.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.track.levels', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.track.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.track.LevelCount', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.track.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.track.level', {})
         }
         if ( wtconfig.get('ET.CustomLevels.photo.levels', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.photo.levels', {})
@@ -352,7 +352,7 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('ET.CustomLevels.playlist.level', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.playlist.level', {})
-        }        
+        }
         // All done, so stamp version number
         wtconfig.set('General.version', wtutils.AppVersion)
     }
@@ -364,11 +364,11 @@ const wtutils = new class WTUtils {
       }
       this._name = value;
     } */
-  }  
-  
+  }
+
 const dialog = new class Dialog {
-    constructor() {                    
-    }    
+    constructor() {
+    }
 
     AboutWindow(Title, OKLabel, CopyLabel, aboutInformation)
     {
@@ -386,7 +386,7 @@ const dialog = new class Dialog {
         }
         let aboutWindow = dialog.showMessageBox(WIN, options)
         return aboutWindow
-    }    
+    }
 
     OpenDirectory(Title, OKLabel)
     {
@@ -400,31 +400,31 @@ const dialog = new class Dialog {
             buttonLabel : OKLabel,
             title: Title
         }
-        
+
         let dirName = dialog.showOpenDialogSync(WIN, options)
         log.debug('Returned directoryname is: ' + dirName)
         return dirName
 
     }
-            
-    SaveFile(title, defaultPath, OKLabel) {        
+
+    SaveFile(title, defaultPath, OKLabel) {
         log.debug('Start SaveFile Dialog')
         const {remote} = require('electron'),
         dialog = remote.dialog,
         WIN = remote.getCurrentWindow();
         let options = {
             //Placeholder 1 (Not on Linux)
-            title: title,            
+            title: title,
             //Placeholder 2
-            defaultPath : defaultPath,            
+            defaultPath : defaultPath,
             //Placeholder 4
-            buttonLabel : OKLabel,            
+            buttonLabel : OKLabel,
             //Placeholder 3
             filters :[
                 {name: 'ExportTools', extensions: ['xlsx', 'csv']},
                 {name: 'All Files', extensions: ['*']}
             ]
-            } 
+            }
         let filename = dialog.showSaveDialogSync(WIN, options)
         log.debug('Returned filename is: ' + filename)
         return filename
@@ -432,17 +432,17 @@ const dialog = new class Dialog {
 }
 
 const github = new class GitHub {
-    constructor() {        
+    constructor() {
         this.releaseUrl = 'https://api.github.com/repos/WebTools-NG/WebTools-NG/releases';
-        //this.releaseUrl = 'https://api.github.com/repos/ukdtom/testrel/releases';        
+        //this.releaseUrl = 'https://api.github.com/repos/ukdtom/testrel/releases';
     }
-        
+
     // Get the releases from GitHub
     async Releases(){
         log.debug('Checking for Github updates')
-        const fetch = require('node-fetch');                
-        const response = await fetch(this.releaseUrl);        
-        const releases = await response.json();        
+        const fetch = require('node-fetch');
+        const response = await fetch(this.releaseUrl);
+        const releases = await response.json();
         const rels = {};
         rels['beta'] = false;
         rels['rel'] = false;
@@ -454,10 +454,10 @@ const github = new class GitHub {
         for(var i = 0; i < releases.length; i++)
         {
             if (rels['beta'] && rels['rel'])
-            {                
+            {
                 break;
             }
-            if (!rels['beta'] && releases[i].prerelease){                
+            if (!rels['beta'] && releases[i].prerelease){
                 log.verbose(`Found beta version ${releases[i].tag_name}`)
                 rels['betaver'] = releases[i].tag_name;
                 rels['beta'] = true;
@@ -466,7 +466,7 @@ const github = new class GitHub {
                 rels['betadate'] = releases[i].published_at.substring(0, 10);
                 rels['betadateFull'] = releases[i].published_at;
             }
-            else if (!rels['rel'] && !releases[i].prerelease){                
+            else if (!rels['rel'] && !releases[i].prerelease){
                 log.verbose(`Found release version ${releases[i].tag_name}`)
                 rels['relver'] = releases[i].tag_name;
                 rels['rel'] = true;
@@ -476,7 +476,7 @@ const github = new class GitHub {
                 rels['reldate'] = releases[i].published_at.substring(0, 10);
                 rels['reldateFull'] = releases[i].published_at;
             }
-        }        
+        }
         // If not present, set to zerro
         if (!rels['reldateFull']){
             rels['reldateFull'] = 0;
@@ -493,13 +493,13 @@ const github = new class GitHub {
                 rels['betaver'] = s1.substring(1);
             }
         }
-        if (rels['relver']){ 
+        if (rels['relver']){
             if (rels['relver'].toUpperCase().startsWith('V'))
             {
                 s1 = rels['relver'];
                 rels['relver'] = s1.substring(1);
             }
-        } 
+        }
         return rels;
     }
 }
