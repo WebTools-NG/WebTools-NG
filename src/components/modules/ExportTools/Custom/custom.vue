@@ -228,8 +228,6 @@
             this.$refs['showNewLevel'].hide();
             // Get current level names
             let curLevels = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.levels`);
-
-            console.log('Ged curLevels', JSON.stringify(curLevels), this.selMediaType)
             // Add new level to JSON
             curLevels[this.NewLevelName] = this.NewLevelName;
             // Save
