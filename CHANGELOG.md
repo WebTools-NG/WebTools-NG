@@ -10,6 +10,8 @@
 * [#272 Allow export of TV Shows](https://github.com/WebTools-NG/WebTools-NG/issues/272)
 * [#267 Allow export of Albums](https://github.com/WebTools-NG/WebTools-NG/issues/267)
 * [#268 Allow export of Tracks](https://github.com/WebTools-NG/WebTools-NG/issues/268)
+* [#280 Enable custom level for Audio Track](https://github.com/WebTools-NG/WebTools-NG/issues/280)
+
 
 ## V0.1.16
 
