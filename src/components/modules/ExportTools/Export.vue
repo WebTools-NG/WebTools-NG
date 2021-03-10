@@ -206,7 +206,6 @@
       {
         targetType = 'show'
       }
-
       if (targetType == 'track')
       {
         targetType = 'artist'
