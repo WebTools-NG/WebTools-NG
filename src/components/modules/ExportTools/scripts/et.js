@@ -83,7 +83,14 @@ const et = new class ET {
         const element = '/library/sections/' + libKey
         let size
         do {
-            postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+            if (libType == 'photo')
+            {
+                postURI = `/all?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+            }
+            else
+            {
+                postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+            }
             log.info(`Calling url ${baseURL + element + postURI}`);
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
@@ -1014,41 +1021,44 @@ const excel2 = new class Excel {
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
         stream.write( strHeader + "\n");
-        // Get all the items in small chuncks
-        var sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})
-        log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
-        let item
-        let counter = 1
-        const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
-        for (var x=0; x<sectionData.length; x++)
+        var sectionData, x;
         {
-            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}))
-            var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});
-            if ( call == 1 )
+            // Get all the items in small chuncks
+            sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})
+            log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
+            let item
+            let counter = 1
+            const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
+            for (x=0; x<sectionData.length; x++)
             {
-                for (item of sectionChunk){
-                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                    await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
-                    counter += 1;
-                    await new Promise(resolve => setTimeout(resolve, 1));
+                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}))
+                var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});
+                if ( call == 1 )
+                {
+                    for (item of sectionChunk){
+                        store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                        counter += 1;
+                        await new Promise(resolve => setTimeout(resolve, 1));
+                    }
                 }
-            }
-            else
-            {
-                // Get ratingKeys in the chunk
-                const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
-                let urlStr = urls.join(',');
-                log.verbose(`Items to lookup are: ${urlStr}`)
-                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}));
-                const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
-                log.verbose(`Items retrieved`);
-                const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
-                const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
-                for (item of contentsItems){
-                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                    await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
-                    counter += 1;
-                    await new Promise(resolve => setTimeout(resolve, 1));
+                else
+                {
+                    // Get ratingKeys in the chunk
+                    const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
+                    let urlStr = urls.join(',');
+                    log.verbose(`Items to lookup are: ${urlStr}`)
+                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}));
+                    const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
+                    log.verbose(`Items retrieved`);
+                    const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
+                    const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
+                    for (item of contentsItems){
+                        store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                        counter += 1;
+                        await new Promise(resolve => setTimeout(resolve, 1));
+                    }
                 }
             }
         }
