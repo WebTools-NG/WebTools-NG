@@ -107,7 +107,7 @@
                 { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: true },
                 { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioArtist'), value: 'artist', disabled: false },
-                { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: true },
+                { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
                 { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: true },
                 { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }

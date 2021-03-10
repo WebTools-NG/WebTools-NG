@@ -335,6 +335,15 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.CustomLevels.track.level', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.track.level', {})
         }
+        if ( wtconfig.get('ET.CustomLevels.album.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.album.levels', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.album.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.album.LevelCount', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.album.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.album.level', {})
+        }
         if ( wtconfig.get('ET.CustomLevels.photo.levels', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.photo.levels', {})
         }
