@@ -18,6 +18,30 @@
                 "call": 1,
                 "type": "string"
             },
+        "Audio Stream Album Gain":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "albumGain"
+            },
+        "Audio Stream Album Peak":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "albumPeak"
+            },
+        "Audio Stream Album Range":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "albumRange"
+            },
         "Audio Stream Audio Channel Layout":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
@@ -98,6 +122,14 @@
                 "subtype": "string",
                 "subkey": "$.duration"
             },
+        "Audio Stream End Ramp":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.endRamp"
+            },
         "Audio Stream Extended Display Title":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
@@ -105,6 +137,14 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.extendedDisplayTitle"
+            },
+        "Audio Stream gain":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.gain"
             },
         "Audio Stream Index":
             {
@@ -129,6 +169,30 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "languageCode"
+            },
+        "Audio Stream loudness":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "loudness"
+            },
+        "Audio Stream LRA":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "lra"
+            },
+        "Audio Stream Peak":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.peak"
             },
         "Audio Stream Profile":
             {
@@ -161,6 +225,14 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "selected"
+            },
+        "Audio Stream Start Ramp":
+            {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.startRamp"
             },
         "Audio Stream Title":
             {
@@ -402,6 +474,14 @@
                 "subtype": "string",
                 "subkey": "$.container"
             },
+        "Media Duration":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "time",
+                "subkey": "$.duration"
+            },
         "Media Height":
             {
                 "key": "$.Media[*]",
@@ -433,14 +513,6 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.videoCodec"
-            },
-        "Media Video Duration":
-            {
-                "key": "$.Media[*]",
-                "call": 2,
-                "type": "array",
-                "subtype": "time",
-                "subkey": "$.duration"
             },
         "Media Video FrameRate":
             {
@@ -561,6 +633,14 @@
                 "postProcess": true,
                 "subtype": "string",
                 "subkey": "$.file"
+            },
+        "Part has Thumbnail":
+            {
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.hasThumbnail"
             },
         "Part Indexed":
             {
