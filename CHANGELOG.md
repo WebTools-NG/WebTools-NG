@@ -5,6 +5,7 @@
 **Note**:   This version is an Alpha version, that is not made public
 
 * [#106 Allow Export of Photos](https://github.com/WebTools-NG/WebTools-NG/issues/106)
+* [#285 Photos allow cust levels](https://github.com/WebTools-NG/WebTools-NG/issues/285)
 
 ## V0.2.01
 
