@@ -6,10 +6,28 @@
                 "call": 1,
                 "type": "datetime"
             },
+        "Album Poster url":
+            {
+                "key": "$.parentThumb",
+                "call": 1,
+                "type": "string"
+            },
         "Art url":
             {
                 "key": "$.art",
                 "call": 2,
+                "type": "string"
+            },
+        "Artist Art url":
+            {
+                "key": "$.grandparentArt",
+                "call": 1,
+                "type": "string"
+            },
+        "Artist Poster url":
+            {
+                "key": "$.grandparentThumb",
+                "call": 1,
                 "type": "string"
             },
         "Audience Rating":

@@ -9,7 +9,10 @@ If a field is marked as `X` it means you can export it for the type of export
 | Fields | Movie | TV Episode | TV Show | Audio Album |Audio Artist | Audio Track | Photo |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 Added|X|X|X|X|X|X|X|
+Album Poster url|?|?|?|?|?|X|?|
 Art url|X|?|X|X|?|X|X|
+Artist Art url|?|?|?|?|?|X|?|
+Artist Poster url|?|?|?|?|?|X|?|
 Audience Rating|X|?|X|?|?|?|?|
 Audio Stream Album Gain|?|?|?|?|?|X|?|
 Audio Stream Album Peak|?|?|?|?|?|X|?|

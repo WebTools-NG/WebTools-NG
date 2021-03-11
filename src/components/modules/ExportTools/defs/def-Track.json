@@ -20,7 +20,10 @@
             ],
             "all": [
                 "Added",
+                "Album Poster url",
                 "Art url",
+                "Artist Art url",
+                "Artist Poster url",
                 "Audio Stream Album Gain",
                 "Audio Stream Album Peak",
                 "Audio Stream Album Range",
