@@ -396,6 +396,14 @@
                 "subtype": "string",
                 "subkey": "$.container"
             },
+        "Media Height":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.height"
+            },
         "Media ID":
             {
                 "key": "$.ratingKey",
@@ -434,14 +442,6 @@
                 "subtype": "string",
                 "subkey": "$.videoFrameRate"
             },
-        "Media Video Height":
-            {
-                "key": "$.Media[*]",
-                "call": 2,
-                "type": "array",
-                "subtype": "string",
-                "subkey": "$.height"
-            },
         "Media Video Profile":
             {
                 "key": "$.Media[*]",
@@ -458,7 +458,7 @@
                 "subtype": "string",
                 "subkey": "$.videoResolution"
             },
-        "Media Video Width":
+        "Media Width":
             {
                 "key": "$.Media[*]",
                 "call": 2,

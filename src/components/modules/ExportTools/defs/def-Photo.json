@@ -14,8 +14,8 @@
                 "Year",
                 "Media Aspect Ratio",
                 "Media Container",
-                "Media Video Height",
-                "Media Video Width"
+                "Media Height",
+                "Media Width"
             ],
             "all": [
                 "Added",
@@ -23,8 +23,8 @@
                 "Media Aspect Ratio",
                 "Media Container",
                 "Media ID",
-                "Media Video Height",
-                "Media Video Width",
+                "Media Height",
+                "Media Width",
                 "Part Accessible",
                 "Part Container",
                 "Part Exists",
