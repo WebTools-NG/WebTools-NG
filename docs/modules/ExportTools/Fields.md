@@ -8,7 +8,6 @@ If a field is marked as `X` it means you can export it for the type of export
 
 | Fields | Movie | TV Episode | TV Show | Audio Album |Audio Artist | Audio Track |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-Accessible|X|X|?|?|?|?|
 Added|X|X|X|X|X|X|
 Art url|X|?|X|X|?|X|
 Audience Rating|X|?|X|?|?|?|
@@ -41,7 +40,6 @@ Deleted|?|X|?|?|?|?|
 Directors|X|X|?|?|?|?|
 Duration|X|X|X|?|?|X|
 Episode|N/A|X|?|?|?|?|
-Exists|X|X|?|?|?|?|
 Extras|X|X|?|?|?|?|
 Extras-behindthescenes|X|?|?|?|?|?|
 Extras-deleted|X|?|?|?|?|?|
@@ -76,9 +74,11 @@ Media Video Width|X|X|?|?|?|?|
 MetaDB Link|X|?|?|?|?|?|
 MetaData Language|X|X|?|?|?|?|
 Original Title|X|?|?|?|?|?|
+Part Accessible|X|X|?|?|?|?|
 Part Container|X|X|?|?|?|X|
 Part Deep Analysis Version|X|X|?|?|?|X|
 Part Duration|X|X|?|?|?|X|
+Part Exists|X|X|?|?|?|?|
 Part File|X|X|?|?|?|X|
 Part File Combined|X|X|?|?|?|X|
 Part File Path|X|X|?|?|?|X|

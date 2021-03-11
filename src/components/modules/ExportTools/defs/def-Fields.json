@@ -1,13 +1,5 @@
 {
     "fields": {
-        "Accessible":
-            {
-                "key": "$.Media[*].Part[*]",
-                "call": 2,
-                "type": "array",
-                "subtype": "string",
-                "subkey": "$.accessible"
-            },
         "Added":
             {
                 "key": "$.addedAt",
@@ -245,14 +237,6 @@
                 "key": "$.index",
                 "call": 1,
                 "type": "string"
-            },
-        "Exists":
-            {
-                "key": "$.Media[*].Part[*]",
-                "call": 2,
-                "type": "array",
-                "subtype": "string",
-                "subkey": "$.exists"
             },
         "Extras":
             {
@@ -503,6 +487,14 @@
                 "type": "string",
                 "postProcess": true
             },
+        "Part Accessible":
+            {
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.accessible"
+            },
         "Part Container":
             {
                 "key": "$.Media[*].Part[*]",
@@ -527,6 +519,14 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.deepAnalysisVersion"
+            },
+        "Part Exists":
+            {
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.exists"
             },
         "Part File":
             {

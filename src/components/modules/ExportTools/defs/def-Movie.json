@@ -36,7 +36,6 @@
                 "User Rating"
             ],
             "all": [
-                "Accessible",
                 "Added",
                 "Art url",
                 "Audience Rating",
@@ -65,7 +64,6 @@
                 "Country",
                 "Directors",
                 "Duration",
-                "Exists",
                 "Extras",
                 "Extras-behindthescenes",
                 "Extras-deleted",
@@ -92,9 +90,11 @@
                 "MetaDB Link",
                 "MetaData Language",
                 "Original Title",
+                "Part Accessible",
                 "Part Container",
                 "Part Deep Analysis Version",
                 "Part Duration",
+                "Part Exists",
                 "Part File",
                 "Part File Combined",
                 "Part File Path",

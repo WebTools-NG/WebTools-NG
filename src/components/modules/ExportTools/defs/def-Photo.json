@@ -18,16 +18,16 @@
                 "Media Video Width"
             ],
             "all": [
-                "Accessible",
                 "Added",
                 "Art url",
-                "Exists",
                 "Media Aspect Ratio",
                 "Media Container",
                 "Media ID",
                 "Media Video Height",
                 "Media Video Width",
+                "Part Accessible",
                 "Part Container",
+                "Part Exists",
                 "Part File",
                 "Part File Combined",
                 "Part File Path",
@@ -39,7 +39,6 @@
                 "Title",
                 "Updated",
                 "Year"
-                
             ]
         }
     }
