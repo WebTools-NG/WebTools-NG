@@ -2,7 +2,7 @@
     "episode": {
         "level": {
             "level1": [
-                "Media ID",
+                "Key",
                 "Series Title",
                 "Sort title",
                 "Title",
@@ -15,7 +15,7 @@
                 "User Rating"
             ],
             "level2": [
-                "Media ID",
+                "Key",
                 "Series Title",
                 "Sort title",
                 "Title",
@@ -35,9 +35,8 @@
                 "Deleted"
             ],
             "all": [
-                "Media ID",
+                "Key",
                 "Series Title",
-                "Accessible",
                 "Added",
                 "Audio Stream Audio Channel Layout",
                 "Audio Stream Bit Depth",
@@ -63,7 +62,6 @@
                 "Directors",
                 "Duration",
                 "Episode",
-                "Exists",
                 "Extras",
                 "IMDB ID",
                 "IMDB Link",
@@ -75,18 +73,20 @@
                 "Media Audio Codec",
                 "Media Bitrate",
                 "Media Container",
+                "Media Height",
                 "Media Title",
                 "Media Video Codec",
                 "Media Video Duration",
                 "Media Video FrameRate",
-                "Media Video Height",
                 "Media Video Profile",
                 "Media Video Resolution",
-                "Media Video Width",
+                "Media Width",
                 "MetaData Language",
+                "Part Accessible",
                 "Part Container",
                 "Part Deep Analysis Version",
                 "Part Duration",
+                "Part Exists",
                 "Part File Combined",
                 "Part File Path",
                 "Part File",

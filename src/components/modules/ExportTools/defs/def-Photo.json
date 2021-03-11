@@ -1,1 +1,47 @@
-{}
+{
+    "photo": {
+        "level": {
+            "level1": [
+                "Key",
+                "Title",
+                "Added",
+                "Year"
+            ],
+            "level2": [
+                "Key",
+                "Title",
+                "Added",
+                "Year",
+                "Media Aspect Ratio",
+                "Media Container",
+                "Media Height",
+                "Media Width"
+            ],
+            "all": [
+                "Added",
+                "Art url",
+                "Key",
+                "Media Aspect Ratio",
+                "Media Container",
+                "Media Height",
+                "Media ID",
+                "Media Width",
+                "Part Accessible",
+                "Part Container",
+                "Part Exists",
+                "Part File",
+                "Part File Combined",
+                "Part File Path",
+                "Part Orientation",
+                "Part Size",
+                "Part Size as Bytes",
+                "Poster url",
+                "Release Date",
+                "Summary",
+                "Title",
+                "Updated",
+                "Year"
+            ]
+        }
+    }
+}

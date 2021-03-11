@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.2.02
+
+**Note**:   This version is an Alpha version, that is not made public
+
+* [#106 Allow Export of Photos](https://github.com/WebTools-NG/WebTools-NG/issues/106)
+
 ## V0.2.01
 
 **Note**:   This version is an Alpha version, that is not made public

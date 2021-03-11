@@ -2,13 +2,13 @@
     "artist": {
         "level": {
             "level1": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Sort title",
                 "Summary"
             ],
             "level2": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Sort title",
                 "Summary",
@@ -21,8 +21,8 @@
                 "Added",
                 "Country",
                 "Genre",
+                "Key",
                 "Last Viewed at",
-                "Media ID",
                 "Poster url",
                 "Sort title",
                 "Summary",
