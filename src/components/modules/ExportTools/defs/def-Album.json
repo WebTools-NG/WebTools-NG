@@ -2,13 +2,13 @@
     "album": {
         "level": {
             "level1": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Summary",
                 "Studio"
             ],
             "level2": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Summary",
                 "Studio",
@@ -19,7 +19,7 @@
             "all": [
                 "Added",
                 "Art url",
-                "Media ID",
+                "Key",
                 "Poster url",
                 "Rating",
                 "Release Date",

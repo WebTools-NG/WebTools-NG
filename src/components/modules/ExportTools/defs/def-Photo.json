@@ -2,13 +2,13 @@
     "photo": {
         "level": {
             "level1": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Added",
                 "Year"
             ],
             "level2": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Added",
                 "Year",
@@ -20,10 +20,11 @@
             "all": [
                 "Added",
                 "Art url",
+                "Key",
                 "Media Aspect Ratio",
                 "Media Container",
-                "Media ID",
                 "Media Height",
+                "Media ID",
                 "Media Width",
                 "Part Accessible",
                 "Part Container",
@@ -31,6 +32,7 @@
                 "Part File",
                 "Part File Combined",
                 "Part File Path",
+                "Part Orientation",
                 "Part Size",
                 "Part Size as Bytes",
                 "Poster url",

@@ -2,12 +2,12 @@
     "show": {
         "level": {
             "level1": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Summary"
             ],
             "level2": [
-                "Media ID",
+                "Key",
                 "Title",
                 "Summary",
                 "Audience Rating",
@@ -21,7 +21,7 @@
                 "Content Rating",
                 "Duration",
                 "Genre",
-                "Media ID",
+                "Key",
                 "Poster url",
                 "Release Date",
                 "Roles",

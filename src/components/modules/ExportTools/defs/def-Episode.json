@@ -2,7 +2,7 @@
     "episode": {
         "level": {
             "level1": [
-                "Media ID",
+                "Key",
                 "Series Title",
                 "Sort title",
                 "Title",
@@ -15,7 +15,7 @@
                 "User Rating"
             ],
             "level2": [
-                "Media ID",
+                "Key",
                 "Series Title",
                 "Sort title",
                 "Title",
@@ -35,7 +35,7 @@
                 "Deleted"
             ],
             "all": [
-                "Media ID",
+                "Key",
                 "Series Title",
                 "Added",
                 "Audio Stream Audio Channel Layout",
