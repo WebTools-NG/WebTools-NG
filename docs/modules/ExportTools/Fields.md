@@ -10,6 +10,7 @@ If a field is marked as `X` it means you can export it for the type of export
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 Added|X|X|X|X|X|X|X|
 Album Poster url|?|?|?|?|?|X|?|
+Album Title|?|?|?|?|?|X|?|
 Art url|X|?|X|X|?|X|X|
 Artist Art url|?|?|?|?|?|X|?|
 Artist Poster url|?|?|?|?|?|X|?|
@@ -133,7 +134,7 @@ User Rating|X|X|?|?|?|?|?|
 Video Stream Anamorphic|X|?|?|?|?|N/A|?|
 Video Stream Bit Depth|X|X|?|?|?|N/A|?|
 Video Stream Bitrate|X|X|?|?|?|N/A|?|
-Video Stream Cabac|X|X|?|?|?|?|?|
+Video Stream Cabac|X|X|?|?|?|N/A|?|
 Video Stream Chroma Sub Sampling|X|X|?|?|?|N/A|?|
 Video Stream Codec|X|X|?|?|?|N/A|?|
 Video Stream Codec ID|X|X|?|?|?|N/A|?|

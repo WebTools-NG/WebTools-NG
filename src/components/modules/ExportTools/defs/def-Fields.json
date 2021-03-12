@@ -12,6 +12,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Album Title":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string"
+            },
         "Art url":
             {
                 "key": "$.art",
