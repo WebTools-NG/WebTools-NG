@@ -19,12 +19,15 @@
             ],
             "all": [
                 "Added",
+                "Art url",
                 "Country",
                 "Genre",
                 "Key",
                 "Last Viewed at",
+                "Mood",
                 "Poster url",
                 "Sort title",
+                "Style",
                 "Summary",
                 "Title",
                 "Updated"

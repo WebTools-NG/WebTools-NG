@@ -474,6 +474,14 @@
                 "subtype": "string",
                 "subkey": "$.tag"
             },
+        "Location":
+            {
+                "key": "$.Location[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.path"
+            },
         "Locked Fields":
             {
                 "key": "$.Field[*]",
@@ -882,6 +890,14 @@
                 "key": "$.grandparentTitle",
                 "call": 1,
                 "type": "string"
+            },
+        "Similar":
+            {
+                "key": "$.Similar[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.tag"
             },
         "Sort title":
             {
