@@ -8,6 +8,7 @@
 * [#285 Photos allow cust levels](https://github.com/WebTools-NG/WebTools-NG/issues/285)
 * [#286 Add missing fields found so far for tracks](https://github.com/WebTools-NG/WebTools-NG/issues/286)
 * [#287 Wrong type returned](https://github.com/WebTools-NG/WebTools-NG/issues/287)
+* [#289 Add missing fields found so far for Pics](https://github.com/WebTools-NG/WebTools-NG/issues/289)
 
 ## V0.2.01
 
