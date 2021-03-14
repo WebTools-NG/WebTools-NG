@@ -1,27 +1,27 @@
-<template>    
+<template>
     <div class="col-lg-10 col-md-12 col-xs-12">
-      <h3>{{ $t("Modules.PlexTV.Name") }} <br>      
-      </h3>    
+      <h3>{{ $t("Modules.PlexTV.Name") }} <br>
+      </h3>
       {{ $t("Modules.PlexTV.Description") }}
 
       <br>
       <br>
       <!-- Select User -->
       <div class="d-flex align-items-center">
-        <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">        
+        <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">
           <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
             <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
           </div>
           <b-tooltip target="plexTVUsers" triggers="hover">
             {{ $t('Modules.PlexTV.TT-User') }}
           </b-tooltip>
-          <b-form-select 
-            v-model="selUser"          
+          <b-form-select
+            v-model="selUser"
             id="selUser"
             :options="selUserOptions"
-            name="selLibrary">        
+            name="selLibrary">
           </b-form-select>
-        </b-form-group>              
+        </b-form-group>
       </div>
       <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
             <b-form-input id="usrID" name="usrID" type="text" class="form-control" v-model="usrID" :disabled=true></b-form-input>
@@ -33,44 +33,44 @@
             <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
       </b-input-group>
       <b-input-group id="UserRestrictedGrp" :prepend="$t('Modules.PlexTV.UsrRestricted')" class="mt-3">
-            <b-form-input id="usrRestricted" name="usrRestricted" type="text" class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>
+            <b-form-input id="usrRestricted" name="usrRestricted"  class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>            
       </b-input-group>
       <b-input-group id="UserThumbGrp" :prepend="$t('Modules.PlexTV.UsrThumb')" class="mt-3">
             <b-form-input id="usrThumb" name="usrThumb" type="text" class="form-control" v-model="usrThumb" :disabled=true></b-form-input>
       </b-input-group>
       <b-input-group id="UserHomeGrp" :prepend="$t('Modules.PlexTV.UsrHome')" class="mt-3">
-            <b-form-input id="usrHome" name="usrHome" type="text" class="form-control" v-model="usrHome" :disabled=true></b-form-input>
+            <b-form-input id="usrHome" name="usrHome" class="form-control" v-model="usrHome" :disabled=true></b-form-input>
       </b-input-group>
       <b-input-group id="UserStatusGrp" :prepend="$t('Modules.PlexTV.UsrStatus')" class="mt-3">
             <b-form-input id="usrStatus" name="usrStatus" type="text" class="form-control" v-model="usrStatus" :disabled=true></b-form-input>
       </b-input-group>
       <br>
-      <div class="buttons">        
+      <div class="buttons">
         <br>
         <!-- Buttons -->
         <div id="buttons" class="text-center">
-            <b-button-group >        
+            <b-button-group >
                 <b-button variant="success" class="mr-1" :disabled="this.selUser == ''" @click="exportUsr"> {{ $t('Modules.PlexTV.ExportUsr') }} </b-button>
                 <b-button variant="success" class="mr-1"  @click="exportAllUsr">{{ $t('Modules.PlexTV.ExportAllUsr') }}</b-button>
             </b-button-group>
-        </div>         
-      </div> 
-      <br>        
+        </div>
+      </div>
+      <br>
       <p class="text-center">{{ $t('Modules.PlexTV.Settings') }}</p>
-    </div>                        
+    </div>
 </template>
 
-<script>  
+<script>
   import store from '../../../store';
-  import { plextv } from "./scripts/plextv"; 
+  import { plextv } from "./scripts/plextv";
   import i18n from '../../../i18n';
-  import { wtconfig } from '../General/wtutils';    
+  import { wtconfig } from '../General/wtutils';
 
   const log = require("electron-log");
   export default {
       data() {
         return {
-          selUserWait: false,          
+          selUserWait: false,
           selUser: "",
           selUserOptions: [],
           selUserDetails: {},
@@ -82,26 +82,26 @@
           usrHome: "",
           usrStatus: ""
         };
-  },  
+  },
   async created() {
     log.info("PlexTV Created");
-    // Get users from plex.tv    
+    // Get users from plex.tv
     await store.dispatch('fetchUsers');
-    this.getUsers();    
+    this.getUsers();
   },
   watch: {
     // Watch for when selecting a user
     selUser: async function(){
       // Changed, so we need to update the libraries
       var userLst = this.$store.getters.getUsers;
-      log.verbose(`Watch detected a user was selected as ${JSON.stringify(userLst[this.selUser])}`);           
+      log.verbose(`Watch detected a user was selected as ${JSON.stringify(userLst[this.selUser])}`);
       this.selUserDetails = userLst[this.selUser];
       this.usrEmail = userLst[this.selUser]['email'];
       this.usrID = userLst[this.selUser]['id'];
       this.usrName = userLst[this.selUser]['title'];
-      this.usrRestricted = userLst[this.selUser]['restricted'];
+      this.usrRestricted = userLst[this.selUser]['restricted'].toString();
       this.usrThumb = userLst[this.selUser]['thumb'];
-      this.usrHome = userLst[this.selUser]['home'];
+      this.usrHome = userLst[this.selUser]['home'].toString();
       this.usrStatus = userLst[this.selUser]['status'];
     }
   },
@@ -109,56 +109,57 @@
     exportUsr: async function(){
       if (wtconfig.get('General.ExportPath', "") == "")
       {
-          log.info('ET: No output dir defined')        
+          log.info('ET: No output dir defined')
           this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
           title: this.$t("Common.ErrorNoOutDirTitle"),
-          autoHideDelay: 3000,          
+          autoHideDelay: 3000,
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-right' 
-          })        
+          toaster: 'b-toaster-bottom-right'
+          })
           return
-      }      
+      }
       log.info(`Export Plex.TV User: ${this.usrName}`);
-      let Data = this.selUserDetails;      
-      const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});      
-      const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);            
-        this.$bvToast.toast(bodyStr, {           
+      let Data = this.selUserDetails;
+      const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: this.usrID, Data: Data});
+      const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);
+        this.$bvToast.toast(bodyStr, {
           title: this.$t("Modules.PMS.ExportDoneTitle"),
-          autoHideDelay: 400000,                     
+          autoHideDelay: 400000,
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-right' 
+          toaster: 'b-toaster-bottom-right'
         });
     },
     exportAllUsr: async function(){
       if (wtconfig.get('General.ExportPath', "") == "")
       {
-          log.info('ET: No output dir defined')        
+          log.info('ET: No output dir defined')
           this.$bvToast.toast(this.$t("Common.ErrorNoOutDirMsg"), {
           title: this.$t("Common.ErrorNoOutDirTitle"),
-          autoHideDelay: 3000,          
+          autoHideDelay: 3000,
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-right' 
-          })        
+          toaster: 'b-toaster-bottom-right'
+          })
           return
-      }      
+      }
       log.info(`Export All Plex.TV Users`)
       let Data = this.$store.getters.getUsers;
       const outFile = await plextv.exportUsr({Module: i18n.t("Modules.PlexTV.Name"), Usr: 'All', Data: Data});
-      const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);            
-        this.$bvToast.toast(bodyStr, {           
+      const bodyStr = i18n.t("Modules.PMS.ExportDoneBody", [outFile]);
+        this.$bvToast.toast(bodyStr, {
           title: this.$t("Modules.PMS.ExportDoneTitle"),
-          autoHideDelay: 400000,                     
+          autoHideDelay: 400000,
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-right' 
+          toaster: 'b-toaster-bottom-right'
         });
     },
     getUsers: async function(){
+      console.log('Ged77')
       this.selUserWait = false;
-      var userLst = this.$store.getters.getUsers;      
+      var userLst = this.$store.getters.getUsers;
       // Output store
       const result = [];
       // Temp Store, in order to sort the list, case insensitive
@@ -174,7 +175,8 @@
         result.push(Object.assign({}, item));
       }
       this.selUserOptions = result;
-      this.selUserWait = true;      
+      this.selUserWait = true;
+      console.log('Ged77-2')
     }
   }
 
