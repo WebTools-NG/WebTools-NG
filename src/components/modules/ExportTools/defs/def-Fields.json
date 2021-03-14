@@ -470,6 +470,12 @@
                 "subtype": "string",
                 "subkey": "$.name"
             },
+        "Loudness Analysis Version":
+        {
+            "key": "$.loudnessAnalysisVersion",
+            "call": 1,
+            "type": "string"
+        },
         "Media Aperture":
             {
                 "key": "$.Media[*]",
@@ -635,6 +641,14 @@
                 "call": 2,
                 "type": "string",
                 "postProcess": true
+            },
+        "Mood":
+            {
+                "key": "$.Mood[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.tag"
             },
         "Original Title":
             {
@@ -869,6 +883,14 @@
                 "key": "$.studio",
                 "call": 1,
                 "type": "string"
+            },
+        "Style":
+            {
+                "key": "$.Style[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.tag"
             },
         "Subtitle Stream Codec":
             {
