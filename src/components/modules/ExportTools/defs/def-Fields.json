@@ -308,6 +308,18 @@
                 "subtype": "string",
                 "subkey": "$.tag"
             },
+        "Created at Accuracy":
+            {
+                "key": "$.createdAtAccuracy",
+                "call": 1,
+                "type": "string"
+            },
+        "Created at TZOffset":
+            {
+                "key": "$.createdAtTZOffset",
+                "call": 1,
+                "type": "time"
+            },
         "Deleted":
             {
                 "key": "$.deletedAt",
@@ -458,6 +470,14 @@
                 "subtype": "string",
                 "subkey": "$.name"
             },
+        "Media Aperture":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.aperture"
+            },
         "Media Aspect Ratio":
             {
                 "key": "$.Media[*]",
@@ -498,6 +518,14 @@
                 "subtype": "string",
                 "subkey": "$.container"
             },
+        "Media Exposure":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.exposure"
+            },
         "Media Duration":
             {
                 "key": "$.Media[*]",
@@ -514,13 +542,37 @@
                 "subtype": "string",
                 "subkey": "$.height"
             },
-        "Media ID":
+        "Media Id":
             {
-                "key": "$.Media[*].Part[*]",
+                "key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.id"
+            },
+        "Media Iso":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.iso"
+            },
+        "Media Make":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.make"
+            },
+        "Media Model":
+            {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.model"
             },
         "Media Title":
             {
@@ -666,6 +718,14 @@
                 "subtype": "string",
                 "subkey": "$.hasThumbnail"
             },
+        "Part Id":
+            {
+                "key": "$.Media[*].Part[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.id"
+            },
         "Part Indexed":
             {
                 "key": "$.Media[*].Part[*]",
@@ -722,6 +782,42 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.videoProfile"
+            },
+        "Photo Album Art":
+            {
+                "key": "$.parentArt",
+                "call": 1,
+                "type": "string"
+            },
+        "Photo Album Name":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string"
+            },
+        "Photo Album Poster":
+            {
+                "key": "$.parentThumb",
+                "call": 1,
+                "type": "string"
+            },
+        "Photo Top Album Art":
+            {
+                "key": "$.grandparentArt",
+                "call": 1,
+                "type": "string"
+            },
+        "Photo Top Album Name":
+            {
+                "key": "$.grandparentTitle",
+                "call": 1,
+                "type": "string"
+            },
+        "Photo Top Album Poster":
+            {
+                "key": "$.grandparentThumb",
+                "call": 1,
+                "type": "string"
             },
         "Poster url":
             {
