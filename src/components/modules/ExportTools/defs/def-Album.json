@@ -18,7 +18,9 @@
             ],
             "all": [
                 "Added",
+                "Album Artist Poster url",
                 "Art url",
+                "Artist",
                 "Genre",
                 "Key",
                 "Loudness Analysis Version",
@@ -30,7 +32,9 @@
                 "Style",
                 "Summary",
                 "Title",
+                "Track Counts",
                 "Updated",
+                "Viewed Tracks",
                 "Year"
             ]
         }

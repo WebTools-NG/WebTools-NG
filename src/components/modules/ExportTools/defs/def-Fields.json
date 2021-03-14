@@ -6,6 +6,12 @@
                 "call": 1,
                 "type": "datetime"
             },
+        "Album Artist Poster url":
+        {
+            "key": "$.parentThumb",
+            "call": 1,
+            "type": "string"
+        },
         "Album Poster url":
             {
                 "key": "$.parentThumb",
@@ -24,6 +30,12 @@
                 "call": 2,
                 "type": "string"
             },
+        "Artist":
+        {
+            "key": "$.parentTitle",
+            "call": 1,
+            "type": "string"
+        },
         "Artist Art url":
             {
                 "key": "$.grandparentArt",
@@ -1006,6 +1018,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Track Counts":
+        {
+            "key": "$.leafCount",
+            "call": 1,
+            "type": "string"
+        },
         "TVDB ID":
             {
                 "key": "$.Guid[*]",
@@ -1282,6 +1300,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Viewed Tracks":
+        {
+            "key": "$.viewedLeafCount",
+            "call": 1,
+            "type": "string"
+        },
         "Writers":
             {
                 "key": "$.Writer[*]",
