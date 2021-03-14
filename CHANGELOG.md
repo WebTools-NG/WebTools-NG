@@ -12,6 +12,7 @@
 * [#290 Add missing fields found so far for albums](https://github.com/WebTools-NG/WebTools-NG/issues/290)
 * [#291 Add missing fields found so far for Artist](https://github.com/WebTools-NG/WebTools-NG/issues/291)
 * [#293 Add missing fields found so far for Series](https://github.com/WebTools-NG/WebTools-NG/issues/293)
+* [#300 ET Fields MD](https://github.com/WebTools-NG/WebTools-NG/issues/300)
 
 ## V0.2.01
 
