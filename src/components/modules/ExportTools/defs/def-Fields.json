@@ -6,6 +6,12 @@
                 "call": 1,
                 "type": "datetime"
             },
+        "Album Artist Poster url":
+        {
+            "key": "$.parentThumb",
+            "call": 1,
+            "type": "string"
+        },
         "Album Poster url":
             {
                 "key": "$.parentThumb",
@@ -24,6 +30,12 @@
                 "call": 2,
                 "type": "string"
             },
+        "Artist":
+        {
+            "key": "$.parentTitle",
+            "call": 1,
+            "type": "string"
+        },
         "Artist Art url":
             {
                 "key": "$.grandparentArt",
@@ -470,6 +482,12 @@
                 "subtype": "string",
                 "subkey": "$.name"
             },
+        "Loudness Analysis Version":
+        {
+            "key": "$.loudnessAnalysisVersion",
+            "call": 1,
+            "type": "string"
+        },
         "Media Aperture":
             {
                 "key": "$.Media[*]",
@@ -635,6 +653,14 @@
                 "call": 2,
                 "type": "string",
                 "postProcess": true
+            },
+        "Mood":
+            {
+                "key": "$.Mood[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.tag"
             },
         "Original Title":
             {
@@ -870,6 +896,14 @@
                 "call": 1,
                 "type": "string"
             },
+        "Style":
+            {
+                "key": "$.Style[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.tag"
+            },
         "Subtitle Stream Codec":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
@@ -984,6 +1018,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Track Counts":
+        {
+            "key": "$.leafCount",
+            "call": 1,
+            "type": "string"
+        },
         "TVDB ID":
             {
                 "key": "$.Guid[*]",
@@ -1260,6 +1300,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Viewed Tracks":
+        {
+            "key": "$.viewedLeafCount",
+            "call": 1,
+            "type": "string"
+        },
         "Writers":
             {
                 "key": "$.Writer[*]",

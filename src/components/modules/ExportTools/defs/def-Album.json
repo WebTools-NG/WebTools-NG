@@ -18,15 +18,23 @@
             ],
             "all": [
                 "Added",
+                "Album Artist Poster url",
                 "Art url",
+                "Artist",
+                "Genre",
                 "Key",
+                "Loudness Analysis Version",
+                "Mood",
                 "Poster url",
                 "Rating",
                 "Release Date",
                 "Studio",
+                "Style",
                 "Summary",
                 "Title",
+                "Track Counts",
                 "Updated",
+                "Viewed Tracks",
                 "Year"
             ]
         }
