@@ -143,7 +143,6 @@
             "UsrStatus": "User invite status",
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
-            "AllUsr": "All-Users",
             "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
         },
         "PMS": {
