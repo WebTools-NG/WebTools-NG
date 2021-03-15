@@ -24,6 +24,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Album Year":
+        {
+            "key": "$.parentYear",
+            "call": 1,
+            "type": "string"
+        },
         "Art url":
             {
                 "key": "$.art",
@@ -278,6 +284,24 @@
                 "subtype": "string",
                 "subkey": "$.title"
             },
+        "Audio Track Album No":
+        {
+            "key": "$.parentIndex",
+            "call": 1,
+            "type": "string"
+        },
+        "Audio Track Artist":
+            {
+                "key": "$.grandparentTitle",
+                "call": 1,
+                "type": "string"
+            },
+        "Audio Track No":
+        {
+            "key": "$.index",
+            "call": 1,
+            "type": "string"
+        },
         "Chapter Count":
             {
                 "key": "$..Chapter[*]",
