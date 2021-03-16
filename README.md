@@ -8,6 +8,6 @@
 ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg)
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
 
-NOTE: This is **NOT** ready for production yet....In fact not even in beta ;)
+NOTE: This is currently in **BETA**
 
 Please see the [wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
