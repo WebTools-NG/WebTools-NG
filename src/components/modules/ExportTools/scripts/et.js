@@ -731,7 +731,7 @@ const excel2 = new class Excel {
                         break;
                     }
                     strStart = val.substring(start);
-                    end = strStart.indexOf("-");
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
@@ -752,7 +752,7 @@ const excel2 = new class Excel {
                         break;
                     }
                     strStart = val.substring(start);
-                    end = strStart.indexOf("-");
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
@@ -768,7 +768,7 @@ const excel2 = new class Excel {
                     }
                     start = val.indexOf("tmdb://");
                     strStart = val.substring(start);
-                    end = strStart.indexOf("-");
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
