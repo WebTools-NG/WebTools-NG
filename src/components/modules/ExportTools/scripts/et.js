@@ -622,7 +622,6 @@ const excel2 = new class Excel {
                     break;
                 case "Part Size":
                     for (x=0; x<valArray.length; x++) {
-                        //let theSize = valArray[x]
                         let theSize = valArray[x].replaceAll('"', '').replaceAll(wtconfig.get('ET.TextQualifierCSV'),'');
                         if (theSize.startsWith('"')){
                             theSize = theSize.slice(1,-1);
