@@ -14,7 +14,7 @@
         },
         "Album Poster url":
             {
-                "key": "$.parentThumb",
+                "key": "$.thumb",
                 "call": 1,
                 "type": "string"
             },
