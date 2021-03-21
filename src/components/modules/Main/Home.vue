@@ -1,10 +1,10 @@
 <template>
   <b-container fluid>
-        <div class="col-lg-9 col-md-12 col-xs-12">          
+        <div class="col-lg-9 col-md-12 col-xs-12">
           <h2>
             {{ $t("Common.Home.Title") }} <br>
             <h5>{{ $t("Common.Home.About") }}</h5>
-          </h2>          
+          </h2>
           <br>
           <h3>{{ $t("Common.Home.Modules") }}</h3>
           <dl>
@@ -14,24 +14,34 @@
               <dd>* {{ $t("Modules.PMS.Description") }} </dd>
             <dt>{{ $t("Modules.PlexTV.Name") }}</dt>
               <dd>* {{ $t("Modules.PlexTV.Description") }} </dd>
-          </dl>              
-        </div>        
+          </dl>
+        </div>
         <b-modal ref="showUpdate" hide-footer v-bind:title=this.updateTitle >
           <div class="d-block text-center">
-            {{ this.body }}              
+            {{ this.body }}
             <b-form-checkbox
                 id="SkipVerCB"
                 v-model="cbSelected"
-                name="SkipVerCB"                                                
+                name="SkipVerCB"
               >
-                {{ $t("Common.Update.Skip") }}                
+                {{ $t("Common.Update.Skip") }}
             </b-form-checkbox>
           </div>
           <b-button class="mt-3" variant="outline-primary" block @click="visitRels">{{ this.body2 }}</b-button>
         </b-modal>
-        
+
+        <b-modal ref="showRelNote" scrollable hide-footer v-bind:title=this.relNoteTitle >
+          <div class="d-block text-left">
+            <ul id="v-for-object">
+              <li v-for="value in relNoteArr" v-bind:key="value">
+                {{ value }}
+              </li>
+            </ul>
+          </div>
+        </b-modal>
+
   </b-container>
-  
+
 </template>
 
 <script>
@@ -43,19 +53,21 @@ import { shell } from 'electron';
 export default {
   data() {
     return {
-      updateTitle: this.$t('Common.Update.Title'),      
+      updateTitle: this.$t('Common.Update.Title'),
+      relNoteTitle: this.$t('Common.ReleaseNoteTitle'),
+      relNoteArr: [],
       body: '',
       body2: this.$t('Common.Update.Body2'),
-      url: '',      
+      url: '',
       cbOptions: [{ text: i18n.t('Common.Update.Skip'), value: 'SkipUpdate' }],
       cbSelected: '',
-      GitHubVersion: ''      
+      GitHubVersion: ''
     }
   },
   watch: {
     // Watch for when selected server address is updated
-    cbSelected: async function(){      
-      if (Boolean(this.cbSelected) === true){        
+    cbSelected: async function(){
+      if (Boolean(this.cbSelected) === true){
         log.verbose(`Update will skip version: ${this.GitHubVersion}`)
         wtconfig.set("Update.SkipVer", this.GitHubVersion)
       }
@@ -66,54 +78,66 @@ export default {
     }
   },
   mounted() {
-    log.info("Home Created");    
+    log.info("Home Created");
+    this.ShowReleaseNote();
     this.checkLangUpdates();
     this.UpdatePresent();
-    this.CheckExportDir();    
+    this.CheckExportDir();
   },
-  methods: {    
+  methods: {
     // Visit GitHub release page
     visitRels(){
       log.info(`User pressed update link, and was directed to: ${this.url}`);
-      shell.openExternal(this.url);      
+      shell.openExternal(this.url);
+    },
+    // Do we need to show release notes?
+    async ShowReleaseNote(){
+      if (wtutils.AppVersion != wtconfig.get('General.ShowRel', "0"))
+      {
+        log.verbose(`Show Rel Notes`);
+        this.relNoteArr = await github.ChangeLog();
+        this.$refs['showRelNote'].show();
+        wtconfig.set('General.ShowRel',wtutils.AppVersion);
+      }
+
     },
     // Is an update present?
     async UpdatePresent(){
       if (wtconfig.get('Update.Update', true)){
-        log.verbose(`Check for updates enabled`)        
-        // Get release page from GitHub      
+        log.verbose(`Check for updates enabled`)
+        // Get release page from GitHub
         const releases = await github.Releases();
-        log.verbose('Github releases', JSON.stringify(releases));        
+        log.verbose('Github releases', JSON.stringify(releases));
         if (wtconfig.get('Update.Beta', true))
         {
-          // Need to check both beta and rel versions        
+          // Need to check both beta and rel versions
           // Find newest one
-          if (Date.parse(releases['betadateFull']) > Date.parse(releases['reldateFull'])){          
-            this.body = this.$t('Common.Update.Body', [releases['betaname'], releases['betadate']]),                                                           
-            this.name = releases['betaname'];                    
+          if (Date.parse(releases['betadateFull']) > Date.parse(releases['reldateFull'])){
+            this.body = this.$t('Common.Update.Body', [releases['betaname'], releases['betadate']]),
+            this.name = releases['betaname'];
             this.url = releases['betaurl'];
             this.ver = releases['betaver'];
             this.beta = true;
           }
           else
-          {          
-            this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
-            this.name = releases['relname'];                    
+          {
+            this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),
+            this.name = releases['relname'];
             this.url = releases['relurl'];
             this.ver = releases['relver'];
-            this.beta = false;          
+            this.beta = false;
           }
         }
         else
-        {        
-          this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),                                                           
-          this.name = releases['relname'];                    
+        {
+          this.body = this.$t('Common.Update.Body', [releases['relname'], releases['reldate']]),
+          this.name = releases['relname'];
           this.url = releases['relurl'];
           this.ver = releases['relver'];
           this.beta = false;
         }
         if (wtutils.AppVersion != this.ver && this.ver)
-        {        
+        {
           // Show an update is present
           if (this.ver == wtconfig.get('Update.SkipVer', ''))
           {
@@ -121,55 +145,55 @@ export default {
           }
           else
           {
-            log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);            
-            this.GitHubVersion = this.ver;                    
+            log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
+            this.GitHubVersion = this.ver;
             this.$refs['showUpdate'].show();
-          }          
+          }
         }
       }
       else{
         log.verbose(`Check for updates disabled`)
-      }       
+      }
 
     },
     async checkLangUpdates() {
       // Start by getting the currently selected language
       const selLang = wtconfig.get('General.language');
       const selLangUpdated = wtconfig.get(`Languages.${selLang}`, 'N/A')
-      var onlineLangs = await this.$store.getters.getLanguages      
+      var onlineLangs = await this.$store.getters.getLanguages
       for (var i=0; i<onlineLangs.length; i++) {
         if (onlineLangs[i]['code'] == selLang)
         {
           if ( onlineLangs[i]['updated'] != selLangUpdated)
-          {            
-            const bodyStr = i18n.t("Common.Home.LangUpdateMsg", [onlineLangs[i]['name']]) + '. ' + i18n.t("Common.Home.LangUpdateMsg2", [i18n.t("Common.Language.btnForce")]);            
-            this.$bvToast.toast(bodyStr, {           
+          {
+            const bodyStr = i18n.t("Common.Home.LangUpdateMsg", [onlineLangs[i]['name']]) + '. ' + i18n.t("Common.Home.LangUpdateMsg2", [i18n.t("Common.Language.btnForce")]);
+            this.$bvToast.toast(bodyStr, {
               title: this.$t("Common.Home.LangUpdateTitle"),
-              autoHideDelay: 400000,                     
+              autoHideDelay: 400000,
               solid: true,
               variant: 'primary',
-              toaster: 'b-toaster-bottom-right' 
+              toaster: 'b-toaster-bottom-right'
             });
           }
         }
       }
       selLang, wtutils, selLangUpdated
     },
-    async CheckExportDir() {      
+    async CheckExportDir() {
       if ( wtutils.ExportDirPresent )
       {
         log.info('ExportDir OK');
       }
       else
       {
-        log.error('ExportDir missing');        
-        const bodyStr = i18n.t("Common.ErrorNoOutDirMsg");            
-        this.$bvToast.toast(bodyStr, {           
+        log.error('ExportDir missing');
+        const bodyStr = i18n.t("Common.ErrorNoOutDirMsg");
+        this.$bvToast.toast(bodyStr, {
           title: this.$t("Common.ErrorNoOutDirTitle"),
-          autoHideDelay: 400000,                     
+          autoHideDelay: 400000,
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-right' 
+          toaster: 'b-toaster-bottom-right'
         });
 
       }
@@ -182,6 +206,9 @@ export default {
 <style scoped>
 dd {
   padding-left: 10px;
+}
+ul{
+	list-style: none;
 }
 
 </style>

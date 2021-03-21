@@ -125,7 +125,8 @@
         "ExportDir": "Select Export Directory",
         "Browse": "Browse",
         "ErrorNoOutDirMsg": "You need to define an output directory in the global settings page first",
-        "ErrorNoOutDirTitle": "No output directory defined"
+        "ErrorNoOutDirTitle": "No output directory defined",
+        "ReleaseNoteTitle": "Release Note"
     },
     "Modules": {
         "PlexTV": {

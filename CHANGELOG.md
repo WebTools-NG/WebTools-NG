@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.0
+
+**Note**:   This version is an Beta version
+
+* [#305 First launch after an upgrade should show changelog](https://github.com/WebTools-NG/WebTools-NG/issues/305)
+
 ## V0.2.02
 
 **Note**:   This version is an Alpha version, that is not made public

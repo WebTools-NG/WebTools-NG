@@ -443,8 +443,34 @@ const dialog = new class Dialog {
 const github = new class GitHub {
     constructor() {
         this.releaseUrl = 'https://api.github.com/repos/WebTools-NG/WebTools-NG/releases';
-        //this.releaseUrl = 'https://api.github.com/repos/ukdtom/testrel/releases';
+        this.changeLogUrl = 'https://raw.githubusercontent.com/WebTools-NG/WebTools-NG/master/CHANGELOG.md'
     }
+
+    // Get the changelog from GitHub
+    async ChangeLog(){
+        log.debug('Fetching Github Release Note')
+
+        const axios = require('axios');
+        //let html = '';
+        var resp;
+        await axios(this.changeLogUrl)
+            .then(response => {
+                this.data = response.data;
+                resp = this.data.split("## ")[1];
+                resp = resp.split('## ')[0];
+            })
+            .catch(console.error);
+            // Remove link from lines
+            const regex = /\([^)]*\)/ig;
+            resp = resp.replaceAll(regex, '');
+            // Remove * and []
+            resp = resp.replaceAll('* [', '').replaceAll(']','');
+            // Split into an array
+            resp = resp.split("\n");
+            // Remove empty items
+            resp = resp.filter(item => item);
+            return resp;
+        }
 
     // Get the releases from GitHub
     async Releases(){
