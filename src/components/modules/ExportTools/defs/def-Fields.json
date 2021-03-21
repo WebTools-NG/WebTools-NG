@@ -412,6 +412,12 @@
                 "call": 2,
                 "type": "array-count"
             },
+        "Extras-music video":
+            {
+                "key": "$..Extras.Metadata[?(@.subtype=='musicVideo')].ratingKey",
+                "call": 2,
+                "type": "array-count"
+            },
         "Extras-scene":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",
