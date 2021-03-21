@@ -5,6 +5,7 @@
 **Note**:   This version is an Beta version
 
 * [#305 First launch after an upgrade should show changelog](https://github.com/WebTools-NG/WebTools-NG/issues/305)
+* [#311 Test all defined fields against movie export](https://github.com/WebTools-NG/WebTools-NG/issues/311)
 
 ## V0.2.02
 
