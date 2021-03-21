@@ -6,6 +6,7 @@
 
 * [#305 First launch after an upgrade should show changelog](https://github.com/WebTools-NG/WebTools-NG/issues/305)
 * [#311 Test all defined fields against movie export](https://github.com/WebTools-NG/WebTools-NG/issues/311)
+* [#312 IMDB and IMDB link broken](https://github.com/WebTools-NG/WebTools-NG/issues/312)
 
 ## V0.2.02
 
