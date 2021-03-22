@@ -847,12 +847,6 @@
                 "subtype": "string",
                 "subkey": "$.videoProfile"
             },
-        "Photo Album Art":
-            {
-                "key": "$.parentArt",
-                "call": 1,
-                "type": "string"
-            },
         "Photo Album Name":
             {
                 "key": "$.parentTitle",
