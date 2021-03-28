@@ -19,23 +19,47 @@
         ></b-form-radio-group>
       </b-form-group>
     </div>
-    <div class="d-flex align-items-center">
-      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-        <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
-          <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+    <b-form-row>
+      <b-col>
+        <div class="d-flex align-items-center">
+          <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+            <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
+              <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+            </div>
+            <b-tooltip target="etLibraryGroup" triggers="hover">
+              {{ $t('Modules.ET.TT-ETLibrary') }}
+            </b-tooltip>
+            <b-form-select
+              v-model="selLibrary"
+              id="selLibrary"
+              :options="selLibraryOptions"
+              name="selLibrary">
+            </b-form-select>
+          </b-form-group>
         </div>
-        <b-tooltip target="etLibraryGroup" triggers="hover">
-          {{ $t('Modules.ET.TT-ETLibrary') }}
-        </b-tooltip>
-        <b-form-select
-          v-model="selLibrary"
-          id="selLibrary"
-          :options="selLibraryOptions"
-          name="selLibrary">
-        </b-form-select>
-      </b-form-group>
-    </div>
+    </b-col>
+    <b-col>
+      <div> <!-- Select Playlist Type -->
+        <b-form-group id="etPListTypeGroup" v-bind:label="$t('Modules.ET.PlaylistType')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.pListGrpDisabled>
+          <b-tooltip target="etPListTypeGroup" triggers="hover">
+            {{ $t('Modules.ET.TT-ETPType') }}
+          </b-tooltip>
+          <b-form-select
+            class="form-control"
+            v-model="selPType"
+            id="selPType"
+            :options="optionsPlaylistType"
+            @change.native="changeType()"
+            name="selPType">
+          </b-form-select>
+        </b-form-group>
+      </div>
+    </b-col>
 
+  </b-form-row>
+
+<b-form-row>
+  <b-col>
     <div> <!-- Select Export Level -->
       <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="etLevelGroup" triggers="hover">
@@ -50,6 +74,10 @@
         </b-form-select>
       </b-form-group>
     </div>
+  </b-col>
+
+
+</b-form-row>
 
     <div class="buttons">
       <b-button
@@ -99,6 +127,8 @@
           selLibrary: "",
           selLibraryOptions: [],
           selLevel: "",
+          selPType: "audio",
+          pListGrpDisabled: true,
           optionsMediaType: [
             { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },
             { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: false },
@@ -108,6 +138,11 @@
             { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
             { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
             { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false }
+          ],
+          optionsPlaylistType: [
+            { text: i18n.t('Modules.ET.PlistTypeAudio'), value: 'audio', disabled: false },
+            { text: i18n.t('Modules.ET.PlistTypePhoto'), value: 'photo', disabled: false },
+            { text: i18n.t('Modules.ET.PlistTypeVideo'), value: 'video', disabled: false },
           ]
         };
   },
@@ -131,12 +166,17 @@
     },
     selLevel: async function(){
       this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+    },
+    selPType: async function(){
+      console.log('Ged 1', this.selPType)
+      this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     }
   },
   created() {
     log.info("ET Created");
     this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
     this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.Idle"));
+    this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     this.fetchSelection();
   },
   computed: {
@@ -221,14 +261,29 @@
       {
         targetType = 'artist'
       }
+      const pListType = this.$store.getters.getSelectedPListType;
       if (Array.isArray(sections) && sections.length) {
         sections.forEach(req => {
           if (req.type == targetType) {
-            log.debug(`pushing library: ${req.title} to results`);
-            let item = [];
-            item['text']=req.title;
-            item['value']=req.key;
-            result.push(Object.assign({}, item));
+            if (targetType == 'playlist')
+            {
+              if (req.playlistType == pListType)
+              {
+                log.debug(`pushing library: ${req.title} to results`);
+                let item = [];
+                item['text']=req.title;
+                item['value']=req.key;
+                result.push(Object.assign({}, item));
+              }
+            }
+            else
+            {
+              log.debug(`pushing library: ${req.title} to results`);
+              let item = [];
+              item['text']=req.title;
+              item['value']=req.key;
+              result.push(Object.assign({}, item));
+            }
           }
         });
       } else {
@@ -247,6 +302,14 @@
       this.selLevel = '';
       this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+      if (this.selMediaType == 'playlist')
+      {
+        this.pListGrpDisabled = false;
+      }
+      else
+      {
+        this.pListGrpDisabled = true;
+      }
     },
     getMedia() {
       log.info("getMedia Called");

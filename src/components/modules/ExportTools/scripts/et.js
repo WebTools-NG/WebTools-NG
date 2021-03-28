@@ -183,6 +183,7 @@ const et = new class ET {
             subItem['title'] = JSONPath({path: '$..title', json: section})[0];
             subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
             subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+            subItem['playlistType'] = JSONPath({path: '$..playlistType', json: section})[0];
             result.push(subItem)
         }
         return  result

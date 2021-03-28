@@ -9,6 +9,7 @@ const state = {
     selectedSection : "",
     selectedExportLevel: "",
     selectedLibType: "",
+    selectedPListType: "",
     exportStatus: ""
 };
 
@@ -21,6 +22,10 @@ const mutations = {
           state.selectedSection = payload
           log.info("UPDATE_SELECTEDSECTION called")
       },
+      UPDATE_SELECTEDPLISTTYPE(state, payload) {
+        state.selectedPListType = payload
+        log.info("UPDATE_SELECTEDPLISTTYPE called")
+    },
       UPDATE_EXPORTLEVEL(state, payload) {
           state.selectedExportLevel = payload
       },
@@ -68,7 +73,8 @@ const getters = {
     getSelectedExportLevel: state => state.selectedExportLevel,
     getLibType: state  => state.selectedLibType,
     getExportLevels: state => state.exportLevels,
-    getExportStatus: state => state.exportStatus
+    getExportStatus: state => state.exportStatus,
+    getSelectedPListType: state => state.selectedPListType
 };
 
 const etModule = {
