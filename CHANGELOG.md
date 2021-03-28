@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.1
+
+**Note**:   This version is an Beta version
+
+* [#165 Export Playlists](https://github.com/WebTools-NG/WebTools-NG/issues/165)
+
 ## V0.3.0
 
 **Note**:   This version is an Beta version
