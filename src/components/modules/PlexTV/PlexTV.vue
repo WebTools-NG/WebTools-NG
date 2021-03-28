@@ -157,7 +157,6 @@
         });
     },
     getUsers: async function(){
-      console.log('Ged77')
       this.selUserWait = false;
       var userLst = this.$store.getters.getUsers;
       // Output store
@@ -176,7 +175,6 @@
       }
       this.selUserOptions = result;
       this.selUserWait = true;
-      console.log('Ged77-2')
     }
   }
 

@@ -13,13 +13,10 @@ import filesize from 'filesize';
 var path = require("path");
 
 const fetch = require('node-fetch');
-//const {jp} = require('jsonpath');
 
 const {JSONPath} = require('jsonpath-plus');
 import axios from 'axios'
 import store from '../../../../store';
-
-
 
 const et = new class ET {
     constructor() {
@@ -64,28 +61,34 @@ const et = new class ET {
     async getSectionData({sectionName, baseURL, accessToken, libType})
     {
         const sectionData = []
-        log.info(`Starting getSectionData with Name: ${sectionName} and with a type of: ${libType}`)
+        log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}"`)
         // Get Section Key
         const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
-        log.debug(`Get SectionKey as: ${libKey}`)
+        log.debug(`Got SectionKey as: ${libKey}`)
         // Get the size of the library
-        const libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken})
-        log.debug(`Get Section size as: ${libSize}`)
+        const libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
+        log.debug(`Got Section size as: ${libSize}`)
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + libType)
-        log.debug(`Get Step size as: ${step}`)
+        log.debug(`Got Step size as: ${step}`)
         // Now read the fields and level defs
 
         // Current item
         let idx = 0
         // Now let's walk the section
         let chuncks, postURI
-        const element = '/library/sections/' + libKey
+        console.log('Ged 1 HER')
+        let element = '/library/sections/' + libKey
         let size
         do {
             if (libType == 'photo')
             {
                 postURI = `/all?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+            }
+            else if (libType == 'playlist')
+            {
+                element = '/playlists/' + libKey;
+                postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
             else
             {
@@ -104,11 +107,20 @@ const et = new class ET {
         return sectionData;
     }
 
-    async getSectionSizeByKey({sectionKey, baseURL, accessToken})
+    async getSectionSizeByKey({sectionKey, baseURL, accessToken, libType})
     {
-        const sizeURI = '/library/sections/' + sectionKey
-        const sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-        const sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});
+        let sizeURI, sizePostURI, sizeContents;
+        if (libType == 'playlist')
+        {
+            sizeURI = '/playlists/' + sectionKey
+            sizePostURI = '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+        }
+        else
+        {
+            sizeURI = '/library/sections/' + sectionKey
+            sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+        }
+        sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});
         const size = await JSONPath({path: '$..totalSize', json: sizeContents});
         return size
     }
@@ -127,9 +139,10 @@ const et = new class ET {
     {
         const url = baseURL + element + postURI;
         this.PMSHeader["X-Plex-Token"] = accessToken;
-        //log.verbose(`Calling url: ${url}`)
+        log.verbose(`Calling url: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
+        log.verbose(`Response in getItemData: ${JSON.stringify(resp)}`)
        return resp
     }
 
@@ -256,8 +269,13 @@ const et = new class ET {
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
+            case 'playlist':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist.json')));
+                break;
             default:
               // code block
+              log.error(`Unknown libtype: "${libType}" or level: "${level}" in "getLevelFields"`);
           }
         let levels = def[libType]['level'][realName];
         if (levels == undefined)
@@ -511,7 +529,7 @@ const excel2 = new class Excel {
 
     GetHeader(Level, libType) {
         const columns = []
-        log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
+        log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
         const fields = et.getLevelFields(Level, libType)
         for (var i=0; i<fields.length; i++) {
