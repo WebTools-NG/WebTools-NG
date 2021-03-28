@@ -877,12 +877,6 @@
                 "call": 1,
                 "type": "string"
             },
-        "Playlist Item Counts":
-        {
-            "key": "$.thumb",
-            "call": 0,
-            "type": "string"
-        },
         "Poster url":
             {
                 "key": "$.thumb",
