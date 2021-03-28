@@ -145,13 +145,14 @@ const et = new class ET {
         // [{"title":"DVR Movies","key":31,"type":"movie"}]
 
         const result = []
-        const url = address + '/library/sections/all'
+        let url = address + '/library/sections/all'
         this.PMSHeader["X-Plex-Token"] = accessToken;
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)
+        let respJSON = await Promise.resolve(resp)
         let sections = await JSONPath({path: '$..Directory', json: respJSON})[0];
-        for (var section of sections){
+        let section
+        for (section of sections){
             const subItem = {}
             subItem['title'] = JSONPath({path: '$..title', json: section})[0];
             subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);
@@ -159,6 +160,18 @@ const et = new class ET {
             result.push(subItem)
         }
         await Promise.resolve(result)
+        url = address + '/playlists';
+        response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        resp = await response.json();
+        respJSON = await Promise.resolve(resp)
+        sections = await JSONPath({path: '$..Metadata', json: respJSON})[0];
+        for (section of sections){
+            const subItem = {}
+            subItem['title'] = JSONPath({path: '$..title', json: section})[0];
+            subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
+            subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+            result.push(subItem)
+        }
         return  result
     }
 
