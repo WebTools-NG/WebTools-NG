@@ -5,7 +5,6 @@ console.log = log.log;
 
 const state = {
     sections:   [],
-    mediaData: [],
     selectedSection : "",
     selectedExportLevel: "",
     selectedLibType: "",
@@ -37,9 +36,6 @@ const mutations = {
       },
       UPDATE_SELECTEDLIBTYPE(state, payload) {
         state.selectedLibType = payload
-      },
-      UPDATE_MEDIADATA(state, payload) {
-          state.mediaData.push(payload)
       }
 };
 

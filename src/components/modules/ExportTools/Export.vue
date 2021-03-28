@@ -137,7 +137,9 @@
             { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: false },
             { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
             { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
-            { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false }
+            { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false },
+            { text: i18n.t('Modules.ET.RadioPlayListsInfo'), value: 'playlistInfo', disabled: true },
+            { text: i18n.t('Modules.ET.RadioLibraryInfo'), value: 'libraryInfo', disabled: true }
           ],
           optionsPlaylistType: [
             { text: i18n.t('Modules.ET.PlistTypeAudio'), value: 'audio', disabled: false },
