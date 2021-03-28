@@ -1,0 +1,25 @@
+{
+    "playlist": {
+        "level": {
+            "level1": [
+            ],
+            "level2": [
+            ],
+            "all": [
+                "Added",
+                "Duration",
+                "Last Viewed at",
+                "Playlist Item Counts",
+                "Summary",
+                "Title",
+                "Updated",
+                "View Count"
+            ],
+            "Ged": [
+                "smart",
+                "playlistType",
+                "composite"
+            ]
+        }
+    }
+}
