@@ -50,6 +50,8 @@ const actions = {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
         var libType = getters.getLibType;
+        var pListType = getters.getSelectedPListType;
+        console.log('Ged 556644', pListType)
         var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         excel2.createOutFile( {
@@ -58,7 +60,8 @@ const actions = {
           libType: libType,
           baseURL: baseURL,
           accessToken: accessToken,
-          exType: libType
+          exType: libType,
+          pListType: pListType
         } );
     }
 }

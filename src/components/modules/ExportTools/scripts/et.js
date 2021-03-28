@@ -230,7 +230,7 @@ const et = new class ET {
         return result;
     }
 
-    getLevelFields(level, libType) {
+    getLevelFields(level, libType, pListType) {
         // return fields in a level
         const out = []
         let realName = et.getRealLevelName(level, libType);
@@ -272,7 +272,11 @@ const et = new class ET {
                 break;
             case 'playlist':
                 // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist.json')));
+                console.log('Ged 6655', pListType)
+                console.log('Ged 556677', './../defs/def-Playlist-' + pListType + '.json')
+
+
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
                 break;
             default:
               // code block
@@ -365,9 +369,9 @@ const et = new class ET {
     }
 
 
-    getFieldsKeyVal( libType, level) {
+    getFieldsKeyVal( libType, level, pListType) {
         // Get fields for level
-        const fields = et.getLevelFields(level, libType)
+        const fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -377,9 +381,9 @@ const et = new class ET {
         return out
     }
 
-    getFieldsKeyValType( libType, level) {
+    getFieldsKeyValType( libType, level, pListType) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType)
+        const fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -436,9 +440,9 @@ const et = new class ET {
         });
     }
 
-    getFields( libType, level) {
+    getFields( libType, level, pListType) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType)
+        const fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -528,11 +532,12 @@ const excel2 = new class Excel {
         return sheet
     }
 
-    GetHeader(Level, libType) {
+    GetHeader(Level, libType, pListType) {
         const columns = []
         log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        const fields = et.getLevelFields(Level, libType)
+        console.log('Ged 655-1', pListType)
+        const fields = et.getLevelFields(Level, libType, pListType)
         for (var i=0; i<fields.length; i++) {
             log.verbose(`Column: ${fields[i]}`)
             columns.push(fields[i])
@@ -540,11 +545,11 @@ const excel2 = new class Excel {
         return columns
     }
 
-    async AddHeader(Sheet, Level, libType) {
+    async AddHeader(Sheet, Level, libType, pListType) {
         const columns = []
         log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        const fields = et.getLevelFields(Level, libType)
+        const fields = et.getLevelFields(Level, libType, pListType)
         for (var i=0; i<fields.length; i++) {
             log.verbose('Column: ' + fields[i] + ' - ' + fields[i])
             let column = { header: fields[i], key: fields[i], width: 5 }
@@ -973,7 +978,7 @@ const excel2 = new class Excel {
       }
 
 
-    async createXLSXFile( {csvFile, level, libType, libName, exType} )
+    async createXLSXFile( {csvFile, level, libType, libName, exType, pListType} )
     {
         // This will loop thru a csv file, and create xlsx file
         // First create a WorkBook
@@ -981,7 +986,7 @@ const excel2 = new class Excel {
         // Create Sheet
         let sheet = await excel2.NewSheet(workBook, libName, level);
         // Add the header to the sheet
-        await excel2.AddHeader(sheet, level, libType);
+        await excel2.AddHeader(sheet, level, libType, pListType);
 
 /*
         autoFilter sadly doesn't work :(
@@ -1039,9 +1044,10 @@ const excel2 = new class Excel {
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken, exType} )
+    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
     {
-        const header = excel2.GetHeader(level, libType);
+        console.log('Ged 44', pListType)
+        const header = excel2.GetHeader(level, libType, pListType);
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
@@ -1101,7 +1107,7 @@ const excel2 = new class Excel {
         if (wtconfig.get('ET.ExpExcel')){
             log.info('We need to create an xlsx file as well');
             store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.CreateExlsFile'));
-            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType});
+            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
         }
         store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`);
     }

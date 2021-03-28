@@ -1,0 +1,77 @@
+{
+    "playlist": {
+        "level": {
+            "level1": [
+            ],
+            "level2": [
+            ],
+            "all": [
+                "Added",
+                "Album Artist Poster url",
+                "Album Poster url",
+                "Album Title",
+                "Album Year",
+                "Art url",
+                "Artist Art url",
+                "Artist Poster url",
+                "Audience Rating",
+                "Audio Track Album No",
+                "Audio Track Artist",
+                "Audio Track No",
+                "Chapter Source",
+                "Content Rating",
+                "Country",
+                "Created at Accuracy",
+                "Created at TZOffset",
+                "Directors",
+                "Duration",
+                "Genre",
+                "Last Viewed at",
+                "Media Audio Channels",
+                "Media Audio Codec",
+                "Media Aspect Ratio",
+                "Media Container",
+                "Media Bitrate",
+                "Media Duration",
+                "Media Height",
+                "Media Video Codec",
+                "Media Video FrameRate",
+                "Media Video Profile",
+                "Media Video Resolution",
+                "Media Width",
+                "Original Title",
+                "Part Container",
+                "Part Duration",
+                "Part File",
+                "Part File Combined",
+                "Part File Path",
+                "Part Indexed",
+                "Part Orientation",
+                "Part Size",
+                "Part Video Profile",
+                "Poster url",
+                "Release Date",
+                "Roles",
+                "Studio",
+                "Summary",
+                "Tagline",
+                "Title",
+                "Updated",
+                "View Count",
+                "Writers",
+                "Year"
+            ],
+            "TODO":[
+                "type",
+                "librarySectionTitle",
+                "playlistItemID",
+                "audioProfile - Media - Part",
+                "parentStudio - Audio",
+                "ratingCount - Audio"
+
+
+            ]
+
+        }
+    }
+}
