@@ -5,6 +5,7 @@
 **Note**:   This version is an Beta version
 
 * [#165 Export Playlists](https://github.com/WebTools-NG/WebTools-NG/issues/165)
+* [#329 Export button enabled even if no level is selected](https://github.com/WebTools-NG/WebTools-NG/issues/329)
 
 ## V0.3.0
 
