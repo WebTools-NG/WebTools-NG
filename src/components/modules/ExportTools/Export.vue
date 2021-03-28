@@ -30,7 +30,6 @@
         <b-form-select
           v-model="selLibrary"
           id="selLibrary"
-          @change.native="enableBtnExport"
           :options="selLibraryOptions"
           name="selLibrary">
         </b-form-select>
@@ -46,7 +45,6 @@
           class="form-control"
           v-model="selLevel"
           id="selLevel"
-          @change.native="selectExportLevel()"
           :options="exportLevels"
           name="selLevel">
         </b-form-select>
@@ -122,8 +120,17 @@
       await this.getPMSSections();
       this.selLibraryWait = true;
     },
+    selLibrary: async function(){
+      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+    },
+    selMediaType: async function(){
+      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+    },
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
+    },
+    selLevel: async function(){
+      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
     }
   },
   created() {
@@ -234,19 +241,12 @@
       log.debug(selected);
       this.$store.commit("UPDATE_SELECTEDSECTION", selected);
     },
-    enableBtnExport: function() {
-      // Enables export button only if both library and level is selected
-      this.btnDisable=(this.selLibrary=='' && this.selLevel=='')
-    },
     changeType: function() {
       // Triggers when lib type is changed
       this.selLibrary = '';
       this.selLevel = '';
       this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-    },
-    selectExportLevel: function() {
-      this.enableBtnExport();
     },
     getMedia() {
       log.info("getMedia Called");
