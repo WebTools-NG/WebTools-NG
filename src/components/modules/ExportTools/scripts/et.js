@@ -297,6 +297,7 @@ const et = new class ET {
     }
 
     getLevels(libType) {
+        console.log('Ged 4 getLevels')
         // Returns an json of levels for a selected type og medias, like 'movie'
         const levels = defLevels[libType]['levels']
         log.debug(`ET LevelNames: ${JSON.stringify(levels)}`);
@@ -304,6 +305,7 @@ const et = new class ET {
     }
 
     getCustomLevels(libType) {
+        console.log('Ged 3 getCustomLevels', libType)
         const notDefined = {"No Level Yet": ""}
         // Returns an json of custom levels for a selected type og medias, like 'movie'
         const levels = wtconfig.get(`ET.CustomLevels.${libType}.levels`, notDefined)

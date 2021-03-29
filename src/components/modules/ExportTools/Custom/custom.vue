@@ -110,7 +110,9 @@
                 { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
                 { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
-                { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false }
+                { text: i18n.t('Modules.ET.RadioPlayLists') + '-' + i18n.t('Modules.ET.PlistTypeAudio'), value: 'playlist-audio', disabled: false },
+                { text: i18n.t('Modules.ET.RadioPlayLists') + '-' + i18n.t('Modules.ET.PlistTypePhoto'), value: 'playlist-photo', disabled: false },
+                { text: i18n.t('Modules.ET.RadioPlayLists') + '-' + i18n.t('Modules.ET.PlistTypeVideo'), value: 'playlist-video', disabled: false }
             ],
             selCustLevel: "",
             deleteLevel: this.$t('Modules.ET.Custom.DeleteLevel'),
@@ -154,7 +156,9 @@
     mounted() {
         log.debug('Custom level page selected')
         // Populate combobox
+        console.log('Ged 0')
         this.genExportLevels();
+        console.log('Ged 0-1')
     },
     methods: {
         getCustomLevel() {
@@ -195,7 +199,9 @@
         );
         },
         genExportLevels() {
-            et.getLevelDisplayName('My Level', this.selMediaType);
+            console.log('Ged 1')
+            //et.getLevelDisplayName('My Level', this.selMediaType);
+            console.log('Ged 2')
             // Returns valid levels for selected media type
             const etCustomLevel = et.getCustomLevels(this.selMediaType);
             const options = [];
@@ -270,6 +276,7 @@
         },
         changeType: function() {
             // Triggers when lib type is changed
+            console.log('Ged 1 changeType')
             this.genExportLevels();
             this.btnDeleteEnabled = false;
             this.resultList = [];
@@ -306,6 +313,7 @@
             this.$refs['confirmDeleteLevel'].show();
         },
         selectExportLevel: async function(value) {
+            console.log('Ged 3 selectExportLevel', value)
             log.info(`Custom ExportLevel selected as: ${value}`)
             if ( value == 'NewLevel') {
                 // Create new level
