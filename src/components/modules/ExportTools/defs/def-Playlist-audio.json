@@ -2,64 +2,60 @@
     "playlist": {
         "level": {
             "level1": [
+                "Key",
+                "Title",
+                "Album Year",
+                "Added",
+                "Audio Track Artist",
+                "Duration",
+                "Last Viewed at"
             ],
             "level2": [
+                "Key",
+                "Title",
+                "Album Title",
+                "Album Year",
+                "Added",
+                "Audio Track Artist",
+                "Duration",
+                "Last Viewed at",
+                "Part File",
+                "Part File Combined",
+                "Part File Path"
             ],
             "all": [
                 "Added",
                 "Album Artist Poster url",
-                "Album Poster url",
                 "Album Title",
+                "Album Poster url",
                 "Album Year",
                 "Art url",
                 "Artist Art url",
                 "Artist Poster url",
-                "Audience Rating",
-                "Audio Track Album No",
                 "Audio Track Artist",
+                "Audio Track Album No",
                 "Audio Track No",
-                "Chapter Source",
-                "Content Rating",
-                "Country",
-                "Created at Accuracy",
-                "Created at TZOffset",
-                "Directors",
                 "Duration",
-                "Genre",
+                "Key",
                 "Last Viewed at",
                 "Media Audio Channels",
                 "Media Audio Codec",
-                "Media Aspect Ratio",
-                "Media Container",
                 "Media Bitrate",
+                "Media Container",
                 "Media Duration",
-                "Media Height",
-                "Media Video Codec",
-                "Media Video FrameRate",
-                "Media Video Profile",
-                "Media Video Resolution",
-                "Media Width",
-                "Original Title",
+                "Media Id",
                 "Part Container",
                 "Part Duration",
+                "Part Id",
                 "Part File",
                 "Part File Combined",
                 "Part File Path",
-                "Part Indexed",
-                "Part Orientation",
                 "Part Size",
-                "Part Video Profile",
-                "Poster url",
-                "Release Date",
-                "Roles",
-                "Studio",
+                "Part Size as Bytes",
                 "Summary",
-                "Tagline",
                 "Title",
                 "Updated",
-                "View Count",
-                "Writers",
-                "Year"
+                "View Count"
             ],
             "TODO":[
                 "type",
@@ -68,10 +64,7 @@
                 "audioProfile - Media - Part",
                 "parentStudio - Audio",
                 "ratingCount - Audio"
-
-
             ]
-
         }
     }
 }
