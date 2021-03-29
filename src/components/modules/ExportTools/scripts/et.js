@@ -77,7 +77,6 @@ const et = new class ET {
         let idx = 0
         // Now let's walk the section
         let chuncks, postURI
-        console.log('Ged 1 HER')
         let element = '/library/sections/' + libKey
         let size
         do {
@@ -142,7 +141,7 @@ const et = new class ET {
         log.verbose(`Calling url: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.verbose(`Response in getItemData: ${JSON.stringify(resp)}`)
+        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
        return resp
     }
 
@@ -272,10 +271,6 @@ const et = new class ET {
                 break;
             case 'playlist':
                 // code block
-                console.log('Ged 6655', pListType)
-                console.log('Ged 556677', './../defs/def-Playlist-' + pListType + '.json')
-
-
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
                 break;
             default:
@@ -536,7 +531,6 @@ const excel2 = new class Excel {
         const columns = []
         log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        console.log('Ged 655-1', pListType)
         const fields = et.getLevelFields(Level, libType, pListType)
         for (var i=0; i<fields.length; i++) {
             log.verbose(`Column: ${fields[i]}`)
@@ -835,10 +829,10 @@ const excel2 = new class Excel {
         }
     }
 
-    async addRowToTmp( { libType, level, data, stream }) {
+    async addRowToTmp( { libType, level, data, stream, pListType }) {
         // log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         let date, year, month, day, hours, minutes, seconds
-        const fields = et.getFields( libType, level)
+        const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
         let str = ''
         let result = ''
@@ -1046,7 +1040,6 @@ const excel2 = new class Excel {
 
     async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
     {
-        console.log('Ged 44', pListType)
         const header = excel2.GetHeader(level, libType, pListType);
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
@@ -1074,7 +1067,7 @@ const excel2 = new class Excel {
                 {
                     for (item of sectionChunk){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }
@@ -1092,7 +1085,7 @@ const excel2 = new class Excel {
                     const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                     for (item of contentsItems){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }

@@ -170,7 +170,6 @@
       this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
     },
     selPType: async function(){
-      console.log('Ged 1', this.selPType)
       this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     }
   },
