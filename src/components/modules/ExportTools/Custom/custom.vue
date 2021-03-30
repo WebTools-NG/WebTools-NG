@@ -162,6 +162,7 @@
     },
     methods: {
         getCustomLevel() {
+            console.log('Ged 5 getCustomLevel')
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
                 // Get fields from config.json file
@@ -325,9 +326,14 @@
                 this.selCustLevel = value;
             }
             this.resultList = [];
+            console.log('Ged 4 selectExportLevel')
             await this.genExportLevels();
+            console.log('Ged 4-1 selectExportLevel', this.selMediaType)
             this.fieldList = et.getAllFields( {libType: this.selMediaType});
+            console.log('Ged 4-2 selectExportLevel', JSON.stringify(this.fieldList))
             this.getCustomLevel();
+            console.log('Ged 4-3 selectExportLevel')
+            
         }
       }
     };

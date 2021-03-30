@@ -426,6 +426,18 @@ const et = new class ET {
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
+            case 'playlist-audio':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-audio.json')));
+                break;
+            case 'playlist-photo':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-photo.json')));
+                break;
+            case 'playlist-video':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-video.json')));
+                break;
             default:
               // code block
           }
