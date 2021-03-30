@@ -297,7 +297,7 @@ const et = new class ET {
     }
 
     getLevels(libType) {
-        console.log('Ged 4 getLevels')
+        console.log('Ged 4 getLevels', libType)
         // Returns an json of levels for a selected type og medias, like 'movie'
         const levels = defLevels[libType]['levels']
         log.debug(`ET LevelNames: ${JSON.stringify(levels)}`);

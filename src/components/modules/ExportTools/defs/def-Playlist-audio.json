@@ -1,5 +1,5 @@
 {
-    "playlist": {
+    "playlist-audio": {
         "level": {
             "level1": [
                 "Key",
@@ -22,6 +22,8 @@
                 "Part File",
                 "Part File Combined",
                 "Part File Path"
+            ],
+            "level3": [
             ],
             "all": [
                 "Added",

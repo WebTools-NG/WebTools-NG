@@ -200,8 +200,6 @@
         );
         },
         genExportLevels() {
-            console.log('Ged 1')
-            //et.getLevelDisplayName('My Level', this.selMediaType);
             console.log('Ged 2')
             // Returns valid levels for selected media type
             const etCustomLevel = et.getCustomLevels(this.selMediaType);

@@ -51,7 +51,14 @@ const actions = {
         var accessToken = getters.getSelectedServerToken;
         var libType = getters.getLibType;
         var pListType = getters.getSelectedPListType;
-        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
+        var LevelDisplayName = libType;
+        console.log('Ged 9', LevelDisplayName)
+        if (LevelDisplayName == 'playlist')
+        {
+          LevelDisplayName = LevelDisplayName + '-' + pListType;
+        }
+        console.log('Ged 9-1', LevelDisplayName)
+        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, LevelDisplayName);
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         excel2.createOutFile( {
           libName: libName,

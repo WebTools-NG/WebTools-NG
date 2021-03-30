@@ -193,9 +193,13 @@
     exportLevels: function() {
       et.getLevelDisplayName('My Level', this.selMediaType);
       // Returns valid levels for selected media type
-      let targetType = this.selMediaType;
-      const etLevel = et.getLevels(targetType);
-      const etCustomLevel = et.getCustomLevels(this.selMediaType);
+      let exportType = this.selMediaType;
+      if (exportType == 'playlist')
+      {
+        exportType = exportType + '-' + this.selPType;
+      }
+      const etLevel = et.getLevels(exportType);
+      const etCustomLevel = et.getCustomLevels(exportType);
       const options = []
       const item = {}
       let custLabel = {}
@@ -303,8 +307,10 @@
       this.selLevel = '';
       this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+      console.log('Ged 77 pListGrpDisabled', this.selMediaType)
       if (this.selMediaType == 'playlist')
       {
+        console.log('Ged 77 enable cust')
         this.pListGrpDisabled = false;
       }
       else

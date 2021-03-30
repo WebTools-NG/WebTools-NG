@@ -86,7 +86,33 @@
             "All": 2
         }
     },
-    "playlist": {
+    "playlist-audio": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "Level 3": "level3",
+            "All": "all"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "Level 3": 1,
+            "All": 2
+        }
+    },
+    "playlist-photo": {
+        "levels": {
+            "Level 1": "level1",
+            "Level 2": "level2",
+            "All": "all"
+        },
+        "LevelCount": {
+            "Level 1": 1,
+            "Level 2": 1,
+            "All": 2
+        }
+    },
+    "playlist-video": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
