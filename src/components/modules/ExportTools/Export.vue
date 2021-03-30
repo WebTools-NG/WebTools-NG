@@ -307,10 +307,8 @@
       this.selLevel = '';
       this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-      console.log('Ged 77 pListGrpDisabled', this.selMediaType)
       if (this.selMediaType == 'playlist')
       {
-        console.log('Ged 77 enable cust')
         this.pListGrpDisabled = false;
       }
       else
