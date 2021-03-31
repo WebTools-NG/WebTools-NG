@@ -147,6 +147,10 @@ const et = new class ET {
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         const levelName = defLevels[libType]['levels'][level]
         return levelName
     }
@@ -190,6 +194,10 @@ const et = new class ET {
 
     getLevelDisplayName(level, libType){
         // return displayname for the buildin levels
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         const levels = et.getLevels(libType)
         let result = '';
         loop1:
@@ -232,6 +240,10 @@ const et = new class ET {
     getLevelFields(level, libType, pListType) {
         // return fields in a level
         const out = []
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         let realName = et.getRealLevelName(level, libType);
         if (realName == undefined)
         {
@@ -269,7 +281,15 @@ const et = new class ET {
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
-            case 'playlist':
+            case 'playlist-audio':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
+            case 'playlist-photo':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
+            case 'playlist-video':
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
                 break;
@@ -291,6 +311,10 @@ const et = new class ET {
 
     async getLevelCall (libType, level) {
         // this will return number of calls needed
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)
         return count
