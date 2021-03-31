@@ -22,7 +22,7 @@
     <b-form-row>
       <b-col>
         <div class="d-flex align-items-center">
-          <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+          <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
             <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
               <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
             </div>
@@ -61,7 +61,7 @@
 <b-form-row>
   <b-col>
     <div> <!-- Select Export Level -->
-      <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0">
+      <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
         <b-tooltip target="etLevelGroup" triggers="hover">
           {{ $t('Modules.ET.TT-ETLevel') }}
         </b-tooltip>
@@ -129,6 +129,8 @@
           selLevel: "",
           selPType: "audio",
           pListGrpDisabled: true,
+          etLibraryGroupDisabled: false,
+          etLevelGroupDisabled: false,
           optionsMediaType: [
             { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },
             { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: false },
@@ -139,7 +141,7 @@
             { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
             { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false },
             { text: i18n.t('Modules.ET.RadioPlayListsInfo'), value: 'playlistInfo', disabled: true },
-            { text: i18n.t('Modules.ET.RadioLibraryInfo'), value: 'libraryInfo', disabled: true }
+            { text: i18n.t('Modules.ET.RadioLibraryInfo'), value: 'libraryInfo', disabled: false }
           ],
           optionsPlaylistType: [
             { text: i18n.t('Modules.ET.PlistTypeAudio'), value: 'audio', disabled: false },
@@ -158,16 +160,37 @@
       this.selLibraryWait = true;
     },
     selLibrary: async function(){
-      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+      if (['libraryInfo'].indexOf(this.selMediaType) > -1)
+      {
+        this.btnDisable = false
+      }
+      else
+      {
+        this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+      }
     },
     selMediaType: async function(){
-      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+      if (['libraryInfo'].indexOf(this.selMediaType) > -1)
+      {
+        this.btnDisable = false
+      }
+      else
+      {
+        this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+      }
     },
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
     },
     selLevel: async function(){
-      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+      if (['libraryInfo'].indexOf(this.selMediaType) > -1)
+      {
+        this.btnDisable = false
+      }
+      else
+      {
+        this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
+      }
     },
     selPType: async function(){
       this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
@@ -307,13 +330,21 @@
       this.selLevel = '';
       this.getPMSSections();
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-      if (this.selMediaType == 'playlist')
-      {
-        this.pListGrpDisabled = false;
-      }
-      else
-      {
-        this.pListGrpDisabled = true;
+      switch(this.selMediaType) {
+        case 'playlist':
+          this.pListGrpDisabled = false;
+          this.etLibraryGroupDisabled = false;
+          this.etLevelGroupDisabled = false;
+          break;
+        case 'libraryInfo':
+          this.pListGrpDisabled = true;
+          this.etLibraryGroupDisabled = true;
+          this.etLevelGroupDisabled = true;
+          break;
+        default:
+          this.pListGrpDisabled = true;
+          this.etLibraryGroupDisabled = false;
+          this.etLevelGroupDisabled = false;
       }
     },
     getMedia() {
