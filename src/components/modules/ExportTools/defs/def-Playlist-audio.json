@@ -1,0 +1,70 @@
+{
+    "playlist-audio": {
+        "level": {
+            "level1": [
+                "Key",
+                "Title",
+                "Album Year",
+                "Added",
+                "Audio Track Artist",
+                "Duration",
+                "Last Viewed at"
+            ],
+            "level2": [
+                "Key",
+                "Title",
+                "Album Title",
+                "Album Year",
+                "Added",
+                "Audio Track Artist",
+                "Duration",
+                "Last Viewed at",
+                "Part File",
+                "Part File Combined",
+                "Part File Path"
+            ],
+            "all": [
+                "Added",
+                "Album Artist Poster url",
+                "Album Title",
+                "Album Poster url",
+                "Album Year",
+                "Art url",
+                "Artist Art url",
+                "Artist Poster url",
+                "Audio Track Artist",
+                "Audio Track Album No",
+                "Audio Track No",
+                "Duration",
+                "Key",
+                "Last Viewed at",
+                "Media Audio Channels",
+                "Media Audio Codec",
+                "Media Bitrate",
+                "Media Container",
+                "Media Duration",
+                "Media Id",
+                "Part Container",
+                "Part Duration",
+                "Part Id",
+                "Part File",
+                "Part File Combined",
+                "Part File Path",
+                "Part Size",
+                "Part Size as Bytes",
+                "Summary",
+                "Title",
+                "Updated",
+                "View Count"
+            ],
+            "TODO":[
+                "type",
+                "librarySectionTitle",
+                "playlistItemID",
+                "audioProfile - Media - Part",
+                "parentStudio - Audio",
+                "ratingCount - Audio"
+            ]
+        }
+    }
+}

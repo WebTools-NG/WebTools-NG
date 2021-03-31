@@ -110,7 +110,9 @@
                 { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: false },
                 { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
                 { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
-                { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: true }
+                { text: i18n.t('Modules.ET.RadioPlayLists') + '-' + i18n.t('Modules.ET.PlistTypeAudio'), value: 'playlist-audio', disabled: false },
+                { text: i18n.t('Modules.ET.RadioPlayLists') + '-' + i18n.t('Modules.ET.PlistTypePhoto'), value: 'playlist-photo', disabled: false },
+                { text: i18n.t('Modules.ET.RadioPlayLists') + '-' + i18n.t('Modules.ET.PlistTypeVideo'), value: 'playlist-video', disabled: false }
             ],
             selCustLevel: "",
             deleteLevel: this.$t('Modules.ET.Custom.DeleteLevel'),
@@ -195,7 +197,6 @@
         );
         },
         genExportLevels() {
-            et.getLevelDisplayName('My Level', this.selMediaType);
             // Returns valid levels for selected media type
             const etCustomLevel = et.getCustomLevels(this.selMediaType);
             const options = [];

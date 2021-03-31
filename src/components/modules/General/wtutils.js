@@ -353,14 +353,33 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.CustomLevels.photo.level', 'N/A') == 'N/A' ){
             wtconfig.set('ET.CustomLevels.photo.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist.levels', {})
+        // Playlists
+        if ( wtconfig.get('ET.CustomLevels.playlist-audio.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-audio.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.playlist-audio.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-audio.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist.level', {})
+        if ( wtconfig.get('ET.CustomLevels.playlist-audio.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-audio.level', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-photo.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-photo.levels', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-photo.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-photo.LevelCount', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-photo.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-photo.level', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-video.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-video.levels', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-video.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-video.LevelCount', {})
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-video.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.playlist-video.level', {})
         }
         // All done, so stamp version number
         wtconfig.set('General.version', wtutils.AppVersion)

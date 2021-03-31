@@ -13,13 +13,10 @@ import filesize from 'filesize';
 var path = require("path");
 
 const fetch = require('node-fetch');
-//const {jp} = require('jsonpath');
 
 const {JSONPath} = require('jsonpath-plus');
 import axios from 'axios'
 import store from '../../../../store';
-
-
 
 const et = new class ET {
     constructor() {
@@ -64,28 +61,33 @@ const et = new class ET {
     async getSectionData({sectionName, baseURL, accessToken, libType})
     {
         const sectionData = []
-        log.info(`Starting getSectionData with Name: ${sectionName} and with a type of: ${libType}`)
+        log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}"`)
         // Get Section Key
         const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
-        log.debug(`Get SectionKey as: ${libKey}`)
+        log.debug(`Got SectionKey as: ${libKey}`)
         // Get the size of the library
-        const libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken})
-        log.debug(`Get Section size as: ${libSize}`)
+        const libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
+        log.debug(`Got Section size as: ${libSize}`)
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + libType)
-        log.debug(`Get Step size as: ${step}`)
+        log.debug(`Got Step size as: ${step}`)
         // Now read the fields and level defs
 
         // Current item
         let idx = 0
         // Now let's walk the section
         let chuncks, postURI
-        const element = '/library/sections/' + libKey
+        let element = '/library/sections/' + libKey
         let size
         do {
             if (libType == 'photo')
             {
                 postURI = `/all?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+            }
+            else if (libType == 'playlist')
+            {
+                element = '/playlists/' + libKey;
+                postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
             else
             {
@@ -104,11 +106,20 @@ const et = new class ET {
         return sectionData;
     }
 
-    async getSectionSizeByKey({sectionKey, baseURL, accessToken})
+    async getSectionSizeByKey({sectionKey, baseURL, accessToken, libType})
     {
-        const sizeURI = '/library/sections/' + sectionKey
-        const sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-        const sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});
+        let sizeURI, sizePostURI, sizeContents;
+        if (libType == 'playlist')
+        {
+            sizeURI = '/playlists/' + sectionKey
+            sizePostURI = '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+        }
+        else
+        {
+            sizeURI = '/library/sections/' + sectionKey
+            sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+        }
+        sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});
         const size = await JSONPath({path: '$..totalSize', json: sizeContents});
         return size
     }
@@ -127,14 +138,19 @@ const et = new class ET {
     {
         const url = baseURL + element + postURI;
         this.PMSHeader["X-Plex-Token"] = accessToken;
-        //log.verbose(`Calling url: ${url}`)
+        log.verbose(`Calling url: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
+        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
        return resp
     }
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         const levelName = defLevels[libType]['levels'][level]
         return levelName
     }
@@ -145,13 +161,14 @@ const et = new class ET {
         // [{"title":"DVR Movies","key":31,"type":"movie"}]
 
         const result = []
-        const url = address + '/library/sections/all'
+        let url = address + '/library/sections/all'
         this.PMSHeader["X-Plex-Token"] = accessToken;
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)
+        let respJSON = await Promise.resolve(resp)
         let sections = await JSONPath({path: '$..Directory', json: respJSON})[0];
-        for (var section of sections){
+        let section
+        for (section of sections){
             const subItem = {}
             subItem['title'] = JSONPath({path: '$..title', json: section})[0];
             subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);
@@ -159,11 +176,28 @@ const et = new class ET {
             result.push(subItem)
         }
         await Promise.resolve(result)
+        url = address + '/playlists';
+        response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        resp = await response.json();
+        respJSON = await Promise.resolve(resp)
+        sections = await JSONPath({path: '$..Metadata', json: respJSON})[0];
+        for (section of sections){
+            const subItem = {}
+            subItem['title'] = JSONPath({path: '$..title', json: section})[0];
+            subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
+            subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+            subItem['playlistType'] = JSONPath({path: '$..playlistType', json: section})[0];
+            result.push(subItem)
+        }
         return  result
     }
 
     getLevelDisplayName(level, libType){
         // return displayname for the buildin levels
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         const levels = et.getLevels(libType)
         let result = '';
         loop1:
@@ -203,9 +237,13 @@ const et = new class ET {
         return result;
     }
 
-    getLevelFields(level, libType) {
+    getLevelFields(level, libType, pListType) {
         // return fields in a level
         const out = []
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         let realName = et.getRealLevelName(level, libType);
         if (realName == undefined)
         {
@@ -243,8 +281,21 @@ const et = new class ET {
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
+            case 'playlist-audio':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
+            case 'playlist-photo':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
+            case 'playlist-video':
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
             default:
               // code block
+              log.error(`Unknown libtype: "${libType}" or level: "${level}" in "getLevelFields"`);
           }
         let levels = def[libType]['level'][realName];
         if (levels == undefined)
@@ -260,6 +311,10 @@ const et = new class ET {
 
     async getLevelCall (libType, level) {
         // this will return number of calls needed
+        if (libType == 'playlist')
+        {
+            libType = libType + '-' + store.getters.getSelectedPListType;
+        }
         const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)
         return count
@@ -333,9 +388,9 @@ const et = new class ET {
     }
 
 
-    getFieldsKeyVal( libType, level) {
+    getFieldsKeyVal( libType, level, pListType) {
         // Get fields for level
-        const fields = et.getLevelFields(level, libType)
+        const fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -345,9 +400,9 @@ const et = new class ET {
         return out
     }
 
-    getFieldsKeyValType( libType, level) {
+    getFieldsKeyValType( libType, level, pListType) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType)
+        const fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -393,6 +448,18 @@ const et = new class ET {
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
+            case 'playlist-audio':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-audio.json')));
+                break;
+            case 'playlist-photo':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-photo.json')));
+                break;
+            case 'playlist-video':
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-video.json')));
+                break;
             default:
               // code block
           }
@@ -404,9 +471,9 @@ const et = new class ET {
         });
     }
 
-    getFields( libType, level) {
+    getFields( libType, level, pListType) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType)
+        const fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -496,11 +563,11 @@ const excel2 = new class Excel {
         return sheet
     }
 
-    GetHeader(Level, libType) {
+    GetHeader(Level, libType, pListType) {
         const columns = []
-        log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
+        log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        const fields = et.getLevelFields(Level, libType)
+        const fields = et.getLevelFields(Level, libType, pListType)
         for (var i=0; i<fields.length; i++) {
             log.verbose(`Column: ${fields[i]}`)
             columns.push(fields[i])
@@ -508,11 +575,11 @@ const excel2 = new class Excel {
         return columns
     }
 
-    async AddHeader(Sheet, Level, libType) {
+    async AddHeader(Sheet, Level, libType, pListType) {
         const columns = []
         log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        const fields = et.getLevelFields(Level, libType)
+        const fields = et.getLevelFields(Level, libType, pListType)
         for (var i=0; i<fields.length; i++) {
             log.verbose('Column: ' + fields[i] + ' - ' + fields[i])
             let column = { header: fields[i], key: fields[i], width: 5 }
@@ -798,10 +865,10 @@ const excel2 = new class Excel {
         }
     }
 
-    async addRowToTmp( { libType, level, data, stream }) {
+    async addRowToTmp( { libType, level, data, stream, pListType }) {
         // log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         let date, year, month, day, hours, minutes, seconds
-        const fields = et.getFields( libType, level)
+        const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
         let str = ''
         let result = ''
@@ -941,7 +1008,7 @@ const excel2 = new class Excel {
       }
 
 
-    async createXLSXFile( {csvFile, level, libType, libName, exType} )
+    async createXLSXFile( {csvFile, level, libType, libName, exType, pListType} )
     {
         // This will loop thru a csv file, and create xlsx file
         // First create a WorkBook
@@ -949,7 +1016,7 @@ const excel2 = new class Excel {
         // Create Sheet
         let sheet = await excel2.NewSheet(workBook, libName, level);
         // Add the header to the sheet
-        await excel2.AddHeader(sheet, level, libType);
+        await excel2.AddHeader(sheet, level, libType, pListType);
 
 /*
         autoFilter sadly doesn't work :(
@@ -1007,9 +1074,9 @@ const excel2 = new class Excel {
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken, exType} )
+    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
     {
-        const header = excel2.GetHeader(level, libType);
+        const header = excel2.GetHeader(level, libType, pListType);
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
@@ -1036,7 +1103,7 @@ const excel2 = new class Excel {
                 {
                     for (item of sectionChunk){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }
@@ -1054,7 +1121,7 @@ const excel2 = new class Excel {
                     const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                     for (item of contentsItems){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream } );
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }
@@ -1069,7 +1136,7 @@ const excel2 = new class Excel {
         if (wtconfig.get('ET.ExpExcel')){
             log.info('We need to create an xlsx file as well');
             store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.CreateExlsFile'));
-            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType});
+            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
         }
         store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`);
     }

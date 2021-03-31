@@ -1,0 +1,85 @@
+{
+    "playlist-video": {
+        "level": {
+            "level1": [
+                "Key",
+                "Title",
+                "Added",
+                "Last Viewed at",
+                "Original Title",
+                "Release Date",
+                "Summary"
+            ],
+            "level2": [
+                "Key",
+                "Title",
+                "Added",
+                "Country",
+                "Duration",
+                "Last Viewed at",
+                "Original Title",
+                "Release Date",
+                "Summary",
+                "Tagline",
+                "Year"
+            ],
+            "all": [
+                "Added",
+                "Art url",
+                "Audience Rating",
+                "Chapter Source",
+                "Content Rating",
+                "Country",
+                "Directors",
+                "Duration",
+                "Genre",
+                "Key",
+                "Last Viewed at",
+                "Media Aspect Ratio",
+                "Media Audio Channels",
+                "Media Audio Codec",
+                "Media Bitrate",
+                "Media Container",
+                "Media Duration",
+                "Media Height",
+                "Media Id",
+                "Media Video Codec",
+                "Media Video FrameRate",
+                "Media Video Profile",
+                "Media Video Resolution",
+                "Media Width",
+                "Original Title",
+                "Part Container",
+                "Part Duration",
+                "Part Id",
+                "Part File",
+                "Part File Combined",
+                "Part File Path",
+                "Part Indexed",
+                "Part Size",
+                "Part Size as Bytes",
+                "Part Video Profile",
+                "Poster url",
+                "Release Date",
+                "Roles",
+                "Studio",
+                "Summary",
+                "Tagline",
+                "Title",
+                "Updated",
+                "View Count",
+                "Writers",
+                "Year"
+            ],
+            "TODO":[
+                "type",
+                "librarySectionTitle",
+                "playlistItemID",
+                "audioProfile - Media - Part",
+                "parentStudio - Audio",
+                "ratingCount - Audio"
+            ]
+
+        }
+    }
+}

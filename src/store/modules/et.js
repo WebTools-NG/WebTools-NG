@@ -5,10 +5,10 @@ console.log = log.log;
 
 const state = {
     sections:   [],
-    mediaData: [],
     selectedSection : "",
     selectedExportLevel: "",
     selectedLibType: "",
+    selectedPListType: "",
     exportStatus: ""
 };
 
@@ -21,6 +21,10 @@ const mutations = {
           state.selectedSection = payload
           log.info("UPDATE_SELECTEDSECTION called")
       },
+      UPDATE_SELECTEDPLISTTYPE(state, payload) {
+        state.selectedPListType = payload
+        log.info("UPDATE_SELECTEDPLISTTYPE called")
+    },
       UPDATE_EXPORTLEVEL(state, payload) {
           state.selectedExportLevel = payload
       },
@@ -32,9 +36,6 @@ const mutations = {
       },
       UPDATE_SELECTEDLIBTYPE(state, payload) {
         state.selectedLibType = payload
-      },
-      UPDATE_MEDIADATA(state, payload) {
-          state.mediaData.push(payload)
       }
 };
 
@@ -49,7 +50,7 @@ const actions = {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
         var libType = getters.getLibType;
-        var exType = getters.getLibType;
+        var pListType = getters.getSelectedPListType;
         var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         excel2.createOutFile( {
@@ -58,7 +59,8 @@ const actions = {
           libType: libType,
           baseURL: baseURL,
           accessToken: accessToken,
-          exType: exType
+          exType: libType,
+          pListType: pListType
         } );
     }
 }
@@ -69,7 +71,8 @@ const getters = {
     getSelectedExportLevel: state => state.selectedExportLevel,
     getLibType: state  => state.selectedLibType,
     getExportLevels: state => state.exportLevels,
-    getExportStatus: state => state.exportStatus
+    getExportStatus: state => state.exportStatus,
+    getSelectedPListType: state => state.selectedPListType
 };
 
 const etModule = {
