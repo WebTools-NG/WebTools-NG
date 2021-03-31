@@ -75,14 +75,14 @@
                 "menuGithub": "Github",
                 "menuManual": "Manual",
                 "menuAbout": "About WebTools",
-                "menuAboutText":{
-                    "menuAboutVersion":"Version",
-                    "menuAboutPlatform":"Platform",
+                "menuAboutText": {
+                    "menuAboutVersion": "Version",
+                    "menuAboutPlatform": "Platform",
                     "menuAboutArchitecture": "Architecture"
                 }
             },
             "Sidebar": {
-                "NavSections":{
+                "NavSections": {
                     "Tools": "Tools",
                     "Options": "Options"
                 },
@@ -90,38 +90,38 @@
                     "Settings": "Settings",
                     "Custom": "Custom Levels"
                 },
-                "PMS": {
-                    "Settings": "Settings"
-                },
                 "About": {
                     "NavTitle": "About Us"
                 },
-                "Home":{
+                "Home": {
                     "NavTitle": "Home"
                 },
-                "Language":{
+                "Language": {
                     "NavTitle": "Language"
                 },
-                "Theme":{
+                "Theme": {
                     "NavTitle": "Theme"
                 },
-                "Reset":{
+                "Reset": {
                     "NavTitle": "Factory Reset"
                 },
-                "Settings":{
+                "Settings": {
                     "NavTitle": "Global Settings"
+                },
+                "PMS": {
+                    "Settings": "Settings"
                 }
             }
         },
         "Ok": "OK",
         "Reload": "Reload",
-        "Copy": "Copy",
-        "Update" : {
+        "Update": {
             "Title": "Update detected",
             "Body": "{0} was released on Github on: {1}.",
             "Body2": "Click here for more info",
             "Skip": "Don't show notification for this version anymore"
         },
+        "Copy": "Copy",
         "ExportDir": "Select Export Directory",
         "Browse": "Browse",
         "ErrorNoOutDirMsg": "You need to define an output directory in the global settings page first",
@@ -129,91 +129,7 @@
         "ReleaseNoteTitle": "Release Note"
     },
     "Modules": {
-        "PlexTV": {
-            "Name": "Plex.TV",
-            "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with",
-            "SelUsr": "Select User",
-            "TT-User": "Here you select the user to get more info about",
-            "UsrID": "User ID",
-            "UsrEMail": "User email address",
-            "UsrName": "User name",
-            "UsrTitle": "User title",
-            "UsrRestricted": "User Restricted",
-            "UsrThumb": "Link to User thumb",
-            "UsrHome": "Is user part of your Home",
-            "UsrStatus": "User invite status",
-            "ExportUsr": "Export user to CSV",
-            "ExportAllUsr": "Export all users to CSV",
-            "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
-        },
-        "PMS": {
-            "Name": "Plex Media Server",
-            "ExportDoneBody": "Check {0}",
-            "ExportDoneTitle": "Export finished",
-            "Description": "@:Modules.PMS.Name module allows you to manage your server",
-            "ErrorNoServerSelectedTitle": "No server selected",
-            "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
-            "Settings": {
-                "Settings": "Settings",
-                "Description": "Here you can define the settings for the selected server",
-                "Notice": "Note: When changing a server setting you might need to restart the server afterwards",
-                "SelectSettingsSelection": "Select Settings Group",
-                "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
-                "SettingsFilter": "Filter settings",
-                "TTSettingsFilter": "Here you apply a filter for the settings",
-                "OnlyHidden": "Show only hidden settings",
-                "OnlyAdvanced": "Show only advanced settings",
-                "AllSettings": "Show all settings",
-                "Undefined": "undefined",
-                "tblCaption": "Settings - click row to change",
-                "tblName": "Name",
-                "tblLabel": "Label",
-                "tblSummary": "Summary",
-                "tblDefault": "Default",
-                "tblValue": "Value",
-                "tblType": "Type",
-                "newSettingTitle": "Enter the new setting for: {0}",
-                "curSetting": "Current Setting",
-                "defSetting": "Default Setting",
-                "newSettingValueTXT": "<Enter new value>",
-                "varning": "Change at your own risk. Any change can lead to malfunction of your plex server",
-                "ExportAllSettings": "Export all settings to CSV",
-                "ExportGroupSettings": "Export selected group settings to CSV"
-            },
-            "Export":{
-                "Items":{
-                    "Category": "Category",
-                    "Name": "Name",
-                    "Label":"Label",
-                    "Summary":"Summary",
-                    "Type": "Type",
-                    "Default": "Default",
-                    "Value": "Value"
-                }
-            }
-        },
         "ET": {
-            "Custom": {
-                "Title": "Custom levels",
-                "Description": "A custom level allows you to create your own export levels",
-                "NewCustomLevel": "< Define new level >",
-                "CustomLevels": "*** Custom levels ***",
-                "DeleteLevel": "Do you want to delete selected level?",
-                "NewLevelTitle": "Enter name for the new level",
-                "NewLevelName": "< Enter name for new level >",
-                "NewLevelSaveTxt": "Save",
-                "CustomLevel": "Custom Level",
-                "btnDelete": "Delete level",
-                "btnSave": "Save level",
-                "confirmDelete": "Are you sure you want to delete {0}",
-                "Delete": "Delete",
-                "Cancel": "Cancel",
-                "availFields": "Availible fields:",
-                "customFields": "Custom fields:",
-                "AlertSaved": "Custom level saved",
-                "TT-ETEditLevel": "Here you select the level to create/delete/edit"
-
-            },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
             "HSelectMedia": "Select Export Type",
@@ -221,28 +137,22 @@
             "HExportMedia": "Export Media",
             "RadioMovies": "Movies",
             "RadioTVSeries": "TV Shows",
-            "RadioTVEpisodes": "TV Episodes",
-            "RadioAudioArtist": "Audio Artist",
-            "RadioAudioAlbum": "Audio Album",
-            "RadioAudioTrack": "Audio Track",
             "RadioPhotos": "Photos",
             "RadioPlayLists": "Playlists",
             "RadioPlayListsInfo": "Playlist Info",
             "RadioLibraryInfo": "Library Info",
             "ErrorServer": "No server",
-            "ErrorNoServerSelectedTitle": "No server selected",
-            "ErrorNoServerSelectedMsg": "You need to select a server to extract from",
             "Settings": {
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
-                "ExportToExcel": "Export to xlsx as well as csv",
                 "OrgTitleNull": "Default \"Original Title\" to \"Title\", if empty",
                 "SortTitleNull": "Default \"Sort Title\" to \"Title\", if empty",
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
+                "ExportToExcel": "Export to xlsx as well as csv",
                 "NotAvailIndicator": "What to use if a field can't be found",
                 "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)"
             },
@@ -265,16 +175,42 @@
                 "Processing-Chunk": "Processing chunk {current} of {total}",
                 "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nitems to export: {urlStr}",
                 "StartExport": "Starting to Export",
+                "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}",
                 "CreateExlsFile": "Creating Excel file",
-                "ProcessItem": "Processing item {count} of {total}",
-                "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}"
+                "ProcessItem": "Processing item {count} of {total}"
             },
+            "RadioTVEpisodes": "TV Episodes",
             "ErrorBadSepTitle": "Column separator issue",
-            "ErrorBadSep": "Column separator can only be one character"
+            "ErrorBadSep": "Column separator can only be one character",
+            "ErrorNoServerSelectedTitle": "No server selected",
+            "ErrorNoServerSelectedMsg": "You need to select a server to extract from",
+            "RadioPlayLists": "Playlists",
+            "Custom": {
+                "Title": "Custom levels",
+                "Description": "A custom level allows you to create your own export levels",
+                "NewCustomLevel": "< Define new level >",
+                "CustomLevels": "*** Custom levels ***",
+                "DeleteLevel": "Do you want to delete selected level?",
+                "NewLevelTitle": "Enter name for the new level",
+                "NewLevelName": "< Enter name for new level >",
+                "NewLevelSaveTxt": "Save",
+                "CustomLevel": "Custom Level",
+                "btnDelete": "Delete level",
+                "btnSave": "Save level",
+                "confirmDelete": "Are you sure you want to delete {0}",
+                "Delete": "Delete",
+                "Cancel": "Cancel",
+                "availFields": "Availible fields:",
+                "customFields": "Custom fields:",
+                "AlertSaved": "Custom level saved",
+                "TT-ETEditLevel": "Here you select the level to create/delete/edit"
+            },
+            "RadioAudioArtist": "Audio Artist",
+            "RadioAudioAlbum": "Audio Album",
+            "RadioAudioTrack": "Audio Track"
         },
         "About": {
             "Description": "@:Modules.About.Name",
-            "NavTitle": "About Us",
             "Name": "About us and credits",
             "MainDevelopers": "Main Developers",
             "Devdane22": "Tommy (aka dane22), a Plex community member (ukdtom on GitHub)",
@@ -282,6 +218,7 @@
             "TranslationBetaTestersTitle": "Translators and Beta Testers",
             "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
             "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work! And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
+            "NavTitle": "About Us",
             "WikiDevelopers": "Wiki was made by:",
             "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)"
         },
@@ -295,17 +232,80 @@
             "RestartNeeded": "When changing this setting, a restart is needed",
             "FactoryReset": "Factory Reset",
             "FactoryResetWarning": "Factory Reset will reset this app towards how it was when first installed",
-            "FactoryResetConfirmTitle": "Confirm Factory Reset",
-            "FactoryResetConfirmBody": "Doing a Factory Reset will erase all your settings, as it was when first installed",
-            "FactoryResetConfirmBody2": "After doing a Factory Reset, you must start {0} again",
-            "FactoryResetBtnCancel": "Cancel",
-            "FactoryResetBtnOk": "Do a Factory Reset",
             "BetaTester": "Subscribe to Beta updates",
             "TTBetaTester": "When selected, you'll be notified when a new beta version is available",
             "Update": "Subscribe to updates (If false, beta updates will also be disabled)",
             "TTUpdate": "When selected, you'll be notified when a new update is available",
             "True": "True",
-            "False": "False"
+            "False": "False",
+            "FactoryResetConfirmTitle": "Confirm Factory Reset",
+            "FactoryResetConfirmBody": "Doing a Factory Reset will erase all your settings, as it was when first installed",
+            "FactoryResetConfirmBody2": "After doing a Factory Reset, you must start {0} again",
+            "FactoryResetBtnCancel": "Cancel",
+            "FactoryResetBtnOk": "Do a Factory Reset"
+        },
+        "PMS": {
+            "Name": "Plex Media Server",
+            "Description": "@:Modules.PMS.Name module allows you to manage your server",
+            "ErrorNoServerSelectedTitle": "No server selected",
+            "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
+            "Settings": {
+                "Settings": "Settings",
+                "Description": "Here you can define the settings for the selected server",
+                "SelectSettingsSelection": "Select Settings Group",
+                "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
+                "OnlyHidden": "Show only hidden settings",
+                "OnlyAdvanced": "Show only advanced settings",
+                "Undefined": "undefined",
+                "tblCaption": "Settings - click row to change",
+                "tblName": "Name",
+                "tblLabel": "Label",
+                "tblSummary": "Summary",
+                "tblDefault": "Default",
+                "tblValue": "Value",
+                "tblType": "Type",
+                "newSettingTitle": "Enter the new setting for: {0}",
+                "curSetting": "Current Setting",
+                "defSetting": "Default Setting",
+                "newSettingValueTXT": "<Enter new value>",
+                "Notice": "Note: When changing a server setting you might need to restart the server afterwards",
+                "varning": "Change at your own risk. Any change can lead to malfunction of your plex server",
+                "SettingsFilter": "Filter settings",
+                "TTSettingsFilter": "Here you apply a filter for the settings",
+                "AllSettings": "Show all settings",
+                "ExportAllSettings": "Export all settings to CSV",
+                "ExportGroupSettings": "Export selected group settings to CSV"
+            },
+            "Export": {
+                "Items": {
+                    "Category": "Category",
+                    "Name": "Name",
+                    "Label": "Label",
+                    "Summary": "Summary",
+                    "Type": "Type",
+                    "Default": "Default",
+                    "Value": "Value"
+                }
+            },
+            "ExportDoneBody": "Check {0}",
+            "ExportDoneTitle": "Export finished"
+        },
+        "PlexTV": {
+            "Name": "Plex.TV",
+            "Description": "@:Modules.PlexTV.Name module allows you get details about users you are sharing with",
+            "SelUsr": "Select User",
+            "TT-User": "Here you select the user to get more info about",
+            "UsrID": "User ID",
+            "UsrEMail": "User email address",
+            "UsrName": "User name",
+            "UsrRestricted": "User Restricted",
+            "UsrThumb": "Link to User thumb",
+            "UsrHome": "Is user part of your Home",
+            "UsrStatus": "User invite status",
+            "UsrTitle": "User title",
+            "ExportUsr": "Export user to CSV",
+            "ExportAllUsr": "Export all users to CSV",
+            "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
         }
     }
 }
