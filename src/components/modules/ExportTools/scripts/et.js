@@ -147,11 +147,24 @@ const et = new class ET {
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
-        if (libType == 'playlist')
+        let levelName
+        if (['libraryInfo'].indexOf(libType) > -1)
         {
-            libType = libType + '-' + store.getters.getSelectedPListType;
+            levelName = 'all';
         }
-        const levelName = defLevels[libType]['levels'][level]
+        else
+        {
+            if (libType == 'playlist')
+            {
+                libType = libType + '-' + store.getters.getSelectedPListType;
+            }
+            levelName = defLevels[libType]['levels'][level]
+            if (levelName == undefined)
+            {
+                // We are dealing with a custom level here
+                levelName = level
+            }
+        }
         return levelName
     }
 
@@ -245,12 +258,7 @@ const et = new class ET {
             libType = libType + '-' + store.getters.getSelectedPListType;
         }
         let realName = et.getRealLevelName(level, libType);
-        if (realName == undefined)
-        {
-            // We are dealing with a custom level here
-            realName = level
-        }
-        // log.debug(`RealName is ${realName}`)
+        log.debug(`RealName is ${realName}`)
         // We need to load fields and defs into def var
         switch(libType) {
             case 'movie':
@@ -292,6 +300,9 @@ const et = new class ET {
             case 'playlist-video':
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
+            case 'libraryInfo':
+                def = JSON.parse(JSON.stringify(require('./../defs/def-LibraryInfo.json')));
                 break;
             default:
               // code block
@@ -390,7 +401,9 @@ const et = new class ET {
 
     getFieldsKeyVal( libType, level, pListType) {
         // Get fields for level
-        const fields = et.getLevelFields(level, libType, pListType)
+        let fields
+        console.log('Ged2 libType', libType)
+        fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}

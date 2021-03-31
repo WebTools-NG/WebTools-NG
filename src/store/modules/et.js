@@ -53,6 +53,7 @@ const actions = {
         var pListType = getters.getSelectedPListType;
         var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
+        console.log('Ged 1 starting Export', libName, levelName, libType, baseURL, pListType)
         excel2.createOutFile( {
           libName: libName,
           level: levelName,
