@@ -162,7 +162,13 @@
     selLibrary: async function(){
       if (['libraryInfo'].indexOf(this.selMediaType) > -1)
       {
-        this.btnDisable = false
+        this.btnDisable = false;
+        this.selMediaType = '';
+        this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+        this.selLevel = 'all';
+        this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
+        this.selPType = '';
+        this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
       }
       else
       {

@@ -2,7 +2,25 @@
     "libraryInfo": {
         "level": {
             "all": [
-                "Added"
+                "Agent",
+                "Allow Sync",
+                "Art url",
+                "Content",
+                "Content Changed At",
+                "Created At",
+                "Directory",
+                "Hidden",
+                "Library Key",
+                "Language",
+                "Library Poster",
+                "Location",
+                "Poster url",
+                "Refreshing",
+                "Scanned At",
+                "Scanner",
+                "Title",
+                "Type",
+                "Updated"
             ]
         }
     }
