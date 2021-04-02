@@ -61,23 +61,31 @@ const et = new class ET {
     async getSectionData({sectionName, baseURL, accessToken, libType})
     {
         const sectionData = []
-        log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}"`)
-        // Get Section Key
-        const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
-        log.debug(`Got SectionKey as: ${libKey}`)
-        // Get the size of the library
-        const libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
-        log.debug(`Got Section size as: ${libSize}`)
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + libType)
         log.debug(`Got Step size as: ${step}`)
+        let libSize, libKey, element
+        if (libType != 'libraryInfo')
+        {
+            log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}"`)
+            // Get Section Key
+            libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
+            log.debug(`Got SectionKey as: ${libKey}`)
+            // Get the size of the library
+            libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
+            log.debug(`Got Section size as: ${libSize}`);
+            element = '/library/sections/' + libKey;
+        }
+        else
+        {
+            element = '/library/sections/all';
+        }
         // Now read the fields and level defs
 
         // Current item
         let idx = 0
         // Now let's walk the section
         let chuncks, postURI
-        let element = '/library/sections/' + libKey
         let size
         do {
             if (libType == 'photo')
@@ -88,6 +96,11 @@ const et = new class ET {
             {
                 element = '/playlists/' + libKey;
                 postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+            }
+            else if (libType == 'libraryInfo')
+            {
+                element = '/library/sections/all';
+                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
             else
             {
@@ -147,11 +160,24 @@ const et = new class ET {
 
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
-        if (libType == 'playlist')
+        let levelName
+        if (['libraryInfo'].indexOf(libType) > -1)
         {
-            libType = libType + '-' + store.getters.getSelectedPListType;
+            levelName = 'all';
         }
-        const levelName = defLevels[libType]['levels'][level]
+        else
+        {
+            if (libType == 'playlist')
+            {
+                libType = libType + '-' + store.getters.getSelectedPListType;
+            }
+            levelName = defLevels[libType]['levels'][level]
+            if (levelName == undefined)
+            {
+                // We are dealing with a custom level here
+                levelName = level
+            }
+        }
         return levelName
     }
 
@@ -245,12 +271,7 @@ const et = new class ET {
             libType = libType + '-' + store.getters.getSelectedPListType;
         }
         let realName = et.getRealLevelName(level, libType);
-        if (realName == undefined)
-        {
-            // We are dealing with a custom level here
-            realName = level
-        }
-        // log.debug(`RealName is ${realName}`)
+        log.debug(`RealName is ${realName}`)
         // We need to load fields and defs into def var
         switch(libType) {
             case 'movie':
@@ -292,6 +313,9 @@ const et = new class ET {
             case 'playlist-video':
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                break;
+            case 'libraryInfo':
+                def = JSON.parse(JSON.stringify(require('./../defs/def-LibraryInfo.json')));
                 break;
             default:
               // code block
@@ -390,7 +414,8 @@ const et = new class ET {
 
     getFieldsKeyVal( libType, level, pListType) {
         // Get fields for level
-        const fields = et.getLevelFields(level, libType, pListType)
+        let fields
+        fields = et.getLevelFields(level, libType, pListType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -1095,10 +1120,20 @@ const excel2 = new class Excel {
             let item
             let counter = 1
             const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
+            let jPath, sectionChunk;
+            if (libType == 'libraryInfo')
+            {
+                jPath = "$.MediaContainer.Directory[*]";
+            }
+            else
+            {
+                jPath = "$.MediaContainer.Metadata[*]";
+            }
+
             for (x=0; x<sectionData.length; x++)
             {
-                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}))
-                var sectionChunk = await JSONPath({path: "$.MediaContainer.Metadata[*]", json: sectionData[x]});
+                store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}));
+                sectionChunk = await JSONPath({path: jPath, json: sectionData[x]});
                 if ( call == 1 )
                 {
                     for (item of sectionChunk){

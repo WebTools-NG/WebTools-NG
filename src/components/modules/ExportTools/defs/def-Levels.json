@@ -121,5 +121,13 @@
             "Level 2": 1,
             "All": 2
         }
+    },
+    "libraryInfo": {
+        "levels": {
+            "All": "all"
+        },
+        "LevelCount": {
+            "All": 1
+        }
     }
 }

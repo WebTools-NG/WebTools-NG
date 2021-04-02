@@ -51,8 +51,16 @@ const actions = {
         var accessToken = getters.getSelectedServerToken;
         var libType = getters.getLibType;
         var pListType = getters.getSelectedPListType;
-        var levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
+        let levelName; 
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
+        if (libType == 'libraryInfo')
+        {
+          levelName = 'All'
+        }
+        else
+        {
+          levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
+        }
         excel2.createOutFile( {
           libName: libName,
           level: levelName,

@@ -6,6 +6,12 @@
                 "call": 1,
                 "type": "datetime"
             },
+        "Agent":
+            {
+                "key": "$.agent",
+                "call": 1,
+                "type": "string"
+            },
         "Album Artist Poster url":
         {
             "key": "$.parentThumb",
@@ -27,6 +33,12 @@
         "Album Year":
         {
             "key": "$.parentYear",
+            "call": 1,
+            "type": "string"
+        },
+        "Allow Sync":
+        {
+            "key": "$.allowSync",
             "call": 1,
             "type": "string"
         },
@@ -330,6 +342,18 @@
                 "subtype": "string",
                 "subkey": "$.tag"
             },
+        "Content":
+            {
+                "key": "$.content",
+                "call": 1,
+                "type": "string"
+            },
+        "Content Changed At":
+            {
+                "key": "$.contentChangedAt",
+                "call": 1,
+                "type": "datetime"
+            },
         "Content Rating":
             {
                 "key": "$.contentRating",
@@ -343,6 +367,12 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.tag"
+            },
+        "Created At":
+            {
+                "key": "$.createdAt",
+                "call": 1,
+                "type": "datetime"
             },
         "Created at Accuracy":
             {
@@ -369,6 +399,12 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.tag"
+            },
+        "Directory":
+            {
+                "key": "$.directory",
+                "call": 1,
+                "type": "string"
             },
         "Duration":
             {
@@ -442,6 +478,12 @@
                 "call": 2,
                 "type": "array-count"
             },
+        "Filters":
+        {
+            "key": "$.filters",
+            "call": 1,
+            "type": "string"
+        },
         "Genre":
             {
                 "key": "$.Genre[*]",
@@ -449,6 +491,12 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.tag"
+            },
+        "Hidden":
+            {
+                "key": "$.hidden",
+                "call": 1,
+                "type": "string"
             },
         "IMDB ID":
             {
@@ -490,6 +538,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Language":
+            {
+                "key": "$.language",
+                "call": 1,
+                "type": "string"
+            },
         "Last Viewed at":
             {
                 "key": "$..lastViewedAt",
@@ -504,6 +558,18 @@
                 "subtype": "string",
                 "subkey": "$.tag"
             },
+        "Library Key":
+            {
+                "key": "$.key",
+                "call": 1,
+                "type": "string"
+            },
+        "Library Poster":
+        {
+            "key": "$.composite",
+            "call": 1,
+            "type": "string"
+        },
         "Location":
             {
                 "key": "$.Location[*]",
@@ -889,6 +955,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Refreshing":
+            {
+                "key": "$.refreshing",
+                "call": 1,
+                "type": "string"
+            },
         "Release Date":
             {
                 "key": "$..originallyAvailableAt",
@@ -902,6 +974,18 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.tag"
+            },
+        "Scanned At":
+            {
+                "key": "$.scannedAt",
+                "call": 1,
+                "type": "datetime"
+            },
+        "Scanner":
+            {
+                "key": "$.scanner",
+                "call": 1,
+                "type": "string"
             },
         "Season":
             {
@@ -1059,11 +1143,17 @@
                 "type": "string"
             },
         "Track Counts":
-        {
-            "key": "$.leafCount",
-            "call": 1,
-            "type": "string"
-        },
+            {
+                "key": "$.leafCount",
+                "call": 1,
+                "type": "string"
+            },
+        "Type":
+            {
+                "key": "$.type",
+                "call": 1,
+                "type": "string"
+            },
         "TVDB ID":
             {
                 "key": "$.Guid[*]",
