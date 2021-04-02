@@ -1,5 +1,12 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.3
+
+**Note**:   This version is an Beta version
+
+* [#306 Export posters and Art](https://github.com/WebTools-NG/WebTools-NG/issues/306)
+
+
 ## V0.3.2
 
 **Note**:   This version is an Beta version
