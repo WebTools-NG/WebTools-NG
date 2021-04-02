@@ -65,7 +65,8 @@ const et = new class ET {
         const step = wtconfig.get("PMS.ContainerSize." + libType)
         log.debug(`Got Step size as: ${step}`)
         let libSize, libKey, element
-        if (libType != 'libraryInfo')
+        //if (libType != 'libraryInfo')
+        if (['libraryInfo', 'playlistInfo'].indexOf(libType) < 0)
         {
             log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}"`)
             // Get Section Key
@@ -74,7 +75,7 @@ const et = new class ET {
             // Get the size of the library
             libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
             log.debug(`Got Section size as: ${libSize}`);
-            element = '/library/sections/' + libKey;
+            // element = '/library/sections/' + libKey;
         }
         else
         {
@@ -102,9 +103,15 @@ const et = new class ET {
                 element = '/library/sections/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
+            else if (libType == 'playlistInfo')
+            {
+                element = '/playlists/all';
+                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+            }
             else
             {
-                postURI = `/all?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+                element = '/library/sections/' + libKey + '/all';
+                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
             }
             log.info(`Calling url ${baseURL + element + postURI}`);
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
@@ -161,7 +168,7 @@ const et = new class ET {
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         let levelName
-        if (['libraryInfo'].indexOf(libType) > -1)
+        if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
         {
             levelName = 'all';
         }
@@ -316,6 +323,9 @@ const et = new class ET {
                 break;
             case 'libraryInfo':
                 def = JSON.parse(JSON.stringify(require('./../defs/def-LibraryInfo.json')));
+                break;
+            case 'playlistInfo':
+                def = JSON.parse(JSON.stringify(require('./../defs/def-PlaylistInfo.json')));
                 break;
             default:
               // code block
@@ -1124,6 +1134,10 @@ const excel2 = new class Excel {
             if (libType == 'libraryInfo')
             {
                 jPath = "$.MediaContainer.Directory[*]";
+            }
+            else if (libType == 'playlistInfo')
+            {
+                jPath = "$.MediaContainer.Metadata[*]";
             }
             else
             {
