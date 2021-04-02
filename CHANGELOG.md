@@ -5,6 +5,7 @@
 **Note**:   This version is an Beta version
 
 * [#333 Export Library Info](https://github.com/WebTools-NG/WebTools-NG/issues/333)
+* [#332 Export Playlist info](https://github.com/WebTools-NG/WebTools-NG/issues/332)
 
 ## V0.3.1
 
