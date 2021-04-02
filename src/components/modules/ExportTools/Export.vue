@@ -140,7 +140,7 @@
             { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
             { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
             { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false },
-            { text: i18n.t('Modules.ET.RadioPlayListsInfo'), value: 'playlistInfo', disabled: true },
+            { text: i18n.t('Modules.ET.RadioPlayListsInfo'), value: 'playlistInfo', disabled: false },
             { text: i18n.t('Modules.ET.RadioLibraryInfo'), value: 'libraryInfo', disabled: false }
           ],
           optionsPlaylistType: [
@@ -160,7 +160,7 @@
       this.selLibraryWait = true;
     },
     selLibrary: async function(){
-      if (['libraryInfo'].indexOf(this.selMediaType) > -1)
+      if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
       {
         this.btnDisable = false;
         this.selMediaType = '';
@@ -176,7 +176,7 @@
       }
     },
     selMediaType: async function(){
-      if (['libraryInfo'].indexOf(this.selMediaType) > -1)
+      if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
       {
         this.btnDisable = false
       }
@@ -184,12 +184,13 @@
       {
         this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
       }
+      this.pListGrpDisabled = (this.selMediaType == 'playlist');
     },
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
     },
     selLevel: async function(){
-      if (['libraryInfo'].indexOf(this.selMediaType) > -1)
+      if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
       {
         this.btnDisable = false
       }
@@ -343,6 +344,11 @@
           this.etLevelGroupDisabled = false;
           break;
         case 'libraryInfo':
+          this.pListGrpDisabled = true;
+          this.etLibraryGroupDisabled = true;
+          this.etLevelGroupDisabled = true;
+          break;
+        case 'playlistInfo':
           this.pListGrpDisabled = true;
           this.etLibraryGroupDisabled = true;
           this.etLevelGroupDisabled = true;

@@ -129,5 +129,13 @@
         "LevelCount": {
             "All": 1
         }
+    },
+    "playlistInfo": {
+        "levels": {
+            "All": "all"
+        },
+        "LevelCount": {
+            "All": 1
+        }
     }
 }

@@ -51,9 +51,9 @@ const actions = {
         var accessToken = getters.getSelectedServerToken;
         var libType = getters.getLibType;
         var pListType = getters.getSelectedPListType;
-        let levelName; 
+        let levelName;
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
-        if (libType == 'libraryInfo')
+        if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
         {
           levelName = 'All'
         }

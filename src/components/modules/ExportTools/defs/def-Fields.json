@@ -532,6 +532,12 @@
                 "subtype": "time",
                 "subkey": "$.endTimeOffset"
             },
+        "Item Counts":
+            {
+                "key": "$.leafCount",
+                "call": 1,
+                "type": "string"
+            },
         "Key":
             {
                 "key": "$.ratingKey",
@@ -943,6 +949,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Playlist Type":
+            {
+                "key": "$.playlistType",
+                "call": 1,
+                "type": "string"
+            },
         "Poster url":
             {
                 "key": "$.thumb",
@@ -1006,6 +1018,12 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.tag"
+            },
+        "Smart":
+            {
+                "key": "$.smart",
+                "call": 1,
+                "type": "string"
             },
         "Sort title":
             {

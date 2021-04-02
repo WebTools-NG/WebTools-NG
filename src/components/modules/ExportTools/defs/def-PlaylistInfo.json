@@ -1,0 +1,23 @@
+{
+    "playlistInfo": {
+        "level": {
+            "all": [
+                "Added",
+                "Key",
+                "Item Counts",
+                "Last Viewed at",
+                "Playlist Type",
+                "Smart",
+                "Sort title",
+                "Summary",
+                "Title",
+                "Type",
+                "Updated",
+                "View Count"
+            ],
+            "Ged": [
+                "content - 2 calls"
+            ]
+        }
+    }
+}
