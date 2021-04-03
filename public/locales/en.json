@@ -154,7 +154,8 @@
                 "AutoXLSRow": "Autosize row (xlsx only)",
                 "ExportToExcel": "Export to xlsx as well as csv",
                 "NotAvailIndicator": "What to use if a field can't be found",
-                "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)"
+                "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)",
+                "Posters_Hight": "Poster height, If 'Export Posters' is a field in the export"
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "ExportLevel": "Export Level",
@@ -184,7 +185,6 @@
             "ErrorBadSep": "Column separator can only be one character",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server to extract from",
-            "RadioPlayLists": "Playlists",
             "Custom": {
                 "Title": "Custom levels",
                 "Description": "A custom level allows you to create your own export levels",

@@ -2,15 +2,15 @@
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
     <h1>{{ $t("Modules.ET.Settings.Settings") }}</h1>
-    <p>{{ $t("Modules.ET.Settings.Description") }}</p>        
+    <p>{{ $t("Modules.ET.Settings.Description") }}</p>
     <b-input-group id="ArraySepGrp" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
-        <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>        
+        <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>
     </b-input-group>
     <b-input-group id="setTextQualifierCSVGrp" :prepend="$t('Modules.ET.Settings.QualifierCSV')" class="mt-3">
-        <b-form-input id="TextQualifierCSV" name="TextQualifierCSV" type="text" class="form-control" v-model="TextQualifierCSV" :disabled=false :maxlength=1 @change="setTextQualifierCSV()"></b-form-input>        
+        <b-form-input id="TextQualifierCSV" name="TextQualifierCSV" type="text" class="form-control" v-model="TextQualifierCSV" :disabled=false :maxlength=1 @change="setTextQualifierCSV()"></b-form-input>
     </b-input-group>
     <b-input-group id="NotAvailIndicatorGrp" :prepend="$t('Modules.ET.Settings.NotAvailIndicator')" class="mt-3">
-        <b-form-input id="NotAvailIndicator" name="NotAvailIndicator" type="text" class="form-control" v-model="NotAvailIndicator" :disabled=false @change="setNotAvailIndicator()"></b-form-input>        
+        <b-form-input id="NotAvailIndicator" name="NotAvailIndicator" type="text" class="form-control" v-model="NotAvailIndicator" :disabled=false @change="setNotAvailIndicator()"></b-form-input>
     </b-input-group>
     <b-input-group id="ColumnSepGrp" :prepend="$t('Modules.ET.Settings.ColumnSep')" class="mt-3">
         <b-form-input id="ColumnSep" name="ColumnSep" type="text" class="form-control" v-model="ColumnSep" :disabled=false :maxlength=1 @change="setColumnSep"></b-form-input>
@@ -18,92 +18,96 @@
     <b-input-group id="TimeOutGrp" :prepend="$t('Modules.ET.Settings.TimeOut')" class="mt-3">
         <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
     </b-input-group>
+    <b-input-group id="PosterHightGrp" :prepend="$t('Modules.ET.Settings.Posters_Hight')" class="mt-3">
+        <b-form-input id="PosterHight" name="PosterHight" type="text" class="form-control" v-model="PosterHight" :disabled=false @change="setPosterHight()"></b-form-input>
+    </b-input-group>
     <b-form-group id="b-form-group">
       <b-form-checkbox-group
         stacked
         :options="cbOptions"
         v-model="cbSelected"
-        @change.native="filterTable">      
+        @change.native="filterTable">
       </b-form-checkbox-group>
     </b-form-group>
-          </div>    
+          </div>
   </b-container>
 </template>
 
 <script>
     const log = require("electron-log");
     import {wtutils, wtconfig, dialog} from '../../General/wtutils'
-    
+
     log, wtutils, wtconfig, dialog
     import i18n from '../../../../i18n'
-    export default { 
+    export default {
         created() {
-            this.getcbDefaults();                        
+            this.getcbDefaults();
             if (wtconfig.get('ET.ColumnSep') == '\t')
-            {                
+            {
                 this.ColumnSep = '{TAB}';
             }
             else
             {
-                this.ColumnSep = wtconfig.get('ET.ColumnSep');                
-            }         
+                this.ColumnSep = wtconfig.get('ET.ColumnSep');
+            }
         },
-        data() {            
-            return {                
+        data() {
+            return {
                 ArraySep: wtconfig.get('ET.ArraySep'),
-                TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),                
-                NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),               
-                ColumnSep: '',                
+                TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),
+                NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),
+                ColumnSep: '',
+                PosterHight: wtconfig.get('ET.Posters.PosterHight', 75),
                 TimeOut: wtconfig.get('PMS.TimeOut'),
-                cbSelected: [],                
+                cbSelected: [],
                 cbOptions: [
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpExcel' },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol', disabled: true },
-                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow', disabled: true }                  
-                ] 
-            };              
-        },                   
+                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow', disabled: true }
+                ]
+            };
+        },
         methods: {
-            getcbDefaults(){                
+            getcbDefaults(){
                 const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"];
-                for(let i = 0; i < cbItems.length; i++){                     
+                for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i])
-                    }                    
-                }                
+                    }
+                }
             },
             filterTable(){
-                this.$nextTick(()=>{console.log(this.cbSelected);}) 
-                for( var cbItem of ["ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){                    
-                    wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem))) 
-                }   
+                this.$nextTick(()=>{console.log(this.cbSelected);})
+                for( var cbItem of ["ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
+                    wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
+                }
             },
             setColumnSep(val){
                 if (val.length > 1)
                 {
                     this.$bvToast.toast(this.$t("Modules.ET.ErrorBadSep"), {
                         title: this.$t("Modules.ET.ErrorBadSepTitle"),
-                        autoHideDelay: 3000,          
+                        autoHideDelay: 3000,
                         solid: true,
                         variant: 'primary',
                         toaster: 'b-toaster-bottom-center'
                     });
                 }
                 else
-                {         
+                {
                     if (val == '9')
                     {
-                        wtconfig.set('ET.ColumnSep', '\t') 
-                        this.ColumnSep = '{TAB}'                   
+                        wtconfig.set('ET.ColumnSep', '\t')
+                        this.ColumnSep = '{TAB}'
                     }
                     else
-                    {               
+                    {
                         wtconfig.set('ET.ColumnSep', this.ColumnSep)
                     }
                 }
-            },            
+            },
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
             },
@@ -116,8 +120,8 @@
             setTimeOut: function(){
                 wtconfig.set('PMS.TimeOut', this.TimeOut)
             }
-        } 
-    };    
+        }
+    };
 
 </script>
 <style scoped>
@@ -127,5 +131,5 @@
     #b-form-group{
         margin-top: 20px;
     }
-    
+
 </style>
