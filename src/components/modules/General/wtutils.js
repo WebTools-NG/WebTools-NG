@@ -280,6 +280,15 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('PMS.ContainerSize.album', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.album', 20)
         }
+        if ( wtconfig.get('PMS.ContainerSize.playlist', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.playlist', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.libraryInfo', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.libraryInfo', 20)
+        }
+        if ( wtconfig.get('PMS.ContainerSize.playlistInfo', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.playlistInfo', 20)
+        }
         // ET Settings
         if ( wtconfig.get('ET.ArraySep', 'N/A') == 'N/A' ){
             wtconfig.set('ET.ArraySep', '-')
