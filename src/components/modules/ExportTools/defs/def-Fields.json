@@ -418,6 +418,13 @@
                 "call": 1,
                 "type": "string"
             },
+        "Export Posters":
+            {
+                "key": "$.ratingKey",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
         "Extras":
             {
                 "key": "$.Extras.size",

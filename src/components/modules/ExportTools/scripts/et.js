@@ -753,6 +753,9 @@ const excel2 = new class Excel {
                         retVal = val;
                     }
                     break;
+                case "Export Posters":
+                    console.log('Ged 1 Export Posters')
+                    break;
                 case "Sort title":
                     if (wtconfig.get('ET.SortTitleNull'))
                     {

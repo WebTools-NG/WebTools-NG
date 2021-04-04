@@ -18,8 +18,11 @@
     <b-input-group id="TimeOutGrp" :prepend="$t('Modules.ET.Settings.TimeOut')" class="mt-3">
         <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
     </b-input-group>
-    <b-input-group id="PosterHightGrp" :prepend="$t('Modules.ET.Settings.Posters_Hight')" class="mt-3">
-        <b-form-input id="PosterHight" name="PosterHight" type="text" class="form-control" v-model="PosterHight" :disabled=false @change="setPosterHight()"></b-form-input>
+    <b-input-group id="PosterHightGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
+        <b-tooltip target="PosterHightGrp" triggers="hover">
+              {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
+        </b-tooltip>
+        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosterHight()"></b-form-input>
     </b-input-group>
     <b-form-group id="b-form-group">
       <b-form-checkbox-group
@@ -57,7 +60,7 @@
                 TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),
                 NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),
                 ColumnSep: '',
-                PosterHight: wtconfig.get('ET.Posters.PosterHight', 75),
+                PosterDim: wtconfig.get('ET.Settings.Posters_Dimensions', '75*75'),
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 cbSelected: [],
                 cbOptions: [
