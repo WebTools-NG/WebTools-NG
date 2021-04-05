@@ -903,9 +903,127 @@ const excel2 = new class Excel {
         }
     }
 
+    async exportPoster( { level, libType, data} ) {
+        console.log('Ged 32 Exp Posters')
+        // Create poster dir
+        let ExpDir = path.join(
+            wtconfig.get('General.ExportPath'),
+            wtutils.AppName,
+            'ExportTools', 'Posters');
+        var fs = require('fs');
+         if (!fs.existsSync(ExpDir)){
+            fs.mkdirSync(ExpDir);
+        }
+        // Get the poster URL
+        let posterUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
+        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
+        let title = String(JSONPath({path: '$.title', json: data})[0]);
+        console.log('Ged 33 Exp Posters URL', posterUrl, key, title)
+
+
+        // Get resolutions to export as
+        let resolutions = wtconfig.get('ET.Posters_Dimensions').split(',');
+
+        for(let res of resolutions) {
+            const fileName = key + '_' + title + '_' + res.trim() + '.jpg'
+            let outFile = path.join(
+                ExpDir,
+                fileName
+                );
+            console.log('Ged 66 outfile:', outFile)
+
+/* 
+            posterUrl = ''.join((
+                misc.GetLoopBack(),
+                '/photo/:/transcode?width=',
+                str(Prefs['Poster_Width']),
+                '&height=',
+                str(Prefs['Poster_Hight']),
+                '&minSize=1&url=',
+                String.Quote(rowentry['Poster url'])))
+
+
+                async function downloadFile(fileUrl: string, outputLocationPath: string) {
+  const writer = createWriteStream(outputLocationPath);
+
+  return Axios({
+    method: 'get',
+    url: fileUrl,
+    responseType: 'stream',
+  }).then(response => {
+
+    //ensure that the user can call `then()` only when the file has
+    //been downloaded entirely.
+
+    return new Promise((resolve, reject) => {
+      response.data.pipe(writer);
+      let error = null;
+      writer.on('error', err => {
+        error = err;
+        writer.close();
+        reject(err);
+      });
+      writer.on('close', () => {
+        if (!error) {
+          resolve(true);
+        }
+        //no need to call the reject here, as it will have been called in the
+        //'error' stream;
+      });
+    });
+  });
+}
+
+
+
+
+                let baseurl = val.uri
+                axios.get(baseurl + '/identity')
+                .then(response => {
+                    log.info(response)
+                    if(response.status == 200){
+                        log.info("NUGGA: ET : checkServerConnect: response status is 200")
+                    }
+                  }).catch((error) => {
+                    if (error.response) {
+                        // The request was made and tgite server responded with a status code
+                        // that falls out of the range of 2xx
+                        log.error(error.response.data)
+                        log.error(error.response.status)
+                        alert(error.response.data.error)
+                        //this.danger(error.response.status, error.response.data.error);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        log.error(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        log.error('Error', error.message);
+                    }
+                }
+            )
+
+
+
+
+
+                 */
+        }
+
+        
+
+
+
+        level, libType
+    }
     async addRowToTmp( { libType, level, data, stream, pListType }) {
-        // log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
+        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         let date, year, month, day, hours, minutes, seconds
+        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+        {
+            await this.exportPoster( { level: level, libType: libType, data: data } )
+        }
         const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
         let str = ''
@@ -1156,6 +1274,7 @@ const excel2 = new class Excel {
                     for (item of sectionChunk){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
                         await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
+                        console.log('********** Ged Do poster export here ************')
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }

@@ -18,11 +18,17 @@
     <b-input-group id="TimeOutGrp" :prepend="$t('Modules.ET.Settings.TimeOut')" class="mt-3">
         <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
     </b-input-group>
-    <b-input-group id="PosterHightGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
-        <b-tooltip target="PosterHightGrp" triggers="hover">
+    <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
+        <b-tooltip target="PosterGrp" triggers="hover">
               {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
         </b-tooltip>
-        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosterHight()"></b-form-input>
+        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosters_Dimensions()"></b-form-input>
+    </b-input-group>
+    <b-input-group id="ArtsGrp" :prepend="$t('Modules.ET.Settings.Arts_Dimensions')" class="mt-3">
+        <b-tooltip target="ArtsGrp" triggers="hover">
+              {{ $t('Modules.ET.Settings.Arts_Dimensions_TT') }}
+        </b-tooltip>
+        <b-form-input id="ArtsDim" name="ArtsDim" type="text" class="form-control" v-model="ArtsDim" :disabled=false @change="setArts_Dimensions()"></b-form-input>
     </b-input-group>
     <b-form-group id="b-form-group">
       <b-form-checkbox-group
@@ -60,7 +66,8 @@
                 TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),
                 NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),
                 ColumnSep: '',
-                PosterDim: wtconfig.get('ET.Settings.Posters_Dimensions', '75*75'),
+                PosterDim: wtconfig.get('ET.Posters_Dimensions', '75*75'),
+                ArtsDim: wtconfig.get('ET.Arts_Dimensions', '75*75'),
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 cbSelected: [],
                 cbOptions: [
@@ -122,6 +129,12 @@
             },
             setTimeOut: function(){
                 wtconfig.set('PMS.TimeOut', this.TimeOut)
+            },
+            setPosters_Dimensions: function(){
+                wtconfig.set('ET.Posters_Dimensions', this.PosterDim);
+            },
+            setArts_Dimensions: function(){
+                wtconfig.set('ET.Arts_Dimensions', this.ArtsDim);
             }
         }
     };
