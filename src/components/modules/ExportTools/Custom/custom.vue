@@ -163,7 +163,17 @@
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
                 // Get fields from config.json file
-                const custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
+                let custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
+                // Do we need to export posters?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, false) )
+                {
+                    custLevel.push("Export Posters");
+                }
+                // Do we need to export arts?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Arts.${this.selCustLevel}`, false) )
+                {
+                    custLevel.push("Export Arts");
+                }
                 // Add to resultList
                 this.resultList = custLevel.map((name, index) => {
                         return { name, order: index + 1, fixed: false };
@@ -288,9 +298,25 @@
         },
         saveCustomLevel() {
             let result = []
+            let bExportArts = false;
+
+            let bExportPosters = false;
             for(var k in this.resultList) {
-                result.push(this.resultList[k].name);
+                if (this.resultList[k].name == 'Export Posters')
+                {
+                    bExportPosters = true;
+                }
+                else if (this.resultList[k].name == 'Export Arts')
+                {
+                    bExportArts = true;
+                }
+                else
+                {
+                    result.push(this.resultList[k].name);
+                }
             }
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, bExportPosters);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Arts.${this.selCustLevel}`, bExportArts);
             // Get current level names
             let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);
             // Add new level to JSON
