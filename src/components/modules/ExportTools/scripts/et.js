@@ -753,9 +753,6 @@ const excel2 = new class Excel {
                         retVal = val;
                     }
                     break;
-                case "Export Posters":
-                    console.log('Ged 1 Export Posters')
-                    break;
                 case "Sort title":
                     if (wtconfig.get('ET.SortTitleNull'))
                     {
@@ -903,7 +900,8 @@ const excel2 = new class Excel {
         }
     }
 
-    async exportPoster( { level, libType, data} ) {
+    async exportPoster( { level, libType, data, baseURL, accessToken} ) {
+        baseURL, accessToken
         console.log('Ged 32 Exp Posters')
         // Create poster dir
         let ExpDir = path.join(
@@ -918,7 +916,7 @@ const excel2 = new class Excel {
         let posterUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
         let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
         let title = String(JSONPath({path: '$.title', json: data})[0]);
-        console.log('Ged 33 Exp Posters URL', posterUrl, key, title)
+        console.log('Ged 33 Exp Posters URL', posterUrl, key, title, baseURL)
 
 
         // Get resolutions to export as
@@ -930,7 +928,17 @@ const excel2 = new class Excel {
                 ExpDir,
                 fileName
                 );
+            const width = res.split('*')[0];
+            const hight = res.split('*')[1];
             console.log('Ged 66 outfile:', outFile)
+            let URL = baseURL + '/photo/:/transcode?width=';
+            URL += width + '&height=' + hight;
+            URL += '&minSize=1&url=';
+            URL += posterUrl
+
+
+            console.log('Ged 98 posterUrl', URL)
+
 
 /* 
             posterUrl = ''.join((
@@ -1020,10 +1028,14 @@ const excel2 = new class Excel {
     async addRowToTmp( { libType, level, data, stream, pListType }) {
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         let date, year, month, day, hours, minutes, seconds
+
+        /* 
         if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
         {
             await this.exportPoster( { level: level, libType: libType, data: data } )
         }
+ */
+
         const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
         let str = ''
@@ -1232,6 +1244,7 @@ const excel2 = new class Excel {
 
     async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
     {
+        console.log('Ged 7788')
         const header = excel2.GetHeader(level, libType, pListType);
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
@@ -1274,7 +1287,11 @@ const excel2 = new class Excel {
                     for (item of sectionChunk){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
                         await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
-                        console.log('********** Ged Do poster export here ************')
+                        console.log('********** Ged 99 Do poster export here ************')
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+                        {
+                            await this.exportPoster( { level: level, libType: libType, data: item, baseURL: baseURL, accessToken: accessToken } )
+                        }
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }
@@ -1292,6 +1309,11 @@ const excel2 = new class Excel {
                     const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                     for (item of contentsItems){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                        console.log('********** Ged 99-1 Do poster export here ************')
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+                        {
+                            await this.exportPoster( { level: level, libType: libType, data: item, baseURL: baseURL, accessToken: accessToken } )
+                        }
                         await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
