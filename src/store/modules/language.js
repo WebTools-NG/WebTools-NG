@@ -7,32 +7,32 @@ const log = require('electron-log');
 console.log = log.log;
 
 export const mutations = {
-  SET_LANG (state, payload) {    
-    log.info(`Set language to: ${payload}`)    
+  SET_LANG (state, payload) {
+    log.info(`Set language to: ${payload}`)
     VueI18n.locale = payload
     wtconfig.set('General.language', payload)
   }
 }
 
-export const actions = {  
+export const actions = {
   async updateAndSetLang({commit}, { langCode, forceDownload }){
-    const fs = require('fs')    
+    const fs = require('fs')
     try {
-      log.info(`Loading lang: ${JSON.stringify(langCode)}`)      
-      var langFile = wtutils.Home + '/locales/' + langCode + '.json'      
+      log.info(`Loading lang: ${JSON.stringify(langCode)}`)
+      var langFile = wtutils.Home + '/locales/' + langCode + '.json'
       if (!fs.existsSync(langFile) | forceDownload) {
         // Do something
-        log.debug(`Need to download language file for: ${langCode}`)        
+        log.debug(`Need to download language file for: ${langCode}`)
         await this.dispatch("forceDownload", { "langCode": langCode});
-      }      
-      const res = await JSON.parse(fs.readFileSync(langFile, 'utf8'));           
+      }
+      const res = await JSON.parse(fs.readFileSync(langFile, 'utf8'));
       i18n.setLocaleMessage(langCode, res)
-      commit('SET_LANG', langCode)      
+      commit('SET_LANG', langCode)
     }
     catch(e) {
       console.log(e)
     }
-  }    
+  }
 }
 
 const serverModule = {
@@ -41,5 +41,5 @@ const serverModule = {
     actions,
     //getters
   }
-  
+
   export default serverModule;

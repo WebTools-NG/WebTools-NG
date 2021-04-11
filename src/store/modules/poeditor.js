@@ -31,26 +31,26 @@ const mutations = {
 
 const qs = require('querystring')
 const actions = {
-    async fetchPOEContrib({ commit }) {         
+    async fetchPOEContrib({ commit }) {
           const config = {
             headers: headers
           }
           await axios.post( baseUrl + 'contributors/list', qs.stringify(requestBody), config)
-            .then((response) => {                
+            .then((response) => {
                 commit('UPDATE_CONTRIBUTORS', response.data.result.contributors)
               })
               .catch(function (error) {
-                if (error.response) {                  
+                if (error.response) {
                     console.log(error.response.data)
                     alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message)
                 } else if (error.request) {
                     console.log(error.request);
                 } else {
                     console.log('Error', error.message);
-                  }    
+                  }
               });
     },
-    async fetchPOELang({ commit }) {         
+    async fetchPOELang({ commit }) {
       const config = {
         headers: headers
       }
@@ -61,18 +61,18 @@ const actions = {
         console.log(error.response.body);
       }
     },
-    async forceDownload(state, {langCode}) {       
-      const fs = require('fs') 
-      const wtutils = require('../../components/modules/General/wtutils');      
-      const Path = require('path')       
+    async forceDownload(state, {langCode}) {
+      const fs = require('fs')
+      const wtutils = require('../../components/modules/General/wtutils');
+      const Path = require('path')
       const path = Path.resolve(wtutils.wtutils.Home, 'locales', langCode + '.json')
       const config = {
         headers: headers
-      }      
+      }
       requestBody['language'] = langCode;
-      requestBody['type'] = 'key_value_json';             
-      const response = await axios.post(baseUrl +  'projects/export', qs.stringify(requestBody), config)        
-      const link = await response.data.result.url;      
+      requestBody['type'] = 'key_value_json';
+      const response = await axios.post(baseUrl +  'projects/export', qs.stringify(requestBody), config)
+      const link = await response.data.result.url;
       // axios image download with response type "stream"
       const dwnlresp = await axios({
         method: 'GET',
@@ -82,7 +82,7 @@ const actions = {
       var json = JSON.stringify(dwnlresp.data);
       fs.writeFileSync(path, json);
       // Update lang complete state, if updated
-      await this.dispatch("fetchPOELang");          
+      await this.dispatch("fetchPOELang");
     }
 }
 
