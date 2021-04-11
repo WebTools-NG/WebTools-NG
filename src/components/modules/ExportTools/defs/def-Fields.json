@@ -418,6 +418,18 @@
                 "call": 1,
                 "type": "string"
             },
+        "Export Arts":
+            {
+                "key": "$.ratingKey",
+                "call": 1,
+                "type": "string"
+            },
+        "Export Posters":
+            {
+                "key": "$.ratingKey",
+                "call": 1,
+                "type": "string"
+            },
         "Extras":
             {
                 "key": "$.Extras.size",

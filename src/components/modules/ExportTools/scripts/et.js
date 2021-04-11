@@ -539,7 +539,7 @@ const et = new class ET {
                 .then(response => {
                     log.info(response)
                     if(response.status == 200){
-                        log.info("NUGGA: ET : checkServerConnect: response status is 200")
+                        log.info("checkServerConnect: response status is 200")
                     }
                   }).catch((error) => {
                     if (error.response) {
@@ -900,8 +900,63 @@ const excel2 = new class Excel {
         }
     }
 
+    async forceDownload(url, target) {
+        const fs = require('fs');
+        //var out = fs.createWriteStream(target);
+        var request = require('request');
+        await new Promise(resolve =>
+            request(url)
+              .pipe(fs.createWriteStream(target))
+              .on('finish', resolve));
+      }
+
+    async exportPics( { type: extype, data, baseURL, accessToken} ) {
+        let ExpDir, picUrl, resolutions;
+        if (extype == 'posters')
+        {
+            picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
+            resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+            ExpDir = path.join(
+                wtconfig.get('General.ExportPath'),
+                wtutils.AppName,
+                'ExportTools', 'Posters');
+        }
+        else
+        {
+            picUrl = String(JSONPath({path: '$.art', json: data})[0]);
+            resolutions = wtconfig.get('ET.Arts_Dimensions', '75*75').split(',');
+            ExpDir = path.join(
+                wtconfig.get('General.ExportPath'),
+                wtutils.AppName,
+                'ExportTools', 'Arts');
+        }
+        // Create export dir
+        var fs = require('fs');
+         if (!fs.existsSync(ExpDir)){
+            fs.mkdirSync(ExpDir);
+        }
+        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
+        let title = String(JSONPath({path: '$.title', json: data})[0]);
+        // Get resolutions to export as
+        for(let res of resolutions) {
+            const fileName = key + '_' + title + '_' + res.trim() + '.jpg'
+            let outFile = path.join(
+                ExpDir,
+                fileName
+                );
+            // Build up pic url
+            const width = res.split('*')[0].trim();
+            const hight = res.split('*')[1].trim();
+            let URL = baseURL + '/photo/:/transcode?width=';
+            URL += width + '&height=' + hight;
+            URL += '&minSize=1&url=';
+            URL += picUrl + '&X-Plex-Token=' + accessToken;
+            await this.forceDownload(URL, outFile);
+        }
+    }
+
     async addRowToTmp( { libType, level, data, stream, pListType }) {
-        // log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
+        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         let date, year, month, day, hours, minutes, seconds
         const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
@@ -1153,6 +1208,14 @@ const excel2 = new class Excel {
                     for (item of sectionChunk){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
                         await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+                        {
+                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
+                        }
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Arts.${level}`, false))
+                        {
+                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
+                        }
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }
@@ -1170,6 +1233,14 @@ const excel2 = new class Excel {
                     const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                     for (item of contentsItems){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+                        {
+                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
+                        }
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Arts.${level}`, false))
+                        {
+                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
+                        }
                         await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
