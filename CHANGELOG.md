@@ -3,6 +3,7 @@
 ## V0.3.4
 
 * [#306 Export posters and Art](https://github.com/WebTools-NG/WebTools-NG/issues/306)
+* [#339 IMDB ID not available for movies](https://github.com/WebTools-NG/WebTools-NG/issues/339)
 
 ## V0.3.3
 
