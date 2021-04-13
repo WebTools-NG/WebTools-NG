@@ -77,7 +77,7 @@ const actions = {
       const dwnlresp = await axios({
         method: 'GET',
         url: link,
-        responseType: 'stream'
+        responseType: 'json'
       })
       var json = JSON.stringify(dwnlresp.data);
       fs.writeFileSync(path, json);
