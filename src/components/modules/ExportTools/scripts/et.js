@@ -206,6 +206,8 @@ const et = new class ET {
             subItem['title'] = JSONPath({path: '$..title', json: section})[0];
             subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);
             subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+            subItem['scanner'] = JSONPath({path: '$..scanner', json: section})[0];
+            subItem['agent'] = JSONPath({path: '$..agent', json: section})[0];
             result.push(subItem)
         }
         await Promise.resolve(result)
