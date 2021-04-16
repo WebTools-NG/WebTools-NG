@@ -1214,6 +1214,20 @@
                 "subkey": "$.id",
                 "postProcess": true
             },
+        "TVDB ID (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
+        "TVDB Language (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
         "TMDB ID":
             {
                 "key": "$.Guid[*]",

@@ -681,37 +681,6 @@ const excel2 = new class Excel {
         let x, retVal, start, strStart, end, result;
         try {
             switch ( String(name) ){
-                case "MetaDB Link":
-                    // ["\"com.plexapp.agents.imdb://tt1291580?lang=en\""]
-                    // ["\"com.plexapp.agents.thetvdb://73141/17/5?lang=en\""]
-                    for (x=0; x<valArray.length; x++) {
-                        //if ( valArray[x].toString().startsWith('com.plexapp.agents.thetvdb'))
-                        if (valArray[x].includes("thetvdb"))
-                        {
-                            retArray.push(wtconfig.get('ET.NotAvail'))
-                        }
-                        else
-                        {
-                            retArray.push(path.basename(valArray[x].split("?")[0]))
-                        }
-                    }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                    break;
-                case "MetaData Language":
-                    try
-                    {
-                        for (x=0; x<valArray.length; x++) {
-                            retArray.push(path.basename(valArray[x].split("=")[1]))
-                        }
-                        retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                    }
-                    catch (error)
-                    {
-                        // Log error removed, since not valid if using native agents
-                        //log.error(`Error getting MetaData Language was ${error} for ${JSON.stringify(valArray)}`);
-                        retVal = wtconfig.get('ET.NotAvail');
-                    }
-                    break;
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
                         retArray.push(path.basename(valArray[x]))
@@ -804,22 +773,22 @@ const excel2 = new class Excel {
                     console.log('Ged5 retVal', retVal)
                     break;
                 case "IMDB ID (Legacy)":
-                        if (val == wtconfig.get('ET.NotAvail'))
-                        {
-                            retVal = val;
-                            break;
-                        }
-                        // Cut off start of string
-                        start = val.indexOf("tt");
-                        if (start == -1)
-                        {
-                            retVal = wtconfig.get('ET.NotAvail');
-                            break;
-                        }
-                        strStart = val.substring(start);
-                        result = strStart.split('?')[0]
-                        retVal = result;
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
                         break;
+                    }
+                    // Cut off start of string
+                    start = val.indexOf("tt");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    result = strStart.split('?')[0]
+                    retVal = result;
+                    break;
                 case "IMDB Language (Legacy)":
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
@@ -896,14 +865,46 @@ const excel2 = new class Excel {
                     { result = strStart.substring(7, end) }
                     retVal = result;
                     break;
+                case "TVDB ID (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        // Cut off start of string
+                        start = val.indexOf("thetvdb://");
+                        if (start == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        strStart = val.substring(start);
+                        result = strStart.split('?')[0]
+                        retVal = result;
+                        break;
+                case "TVDB Language (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        if (val.indexOf("tvdb://") == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        retVal = val.split('=')[1];
+                        if (retVal == 'undefined')
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        break;
                 case "TMDB ID":
-                    console.log('Ged 1 tmdb val', val)
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
                         retVal = val;
                         break;
                     }
-                    
                     start = val.indexOf("tmdb://");
                     if (start == -1)
                     {

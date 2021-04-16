@@ -40,8 +40,6 @@
                 "Labels",
                 "Location",
                 "Locked Fields",
-                "MetaData Language",
-                "MetaDB Link",
                 "Original Title",
                 "Part Duration",
                 "Poster url",
@@ -54,8 +52,11 @@
                 "Summary",
                 "Tagline",
                 "Title",
+                "TMDB ID",
                 "TMDB Link",
                 "TVDB ID",
+                "TVDB ID (Legacy)",
+                "TVDB Language (Legacy)",
                 "Updated",
                 "Year"
             ]
