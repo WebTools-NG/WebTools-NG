@@ -983,11 +983,11 @@ const excel2 = new class Excel {
         else
         {
             picUrl = String(JSONPath({path: '$.art', json: data})[0]);
-            resolutions = wtconfig.get('ET.Arts_Dimensions', '75*75').split(',');
+            resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
             ExpDir = path.join(
                 wtconfig.get('General.ExportPath'),
                 wtutils.AppName,
-                'ExportTools', 'Arts');
+                'ExportTools', 'Art');
         }
         // Create export dir
         var fs = require('fs');
@@ -1272,7 +1272,7 @@ const excel2 = new class Excel {
                         {
                             await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
-                        if (wtconfig.get(`ET.CustomLevels.${libType}.Arts.${level}`, false))
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Art.${level}`, false))
                         {
                             await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
@@ -1297,7 +1297,7 @@ const excel2 = new class Excel {
                         {
                             await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
-                        if (wtconfig.get(`ET.CustomLevels.${libType}.Arts.${level}`, false))
+                        if (wtconfig.get(`ET.CustomLevels.${libType}.Art.${level}`, false))
                         {
                             await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
