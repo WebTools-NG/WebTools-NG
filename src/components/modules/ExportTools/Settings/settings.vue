@@ -24,11 +24,11 @@
         </b-tooltip>
         <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosters_Dimensions()"></b-form-input>
     </b-input-group>
-    <b-input-group id="ArtsGrp" :prepend="$t('Modules.ET.Settings.Arts_Dimensions')" class="mt-3">
-        <b-tooltip target="ArtsGrp" triggers="hover">
-              {{ $t('Modules.ET.Settings.Arts_Dimensions_TT') }}
+    <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
+        <b-tooltip target="ArtGrp" triggers="hover">
+              {{ $t('Modules.ET.Settings.Art_Dimensions_TT') }}
         </b-tooltip>
-        <b-form-input id="ArtsDim" name="ArtsDim" type="text" class="form-control" v-model="ArtsDim" :disabled=false @change="setArts_Dimensions()"></b-form-input>
+        <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=false @change="setArt_Dimensions()"></b-form-input>
     </b-input-group>
     <b-form-group id="b-form-group">
       <b-form-checkbox-group
@@ -67,7 +67,7 @@
                 NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),
                 ColumnSep: '',
                 PosterDim: wtconfig.get('ET.Posters_Dimensions', '75*75'),
-                ArtsDim: wtconfig.get('ET.Arts_Dimensions', '75*75'),
+                ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
                 TimeOut: wtconfig.get('PMS.TimeOut'),
                 cbSelected: [],
                 cbOptions: [
@@ -133,8 +133,8 @@
             setPosters_Dimensions: function(){
                 wtconfig.set('ET.Posters_Dimensions', this.PosterDim);
             },
-            setArts_Dimensions: function(){
-                wtconfig.set('ET.Arts_Dimensions', this.ArtsDim);
+            setArt_Dimensions: function(){
+                wtconfig.set('ET.Art_Dimensions', this.ArtDim);
             }
         }
     };

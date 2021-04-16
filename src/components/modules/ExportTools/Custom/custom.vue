@@ -169,10 +169,10 @@
                 {
                     custLevel.push("Export Posters");
                 }
-                // Do we need to export arts?
-                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Arts.${this.selCustLevel}`, false) )
+                // Do we need to export art?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, false) )
                 {
-                    custLevel.push("Export Arts");
+                    custLevel.push("Export Art");
                 }
                 // Add to resultList
                 this.resultList = custLevel.map((name, index) => {
@@ -298,7 +298,7 @@
         },
         saveCustomLevel() {
             let result = []
-            let bExportArts = false;
+            let bExportArt = false;
 
             let bExportPosters = false;
             for(var k in this.resultList) {
@@ -306,9 +306,9 @@
                 {
                     bExportPosters = true;
                 }
-                else if (this.resultList[k].name == 'Export Arts')
+                else if (this.resultList[k].name == 'Export Art')
                 {
-                    bExportArts = true;
+                    bExportArt = true;
                 }
                 else
                 {
@@ -316,7 +316,7 @@
                 }
             }
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, bExportPosters);
-            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Arts.${this.selCustLevel}`, bExportArts);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, bExportArt);
             // Get current level names
             let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);
             // Add new level to JSON

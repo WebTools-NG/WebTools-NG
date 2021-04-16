@@ -418,7 +418,7 @@
                 "call": 1,
                 "type": "string"
             },
-        "Export Arts":
+        "Export Art":
             {
                 "key": "$.ratingKey",
                 "call": 1,

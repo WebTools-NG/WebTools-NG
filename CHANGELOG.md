@@ -3,6 +3,7 @@
 ## V0.3.5
 
 * [#339 IMDB ID not available for movies](https://github.com/WebTools-NG/WebTools-NG/issues/339)
+* [#342 Rename "Export Arts"](https://github.com/WebTools-NG/WebTools-NG/issues/342)
 
 ## V0.3.4
 
