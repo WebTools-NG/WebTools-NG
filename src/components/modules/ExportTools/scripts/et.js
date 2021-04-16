@@ -785,19 +785,57 @@ const excel2 = new class Excel {
                         break;
                     }
                     start = val.indexOf("imdb://");
+                    console.log('Ged2 start', start)
                     if (start == -1)
                     {
                         retVal = wtconfig.get('ET.NotAvail');
                         break;
                     }
                     strStart = val.substring(start);
+                    console.log('Ged3 strStart', strStart)
                     end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    console.log('Ged4 end', end)
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
                     else
                     { result = strStart.substring(7, end) }
                     retVal = result;
+                    console.log('Ged5 retVal', retVal)
+                    break;
+                case "IMDB ID (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        // Cut off start of string
+                        start = val.indexOf("tt");
+                        if (start == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        strStart = val.substring(start);
+                        result = strStart.split('?')[0]
+                        retVal = result;
+                        break;
+                case "IMDB Language (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    retVal = val.split('=')[1];
+                    if (retVal == 'undefined')
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
                     break;
                 case "IMDB Link":
                         if (val == wtconfig.get('ET.NotAvail'))
@@ -821,6 +859,22 @@ const excel2 = new class Excel {
                         result = 'https://www.imdb.com/title/' + result;
                         retVal = result;
                         break;
+                case "IMDB Link (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
+                    else
+                    {
+                        retVal = 'https://imdb.com/' + val.split('//')[1];
+                        retVal = retVal.split('?')[0];
+                    }
+                    break;
                 case "TVDB ID":
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
@@ -843,11 +897,13 @@ const excel2 = new class Excel {
                     retVal = result;
                     break;
                 case "TMDB ID":
+                    console.log('Ged 1 tmdb val', val)
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
                         retVal = val;
                         break;
                     }
+                    
                     start = val.indexOf("tmdb://");
                     if (start == -1)
                     {
@@ -959,6 +1015,7 @@ const excel2 = new class Excel {
 
     async addRowToTmp( { libType, level, data, stream, pListType }) {
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
+        log.silly(`Data is: ${JSON.stringify(data)}`)
         let date, year, month, day, hours, minutes, seconds
         const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
