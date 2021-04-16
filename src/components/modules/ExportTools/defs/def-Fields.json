@@ -510,19 +510,40 @@
                 "call": 1,
                 "type": "string"
             },
+        "IMDB ID (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
         "IMDB ID":
             {
                 "key": "$.Guid[*]",
-                "call": 1,
+                "call": 2,
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.id",
                 "postProcess": true
             },
+        "IMDB Language (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
+        "IMDB Link (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
         "IMDB Link":
             {
                 "key": "$.Guid[*]",
-                "call": 1,
+                "call": 2,
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.id",
@@ -1185,6 +1206,29 @@
                 "type": "string"
             },
         "TVDB ID":
+            {
+                "key": "$.Guid[*]",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.id",
+                "postProcess": true
+            },
+        "TVDB ID (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
+        "TVDB Language (Legacy)":
+            {
+                "key": "$.guid",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
+        "TMDB ID":
             {
                 "key": "$.Guid[*]",
                 "call": 1,

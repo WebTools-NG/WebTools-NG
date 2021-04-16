@@ -206,6 +206,8 @@ const et = new class ET {
             subItem['title'] = JSONPath({path: '$..title', json: section})[0];
             subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);
             subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+            subItem['scanner'] = JSONPath({path: '$..scanner', json: section})[0];
+            subItem['agent'] = JSONPath({path: '$..agent', json: section})[0];
             result.push(subItem)
         }
         await Promise.resolve(result)
@@ -679,37 +681,6 @@ const excel2 = new class Excel {
         let x, retVal, start, strStart, end, result;
         try {
             switch ( String(name) ){
-                case "MetaDB Link":
-                    // ["\"com.plexapp.agents.imdb://tt1291580?lang=en\""]
-                    // ["\"com.plexapp.agents.thetvdb://73141/17/5?lang=en\""]
-                    for (x=0; x<valArray.length; x++) {
-                        //if ( valArray[x].toString().startsWith('com.plexapp.agents.thetvdb'))
-                        if (valArray[x].includes("thetvdb"))
-                        {
-                            retArray.push(wtconfig.get('ET.NotAvail'))
-                        }
-                        else
-                        {
-                            retArray.push(path.basename(valArray[x].split("?")[0]))
-                        }
-                    }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                    break;
-                case "MetaData Language":
-                    try
-                    {
-                        for (x=0; x<valArray.length; x++) {
-                            retArray.push(path.basename(valArray[x].split("=")[1]))
-                        }
-                        retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                    }
-                    catch (error)
-                    {
-                        // Log error removed, since not valid if using native agents
-                        //log.error(`Error getting MetaData Language was ${error} for ${JSON.stringify(valArray)}`);
-                        retVal = wtconfig.get('ET.NotAvail');
-                    }
-                    break;
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
                         retArray.push(path.basename(valArray[x]))
@@ -783,19 +754,57 @@ const excel2 = new class Excel {
                         break;
                     }
                     start = val.indexOf("imdb://");
+                    console.log('Ged2 start', start)
                     if (start == -1)
                     {
                         retVal = wtconfig.get('ET.NotAvail');
                         break;
                     }
                     strStart = val.substring(start);
+                    console.log('Ged3 strStart', strStart)
                     end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    console.log('Ged4 end', end)
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
                     else
                     { result = strStart.substring(7, end) }
                     retVal = result;
+                    console.log('Ged5 retVal', retVal)
+                    break;
+                case "IMDB ID (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    // Cut off start of string
+                    start = val.indexOf("tt");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    result = strStart.split('?')[0]
+                    retVal = result;
+                    break;
+                case "IMDB Language (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    retVal = val.split('=')[1];
+                    if (retVal == 'undefined')
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
                     break;
                 case "IMDB Link":
                         if (val == wtconfig.get('ET.NotAvail'))
@@ -819,6 +828,22 @@ const excel2 = new class Excel {
                         result = 'https://www.imdb.com/title/' + result;
                         retVal = result;
                         break;
+                case "IMDB Link (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
+                    else
+                    {
+                        retVal = 'https://imdb.com/' + val.split('//')[1];
+                        retVal = retVal.split('?')[0];
+                    }
+                    break;
                 case "TVDB ID":
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
@@ -840,6 +865,40 @@ const excel2 = new class Excel {
                     { result = strStart.substring(7, end) }
                     retVal = result;
                     break;
+                case "TVDB ID (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        // Cut off start of string
+                        start = val.indexOf("thetvdb://");
+                        if (start == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        strStart = val.substring(start);
+                        result = strStart.split('?')[0]
+                        retVal = result;
+                        break;
+                case "TVDB Language (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        if (val.indexOf("tvdb://") == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        retVal = val.split('=')[1];
+                        if (retVal == 'undefined')
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        break;
                 case "TMDB ID":
                     if (val == wtconfig.get('ET.NotAvail'))
                     {
@@ -957,6 +1016,7 @@ const excel2 = new class Excel {
 
     async addRowToTmp( { libType, level, data, stream, pListType }) {
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
+        log.silly(`Data is: ${JSON.stringify(data)}`)
         let date, year, month, day, hours, minutes, seconds
         const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
