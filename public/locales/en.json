@@ -135,6 +135,15 @@
             "HSelectMedia": "Select Export Type",
             "HSelectSelection": "Select Media Libary",
             "HExportMedia": "Export Media",
+            "optExpTypeMainMovie": "Movie",
+            "optExpTypeMainTV": "TV",
+            "optExpTypeMainAudio": "Audio",
+            "optExpTypeMainPhoto": "Photo",
+            "optExpTypeMainPlaylist": "Playlist",
+            "optExpTypeMainLibrary": "Library",
+
+
+            
             "RadioMovies": "Movies",
             "RadioTVSeries": "TV Shows",
             "RadioPhotos": "Photos",
@@ -163,6 +172,7 @@
             "BuildInLevels": "*** Built-in levels ***",
             "NoLevelFound": "N/A",
             "TT-ETType": "Here you select the type of library you want to export",
+            "TT-TypeSec": "Here you select the sub type",
             "TT-ETLibrary": "Here you select library you want to export",
             "TT-ETLevel": "Here you select the values you want to export",
             "Status": {

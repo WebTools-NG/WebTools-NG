@@ -5,6 +5,40 @@
       <small>{{ $t("Modules.ET.Description") }}</small>
     </h3>
     <br />
+    <b-form-row> <!-- Select Export type -->
+      <b-col> <!-- Main type -->
+        <div class="d-flex align-items-center">
+          <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
+            <b-tooltip target="etLibTypeMainGroup" triggers="hover">
+              {{ $t('Modules.ET.TT-ETType') }}
+            </b-tooltip>
+            <b-form-select
+              v-model="selExpTypeMain"
+              id="selExpTypeMain"
+              :options="optExpTypeMain"
+              @change="selExpTypeMainChanged"
+              name="selExpTypeMain">
+            </b-form-select>
+          </b-form-group>
+        </div>
+      </b-col>
+      <b-col> <!-- Sec type -->
+        <div class="d-flex align-items-center">
+          <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
+            <b-tooltip target="etLibTypeSecGroup" triggers="hover">
+              {{ $t('Modules.ET.TT-TypeSec') }}
+            </b-tooltip>
+            <b-form-select
+              v-model="selExpTypeSec"
+              id="selExpTypeSec"
+              :options="optExpTypeSec"
+              name="selExpTypeSec">
+            </b-form-select>
+          </b-form-group>
+        </div>
+      </b-col>
+
+    </b-form-row>
     <div> <!-- Media type to export -->
       <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="etTypeGroup" triggers="hover">
@@ -125,7 +159,17 @@
           btnDisable: true,
           selMediaType: "movie",
           selLibrary: "",
-          selLibraryOptions: [],
+          optExpTypeMain: [
+            i18n.t('Modules.ET.optExpTypeMainMovie'),
+            i18n.t('Modules.ET.optExpTypeMainTV'),
+            i18n.t('Modules.ET.optExpTypeMainAudio'),
+            i18n.t('Modules.ET.optExpTypeMainPhoto'),
+            i18n.t('Modules.ET.optExpTypeMainPlaylist'),
+            i18n.t('Modules.ET.optExpTypeMainLibrary'),
+            ],
+          selExpTypeMain: "movieGED",
+          optExpTypeSec: [],
+          selExpTypeSec: "",
           selLevel: "",
           selPType: "audio",
           pListGrpDisabled: true,
@@ -277,6 +321,46 @@
     }
   },
   methods: {
+    selExpTypeMainChanged: async function(){
+      console.log('Ged 1', arguments[0])
+      this.optExpTypeSec = [];
+      switch(arguments[0]) {
+        case i18n.t('Modules.ET.optExpTypeMainMovie'):
+          // Movie Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioMovies'));
+          break;
+        case i18n.t('Modules.ET.optExpTypeMainTV'):
+          // TV Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioTVSeries'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioTVEpisodes'));
+          break;
+        case i18n.t('Modules.ET.optExpTypeMainAudio'):
+          // Audio Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioAudioArtist'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioAudioAlbum'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioAudioTrack'));
+          break;
+        case i18n.t('Modules.ET.optExpTypeMainPhoto'):
+          // Photo Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioPhotos'));
+          break;
+        case i18n.t('Modules.ET.optExpTypeMainPlaylist'):
+          // Playlist Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.PlistTypeAudio'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.PlistTypeVideo'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.PlistTypePhoto'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioPlayListsInfo'));
+          break;
+        case i18n.t('Modules.ET.optExpTypeMainLibrary'):
+          // Library Info Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioLibraryInfo'));
+          break;
+
+        default:
+          // code block
+      }
+
+    },
     getPMSSections: async function(){
       this.selLibrary = "Loading...";
       await this.$store.dispatch('fetchSections')
