@@ -1,149 +1,113 @@
 <template>
-    <b-container fluid>
+  <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-    <h3>{{ $t("Modules.ET.Name") }} <br>
-      <small>{{ $t("Modules.ET.Description") }}</small>
-    </h3>
-    <br />
-    <b-form-row> <!-- Select Export type -->
-      <b-col> <!-- Main type -->
-        <div class="d-flex align-items-center">
-          <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
-            <b-tooltip target="etLibTypeMainGroup" triggers="hover">
-              {{ $t('Modules.ET.TT-ETType') }}
-            </b-tooltip>
-            <b-form-select
-              v-model="selExpTypeMain"
-              id="selExpTypeMain"
-              :options="optExpTypeMain"
-              @change="selExpTypeMainChanged"
-              name="selExpTypeMain">
-            </b-form-select>
-          </b-form-group>
-        </div>
-      </b-col>
-      <b-col> <!-- Sec type -->
-        <div class="d-flex align-items-center">
-          <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
-            <b-tooltip target="etLibTypeSecGroup" triggers="hover">
-              {{ $t('Modules.ET.TT-TypeSec') }}
-            </b-tooltip>
-            <b-form-select
-              v-model="selExpTypeSec"
-              id="selExpTypeSec"
-              :options="optExpTypeSec"
-              name="selExpTypeSec">
-            </b-form-select>
-          </b-form-group>
-        </div>
-      </b-col>
-
-    </b-form-row>
-    <div> <!-- Media type to export -->
-      <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="etTypeGroup" triggers="hover">
-          {{ $t('Modules.ET.TT-ETType') }}
-        </b-tooltip>
-        <b-form-radio-group
-          id="mediaType"
-          v-model="selMediaType"
-          @change.native="changeType()"
-          :options="optionsMediaType"
-          name="mediaType"
-        ></b-form-radio-group>
-      </b-form-group>
-    </div>
-    <b-form-row>
-      <b-col>
-        <div class="d-flex align-items-center">
-          <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.HSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
-            <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
-              <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
-            </div>
-            <b-tooltip target="etLibraryGroup" triggers="hover">
-              {{ $t('Modules.ET.TT-ETLibrary') }}
-            </b-tooltip>
-            <b-form-select
-              v-model="selLibrary"
-              id="selLibrary"
-              :options="selLibraryOptions"
-              name="selLibrary">
-            </b-form-select>
-          </b-form-group>
-        </div>
-    </b-col>
-    <b-col>
-      <div> <!-- Select Playlist Type -->
-        <b-form-group id="etPListTypeGroup" v-bind:label="$t('Modules.ET.PlaylistType')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.pListGrpDisabled>
-          <b-tooltip target="etPListTypeGroup" triggers="hover">
-            {{ $t('Modules.ET.TT-ETPType') }}
-          </b-tooltip>
-          <b-form-select
-            class="form-control"
-            v-model="selPType"
-            id="selPType"
-            :options="optionsPlaylistType"
-            @change.native="changeType()"
-            name="selPType">
-          </b-form-select>
-        </b-form-group>
-      </div>
-    </b-col>
-
-  </b-form-row>
-
-<b-form-row>
-  <b-col>
-    <div> <!-- Select Export Level -->
-      <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.ExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
-        <b-tooltip target="etLevelGroup" triggers="hover">
-          {{ $t('Modules.ET.TT-ETLevel') }}
-        </b-tooltip>
-        <b-form-select
-          class="form-control"
-          v-model="selLevel"
-          id="selLevel"
-          :options="exportLevels"
-          name="selLevel">
-        </b-form-select>
-      </b-form-group>
-    </div>
-  </b-col>
-
-
-</b-form-row>
-
-    <div class="buttons">
-      <b-button
-        type="is-primary"
-        @click="getMedia"
-        icon-left="fas fa-file-download"
-        icon-pack="fas"
-        :disabled="btnDisable == true"
-        variant="success"
-      >{{ $t("Modules.ET.HExportMedia") }}</b-button>
-    </div>
-    <br>
-    <b-container fluid>
-    <b-row>
-      <b-col sm="2">
-        <label for="status">{{ $t('Modules.ET.Status.Status') }}:</label>
-      </b-col>
-      <b-col sm="10">
-        <b-form-textarea
-          id="status"
-          v-bind:placeholder="$t('Modules.ET.Status.Status')"
-          v-model="statusMsg"
-          :disabled=true
-          rows="1"
-          max-rows="8"
-        ></b-form-textarea>
-      </b-col>
-    </b-row>
-  </b-container>
+      <h3>{{ $t("Modules.ET.Name") }} <br>
+        <small>{{ $t("Modules.ET.Description") }}</small>
+      </h3>
+      <br />
+      <b-form-row> <!-- Select Export type -->
+        <b-col> <!-- Main type -->
+          <div class="d-flex align-items-center">
+            <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.optExpType.lblMainExp')" label-size="lg" label-class="font-weight-bold pt-0">
+              <b-tooltip target="etLibTypeMainGroup" triggers="hover">
+                {{ $t('Modules.ET.optExpType.ttExpType') }}
+              </b-tooltip>
+              <b-form-select
+                v-model="selExpTypeMain"
+                id="selExpTypeMain"
+                :options="optExpTypeMain"
+                @change="selExpTypeMainChanged"
+                name="selExpTypeMain">
+              </b-form-select>
+            </b-form-group>
           </div>
+        </b-col>
+        <b-col> <!-- Sec type -->
+          <div class="d-flex align-items-center">
+            <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.optExpType.lblSecExp')" label-size="lg" label-class="font-weight-bold pt-0">
+              <b-tooltip target="etLibTypeSecGroup" triggers="hover">
+                {{ $t('Modules.ET.optExpType.ttExpTypeSec') }}
+              </b-tooltip>
+              <b-form-select
+                v-model="selExpTypeSec"
+                id="selExpTypeSec"
+                :options="optExpTypeSec"
+                @change="selExpTypeSecChanged"
+                name="selExpTypeSec">
+              </b-form-select>
+            </b-form-group>
+          </div>
+        </b-col>
+      </b-form-row>
+      <b-form-row> <!-- Select Library -->
+        <b-col>
+          <div class="d-flex align-items-center">
+            <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
+              <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
+                <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+              </div>
+              <b-tooltip target="etLibraryGroup" triggers="hover">
+                {{ $t('Modules.ET.optExpType.ttExpLibrary') }}
+              </b-tooltip>
+              <b-form-select
+                v-model="selLibrary"
+                id="selLibrary"
+                :options="selLibraryOptions"
+                @change="selLibraryChanged"
+                name="selLibrary">
+              </b-form-select>
+            </b-form-group>
+          </div>
+        </b-col>
+      </b-form-row>
+      <b-form-row> <!-- Select Export Level -->
+        <b-col>
+          <div> 
+            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.optExpType.lblExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
+              <b-tooltip target="etLevelGroup" triggers="hover">
+                {{ $t('Modules.ET.optExpType.ttExpLevel') }}
+              </b-tooltip>
+              <b-form-select
+                class="form-control"
+                v-model="selLevel"
+                id="selLevel"
+                :options="exportLevels"
+                name="selLevel">
+              </b-form-select>
+            </b-form-group>
+          </div>
+        </b-col>
+      </b-form-row>
+      <div class="buttons"> <!-- Buttons -->
+        <b-button
+          type="is-primary"
+          @click="getMedia"
+          icon-left="fas fa-file-download"
+          icon-pack="fas"
+          :disabled="btnDisable == true"
+          variant="success"
+        >{{ $t("Modules.ET.optExpType.lblBtnExportMedia") }}</b-button>
+      </div>
+      <br>
+      <b-container fluid> <!-- Status -->
+        <b-row>
+          <b-col sm="2">
+            <label for="status">{{ $t('Modules.ET.Status.Status') }}:</label>
+          </b-col>
+          <b-col sm="10">
+            <b-form-textarea
+              id="status"
+              v-bind:placeholder="$t('Modules.ET.Status.Status')"
+              v-model="statusMsg"
+              :disabled=true
+              rows="1"
+              max-rows="8">
+            </b-form-textarea>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
   </b-container>
-
 </template>
 
 <script>
@@ -151,58 +115,69 @@
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
 
+  et
+
   const log = require("electron-log");
   export default {
       data() {
         return {
-          selLibraryWait: true,
-          btnDisable: true,
-          selMediaType: "movie",
-          selLibrary: "",
+          
+          exportLevels: [],
           optExpTypeMain: [
-            i18n.t('Modules.ET.optExpTypeMainMovie'),
-            i18n.t('Modules.ET.optExpTypeMainTV'),
-            i18n.t('Modules.ET.optExpTypeMainAudio'),
-            i18n.t('Modules.ET.optExpTypeMainPhoto'),
-            i18n.t('Modules.ET.optExpTypeMainPlaylist'),
-            i18n.t('Modules.ET.optExpTypeMainLibrary'),
+            i18n.t('Modules.ET.optExpType.MainMovie'),
+            i18n.t('Modules.ET.optExpType.MainTV'),
+            i18n.t('Modules.ET.optExpType.MainAudio'),
+            i18n.t('Modules.ET.optExpType.MainPhoto'),
+            i18n.t('Modules.ET.optExpType.MainPlaylist'),
+            i18n.t('Modules.ET.optExpType.MainLibrary'),
             ],
-          selExpTypeMain: "movieGED",
           optExpTypeSec: [],
+          selExpTypeMain: "",
           selExpTypeSec: "",
           selLevel: "",
+          selLibrary: "",
+          selLibraryOptions: [],
+          selLibraryWait: true,
+          selMediaType: "",
+
+
           selPType: "audio",
           pListGrpDisabled: true,
           etLibraryGroupDisabled: false,
-          etLevelGroupDisabled: false,
-          optionsMediaType: [
-            { text: i18n.t('Modules.ET.RadioMovies'), value: 'movie', disabled: false },
-            { text: i18n.t('Modules.ET.RadioTVSeries'), value: 'show', disabled: false },
-            { text: i18n.t('Modules.ET.RadioTVEpisodes'), value: 'episode', disabled: false },
-            { text: i18n.t('Modules.ET.RadioAudioArtist'), value: 'artist', disabled: false },
-            { text: i18n.t('Modules.ET.RadioAudioAlbum'), value: 'album', disabled: false },
-            { text: i18n.t('Modules.ET.RadioAudioTrack'), value: 'track', disabled: false },
-            { text: i18n.t('Modules.ET.RadioPhotos'), value: 'photo', disabled: false },
-            { text: i18n.t('Modules.ET.RadioPlayLists'), value: 'playlist', disabled: false },
-            { text: i18n.t('Modules.ET.RadioPlayListsInfo'), value: 'playlistInfo', disabled: false },
-            { text: i18n.t('Modules.ET.RadioLibraryInfo'), value: 'libraryInfo', disabled: false }
-          ],
-          optionsPlaylistType: [
-            { text: i18n.t('Modules.ET.PlistTypeAudio'), value: 'audio', disabled: false },
-            { text: i18n.t('Modules.ET.PlistTypePhoto'), value: 'photo', disabled: false },
-            { text: i18n.t('Modules.ET.PlistTypeVideo'), value: 'video', disabled: false },
-          ]
+          etLevelGroupDisabled: false
+
         };
   },
   watch: {
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       // Changed, so we need to update the libraries
-      this.selLibraryWait = false;
+      this.selLibraryWait = true;
       this.selLibrary = '';
+      this.selLevel = "";
+      this.selMediaType = "";
+      this.selExpTypeMain = "";
+      this.selExpTypeSec = "";
+      this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
       await this.getPMSSections();
       this.selLibraryWait = true;
     },
+    selLibrary: async function(){
+      this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
+      
+      
+    },
+    selMediaType: async function(){
+      this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+      this.selLevel = "";
+      this.selLibrary = "";
+    },
+    selLevel: async function(){
+      this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
+      
+    },
+
+/* 
     selLibrary: async function(){
       if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
       {
@@ -219,6 +194,9 @@
         this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
       }
     },
+ */
+
+    /* 
     selMediaType: async function(){
       if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
       {
@@ -230,9 +208,12 @@
       }
       this.pListGrpDisabled = (this.selMediaType == 'playlist');
     },
+ */
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
     },
+
+/* 
     selLevel: async function(){
       if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
       {
@@ -243,18 +224,31 @@
         this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
       }
     },
+ */
+
     selPType: async function(){
       this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     }
   },
   created() {
     log.info("ET Created");
-    this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+    //this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
     this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.Idle"));
-    this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
-    this.fetchSelection();
+    // this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
+    this.checkSrvSelected();
   },
   computed: {
+    btnDisable: function(){
+      console.log('Ged88', this.selLevel, 'lib',this.selLibrary)
+      if (this.selLevel !== "" && this.selLibrary!=='')
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    },
     selectedServerAddress: function(){
       return this.$store.getters.getSelectedServerAddress
     },
@@ -264,6 +258,10 @@
     statusMsg: function(){
       return this.$store.getters.getExportStatus
     },
+
+
+
+/* 
     exportLevels: function() {
       et.getLevelDisplayName('My Level', this.selMediaType);
       // Returns valid levels for selected media type
@@ -319,72 +317,247 @@
       item['options']=options;
       return options;
     }
+  */
+
   },
   methods: {
-    selExpTypeMainChanged: async function(){
-      console.log('Ged 1', arguments[0])
-      this.optExpTypeSec = [];
-      switch(arguments[0]) {
-        case i18n.t('Modules.ET.optExpTypeMainMovie'):
+    // Get levels for the selected media type
+    getLevels: async function(){
+      log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
+      console.log('Ged 0 level types', this.selExpTypeSec)
+      this.exportLevels = [];
+      let etLevelType;
+      switch(this.selExpTypeSec) {
+        case i18n.t('Modules.ET.optExpType.SecMovies'):
           // Movie Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioMovies'));
+          etLevelType = 'movie'
           break;
-        case i18n.t('Modules.ET.optExpTypeMainTV'):
-          // TV Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioTVSeries'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioTVEpisodes'));
+        case i18n.t('Modules.ET.optExpType.SecTVSeries'):
+          // TV Shows Selected
+          etLevelType = 'show'
           break;
-        case i18n.t('Modules.ET.optExpTypeMainAudio'):
-          // Audio Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioAudioArtist'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioAudioAlbum'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioAudioTrack'));
+        case i18n.t('Modules.ET.optExpType.SecTVEpisodes'):
+          // TV Episodes Selected
+          etLevelType = 'episode'
           break;
-        case i18n.t('Modules.ET.optExpTypeMainPhoto'):
-          // Photo Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioPhotos'));
+        case i18n.t('Modules.ET.optExpType.SecAudioAlbum'):
+          // TV Episodes Selected
+          etLevelType = 'album'
           break;
-        case i18n.t('Modules.ET.optExpTypeMainPlaylist'):
-          // Playlist Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.PlistTypeAudio'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.PlistTypeVideo'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.PlistTypePhoto'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioPlayListsInfo'));
+        case i18n.t('Modules.ET.optExpType.SecAudioArtist'):
+          // TV Episodes Selected
+          etLevelType = 'artist'
           break;
-        case i18n.t('Modules.ET.optExpTypeMainLibrary'):
-          // Library Info Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioLibraryInfo'));
+        case i18n.t('Modules.ET.optExpType.SecAudioTrack'):
+          // TV Episodes Selected
+          etLevelType = 'track'
           break;
-
-        default:
-          // code block
+        case i18n.t('Modules.ET.optExpType.SecPhotos'):
+          // TV Episodes Selected
+          etLevelType = 'photo'
+          break;
       }
+      
+      const etLevel = et.getLevels(etLevelType);
+      console.log('Ged 1', JSON.stringify(etLevel))
+      const etCustomLevel = et.getCustomLevels(etLevelType);
+      console.log('Ged 2', JSON.stringify(etCustomLevel))
+      const options = []
+      const item = {}
+      let custLabel = {}
+      custLabel['text']=this.$t('Modules.ET.Custom.CustomLevels');
+      custLabel['disabled']=true;
+      custLabel['value']='';
+      options.push(custLabel);
+      Object.keys(etCustomLevel).forEach(function(key) {
+        let option = {}
+        option['value'] = etCustomLevel[key];
+        if (key === "No Level Yet") {
+          option['text']=i18n.t('Modules.ET.NoLevelFound');
+          option['disabled'] = true;
+        }
+        else { option['text'] = key; }
+        options.push(option);
+      });
+      let buildinLabel = {}
+      buildinLabel['text']=this.$t('Modules.ET.BuildInLevels');
+      buildinLabel['disabled']=true;
+      buildinLabel['value']='';
+      options.push(buildinLabel);
+      Object.keys(etLevel).forEach(function(key) {
+        let option = {}
+        option['value'] = etLevel[key];
+        if (key === "No Level Yet") {
+          option['text']=i18n.t('Modules.ET.NoLevelFound');
+          option['disabled'] = true;
+        }
+        else { option['text'] = key; }
+        if (wtconfig.get('Developer.showDevLevels'))
+        {
+          options.push(option);
+        }
+        else
+        {
+          if (!option['text'].startsWith('dev'))
+          {
+            options.push(option);
+          }
+        }
+      });
+      item['options']=options;
+      this.exportLevels = options;
+      
 
     },
-    getPMSSections: async function(){
-      this.selLibrary = "Loading...";
+    // Get libraries for selected type
+    getLibs: async function(){
+      log.verbose('Getting list of libraries');
+      log.verbose(`Target is: ${this.selMediaType}`)
+      this.selLibrary = "";
       await this.$store.dispatch('fetchSections')
       const sections = await this.$store.getters.getPmsSections;
-      const result = [];
-      // If episodes, we need to show shows
-      let targetType = this.selMediaType;
-      if (targetType == 'episode')
-      {
-        targetType = 'show'
-      }
-      if (targetType == 'track')
-      {
-        targetType = 'artist'
-      }
-      if (targetType == 'album')
-      {
-        targetType = 'artist'
-      }
       const pListType = this.$store.getters.getSelectedPListType;
       if (Array.isArray(sections) && sections.length) {
         sections.forEach(req => {
-          if (req.type == targetType) {
-            if (targetType == 'playlist')
+          if (req.type == this.selMediaType) {
+            if (this.selMediaType == 'playlist')
+            {
+              if (req.playlistType == pListType)
+              {
+                log.debug(`pushing library: ${req.title} to results`);
+                let item = [];
+                item['text']=req.title;
+                item['value']=req.key;
+                this.selLibraryOptions.push(Object.assign({}, item));
+              }
+            }
+            else
+            {
+              log.debug(`pushing library: ${req.title} to results`);
+              let item = [];
+              item['text']=req.title;
+              item['value']=req.key;
+              this.selLibraryOptions.push(Object.assign({}, item));
+            }
+          }
+        });
+      } else {
+        log.error("No Library found");
+        this.selLibraryOptions.push["No Library found"];
+      }
+      log.verbose(`Sections to select among are: ${JSON.stringify(this.selLibraryOptions)}`);
+    },
+    selLibraryChanged: async function(){
+      log.verbose(`Library key to export selected as: ${arguments[0]}`);
+      
+
+    },
+    selExpTypeSecChanged: async function(){
+      // Triggers when exp type is changed
+      log.verbose(`Secondary export type selected as: ${arguments[0]}`);
+      this.selMediaType = "";
+      switch(arguments[0]) {
+        case i18n.t('Modules.ET.optExpType.SecMovies'):
+          // Movie Selected
+          this.selMediaType = 'movie'
+          break;
+        case i18n.t('Modules.ET.optExpType.SecTVSeries'):
+          // TV Shows Selected
+          this.selMediaType = 'show'
+          break;
+        case i18n.t('Modules.ET.optExpType.SecTVEpisodes'):
+          // TV Episodes Selected
+          this.selMediaType = 'show'
+          break;
+        case i18n.t('Modules.ET.optExpType.SecAudioAlbum'):
+          // TV Episodes Selected
+          this.selMediaType = 'artist'
+          break;
+        case i18n.t('Modules.ET.optExpType.SecAudioArtist'):
+          // TV Episodes Selected
+          this.selMediaType = 'artist'
+          break;
+        case i18n.t('Modules.ET.optExpType.SecAudioTrack'):
+          // TV Episodes Selected
+          this.selMediaType = 'artist'
+          break;
+        case i18n.t('Modules.ET.optExpType.SecPhotos'):
+          // TV Episodes Selected
+          this.selMediaType = 'photo'
+          break;
+        default:
+          break;
+      }
+      this.getLibs();
+      this.getLevels();
+    },
+    selExpTypeMainChanged: async function(){
+      this.optExpTypeSec = [];
+      this.selLibrary = '';
+      this.selLibraryOptions = [];
+      this.exportLevels = [];
+      switch(arguments[0]) {
+        case i18n.t('Modules.ET.optExpType.MainMovie'):
+          // Movie Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecMovies'));
+          break;
+        case i18n.t('Modules.ET.optExpType.MainTV'):
+          // TV Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecTVSeries'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecTVEpisodes'));
+          break;
+        case i18n.t('Modules.ET.optExpType.MainAudio'):
+          // Audio Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecAudioArtist'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecAudioAlbum'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecAudioTrack'));
+          break;
+        case i18n.t('Modules.ET.optExpType.MainPhoto'):
+          // Photo Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPhotos'));
+          break;
+        case i18n.t('Modules.ET.optExpType.MainPlaylist'):
+          // Playlist Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPlaylistAudio'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPlaylistVideo'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPlaylistPhoto'));
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioPlayListsInfo'));
+          break;
+        case i18n.t('Modules.ET.optExpType.MainLibrary'):
+          // Library Info Selected
+          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioLibraryInfo'));
+          break;
+        default:
+          // code block
+          log.error('Unknown ExpType');
+      }
+      log.verbose(`Export Main type selected: ${arguments[0]}`);
+    },
+    getPMSSections: async function(){
+      this.selLibrary = "";
+      await this.$store.dispatch('fetchSections')
+      const sections = await this.$store.getters.getPmsSections;
+      const result = [];
+      // Alter target due to some exports share lib types
+      switch(this.selMediaType) {
+        case 'episode':
+          this.selMediaType = 'show';
+          break;
+        case 'track':
+          this.selMediaType = 'artist';
+          break;
+        case 'album':
+          this.selMediaType = 'artist';
+          break;
+        default:
+          log.error(`getPMSSections had an unknown selMediaType as: ${this.selMediaType}`);
+      }
+
+      const pListType = this.$store.getters.getSelectedPListType;
+      if (Array.isArray(sections) && sections.length) {
+        sections.forEach(req => {
+          if (req.type == this.selMediaType) {
+            if (this.selMediaType == 'playlist')
             {
               if (req.playlistType == pListType)
               {
@@ -411,38 +584,6 @@
       }
       this.selLibraryOptions = result;
     },
-    selectSelection: function(selected) {
-      log.debug(selected);
-      this.$store.commit("UPDATE_SELECTEDSECTION", selected);
-    },
-    changeType: function() {
-      // Triggers when lib type is changed
-      this.selLibrary = '';
-      this.selLevel = '';
-      this.getPMSSections();
-      this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-      switch(this.selMediaType) {
-        case 'playlist':
-          this.pListGrpDisabled = false;
-          this.etLibraryGroupDisabled = false;
-          this.etLevelGroupDisabled = false;
-          break;
-        case 'libraryInfo':
-          this.pListGrpDisabled = true;
-          this.etLibraryGroupDisabled = true;
-          this.etLevelGroupDisabled = true;
-          break;
-        case 'playlistInfo':
-          this.pListGrpDisabled = true;
-          this.etLibraryGroupDisabled = true;
-          this.etLevelGroupDisabled = true;
-          break;
-        default:
-          this.pListGrpDisabled = true;
-          this.etLibraryGroupDisabled = false;
-          this.etLevelGroupDisabled = false;
-      }
-    },
     getMedia() {
       log.info("getMedia Called");
       if (wtconfig.get('General.ExportPath', "") == "")
@@ -462,14 +603,10 @@
       this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));
       this.$store.dispatch("exportMedias");
     },
-    async fetchSelection() {
-      log.debug("fetchSelection started");
+    async checkSrvSelected() {
+      log.debug("checkSrvSelected started");
       let serverCheck = this.$store.getters.getSelectedServer;
-      if (serverCheck !== "none") {
-        log.debug("serverCheck is not null, running fetchSections ");
-        this.getPMSSections();
-        //await this.$store.dispatch("fetchSections");
-      } else {
+      if (serverCheck == "none") {
         log.debug("serverCheck is none");
         this.$bvToast.toast(this.$t("Modules.ET.ErrorNoServerSelectedMsg"), {
           title: this.$t("Modules.ET.ErrorNoServerSelectedTitle"),

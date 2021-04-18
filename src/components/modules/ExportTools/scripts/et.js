@@ -192,15 +192,14 @@ const et = new class ET {
     {
         // Returns an array of json, as:
         // [{"title":"DVR Movies","key":31,"type":"movie"}]
-
-        const result = []
+        const result = [];
         let url = address + '/library/sections/all'
         this.PMSHeader["X-Plex-Token"] = accessToken;
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        let respJSON = await Promise.resolve(resp)
+        let respJSON = await Promise.resolve(resp);
         let sections = await JSONPath({path: '$..Directory', json: respJSON})[0];
-        let section
+        let section;
         for (section of sections){
             const subItem = {}
             subItem['title'] = JSONPath({path: '$..title', json: section})[0];
@@ -210,19 +209,22 @@ const et = new class ET {
             subItem['agent'] = JSONPath({path: '$..agent', json: section})[0];
             result.push(subItem)
         }
-        await Promise.resolve(result)
+        await Promise.resolve(result);
         url = address + '/playlists';
         response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         resp = await response.json();
-        respJSON = await Promise.resolve(resp)
-        sections = await JSONPath({path: '$..Metadata', json: respJSON})[0];
-        for (section of sections){
-            const subItem = {}
-            subItem['title'] = JSONPath({path: '$..title', json: section})[0];
-            subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
-            subItem['type'] = JSONPath({path: '$..type', json: section})[0];
-            subItem['playlistType'] = JSONPath({path: '$..playlistType', json: section})[0];
-            result.push(subItem)
+        respJSON = await Promise.resolve(resp);
+        if (JSONPath({path: '$..size', json: respJSON})[0] > 0)
+        {
+            sections = await JSONPath({path: '$..Metadata', json: respJSON})[0];
+            for (section of sections){
+                const subItem = {}
+                subItem['title'] = JSONPath({path: '$..title', json: section})[0];
+                subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
+                subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+                subItem['playlistType'] = JSONPath({path: '$..playlistType', json: section})[0];
+                result.push(subItem)
+            }
         }
         return  result
     }
