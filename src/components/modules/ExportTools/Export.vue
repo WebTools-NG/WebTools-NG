@@ -115,22 +115,38 @@
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
 
-  et
 
   const log = require("electron-log");
   export default {
       data() {
         return {
-          
           exportLevels: [],
           optExpTypeMain: [
-            i18n.t('Modules.ET.optExpType.MainMovie'),
-            i18n.t('Modules.ET.optExpType.MainTV'),
-            i18n.t('Modules.ET.optExpType.MainAudio'),
-            i18n.t('Modules.ET.optExpType.MainPhoto'),
-            i18n.t('Modules.ET.optExpType.MainPlaylist'),
-            i18n.t('Modules.ET.optExpType.MainLibrary'),
-            ],
+            {
+              "text": i18n.t('Modules.ET.optExpType.MainMovie'),
+              "value": et.ETmediaType.Movie
+            },
+            {
+              "text": i18n.t('Modules.ET.optExpType.MainTV'),
+              "value": et.ETmediaType.Show
+            },
+            {
+              "text": i18n.t('Modules.ET.optExpType.MainAudio'),
+              "value": et.ETmediaType.Artist
+            },
+            {
+              "text": i18n.t('Modules.ET.optExpType.MainPhoto'),
+              "value": et.ETmediaType.Photo
+            },
+            {
+              "text": i18n.t('Modules.ET.optExpType.MainPlaylist'),
+              "value": et.ETmediaType.Playlist
+            },
+            {
+              "text": i18n.t('Modules.ET.optExpType.MainLibrary'),
+              "value": et.ETmediaType.Library
+            }
+          ],
           optExpTypeSec: [],
           selExpTypeMain: "",
           selExpTypeSec: "",
@@ -144,8 +160,7 @@
           selPType: "audio",
           pListGrpDisabled: true,
           etLibraryGroupDisabled: false,
-          etLevelGroupDisabled: false
-
+          etLevelGroupDisabled: false,
         };
   },
   watch: {
@@ -164,8 +179,6 @@
     },
     selLibrary: async function(){
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
-      
-      
     },
     selMediaType: async function(){
       this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
@@ -239,7 +252,7 @@
   },
   computed: {
     btnDisable: function(){
-      console.log('Ged88', this.selLevel, 'lib',this.selLibrary)
+      console.log('Ged 88 Btn Disable', this.selLevel, 'lib',this.selLibrary)
       if (this.selLevel !== "" && this.selLibrary!=='')
       {
         return false;
@@ -455,39 +468,36 @@
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
       log.verbose(`Secondary export type selected as: ${arguments[0]}`);
-      this.selMediaType = "";
+      // Set selMediaType to the type we want, and has to handle exceptions
       switch(arguments[0]) {
-        case i18n.t('Modules.ET.optExpType.SecMovies'):
-          // Movie Selected
-          this.selMediaType = 'movie'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecTVSeries'):
-          // TV Shows Selected
-          this.selMediaType = 'show'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecTVEpisodes'):
+        // Set type for episodes to shows
+        case et.ETmediaType.Episode:
           // TV Episodes Selected
-          this.selMediaType = 'show'
+          this.selMediaType = et.ETmediaType.Show
           break;
-        case i18n.t('Modules.ET.optExpType.SecAudioAlbum'):
+        // Set type for playlist audio to playlist
+        case et.ETmediaType.Playlist_Audio:
           // TV Episodes Selected
-          this.selMediaType = 'artist'
+          this.selMediaType = et.ETmediaType.Playlist
           break;
-        case i18n.t('Modules.ET.optExpType.SecAudioArtist'):
+        // Set type for playlist audio to playlist
+        case et.ETmediaType.Playlist_Video:
           // TV Episodes Selected
-          this.selMediaType = 'artist'
+          this.selMediaType = et.ETmediaType.Playlist
           break;
-        case i18n.t('Modules.ET.optExpType.SecAudioTrack'):
+        // Set type for playlist audio to playlist
+        case et.ETmediaType.Playlist_Photo:
           // TV Episodes Selected
-          this.selMediaType = 'artist'
+          this.selMediaType = et.ETmediaType.Playlist
           break;
-        case i18n.t('Modules.ET.optExpType.SecPhotos'):
-          // TV Episodes Selected
-          this.selMediaType = 'photo'
-          break;
+
+
+
         default:
+          this.selMediaType = arguments[0]
           break;
       }
+      console.log('Ged 87',this.selMediaType, 'input', arguments[0])
       this.getLibs();
       this.getLevels();
     },
@@ -496,41 +506,8 @@
       this.selLibrary = '';
       this.selLibraryOptions = [];
       this.exportLevels = [];
-      switch(arguments[0]) {
-        case i18n.t('Modules.ET.optExpType.MainMovie'):
-          // Movie Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecMovies'));
-          break;
-        case i18n.t('Modules.ET.optExpType.MainTV'):
-          // TV Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecTVSeries'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecTVEpisodes'));
-          break;
-        case i18n.t('Modules.ET.optExpType.MainAudio'):
-          // Audio Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecAudioArtist'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecAudioAlbum'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecAudioTrack'));
-          break;
-        case i18n.t('Modules.ET.optExpType.MainPhoto'):
-          // Photo Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPhotos'));
-          break;
-        case i18n.t('Modules.ET.optExpType.MainPlaylist'):
-          // Playlist Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPlaylistAudio'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPlaylistVideo'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.optExpType.SecPlaylistPhoto'));
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioPlayListsInfo'));
-          break;
-        case i18n.t('Modules.ET.optExpType.MainLibrary'):
-          // Library Info Selected
-          this.optExpTypeSec.push(i18n.t('Modules.ET.RadioLibraryInfo'));
-          break;
-        default:
-          // code block
-          log.error('Unknown ExpType');
-      }
+      this.selExpTypeMain= arguments[0];
+      this.optExpTypeSec = et.selSecOption[arguments[0]]
       log.verbose(`Export Main type selected: ${arguments[0]}`);
     },
     getPMSSections: async function(){

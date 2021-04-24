@@ -22,39 +22,104 @@ const et = new class ET {
     constructor() {
         this.PMSHeader = wtutils.PMSHeader;
         this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
-        this.typeMovie = '1';
-        this.typeShow = '2';
-        this.typeSeason = '3';
-        this.typeEpisode = '4';
-        this.typeTrailer = '5';
-        this.typeComic = '6';
-        this.typePerson = '7';
-        this.typeArtist = '8';
-        this.typeAlbum = '9';
-        this.typeTrack = '10';
-        this.typeClip = '12';
-        this.typePhoto = '13';
-        this.typePhoto_Album = '14';
-        this.typePlaylist = '15';
-        this.typePlaylist_Folder = '16';
-        this.typePodcast = '17';
-        this.mediaType ={
-            "movie": 1,
-            "show": 2,
-            "season": 3,
-            "episode": 4,
-            "trailer": 5,
-            "comic": 6,
-            "person": 7,
-            "artist": 8,
-            "album": 9,
-            "track": 10,
-            "clip": 12,
-            "photo": 13,
-            "photo_album": 14,
-            "playlist": 15,
-            "playlist_folder": 16,
-            "podcast": 17
+        this.PlexType = {
+            Movie: 1,
+            Show: 2,
+            Season: 3,
+            Episode: 4,
+            Trailer: 5,
+            Comic: 6,
+            Person: 7,
+            Artist: 8,
+            Album: 9,
+            Track: 10,
+            Clip: 12,
+            Photo: 13,
+            Photo_Album: 14,
+            Playlist: 15,
+            Playlist_Folder: 16,
+            Podcast: 17
+        }
+        this.ETmediaType = {
+            Movie: 1,
+            Show: 2,
+            Season: 3,
+            Episode: 4,
+            Trailer: 5,
+            Comic: 6,
+            Person: 7,
+            Artist: 8,
+            Album: 9,
+            Track: 10,
+            Clip: 12,
+            Photo: 13,
+            Photo_Album: 14,
+            Playlist: 15,
+            Playlist_Folder: 16,
+            Podcast: 17,
+            Library: 1001,
+            Libraries: 1002,
+            Playlist_Audio: 2001,
+            Playlist_Video: 2002,
+            Playlist_Photo: 2003,
+        },
+        this.selSecOption ={
+            1: [
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecMovies'),
+                    "value": this.ETmediaType.Movie
+                }
+            ],
+            2: [
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecTVEpisodes'),
+                    "value": this.ETmediaType.Episode
+                },
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecTVSeries'),
+                    "value": this.ETmediaType.Show
+                }
+            ],
+            8: [
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecAudioAlbum'),
+                    "value": this.ETmediaType.Album
+                },
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecAudioArtist'),
+                    "value": this.ETmediaType.Artist
+                },
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecAudioTrack'),
+                    "value": this.ETmediaType.Track
+                }
+            ],
+            13: [
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecPhotos'),
+                    "value": this.ETmediaType.Photo
+                }
+            ],
+            15: [
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecPlaylistAudio'),
+                    "value": this.ETmediaType.Playlist_Audio
+                },
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecPlaylistVideo'),
+                    "value": this.ETmediaType.Playlist_Video
+                },
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecPlaylistPhoto'),
+                    "value": this.ETmediaType.Playlist_Photo
+                }
+            ],
+            1001: [
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecLibraries'),
+                    "value": this.ETmediaType.Libraries
+                }
+            ]
         }
     }
 
