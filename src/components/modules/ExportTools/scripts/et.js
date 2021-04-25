@@ -22,24 +22,6 @@ const et = new class ET {
     constructor() {
         this.PMSHeader = wtutils.PMSHeader;
         this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
-        this.PlexType = {
-            Movie: 1,
-            Show: 2,
-            Season: 3,
-            Episode: 4,
-            Trailer: 5,
-            Comic: 6,
-            Person: 7,
-            Artist: 8,
-            Album: 9,
-            Track: 10,
-            Clip: 12,
-            Photo: 13,
-            Photo_Album: 14,
-            Playlist: 15,
-            Playlist_Folder: 16,
-            Podcast: 17
-        }
         this.ETmediaType = {
             Movie: 1,
             Show: 2,
@@ -62,6 +44,29 @@ const et = new class ET {
             Playlist_Audio: 2001,
             Playlist_Video: 2002,
             Playlist_Photo: 2003,
+        },
+        this.RevETmediaType = {
+            1: 'Movie',
+            2: 'Show',
+            3: 'Season',
+            4: 'Episode',
+            5: 'Trailer',
+            6: 'Comic',
+            7: 'Person',
+            8: 'Artist',
+            9: 'Album',
+            10: 'Track',
+            12: 'Clip',
+            13: 'Photo',
+            14: 'Photo_Album',
+            15: 'Playlist',
+            16: 'Playlist_Folder',
+            17: 'Podcast',
+            1001: 'Library',
+            1002: 'Libraries',
+            2001: 'Playlist_Audio',
+            2002: 'Playlist_Video',
+            2003: 'Playlist_Video'
         },
         this.selSecOption ={
             1: [
@@ -123,7 +128,7 @@ const et = new class ET {
         }
     }
 
-    async getSectionData({sectionName, baseURL, accessToken, libType})
+    async getSectionData({sectionName, baseURL, accessToken, libType, libTypeSec})
     {
         const sectionData = []
         // Find LibType steps
@@ -133,14 +138,13 @@ const et = new class ET {
         //if (libType != 'libraryInfo')
         if (['libraryInfo', 'playlistInfo'].indexOf(libType) < 0)
         {
-            log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}"`)
+            log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}" and a sec type of: "${libTypeSec}"`)
             // Get Section Key
             libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
             log.debug(`Got SectionKey as: ${libKey}`)
             // Get the size of the library
             libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
             log.debug(`Got Section size as: ${libSize}`);
-            // element = '/library/sections/' + libKey;
         }
         else
         {
@@ -156,7 +160,8 @@ const et = new class ET {
         do {
             if (libType == 'photo')
             {
-                postURI = `/all?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+                element = '/library/sections/' + libKey + '/all';
+                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${libTypeSec}&${this.uriParams}`;
             }
             else if (libType == 'playlist')
             {
@@ -176,7 +181,7 @@ const et = new class ET {
             else
             {
                 element = '/library/sections/' + libKey + '/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.mediaType[libType]}&${this.uriParams}`;
+                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${libTypeSec}&${this.uriParams}`;
             }
             log.info(`Calling url ${baseURL + element + postURI}`);
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
@@ -223,11 +228,11 @@ const et = new class ET {
     {
         const url = baseURL + element + postURI;
         this.PMSHeader["X-Plex-Token"] = accessToken;
-        log.verbose(`Calling url: ${url}`)
+        log.verbose(`Calling url in getItemData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
-       return resp
+        return resp
     }
 
     getRealLevelName(level, libType) {
@@ -698,9 +703,6 @@ const excel2 = new class Excel {
             }
         // Set header font to bold
         Sheet.getRow(1).font = {bold: true}
-
-
-
 
 /*         Sheet.autoFilter = {
             from: 'A1',
@@ -1291,7 +1293,7 @@ const excel2 = new class Excel {
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
+    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType, libTypeSec} )
     {
         const header = excel2.GetHeader(level, libType, pListType);
         log.debug(`header: ${header}`);
@@ -1307,7 +1309,7 @@ const excel2 = new class Excel {
         var sectionData, x;
         {
             // Get all the items in small chuncks
-            sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType})
+            sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType, libTypeSec: libTypeSec})
             log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
             let item
             let counter = 1

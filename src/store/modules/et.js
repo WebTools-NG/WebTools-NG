@@ -16,28 +16,31 @@ const mutations = {
     UPDATE_SECTIONS(state, payload) {
         state.sections = payload;
         log.info("UPDATE_SECTIONS called")
-      },
-      UPDATE_SELECTEDSECTION(state, payload) {
-          state.selectedSection = payload
-          log.info("UPDATE_SELECTEDSECTION called")
-      },
-      UPDATE_SELECTEDPLISTTYPE(state, payload) {
-        state.selectedPListType = payload
-        log.info("UPDATE_SELECTEDPLISTTYPE called")
     },
-      UPDATE_EXPORTLEVEL(state, payload) {
-          state.selectedExportLevel = payload
-      },
-      UPDATE_EXPORTSTATUS(state, payload) {
-        state.exportStatus = payload
-      },
-      UPDATE_EXPORTLEVELS(state, payload) {
-        state.exportLevels = payload
-      },
-      UPDATE_SELECTEDLIBTYPE(state, payload) {
-        state.selectedLibType = payload
-      }
-};
+    UPDATE_SELECTEDSECTION(state, payload) {
+        state.selectedSection = payload
+        log.info("UPDATE_SELECTEDSECTION called")
+    },
+    UPDATE_SELECTEDPLISTTYPE(state, payload) {
+      state.selectedPListType = payload
+      log.info("UPDATE_SELECTEDPLISTTYPE called")
+    },
+    UPDATE_EXPORTLEVEL(state, payload) {
+        state.selectedExportLevel = payload
+    },
+    UPDATE_EXPORTSTATUS(state, payload) {
+      state.exportStatus = payload
+    },
+    UPDATE_EXPORTLEVELS(state, payload) {
+      state.exportLevels = payload
+    },
+    UPDATE_SELECTEDLIBTYPE(state, payload) {
+      state.selectedLibType = payload
+    },
+    UPDATE_SELECTEDLIBTYPESEC(state, payload) {
+      state.selectedLibTypeSec = payload
+    }
+  };
 
 const actions = {
     async fetchSections({ commit, getters }) {
@@ -49,10 +52,13 @@ const actions = {
     exportMedias({ getters }) {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
-        var libType = getters.getLibType;
+        var libType = (et.RevETmediaType[getters.getLibType]).toString().toLowerCase();
         var pListType = getters.getSelectedPListType;
         let levelName;
+        console.log('Ged 4-0')
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
+        console.log('Ged 4-1', libName)
+        console.log('Ged 4-2', libType)
         if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
         {
           levelName = 'All'
@@ -61,6 +67,7 @@ const actions = {
         {
           levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         }
+        console.log('Ged 5', libName, levelName, libType)
         excel2.createOutFile( {
           libName: libName,
           level: levelName,
@@ -68,7 +75,8 @@ const actions = {
           baseURL: baseURL,
           accessToken: accessToken,
           exType: libType,
-          pListType: pListType
+          pListType: pListType,
+          libTypeSec: getters.getSelectedLibTypeSec
         } );
     }
 }
@@ -80,7 +88,8 @@ const getters = {
     getLibType: state  => state.selectedLibType,
     getExportLevels: state => state.exportLevels,
     getExportStatus: state => state.exportStatus,
-    getSelectedPListType: state => state.selectedPListType
+    getSelectedPListType: state => state.selectedPListType,
+    getSelectedLibTypeSec: state => state.selectedLibTypeSec
 };
 
 const etModule = {

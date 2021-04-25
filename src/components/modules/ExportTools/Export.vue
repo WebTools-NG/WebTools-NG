@@ -155,8 +155,6 @@
           selLibraryOptions: [],
           selLibraryWait: true,
           selMediaType: "",
-
-
           selPType: "audio",
           pListGrpDisabled: true,
           etLibraryGroupDisabled: false,
@@ -185,9 +183,11 @@
       this.selLevel = "";
       this.selLibrary = "";
     },
+    selExpTypeSec: async function(){
+      this.$store.commit("UPDATE_SELECTEDLIBTYPESEC", this.selExpTypeSec);
+    },
     selLevel: async function(){
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
-      
     },
 
 /* 
@@ -270,111 +270,15 @@
     },
     statusMsg: function(){
       return this.$store.getters.getExportStatus
-    },
-
-
-
-/* 
-    exportLevels: function() {
-      et.getLevelDisplayName('My Level', this.selMediaType);
-      // Returns valid levels for selected media type
-      let exportType = this.selMediaType;
-      if (exportType == 'playlist')
-      {
-        exportType = exportType + '-' + this.selPType;
-      }
-      const etLevel = et.getLevels(exportType);
-      const etCustomLevel = et.getCustomLevels(exportType);
-      const options = []
-      const item = {}
-      let custLabel = {}
-      custLabel['text']=this.$t('Modules.ET.Custom.CustomLevels');
-      custLabel['disabled']=true;
-      custLabel['value']='';
-      options.push(custLabel);
-      Object.keys(etCustomLevel).forEach(function(key) {
-        let option = {}
-        option['value'] = etCustomLevel[key];
-        if (key === "No Level Yet") {
-          option['text']=i18n.t('Modules.ET.NoLevelFound');
-          option['disabled'] = true;
-        }
-        else { option['text'] = key; }
-        options.push(option);
-      });
-      let buildinLabel = {}
-      buildinLabel['text']=this.$t('Modules.ET.BuildInLevels');
-      buildinLabel['disabled']=true;
-      buildinLabel['value']='';
-      options.push(buildinLabel);
-      Object.keys(etLevel).forEach(function(key) {
-        let option = {}
-        option['value'] = etLevel[key];
-        if (key === "No Level Yet") {
-          option['text']=i18n.t('Modules.ET.NoLevelFound');
-          option['disabled'] = true;
-        }
-        else { option['text'] = key; }
-        if (wtconfig.get('Developer.showDevLevels'))
-        {
-          options.push(option);
-        }
-        else
-        {
-          if (!option['text'].startsWith('dev'))
-          {
-            options.push(option);
-          }
-        }
-      });
-      item['options']=options;
-      return options;
     }
-  */
-
   },
   methods: {
     // Get levels for the selected media type
     getLevels: async function(){
       log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
-      console.log('Ged 0 level types', this.selExpTypeSec)
       this.exportLevels = [];
-      let etLevelType;
-      switch(this.selExpTypeSec) {
-        case i18n.t('Modules.ET.optExpType.SecMovies'):
-          // Movie Selected
-          etLevelType = 'movie'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecTVSeries'):
-          // TV Shows Selected
-          etLevelType = 'show'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecTVEpisodes'):
-          // TV Episodes Selected
-          etLevelType = 'episode'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecAudioAlbum'):
-          // TV Episodes Selected
-          etLevelType = 'album'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecAudioArtist'):
-          // TV Episodes Selected
-          etLevelType = 'artist'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecAudioTrack'):
-          // TV Episodes Selected
-          etLevelType = 'track'
-          break;
-        case i18n.t('Modules.ET.optExpType.SecPhotos'):
-          // TV Episodes Selected
-          etLevelType = 'photo'
-          break;
-      }
-      
-      const etLevel = et.getLevels(etLevelType);
-      console.log('Ged 1', JSON.stringify(etLevel))
-      const etCustomLevel = et.getCustomLevels(etLevelType);
-      console.log('Ged 2', JSON.stringify(etCustomLevel))
+      const etLevel = et.getLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
+      const etCustomLevel = et.getCustomLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
       const options = []
       const item = {}
       let custLabel = {}
@@ -419,21 +323,36 @@
       });
       item['options']=options;
       this.exportLevels = options;
-      
-
     },
     // Get libraries for selected type
     getLibs: async function(){
       log.verbose('Getting list of libraries');
-      log.verbose(`Target is: ${this.selMediaType}`)
+      log.verbose(`Target is: ${this.selMediaType}`);
+      this.selLibraryOptions = [];
+      let reqType;
+      switch(this.selMediaType) {
+        case et.ETmediaType.Episode:
+          reqType = et.ETmediaType.Show;
+          break;
+        case et.ETmediaType.Album:
+          reqType = et.ETmediaType.Artist;
+          break;
+        case et.ETmediaType.Track:
+          reqType = et.ETmediaType.Artist;
+          break;
+        default:
+          reqType = this.selMediaType
+      }
+      reqType = (et.RevETmediaType[reqType]).toString().toLowerCase();
       this.selLibrary = "";
       await this.$store.dispatch('fetchSections')
       const sections = await this.$store.getters.getPmsSections;
       const pListType = this.$store.getters.getSelectedPListType;
       if (Array.isArray(sections) && sections.length) {
         sections.forEach(req => {
-          if (req.type == this.selMediaType) {
-            if (this.selMediaType == 'playlist')
+          //if (req.type == this.selMediaType) {
+          if (req.type == reqType) {
+            if (reqType == 'playlist')
             {
               if (req.playlistType == pListType)
               {
@@ -497,7 +416,7 @@
           this.selMediaType = arguments[0]
           break;
       }
-      console.log('Ged 87',this.selMediaType, 'input', arguments[0])
+      console.log('Ged 87   ***** LOOK HERE **** TODO ****')
       this.getLibs();
       this.getLevels();
     },
