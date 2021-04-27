@@ -64,9 +64,9 @@ const et = new class ET {
             17: 'Podcast',
             1001: 'Library',
             1002: 'Libraries',
-            2001: 'Playlist_Audio',
-            2002: 'Playlist_Video',
-            2003: 'Playlist_Video'
+            2001: 'Audio',
+            2002: 'Video',
+            2003: 'Photo'
         },
         this.selSecOption ={
             1: [
@@ -246,7 +246,7 @@ const et = new class ET {
         {
             if (libType == 'playlist')
             {
-                libType = libType + '-' + store.getters.getSelectedPListType;
+                libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
             }
             levelName = defLevels[libType]['levels'][level]
             if (levelName == undefined)
@@ -303,7 +303,7 @@ const et = new class ET {
         // return displayname for the buildin levels
         if (libType == 'playlist')
         {
-            libType = libType + '-' + store.getters.getSelectedPListType;
+            libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
         }
         const levels = et.getLevels(libType)
         let result = '';
@@ -349,10 +349,11 @@ const et = new class ET {
         const out = []
         if (libType == 'playlist')
         {
-            libType = libType + '-' + store.getters.getSelectedPListType;
+            pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+            libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
         }
         let realName = et.getRealLevelName(level, libType);
-        log.debug(`RealName is ${realName}`)
+        log.debug(`RealName is ${realName}`);
         // We need to load fields and defs into def var
         switch(libType) {
             case 'movie':
@@ -421,8 +422,9 @@ const et = new class ET {
         // this will return number of calls needed
         if (libType == 'playlist')
         {
-            libType = libType + '-' + store.getters.getSelectedPListType;
+            libType = libType + '-' + this.RevETmediaType[store.getters.getSelectedLibTypeSec].toLowerCase();
         }
+
         const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)
         return count

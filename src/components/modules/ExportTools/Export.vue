@@ -252,7 +252,6 @@
   },
   computed: {
     btnDisable: function(){
-      console.log('Ged 88 Btn Disable', this.selLevel, 'lib',this.selLibrary)
       if (this.selLevel !== "" && this.selLibrary!=='')
       {
         return false;
@@ -277,8 +276,15 @@
     getLevels: async function(){
       log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
       this.exportLevels = [];
-      const etLevel = et.getLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
-      const etCustomLevel = et.getCustomLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
+      let etLevel, etCustomLevel
+      if (this.selExpTypeMain == et.ETmediaType.Playlist){
+        const pLevel = 'playlist-' + et.RevETmediaType[this.selExpTypeSec].toLowerCase();
+        etLevel = et.getLevels(pLevel);
+        etCustomLevel = et.getCustomLevels(pLevel);
+      }else{
+        etLevel = et.getLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
+        etCustomLevel = et.getCustomLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
+      }
       const options = []
       const item = {}
       let custLabel = {}
@@ -347,14 +353,14 @@
       this.selLibrary = "";
       await this.$store.dispatch('fetchSections')
       const sections = await this.$store.getters.getPmsSections;
-      const pListType = this.$store.getters.getSelectedPListType;
+      //const pListType = this.$store.getters.getSelectedPListType;
       if (Array.isArray(sections) && sections.length) {
         sections.forEach(req => {
           //if (req.type == this.selMediaType) {
           if (req.type == reqType) {
             if (reqType == 'playlist')
             {
-              if (req.playlistType == pListType)
+              if (req.playlistType == (et.RevETmediaType[this.selExpTypeSec]).toString().toLowerCase())
               {
                 log.debug(`pushing library: ${req.title} to results`);
                 let item = [];
@@ -409,14 +415,10 @@
           // TV Episodes Selected
           this.selMediaType = et.ETmediaType.Playlist
           break;
-
-
-
         default:
           this.selMediaType = arguments[0]
           break;
       }
-      console.log('Ged 87   ***** LOOK HERE **** TODO ****')
       this.getLibs();
       this.getLevels();
     },

@@ -55,10 +55,7 @@ const actions = {
         var libType = (et.RevETmediaType[getters.getLibType]).toString().toLowerCase();
         var pListType = getters.getSelectedPListType;
         let levelName;
-        console.log('Ged 4-0')
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
-        console.log('Ged 4-1', libName)
-        console.log('Ged 4-2', libType)
         if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
         {
           levelName = 'All'
@@ -67,7 +64,6 @@ const actions = {
         {
           levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         }
-        console.log('Ged 5', libName, levelName, libType)
         excel2.createOutFile( {
           libName: libName,
           level: levelName,
