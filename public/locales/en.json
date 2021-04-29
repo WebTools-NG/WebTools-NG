@@ -132,6 +132,7 @@
         "ET": {
             "BuildInLevels": "*** Built-in levels ***",
             "Custom": {
+                "SelCustType": "Select the type of export you want to customize",
                 "Title": "Custom levels",
                 "Description": "A custom level allows you to create your own export levels",
                 "NewCustomLevel": "< Define new level >",

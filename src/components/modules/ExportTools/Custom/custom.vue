@@ -7,7 +7,7 @@
         <br />
 
         <!-- Media type to export -->
-        <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.HSelectMedia')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.Custom.SelCustType')" label-size="lg" label-class="font-weight-bold pt-0">
             <b-tooltip target="etTypeGroup" triggers="hover">
                 {{ $t('Modules.ET.TT-ETType') }}
             </b-tooltip>
