@@ -453,9 +453,21 @@ const et = new class ET {
     }
 
     getCustomLevels(libType) {
+        console.log('Ged 33', libType)
+        console.log('Ged 34', et.RevETmediaType[libType])
         const notDefined = {"No Level Yet": ""}
+        if ([ et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType))
+        //if (libType in [ et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video])
+        {
+            libType = 'playlist-' + et.RevETmediaType[libType];
+        }
+        else
+        {
+            libType = et.RevETmediaType[libType];
+        }
+        console.log('Ged 35', libType.toLowerCase())
         // Returns an json of custom levels for a selected type og medias, like 'movie'
-        const levels = wtconfig.get(`ET.CustomLevels.${libType}.levels`, notDefined)
+        const levels = wtconfig.get(`ET.CustomLevels.${libType.toLowerCase()}.levels`, notDefined)
         log.debug('ET Custom LevelNames: ' + JSON.stringify(levels))
         return levels
     }

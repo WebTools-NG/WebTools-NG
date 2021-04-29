@@ -132,7 +132,7 @@
         "ET": {
             "BuildInLevels": "*** Built-in levels ***",
             "Custom": {
-                "SelCustType": "Select the type of export you want to customize",
+                "selCustType": "Select type to customize",
                 "Title": "Custom levels",
                 "Description": "A custom level allows you to create your own export levels",
                 "NewCustomLevel": "< Define new level >",
@@ -150,7 +150,9 @@
                 "availFields": "Availible fields:",
                 "customFields": "Custom fields:",
                 "AlertSaved": "Custom level saved",
-                "TT-ETEditLevel": "Here you select the level to create/delete/edit"
+                "TT-ETEditLevel": "Here you select the level to create/delete/edit",
+                "TT-CustType": "Here you select the type of export you want to customize"
+
             },
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "ErrorBadSepTitle": "Column separator issue",
@@ -161,6 +163,20 @@
             "LevelInfo": "Export level determines which data are going to be exported.",
             "Name": "ExportTools",
             "NoLevelFound": "N/A",
+            "optCustExpType": {
+                "AudioAlbum": "Audio Album",
+                "AudioArtist": "Audio Artist",
+                "AudioTrack": "Audio Track",
+                "Libraries": "Libraries",
+                "Movies": "Movies",
+                "Photos": "Photos",
+                "PlaylistAudio": "Playlist Audio",
+                "PlaylistVideo": "Playlist Video",
+                "PlaylistPhoto": "Playlist Photo",
+                "TVEpisodes": "TV Episodes",
+                "TVSeries": "TV Shows"
+                
+            },
             "optExpType": {
                 "lblBtnExportMedia": "Export Media",
                 "lblExportLevel": "Export Level",
