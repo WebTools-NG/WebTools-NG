@@ -136,7 +136,8 @@ const et = new class ET {
         log.debug(`Got Step size as: ${step}`)
         let libSize, libKey, element
         //if (libType != 'libraryInfo')
-        if (['libraryInfo', 'playlistInfo'].indexOf(libType) < 0)
+        //if (['libraryInfo', 'playlistInfo'].indexOf(libType) < 0)
+        if ('playlistInfo' == libType)
         {
             log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}" and a sec type of: "${libTypeSec}"`)
             // Get Section Key
@@ -151,7 +152,6 @@ const et = new class ET {
             element = '/library/sections/all';
         }
         // Now read the fields and level defs
-
         // Current item
         let idx = 0
         // Now let's walk the section
@@ -168,7 +168,7 @@ const et = new class ET {
                 element = '/playlists/' + libKey;
                 postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
-            else if (libType == 'libraryInfo')
+            else if (libType == 'libraries')
             {
                 element = '/library/sections/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
@@ -300,10 +300,17 @@ const et = new class ET {
     }
 
     getLevelDisplayName(level, libType){
+        console.log('Ged3', level, ' - ', libType)
         // return displayname for the buildin levels
         if (libType == 'playlist')
         {
             libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+        }
+        if (libType == 'libraries')
+        //if (libType == et.RevETmediaType.Libraries)
+        {
+            level = 'all'
+            libType = 'libraryInfo';
         }
         const levels = et.getLevels(libType)
         let result = '';
@@ -351,6 +358,11 @@ const et = new class ET {
         {
             pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
             libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+        }
+        if (libType == 'libraries')
+        {
+            pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+            libType = 'libraryInfo';
         }
         let realName = et.getRealLevelName(level, libType);
         log.debug(`RealName is ${realName}`);
@@ -424,7 +436,10 @@ const et = new class ET {
         {
             libType = libType + '-' + this.RevETmediaType[store.getters.getSelectedLibTypeSec].toLowerCase();
         }
-
+        else if (libType == 'libraries')
+        {
+            libType = 'libraryInfo';
+        }
         const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)
         return count
@@ -1311,13 +1326,13 @@ const excel2 = new class Excel {
         var sectionData, x;
         {
             // Get all the items in small chuncks
-            sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType, libTypeSec: libTypeSec})
-            log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`)
-            let item
-            let counter = 1
+            sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType, libTypeSec: libTypeSec});
+            log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
+            let item;
+            let counter = 1;
             const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
             let jPath, sectionChunk;
-            if (libType == 'libraryInfo')
+            if (libType == 'libraries')
             {
                 jPath = "$.MediaContainer.Directory[*]";
             }

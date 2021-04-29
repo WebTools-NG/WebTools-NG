@@ -256,6 +256,11 @@
       {
         return false;
       }
+      else if ( this.selExpTypeSec == et.ETmediaType.Libraries)
+      {
+        this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
+        return false;
+      }
       else
       {
         return true;
@@ -419,8 +424,16 @@
           this.selMediaType = arguments[0]
           break;
       }
-      this.getLibs();
-      this.getLevels();
+      log.verbose(`Export Sec type selected: ${arguments[0]}`);
+      if ( arguments[0] == et.ETmediaType.Libraries)
+      {
+        log.info('Exporting library info');
+      }
+      else
+      {
+        this.getLibs();
+        this.getLevels();
+      }
     },
     selExpTypeMainChanged: async function(){
       this.optExpTypeSec = [];
