@@ -6,6 +6,7 @@
 * [#342 Rename "Export Arts"](https://github.com/WebTools-NG/WebTools-NG/issues/342)
 * [#345 Switch ET Export type selection](https://github.com/WebTools-NG/WebTools-NG/issues/345)
 * [#347 No Media Library is showing](https://github.com/WebTools-NG/WebTools-NG/issues/347)
+* [#349 Simplify ET Custom screen](https://github.com/WebTools-NG/WebTools-NG/issues/349)
 
 ## V0.3.4
 
