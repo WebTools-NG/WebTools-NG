@@ -283,8 +283,8 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('PMS.ContainerSize.playlist', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.playlist', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.libraryInfo', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.libraryInfo', 20)
+        if ( wtconfig.get('PMS.ContainerSize.libraries', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.libraries', 20)
         }
         if ( wtconfig.get('PMS.ContainerSize.playlistInfo', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.playlistInfo', 20)
