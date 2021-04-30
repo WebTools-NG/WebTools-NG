@@ -132,7 +132,20 @@
         "ET": {
             "BuildInLevels": "*** Built-in levels ***",
             "Custom": {
-                "selCustType": "Select type to customize",
+                "optCustExpType": {
+                    "AudioAlbum": "Audio Album",
+                    "AudioArtist": "Audio Artist",
+                    "AudioTrack": "Audio Track",
+                    "Libraries": "Libraries",
+                    "Movies": "Movies",
+                    "Photos": "Photos",
+                    "PlaylistAudio": "Playlist Audio",
+                    "PlaylistVideo": "Playlist Video",
+                    "PlaylistPhoto": "Playlist Photo",
+                    "TVEpisodes": "TV Episodes",
+                    "TVSeries": "TV Shows"
+                },
+                "SelCustType": "Select type to customize",
                 "Title": "Custom levels",
                 "Description": "A custom level allows you to create your own export levels",
                 "NewCustomLevel": "< Define new level >",
@@ -163,20 +176,7 @@
             "LevelInfo": "Export level determines which data are going to be exported.",
             "Name": "ExportTools",
             "NoLevelFound": "N/A",
-            "optCustExpType": {
-                "AudioAlbum": "Audio Album",
-                "AudioArtist": "Audio Artist",
-                "AudioTrack": "Audio Track",
-                "Libraries": "Libraries",
-                "Movies": "Movies",
-                "Photos": "Photos",
-                "PlaylistAudio": "Playlist Audio",
-                "PlaylistVideo": "Playlist Video",
-                "PlaylistPhoto": "Playlist Photo",
-                "TVEpisodes": "TV Episodes",
-                "TVSeries": "TV Shows"
-                
-            },
+            
             "optExpType": {
                 "lblBtnExportMedia": "Export Media",
                 "lblExportLevel": "Export Level",

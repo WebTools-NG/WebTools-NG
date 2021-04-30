@@ -453,8 +453,6 @@ const et = new class ET {
     }
 
     getCustomLevels(libType) {
-        console.log('Ged 33', libType)
-        console.log('Ged 34', et.RevETmediaType[libType])
         const notDefined = {"No Level Yet": ""}
         if ([ et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType))
         //if (libType in [ et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video])
@@ -465,7 +463,6 @@ const et = new class ET {
         {
             libType = et.RevETmediaType[libType];
         }
-        console.log('Ged 35', libType.toLowerCase())
         // Returns an json of custom levels for a selected type og medias, like 'movie'
         const levels = wtconfig.get(`ET.CustomLevels.${libType.toLowerCase()}.levels`, notDefined)
         log.debug('ET Custom LevelNames: ' + JSON.stringify(levels))
@@ -557,44 +554,47 @@ const et = new class ET {
     getAllFields( {libType}) {
         // We need to load fields and defs into typeFields var
         let typeFields;
-        switch(libType) {
-            case 'movie':
+        console.log('Ged 1', et.RevETmediaType[libType].toLowerCase())
+        console.log('Ged 2', libType)
+        //switch( et.RevETmediaType[libType].toLowerCase()) {
+        switch( libType ) {
+            case et.ETmediaType.Movie:
               // code block
               typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
               break;
-            case 'episode':
+            case et.ETmediaType.Episode:
               // code block
               typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
               break;
-            case 'show':
+            case et.ETmediaType.Show:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
                 break;
-            case 'artist':
+            case et.ETmediaType.Artist:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
-            case 'album':
+            case et.ETmediaType.Album:
                     // code block
                     typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Album.json')));
                     break;
-            case 'track':
+            case et.ETmediaType.Track:
                     // code block
                     typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
                     break;
-            case 'photo':
+            case et.ETmediaType.Photo:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
-            case 'playlist-audio':
+            case et.ETmediaType.Playlist_Audio:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-audio.json')));
                 break;
-            case 'playlist-photo':
+            case et.ETmediaType.Playlist_Photo:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-photo.json')));
                 break;
-            case 'playlist-video':
+            case et.ETmediaType.Playlist_Video:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-video.json')));
                 break;
@@ -602,7 +602,17 @@ const et = new class ET {
               // code block
           }
         // Get all the fields keys
-        var filteredFields = JSONPath({path: '$.' + libType + '.level.all.*', json: typeFields});
+        let filteredFields;
+        if ( [et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType) )
+        {
+            console.log('Ged 55 got playlist type')
+            filteredFields = JSONPath({path: '$.playlist-' + et.RevETmediaType[libType].toLowerCase() + '.level.all.*', json: typeFields});
+
+        }
+        else
+        {
+            filteredFields = JSONPath({path: '$.' + et.RevETmediaType[libType].toLowerCase() + '.level.all.*', json: typeFields});
+        }
         // Sort them, and add an index as well, so drageble is happy
         return filteredFields.sort().map((name, index) => {
             return { name, order: index + 1 };
