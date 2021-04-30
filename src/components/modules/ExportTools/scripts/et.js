@@ -550,13 +550,27 @@ const et = new class ET {
         return out
     }
 
+    // Returns the name of the libtype
+    getLibTypeName( libType) {
+        if (this.isPlaylist(libType))
+        {
+            return 'playlist-' + (et.RevETmediaType[libType]).toLowerCase();
+        }
+        else
+        {
+            return (et.RevETmediaType[libType]).toLowerCase();
+        }
+    }
+
+    // Returns true if libtype is a playlist
+    isPlaylist( libType ) {
+        return [et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType) == true;
+    }
+
     // Return all field keys defined for a lib type, in a sorted array of json, with an index
     getAllFields( {libType}) {
         // We need to load fields and defs into typeFields var
         let typeFields;
-        console.log('Ged 1', et.RevETmediaType[libType].toLowerCase())
-        console.log('Ged 2', libType)
-        //switch( et.RevETmediaType[libType].toLowerCase()) {
         switch( libType ) {
             case et.ETmediaType.Movie:
               // code block
@@ -603,9 +617,8 @@ const et = new class ET {
           }
         // Get all the fields keys
         let filteredFields;
-        if ( [et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType) )
+        if (this.isPlaylist(libType))
         {
-            console.log('Ged 55 got playlist type')
             filteredFields = JSONPath({path: '$.playlist-' + et.RevETmediaType[libType].toLowerCase() + '.level.all.*', json: typeFields});
 
         }

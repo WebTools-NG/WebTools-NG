@@ -163,7 +163,7 @@
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
                 // Get fields from config.json file
-                const revType =(et.RevETmediaType[this.selMediaType]).toLowerCase();
+                const revType = et.getLibTypeName(this.selMediaType);
                 let custLevel = wtconfig.get(`ET.CustomLevels.${revType}.level.${this.selCustLevel}`)
                 // Do we need to export posters?
                 if ( wtconfig.get(`ET.CustomLevels.${revType}.Posters.${this.selCustLevel}`, false) )
@@ -239,7 +239,7 @@
             // Hide Modal box
             this.$refs['showNewLevel'].hide();
             // Get current level names
-            const revSelMediaType = (et.RevETmediaType[this.selMediaType]).toLowerCase();
+            const revSelMediaType = et.getLibTypeName(this.selMediaType);
             let curLevels = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.levels`);
             // Add new level to JSON
             curLevels[this.NewLevelName] = this.NewLevelName;
@@ -268,7 +268,7 @@
             var fields = def['fields'];
             // Release def memory again
             def = null;
-            const revSelMediaType = (et.RevETmediaType[this.selMediaType]).toLowerCase();
+            const revSelMediaType = et.getLibTypeName(this.selMediaType);
             const levelFields = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.level.${this.selCustLevel}`);
             let curLevel = 0;
             levelFields.forEach(function (item) {
@@ -284,7 +284,6 @@
         },
         changeType: function() {
             // Triggers when lib type is changed
-            console.log('Ged 22', this.selMediaType)
             log.verbose(`Custom level type selected as ${(et.RevETmediaType[this.selMediaType]).toLowerCase()}`)
             this.genExportLevels();
             this.btnDeleteEnabled = false;
@@ -293,7 +292,7 @@
             this.fieldList = [];
         },
         deleteCustomLevel() {
-            const revSelCustLevel = (et.RevETmediaType[this.selMediaType]).toLowerCase();
+            const revSelCustLevel = et.getLibTypeName(this.selMediaType);
             log.info(`User confirmed to delete custom level: ${this.selCustLevel}`);
             this.$refs['confirmDeleteLevel'].hide();
             wtconfig.delete(`ET.CustomLevels.${revSelCustLevel}.levels.${this.selCustLevel}`);
@@ -323,7 +322,7 @@
                     result.push(this.resultList[k].name);
                 }
             }
-            const revSelMediaType = (et.RevETmediaType[this.selMediaType]).toLowerCase();
+            const revSelMediaType = et.getLibTypeName(this.selMediaType);
             wtconfig.set(`ET.CustomLevels.${revSelMediaType}.Posters.${this.selCustLevel}`, bExportPosters);
             wtconfig.set(`ET.CustomLevels.${revSelMediaType}.Art.${this.selCustLevel}`, bExportArt);
             // Get current level names
