@@ -1,5 +1,9 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.8
+
+* [#357 Default "Original Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/357)
+
 ## V0.3.7
 
 * [#355 ET no output produced](https://github.com/WebTools-NG/WebTools-NG/issues/355)

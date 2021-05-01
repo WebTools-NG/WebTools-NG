@@ -803,8 +803,9 @@ const excel2 = new class Excel {
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
                     {
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
                         // Override with title if not found
-                        if (val == wtconfig.get('ET.NotAvail'))
+                        if (val == compNA)
                         {
                             retVal = title;
                         }
@@ -819,7 +820,8 @@ const excel2 = new class Excel {
                     if (wtconfig.get('ET.SortTitleNull'))
                     {
                         // Override with title if not found
-                        if (val == wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV'))
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        if (val == compNA)
                         {
                             retVal = title;
                         }
@@ -829,7 +831,8 @@ const excel2 = new class Excel {
                     }
                     else
                     {
-                        if (val == wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV'))
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        if (val == compNA)
                         {
                             retVal = wtconfig.get('ET.NotAvail');
                         }
