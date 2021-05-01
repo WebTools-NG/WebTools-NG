@@ -11,8 +11,3 @@
 NOTE: This is currently in **BETA**
 
 Please see the [wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
-
-**KNOWN ISSUE:**
-
-If you don't have at least one playlist, ET Module will not show the list of libraries
-Fix slated for next release
