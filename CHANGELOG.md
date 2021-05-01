@@ -1,5 +1,9 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.6
+
+* [#353 Levels can't be selected](https://github.com/WebTools-NG/WebTools-NG/issues/353)
+
 ## V0.3.5
 
 * [#339 IMDB ID not available for movies](https://github.com/WebTools-NG/WebTools-NG/issues/339)
