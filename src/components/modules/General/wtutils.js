@@ -392,16 +392,9 @@ const wtutils = new class WTUtils {
             wtconfig.set('ET.CustomLevels.2002.level', {})
         }
         // rename cust levels
-        console.log('Ged 9999', wtconfig.get('ET.CustomLevels.movie', 'N/A'))
-        console.log('Ged 9999-1', wtconfig.get('ET.CustomLevels.gummiged', 'N/A'))
         if ( wtconfig.get('ET.CustomLevels.movie', 'N/A') != 'N/A' ){
-            console.log('Ged 9999-2 found movie')
             wtconfig.set('ET.CustomLevels.1', wtconfig.get('ET.CustomLevels.movie', 'N/A'));
             wtconfig.delete('ET.CustomLevels.movie');
-        }
-        else
-        {
-            console.log('Ged 9999-3 movie NOT FOUND')
         }
         if ( wtconfig.get('ET.CustomLevels.show', 'N/A') != 'N/A' ){
             wtconfig.set('ET.CustomLevels.2', wtconfig.get('ET.CustomLevels.show', 'N/A'));

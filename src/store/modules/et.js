@@ -58,16 +58,14 @@ const actions = {
         //var pListType = getters.getSelectedPListType;
         let levelName;
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
-        if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
+        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
         {
           levelName = 'All'
         }
         else
         {
-          console.log('Ged 9-0', getters.getSelectedExportLevel, '*', libType, '*')
           levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         }
-        console.log('Ged 9 start create', levelName, '*')
         excel2.createOutFile( {
           libName: libName,
           level: levelName,

@@ -163,15 +163,14 @@
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
                 // Get fields from config.json file
-                const revType = et.getLibTypeName(this.selMediaType);
-                let custLevel = wtconfig.get(`ET.CustomLevels.${revType}.level.${this.selCustLevel}`)
+                let custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
                 // Do we need to export posters?
-                if ( wtconfig.get(`ET.CustomLevels.${revType}.Posters.${this.selCustLevel}`, false) )
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, false) )
                 {
                     custLevel.push("Export Posters");
                 }
                 // Do we need to export art?
-                if ( wtconfig.get(`ET.CustomLevels.${revType}.Art.${this.selCustLevel}`, false) )
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, false) )
                 {
                     custLevel.push("Export Art");
                 }
@@ -239,24 +238,24 @@
             // Hide Modal box
             this.$refs['showNewLevel'].hide();
             // Get current level names
-            const revSelMediaType = et.getLibTypeName(this.selMediaType);
-            let curLevels = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.levels`);
+            //const revSelMediaType = et.getLibTypeName(this.selMediaType);
+            let curLevels = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.levels`);
             // Add new level to JSON
             curLevels[this.NewLevelName] = this.NewLevelName;
             // Save
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.levels`, curLevels);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.levels`, curLevels);
             // Get current level counts
-            let curLevelCount = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.LevelCount`);
+            let curLevelCount = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.LevelCount`);
             // Add new level to JSON
             curLevelCount[this.NewLevelName] = 0;
             // Save
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.LevelCount`, curLevelCount);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount`, curLevelCount);
             // Get current level names
-            let curLevel = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.level`);
+            let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);
             // Add new level to JSON
             curLevel[this.NewLevelName] = [];
             // Save
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.level`, curLevel);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel);
             // Update combobox
             this.genExportLevels();
             //this.exportLevels;
@@ -268,8 +267,9 @@
             var fields = def['fields'];
             // Release def memory again
             def = null;
-            const revSelMediaType = et.getLibTypeName(this.selMediaType);
-            const levelFields = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.level.${this.selCustLevel}`);
+            //const revSelMediaType = et.getLibTypeName(this.selMediaType);
+            //const levelFields = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.level.${this.selCustLevel}`);
+            const levelFields = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
             let curLevel = 0;
             levelFields.forEach(function (item) {
                 // Get field level
@@ -279,8 +279,8 @@
                     curLevel = count;
                 }
             });
-            log.info(`LevelCount for "${this.selCustLevel}" of the type "${revSelMediaType}" was calculated as:${curLevel}`);
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.LevelCount.${this.selCustLevel}`, curLevel);
+            log.info(`LevelCount for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${curLevel}`);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount.${this.selCustLevel}`, curLevel);
         },
         changeType: function() {
             // Triggers when lib type is changed
@@ -292,14 +292,14 @@
             this.fieldList = [];
         },
         deleteCustomLevel() {
-            const revSelCustLevel = et.getLibTypeName(this.selMediaType);
+            //const revSelCustLevel = et.getLibTypeName(this.selMediaType);
             log.info(`User confirmed to delete custom level: ${this.selCustLevel}`);
             this.$refs['confirmDeleteLevel'].hide();
-            wtconfig.delete(`ET.CustomLevels.${revSelCustLevel}.levels.${this.selCustLevel}`);
-            wtconfig.delete(`ET.CustomLevels.${revSelCustLevel}.LevelCount.${this.selCustLevel}`);
-            wtconfig.delete(`ET.CustomLevels.${revSelCustLevel}.level.${this.selCustLevel}`);
-            wtconfig.delete(`ET.CustomLevels.${revSelCustLevel}.Posters.${this.selCustLevel}`);
-            wtconfig.delete(`ET.CustomLevels.${revSelCustLevel}.Art.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.levels.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.LevelCount.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`);
             this.genExportLevels();
             this.resultList = [];
         },
@@ -322,15 +322,14 @@
                     result.push(this.resultList[k].name);
                 }
             }
-            const revSelMediaType = et.getLibTypeName(this.selMediaType);
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.Posters.${this.selCustLevel}`, bExportPosters);
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.Art.${this.selCustLevel}`, bExportArt);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, bExportPosters);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, bExportArt);
             // Get current level names
-            let curLevel = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.level`);
+            let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);
             // Add new level to JSON
             curLevel[this.selCustLevel] = result;
             log.info(`Saving custom level ${this.selCustLevel} as ${JSON.stringify(result)}`)
-            wtconfig.set(`ET.CustomLevels.${revSelMediaType}.level`, curLevel);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel);
             // Now we need to update levelcount for the level
             this.updateLevelCount();
             alert( i18n.t("Modules.ET.Custom.AlertSaved"));

@@ -119,6 +119,10 @@ const et = new class ET {
                 {
                     "text": i18n.t('Modules.ET.optExpType.SecPlaylistPhoto'),
                     "value": this.ETmediaType.Playlist_Photo
+                },
+                {
+                    "text": i18n.t('Modules.ET.optExpType.SecPlaylists'),
+                    "value": this.ETmediaType.Playlists
                 }
             ],
             1001: [
@@ -136,34 +140,17 @@ const et = new class ET {
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + libType, 20)
         log.debug(`Got Step size as: ${step}`)
-        let libSize, libKey, element
+        let libKey, element
 
         // Get Section Key
         libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
         log.debug(`Got SectionKey as: ${libKey}`)
-
-        //if (libType != 'libraryInfo')
-        //if (['libraryInfo', 'playlistInfo'].indexOf(libType) < 0)
-        if ('playlistInfo' == libType)
-        {
-            log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}" and a sec type of: "${libTypeSec}"`)
-
-            // Get the size of the library
-            libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
-            log.debug(`Got Section size as: ${libSize}`);
-        }
-        else
-        {
-            console.log('Ged 6 not PList')
-            element = '/library/sections/all';
-        }
         // Now read the fields and level defs
         // Current item
         let idx = 0
         // Now let's walk the section
         let chuncks, postURI
         let size
-        console.log('Ged 22', libType)
         do {
             if (libType == et.ETmediaType.Photo)
             {
@@ -247,20 +234,15 @@ const et = new class ET {
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         let levelName
-        console.log('Ged 11', level, '*', libType, '*')
-        if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
-        //if (et.isPlaylist( libType ))
+        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
         {
             levelName = 'all';
         }
         else
         {
-            console.log('Ged 11-2')
             if (libType == et.ETmediaType.Playlist)
             {
-                console.log('Ged 11-3')
                 libType = store.getters.getSelectedLibTypeSec.toString();
-                //libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
             }
             levelName = defLevels[libType]['levels'][level]
             if (levelName == undefined)
@@ -314,21 +296,16 @@ const et = new class ET {
     }
 
     getLevelDisplayName(level, libType){
-        console.log('Ged 3', level, '*', libType, '*')
         // return displayname for the buildin levels
-         
         if (libType == et.ETmediaType.Playlist)
         {
             libType = store.getters.getSelectedLibTypeSec;
         }
- 
         if (libType == et.ETmediaType.Libraries)
         {
             level = 'all'
-           // libType = 'libraryInfo';
         }
         const levels = et.getLevels(libType)
-        console.log('Ged 3-2', levels, '*')
         let result = '';
         loop1:
             for(var key in levels){
@@ -338,15 +315,11 @@ const et = new class ET {
                     break loop1;
                 }
             }
-        console.log('Ged 3-2-1', result, '*')
         if ( result == '')
         {
-            console.log('Ged 3-3-0', libType, '*')
             // We need to check custom levels
-            console.log('Ged 3-3-0-1', et.RevETmediaType[libType])
             //const customLevels = et.getCustomLevels(et.RevETmediaType[libType])
             const customLevels = et.getCustomLevels(libType)
-            console.log('Ged 3-3-1', customLevels, '*')
             loop2:
                 for(key in customLevels){
                     if ( customLevels[key] == level)
@@ -372,20 +345,12 @@ const et = new class ET {
         return result;
     }
 
-    getLevelFields(level, libType, pListType) {
+    getLevelFields(level, libType) {
         // return fields in a level
-        console.log('Ged 7', level, '*', libType, '*', pListType, '*')
         const out = []
         if (libType == et.ETmediaType.Playlist)
         {
-            //pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
-            //libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
             libType = store.getters.getSelectedLibTypeSec;
-        }
-        if (libType == 'libraries')
-        {
-            pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
-            libType = 'libraryInfo';
         }
         let realName = et.getRealLevelName(level, libType);
         log.debug(`RealName is ${realName}`);
@@ -441,11 +406,7 @@ const et = new class ET {
               // code block
               log.error(`Unknown libtype: "${libType}" or level: "${level}" in "getLevelFields"`);
           }
-        console.log('Ged 7-0', libType)
-        console.log('Ged 7-1', JSON.stringify(def))
-        console.log('Ged 7-1-1', JSON.stringify(def[libType.toString()]))  
         let levels = def[libType.toString()]['level'][realName];
-        console.log('Ged 7-2', JSON.stringify(levels))
         if (levels == undefined)
         {
             // We are dealing with a custom level
@@ -461,8 +422,6 @@ const et = new class ET {
         // this will return number of calls needed
         if (libType == et.ETmediaType.Playlist)
         {
-            console.log('Ged 99 playlist', libType)
-            //libType = libType + '-' + this.RevETmediaType[store.getters.getSelectedLibTypeSec].toLowerCase();
             libType = store.getters.getSelectedLibTypeSec.toString();
         }
         else if (libType == et.ETmediaType.Libraries)
@@ -476,14 +435,6 @@ const et = new class ET {
 
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
-        console.log('Ged 8', libType, '*')
-        const lookupType = libType.toString()
-        console.log('Ged 8-0', lookupType, '*')
-        //console.log('Ged 8-1', (et.RevETmediaType[libType]));
-       // console.log('Ged 8-2', (et.RevETmediaType[libType]).toLowerCase());
-        console.log('Ged 8-3', JSON.stringify(defLevels))
-        console.log('Ged 8-4', JSON.stringify(defLevels[lookupType]))
-        console.log('Ged 8-5', JSON.stringify(defLevels[libType]['levels']))
         const levels = defLevels[libType]['levels']
         log.debug(`ET LevelNames: ${JSON.stringify(levels)}`);
         return levels
@@ -550,10 +501,10 @@ const et = new class ET {
     }
 
 
-    getFieldsKeyVal( libType, level, pListType) {
+    getFieldsKeyVal( libType, level) {
         // Get fields for level
         let fields
-        fields = et.getLevelFields(level, libType, pListType)
+        fields = et.getLevelFields(level, libType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -563,9 +514,9 @@ const et = new class ET {
         return out
     }
 
-    getFieldsKeyValType( libType, level, pListType) {
+    getFieldsKeyValType( libType, level) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType, pListType)
+        const fields = et.getLevelFields(level, libType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -617,13 +568,13 @@ const et = new class ET {
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
             case et.ETmediaType.Album:
-                    // code block
-                    typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Album.json')));
-                    break;
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Album.json')));
+                break;
             case et.ETmediaType.Track:
-                    // code block
-                    typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
-                    break;
+                // code block
+                typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
+                break;
             case et.ETmediaType.Photo:
                 // code block
                 typeFields = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
@@ -644,25 +595,16 @@ const et = new class ET {
               // code block
           }
         // Get all the fields keys
-        let filteredFields;
-        if (this.isPlaylist(libType))
-        {
-            filteredFields = JSONPath({path: '$.playlist-' + et.RevETmediaType[libType].toLowerCase() + '.level.all.*', json: typeFields});
-
-        }
-        else
-        {
-            filteredFields = JSONPath({path: '$.' + et.RevETmediaType[libType].toLowerCase() + '.level.all.*', json: typeFields});
-        }
+        const filteredFields = JSONPath({path: '$.' + libType.toString() + '.level.all.*', json: typeFields});
         // Sort them, and add an index as well, so drageble is happy
         return filteredFields.sort().map((name, index) => {
             return { name, order: index + 1 };
         });
     }
 
-    getFields( libType, level, pListType) {
+    getFields( libType, level) {
         // Get field and type for level
-        const fields = et.getLevelFields(level, libType, pListType)
+        const fields = et.getLevelFields(level, libType)
         const out = []
         fields.forEach(element => {
             const item = {}
@@ -752,11 +694,11 @@ const excel2 = new class Excel {
         return sheet
     }
 
-    GetHeader(Level, libType, pListType) {
+    GetHeader(Level, libType) {
         const columns = []
         log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        const fields = et.getLevelFields(Level, libType, pListType)
+        const fields = et.getLevelFields(Level, libType)
         for (var i=0; i<fields.length; i++) {
             log.verbose(`Column: ${fields[i]}`)
             columns.push(fields[i])
@@ -764,11 +706,11 @@ const excel2 = new class Excel {
         return columns
     }
 
-    async AddHeader(Sheet, Level, libType, pListType) {
+    async AddHeader(Sheet, Level, libType) {
         const columns = []
         log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
-        const fields = et.getLevelFields(Level, libType, pListType)
+        const fields = et.getLevelFields(Level, libType)
         for (var i=0; i<fields.length; i++) {
             log.verbose('Column: ' + fields[i] + ' - ' + fields[i])
             let column = { header: fields[i], key: fields[i], width: 5 }
@@ -792,9 +734,6 @@ const excel2 = new class Excel {
     }
 
     async getFileName({ Library, Level, Type, Module, exType }){
-        console.log('Ged 13', exType, '*')
-        console.log('Ged 13-2', et.RevETmediaType[exType.toString()], '*')
-        //console.log('Ged 13-3', this.ETmediaType[exType], '*')
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
@@ -1398,11 +1337,11 @@ const excel2 = new class Excel {
             let counter = 1;
             const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
             let jPath, sectionChunk;
-            if (libType == 'libraries')
+            if (libType == et.ETmediaType.Libraries)
             {
                 jPath = "$.MediaContainer.Directory[*]";
             }
-            else if (libType == 'playlistInfo')
+            else if (libType == et.ETmediaType.Playlists)
             {
                 jPath = "$.MediaContainer.Metadata[*]";
             }
