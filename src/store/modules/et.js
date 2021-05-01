@@ -52,8 +52,10 @@ const actions = {
     exportMedias({ getters }) {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
-        var libType = (et.RevETmediaType[getters.getLibType]).toString().toLowerCase();
-        var pListType = getters.getSelectedPListType;
+        //var libType = (et.RevETmediaType[getters.getLibType]).toString().toLowerCase();
+        var libType = getters.getLibType;
+        var pListType = getters.getSelectedLibTypeSec;
+        //var pListType = getters.getSelectedPListType;
         let levelName;
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
@@ -62,8 +64,10 @@ const actions = {
         }
         else
         {
+          console.log('Ged 9-0', getters.getSelectedExportLevel, '*', libType, '*')
           levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
         }
+        console.log('Ged 9 start create', levelName, '*')
         excel2.createOutFile( {
           libName: libName,
           level: levelName,

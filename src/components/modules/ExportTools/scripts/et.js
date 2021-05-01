@@ -44,6 +44,7 @@ const et = new class ET {
             Playlist_Audio: 2001,
             Playlist_Video: 2002,
             Playlist_Photo: 2003,
+            Playlists: 3001
         },
         this.RevETmediaType = {
             1: 'Movie',
@@ -66,7 +67,8 @@ const et = new class ET {
             1002: 'Libraries',
             2001: 'Audio',
             2002: 'Video',
-            2003: 'Photo'
+            2003: 'Photo',
+            3001: 'Playlists'
         },
         this.selSecOption ={
             1: [
@@ -132,23 +134,27 @@ const et = new class ET {
     {
         const sectionData = []
         // Find LibType steps
-        const step = wtconfig.get("PMS.ContainerSize." + libType)
+        const step = wtconfig.get("PMS.ContainerSize." + libType, 20)
         log.debug(`Got Step size as: ${step}`)
         let libSize, libKey, element
+
+        // Get Section Key
+        libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
+        log.debug(`Got SectionKey as: ${libKey}`)
+
         //if (libType != 'libraryInfo')
         //if (['libraryInfo', 'playlistInfo'].indexOf(libType) < 0)
         if ('playlistInfo' == libType)
         {
             log.info(`Starting getSectionData with Name: "${sectionName}" and with a type of: "${libType}" and a sec type of: "${libTypeSec}"`)
-            // Get Section Key
-            libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
-            log.debug(`Got SectionKey as: ${libKey}`)
+
             // Get the size of the library
             libSize = await et.getSectionSizeByKey({sectionKey: libKey, baseURL: baseURL, accessToken: accessToken, libType: libType})
             log.debug(`Got Section size as: ${libSize}`);
         }
         else
         {
+            console.log('Ged 6 not PList')
             element = '/library/sections/all';
         }
         // Now read the fields and level defs
@@ -157,23 +163,24 @@ const et = new class ET {
         // Now let's walk the section
         let chuncks, postURI
         let size
+        console.log('Ged 22', libType)
         do {
-            if (libType == 'photo')
+            if (libType == et.ETmediaType.Photo)
             {
                 element = '/library/sections/' + libKey + '/all';
                 postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${libTypeSec}&${this.uriParams}`;
             }
-            else if (libType == 'playlist')
+            else if (libType == et.ETmediaType.Playlist)
             {
                 element = '/playlists/' + libKey;
                 postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
-            else if (libType == 'libraries')
+            else if (libType == et.ETmediaType.Libraries)
             {
                 element = '/library/sections/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
-            else if (libType == 'playlistInfo')
+            else if (libType == et.ETmediaType.Playlists)
             {
                 element = '/playlists/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
@@ -183,7 +190,7 @@ const et = new class ET {
                 element = '/library/sections/' + libKey + '/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${libTypeSec}&${this.uriParams}`;
             }
-            log.info(`Calling url ${baseURL + element + postURI}`);
+            log.info(`Calling getSectionData url ${baseURL + element + postURI}`);
             chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
@@ -193,6 +200,8 @@ const et = new class ET {
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
         } while (size > 1);
+        log.silly(`SectionData to return is:`);
+        log.silly(JSON.stringify(sectionData));
         return sectionData;
     }
 
@@ -238,15 +247,20 @@ const et = new class ET {
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         let levelName
+        console.log('Ged 11', level, '*', libType, '*')
         if (['libraryInfo', 'playlistInfo'].indexOf(libType) > -1)
+        //if (et.isPlaylist( libType ))
         {
             levelName = 'all';
         }
         else
         {
-            if (libType == 'playlist')
+            console.log('Ged 11-2')
+            if (libType == et.ETmediaType.Playlist)
             {
-                libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+                console.log('Ged 11-3')
+                libType = store.getters.getSelectedLibTypeSec.toString();
+                //libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
             }
             levelName = defLevels[libType]['levels'][level]
             if (levelName == undefined)
@@ -300,18 +314,21 @@ const et = new class ET {
     }
 
     getLevelDisplayName(level, libType){
+        console.log('Ged 3', level, '*', libType, '*')
         // return displayname for the buildin levels
-        if (libType == 'playlist')
+         
+        if (libType == et.ETmediaType.Playlist)
         {
-            libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+            libType = store.getters.getSelectedLibTypeSec;
         }
-        if (libType == 'libraries')
-        //if (libType == et.RevETmediaType.Libraries)
+ 
+        if (libType == et.ETmediaType.Libraries)
         {
             level = 'all'
-            libType = 'libraryInfo';
+           // libType = 'libraryInfo';
         }
         const levels = et.getLevels(libType)
+        console.log('Ged 3-2', levels, '*')
         let result = '';
         loop1:
             for(var key in levels){
@@ -321,10 +338,15 @@ const et = new class ET {
                     break loop1;
                 }
             }
+        console.log('Ged 3-2-1', result, '*')
         if ( result == '')
         {
+            console.log('Ged 3-3-0', libType, '*')
             // We need to check custom levels
+            console.log('Ged 3-3-0-1', et.RevETmediaType[libType])
+            //const customLevels = et.getCustomLevels(et.RevETmediaType[libType])
             const customLevels = et.getCustomLevels(libType)
+            console.log('Ged 3-3-1', customLevels, '*')
             loop2:
                 for(key in customLevels){
                     if ( customLevels[key] == level)
@@ -352,11 +374,13 @@ const et = new class ET {
 
     getLevelFields(level, libType, pListType) {
         // return fields in a level
+        console.log('Ged 7', level, '*', libType, '*', pListType, '*')
         const out = []
-        if (libType == 'playlist')
+        if (libType == et.ETmediaType.Playlist)
         {
-            pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
-            libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+            //pListType = (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+            //libType = libType + '-' + (et.RevETmediaType[store.getters.getSelectedLibTypeSec]).toString().toLowerCase();
+            libType = store.getters.getSelectedLibTypeSec;
         }
         if (libType == 'libraries')
         {
@@ -367,57 +391,61 @@ const et = new class ET {
         log.debug(`RealName is ${realName}`);
         // We need to load fields and defs into def var
         switch(libType) {
-            case 'movie':
+            case et.ETmediaType.Movie:
               // code block
               def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
               break;
-            case 'episode':
+            case et.ETmediaType.Episode:
               // code block
               def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
               break;
-            case 'show':
+            case et.ETmediaType.Show:
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
                 break;
-            case 'artist':
+            case et.ETmediaType.Artist:
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Artist.json')));
                 break;
-            case 'track':
-                    // code block
-                    def = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
-                    break;
-            case 'album':
+            case et.ETmediaType.Track:
+                // code block
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Track.json')));
+                break;
+            case et.ETmediaType.Album:
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Album.json')));
                 break;
-            case 'photo':
+            case et.ETmediaType.Photo:
                 // code block
                 def = JSON.parse(JSON.stringify(require('./../defs/def-Photo.json')));
                 break;
-            case 'playlist-audio':
+            case et.ETmediaType.Playlist_Audio:
                 // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-audio.json')));
                 break;
-            case 'playlist-photo':
+            case et.ETmediaType.Playlist_Photo:
                 // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-photo.json')));
                 break;
-            case 'playlist-video':
+            case et.ETmediaType.Playlist_Video:
                 // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-' + pListType + '.json')));
+                def = JSON.parse(JSON.stringify(require('./../defs/def-Playlist-video.json')));
                 break;
-            case 'libraryInfo':
+            case et.ETmediaType.Libraries:
                 def = JSON.parse(JSON.stringify(require('./../defs/def-LibraryInfo.json')));
                 break;
-            case 'playlistInfo':
+            case et.ETmediaType.Playlists:
                 def = JSON.parse(JSON.stringify(require('./../defs/def-PlaylistInfo.json')));
                 break;
             default:
               // code block
               log.error(`Unknown libtype: "${libType}" or level: "${level}" in "getLevelFields"`);
           }
-        let levels = def[libType]['level'][realName];
+        console.log('Ged 7-0', libType)
+        console.log('Ged 7-1', JSON.stringify(def))
+        console.log('Ged 7-1-1', JSON.stringify(def[libType.toString()]))  
+        let levels = def[libType.toString()]['level'][realName];
+        console.log('Ged 7-2', JSON.stringify(levels))
         if (levels == undefined)
         {
             // We are dealing with a custom level
@@ -431,13 +459,15 @@ const et = new class ET {
 
     async getLevelCall (libType, level) {
         // this will return number of calls needed
-        if (libType == 'playlist')
+        if (libType == et.ETmediaType.Playlist)
         {
-            libType = libType + '-' + this.RevETmediaType[store.getters.getSelectedLibTypeSec].toLowerCase();
+            console.log('Ged 99 playlist', libType)
+            //libType = libType + '-' + this.RevETmediaType[store.getters.getSelectedLibTypeSec].toLowerCase();
+            libType = store.getters.getSelectedLibTypeSec.toString();
         }
-        else if (libType == 'libraries')
+        else if (libType == et.ETmediaType.Libraries)
         {
-            libType = 'libraryInfo';
+            libType = store.getters.getSelectedLibTypeSec.toString();
         }
         const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)
@@ -446,6 +476,14 @@ const et = new class ET {
 
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
+        console.log('Ged 8', libType, '*')
+        const lookupType = libType.toString()
+        console.log('Ged 8-0', lookupType, '*')
+        //console.log('Ged 8-1', (et.RevETmediaType[libType]));
+       // console.log('Ged 8-2', (et.RevETmediaType[libType]).toLowerCase());
+        console.log('Ged 8-3', JSON.stringify(defLevels))
+        console.log('Ged 8-4', JSON.stringify(defLevels[lookupType]))
+        console.log('Ged 8-5', JSON.stringify(defLevels[libType]['levels']))
         const levels = defLevels[libType]['levels']
         log.debug(`ET LevelNames: ${JSON.stringify(levels)}`);
         return levels
@@ -453,18 +491,9 @@ const et = new class ET {
 
     getCustomLevels(libType) {
         const notDefined = {"No Level Yet": ""}
-        if ([ et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType))
-        //if (libType in [ et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video])
-        {
-            libType = 'playlist-' + et.RevETmediaType[libType];
-        }
-        else
-        {
-            libType = et.RevETmediaType[libType];
-        }
         // Returns an json of custom levels for a selected type og medias, like 'movie'
-        const levels = wtconfig.get(`ET.CustomLevels.${libType.toLowerCase()}.levels`, notDefined)
-        log.debug('ET Custom LevelNames: ' + JSON.stringify(levels))
+        const levels = wtconfig.get(`ET.CustomLevels.${libType}.levels`, notDefined);
+        log.debug('ET Custom LevelNames: ' + JSON.stringify(levels));
         return levels
     }
 
@@ -763,13 +792,16 @@ const excel2 = new class Excel {
     }
 
     async getFileName({ Library, Level, Type, Module, exType }){
+        console.log('Ged 13', exType, '*')
+        console.log('Ged 13-2', et.RevETmediaType[exType.toString()], '*')
+        //console.log('Ged 13-3', this.ETmediaType[exType], '*')
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
         const path = require('path');
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += Library + '_';
-        outFile += exType + '_';
+        outFile += et.RevETmediaType[exType.toString()] + '_';
         outFile += Level + '_';
         outFile += timeStamp + '.' + Type;
         const targetDir = path.join(

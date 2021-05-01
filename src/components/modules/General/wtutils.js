@@ -259,35 +259,35 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('PMS.TimeOut', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.TimeOut', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.artist', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.artist', 20)
+        if ( wtconfig.get('PMS.ContainerSize.8', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.8', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.episode', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.episode', 20)
+        if ( wtconfig.get('PMS.ContainerSize.4', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.4', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.movie', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.movie', 20)
+        if ( wtconfig.get('PMS.ContainerSize.1', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.1', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.photo', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.photo', 20)
+        if ( wtconfig.get('PMS.ContainerSize.13', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.13', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.show', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.show', 20)
+        if ( wtconfig.get('PMS.ContainerSize.2', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.2', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.track', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.track', 20)
+        if ( wtconfig.get('PMS.ContainerSize.10', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.10', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.album', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.album', 20)
+        if ( wtconfig.get('PMS.ContainerSize.9', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.9', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.playlist', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.playlist', 20)
+        if ( wtconfig.get('PMS.ContainerSize.15', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.15', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.libraries', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.libraries', 20)
+        if ( wtconfig.get('PMS.ContainerSize.1002', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.1002', 20)
         }
-        if ( wtconfig.get('PMS.ContainerSize.playlistInfo', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.playlistInfo', 20)
+        if ( wtconfig.get('PMS.ContainerSize.3001', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.ContainerSize.3001', 20)
         }
         // ET Settings
         if ( wtconfig.get('ET.ArraySep', 'N/A') == 'N/A' ){
@@ -299,97 +299,155 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('ET.NotAvail', 'N/A') == 'N/A' ){
             wtconfig.set('ET.NotAvail', 'N/A')
         }
-        if ( wtconfig.get('ET.CustomLevels.episode.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.episode.levels', {})
+        // CustLevels sub keys
+        if ( wtconfig.get('ET.CustomLevels.4.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.4.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.episode.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.episode.level', {})
+        if ( wtconfig.get('ET.CustomLevels.4.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.4.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.episode.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.episode.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.4.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.4.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.movie.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.movie.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.1.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.1.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.movie.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.movie.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.1.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.1.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.movie.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.movie.level', {})
+        if ( wtconfig.get('ET.CustomLevels.1.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.1.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.show.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.show.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.2.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.show.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.show.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.2.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.show.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.show.level', {})
+        if ( wtconfig.get('ET.CustomLevels.2.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.artist.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.artist.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.8.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.8.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.artist.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.artist.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.8.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.8.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.artist.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.artist.level', {})
+        if ( wtconfig.get('ET.CustomLevels.8.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.8.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.track.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.track.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.10.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.10.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.track.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.track.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.10.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.10.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.track.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.track.level', {})
+        if ( wtconfig.get('ET.CustomLevels.10.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.10.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.album.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.album.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.9.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.9.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.album.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.album.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.9.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.9.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.album.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.album.level', {})
+        if ( wtconfig.get('ET.CustomLevels.9.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.9.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.photo.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.photo.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.13.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.13.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.photo.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.photo.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.13.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.13.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.photo.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.photo.level', {})
+        if ( wtconfig.get('ET.CustomLevels.13.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.13.level', {})
         }
         // Playlists
-        if ( wtconfig.get('ET.CustomLevels.playlist-audio.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-audio.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.2001.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2001.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-audio.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-audio.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.2001.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2001.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-audio.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-audio.level', {})
+        if ( wtconfig.get('ET.CustomLevels.2001.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2001.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-photo.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-photo.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.2003.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2003.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-photo.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-photo.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.2003.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2003.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-photo.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-photo.level', {})
+        if ( wtconfig.get('ET.CustomLevels.2003.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2003.level', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-video.levels', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-video.levels', {})
+        if ( wtconfig.get('ET.CustomLevels.2002.levels', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2002.levels', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-video.LevelCount', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-video.LevelCount', {})
+        if ( wtconfig.get('ET.CustomLevels.2002.LevelCount', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2002.LevelCount', {})
         }
-        if ( wtconfig.get('ET.CustomLevels.playlist-video.level', 'N/A') == 'N/A' ){
-            wtconfig.set('ET.CustomLevels.playlist-video.level', {})
+        if ( wtconfig.get('ET.CustomLevels.2002.level', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2002.level', {})
         }
+        // rename cust levels
+        console.log('Ged 9999', wtconfig.get('ET.CustomLevels.movie', 'N/A'))
+        console.log('Ged 9999-1', wtconfig.get('ET.CustomLevels.gummiged', 'N/A'))
+        if ( wtconfig.get('ET.CustomLevels.movie', 'N/A') != 'N/A' ){
+            console.log('Ged 9999-2 found movie')
+            wtconfig.set('ET.CustomLevels.1', wtconfig.get('ET.CustomLevels.movie', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.movie');
+        }
+        else
+        {
+            console.log('Ged 9999-3 movie NOT FOUND')
+        }
+        if ( wtconfig.get('ET.CustomLevels.show', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2', wtconfig.get('ET.CustomLevels.show', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.show');
+        }
+        if ( wtconfig.get('ET.CustomLevels.episode', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.4', wtconfig.get('ET.CustomLevels.episode', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.episode');
+        }
+        if ( wtconfig.get('ET.CustomLevels.artist', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.8', wtconfig.get('ET.CustomLevels.artist', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.artist');
+        }
+        if ( wtconfig.get('ET.CustomLevels.artist', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.8', wtconfig.get('ET.CustomLevels.artist', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.artist');
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-audio', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2001', wtconfig.get('ET.CustomLevels.playlist-audio', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.playlist-audio');
+        }
+        if ( wtconfig.get('ET.CustomLevels.track', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.10', wtconfig.get('ET.CustomLevels.track', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.track');
+        }
+        if ( wtconfig.get('ET.CustomLevels.album', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.9', wtconfig.get('ET.CustomLevels.album', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.album');
+        }
+        if ( wtconfig.get('ET.CustomLevels.photo', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.13', wtconfig.get('ET.CustomLevels.photo', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.photo');
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-photo', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2003', wtconfig.get('ET.CustomLevels.playlist-photo', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.playlist-photo');
+        }
+        if ( wtconfig.get('ET.CustomLevels.playlist-video', 'N/A') != 'N/A' ){
+            wtconfig.set('ET.CustomLevels.2002', wtconfig.get('ET.CustomLevels.playlist-video', 'N/A'));
+            wtconfig.delete('ET.CustomLevels.playlist-video');
+        }
+
+
+
+
+        
         // All done, so stamp version number
         wtconfig.set('General.version', wtutils.AppVersion)
     }

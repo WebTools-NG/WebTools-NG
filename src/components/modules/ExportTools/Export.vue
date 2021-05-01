@@ -281,11 +281,8 @@
     getLevels: async function(){
       log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
       this.exportLevels = [];
-      let etLevel, etCustomLevel
-
-      const etLevelName = et.getLibTypeName(this.selExpTypeSec);
-      etLevel = et.getLevels(etLevelName);
-      etCustomLevel = et.getCustomLevels(this.selExpTypeSec);
+      const etLevel = et.getLevels(this.selExpTypeSec);
+      const etCustomLevel = et.getCustomLevels(this.selExpTypeSec);
       const options = []
       const item = {}
       let custLabel = {}
