@@ -282,14 +282,10 @@
       log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
       this.exportLevels = [];
       let etLevel, etCustomLevel
-      if (this.selExpTypeMain == et.ETmediaType.Playlist){
-        const pLevel = 'playlist-' + et.RevETmediaType[this.selExpTypeSec].toLowerCase();
-        etLevel = et.getLevels(pLevel);
-        etCustomLevel = et.getCustomLevels(pLevel);
-      }else{
-        etLevel = et.getLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
-        etCustomLevel = et.getCustomLevels(et.RevETmediaType[this.selExpTypeSec].toLowerCase());
-      }
+
+      const etLevelName = et.getLibTypeName(this.selExpTypeSec);
+      etLevel = et.getLevels(etLevelName);
+      etCustomLevel = et.getCustomLevels(this.selExpTypeSec);
       const options = []
       const item = {}
       let custLabel = {}

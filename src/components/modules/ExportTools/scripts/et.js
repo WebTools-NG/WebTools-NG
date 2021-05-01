@@ -300,7 +300,6 @@ const et = new class ET {
     }
 
     getLevelDisplayName(level, libType){
-        console.log('Ged3', level, ' - ', libType)
         // return displayname for the buildin levels
         if (libType == 'playlist')
         {
