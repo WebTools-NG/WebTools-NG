@@ -189,65 +189,16 @@
     selLevel: async function(){
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
     },
-
-/* 
-    selLibrary: async function(){
-      if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
-      {
-        this.btnDisable = false;
-        this.selMediaType = '';
-        this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
-        this.selLevel = 'all';
-        this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
-        this.selPType = '';
-        this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
-      }
-      else
-      {
-        this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
-      }
-    },
- */
-
-    /* 
-    selMediaType: async function(){
-      if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
-      {
-        this.btnDisable = false
-      }
-      else
-      {
-        this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
-      }
-      this.pListGrpDisabled = (this.selMediaType == 'playlist');
-    },
- */
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
     },
-
-/* 
-    selLevel: async function(){
-      if (['libraryInfo', 'playlistInfo'].indexOf(this.selMediaType) > -1)
-      {
-        this.btnDisable = false
-      }
-      else
-      {
-        this.btnDisable=!(this.selLibrary!=='Loading...' && this.selLevel!=='');
-      }
-    },
- */
-
     selPType: async function(){
       this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     }
   },
   created() {
     log.info("ET Created");
-    //this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
     this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.Idle"));
-    // this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     this.checkSrvSelected();
   },
   computed: {
@@ -257,6 +208,11 @@
         return false;
       }
       else if ( this.selExpTypeSec == et.ETmediaType.Libraries)
+      {
+        this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
+        return false;
+      }
+      else if (this.selExpTypeSec == et.ETmediaType.Playlists)
       {
         this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
         return false;
@@ -281,11 +237,8 @@
     getLevels: async function(){
       log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
       this.exportLevels = [];
-      let etLevel, etCustomLevel
-
-      const etLevelName = et.getLibTypeName(this.selExpTypeSec);
-      etLevel = et.getLevels(etLevelName);
-      etCustomLevel = et.getCustomLevels(this.selExpTypeSec);
+      const etLevel = et.getLevels(this.selExpTypeSec);
+      const etCustomLevel = et.getCustomLevels(this.selExpTypeSec);
       const options = []
       const item = {}
       let custLabel = {}

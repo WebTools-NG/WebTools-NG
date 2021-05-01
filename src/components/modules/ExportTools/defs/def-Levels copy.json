@@ -1,5 +1,5 @@
 {
-    "9": {
+    "album": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -11,7 +11,7 @@
             "All": 2
         }
     },
-    "8": {
+    "artist": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -23,7 +23,7 @@
             "All": 2
         }
     },
-    "4": {
+    "episode": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -35,7 +35,7 @@
             "All": 2
         }
     },
-    "1" : {
+    "movie": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -50,7 +50,7 @@
             "devTommy": 2
         }
     },
-    "2": {
+    "show": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -62,7 +62,7 @@
             "All": 2
         }
     },
-    "10": {
+    "track": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -74,7 +74,7 @@
             "All": 2
         }
     },
-    "13": {
+    "photo": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -86,7 +86,7 @@
             "All": 2
         }
     },
-    "2001": {
+    "playlist-audio": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -98,7 +98,7 @@
             "All": 2
         }
     },
-    "2003": {
+    "playlist-photo": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -110,7 +110,7 @@
             "All": 2
         }
     },
-    "2002": {
+    "playlist-video": {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
@@ -122,7 +122,7 @@
             "All": 2
         }
     },
-    "1002": {
+    "libraryInfo": {
         "levels": {
             "All": "all"
         },
@@ -130,7 +130,7 @@
             "All": 1
         }
     },
-    "3001": {
+    "playlistInfo": {
         "levels": {
             "All": "all"
         },
