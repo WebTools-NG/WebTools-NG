@@ -266,7 +266,7 @@ const wtutils = new class WTUtils {
             wtconfig.set('PMS.ContainerSize.4', 20)
         }
         if ( wtconfig.get('PMS.ContainerSize.1', 'N/A') == 'N/A' ){
-            wtconfig.set('PMS.ContainerSize.1', 20)
+            wtconfig.set('PMS.ContainerSize.1', 50)
         }
         if ( wtconfig.get('PMS.ContainerSize.13', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.13', 20)
