@@ -1357,7 +1357,6 @@ const excel2 = new class Excel {
                 store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}));
                 sectionChunk = await JSONPath({path: jPath, json: sectionData[x]});
                 const fields = et.getFields( libType, level);
-                
                 if ( call == 1 )
                 {
                     for (item of sectionChunk){
@@ -1372,7 +1371,7 @@ const excel2 = new class Excel {
                             await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
                         counter += 1;
-                       // await new Promise(resolve => setTimeout(resolve, 1));
+                        await new Promise(resolve => setTimeout(resolve, 1));
                     }
                 }
                 else
@@ -1398,7 +1397,7 @@ const excel2 = new class Excel {
                         }
                         await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
                         counter += 1;
-                        //await new Promise(resolve => setTimeout(resolve, 1));
+                        await new Promise(resolve => setTimeout(resolve, 1));
                     }
                 }
             }
