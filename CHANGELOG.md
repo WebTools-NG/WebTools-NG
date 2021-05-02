@@ -4,6 +4,7 @@
 
 * [#357 Default "Original Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/357)
 * [#358 PMS page size](https://github.com/WebTools-NG/WebTools-NG/issues/358)
+* [#360 ET Audio Export is empty](https://github.com/WebTools-NG/WebTools-NG/issues/360)
 
 ## V0.3.7
 
