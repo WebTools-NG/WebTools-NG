@@ -12,9 +12,6 @@
         </b-input-group>
         </div>
 
-
-
-
         <b-input-group id="TimeOutGrp" :prepend="$t('Modules.GlobalSettings.TimeOut')" class="mt-3">
             <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
         </b-input-group>
@@ -23,14 +20,14 @@
             <b-tooltip target="LogLevelGrp" triggers="hover">
               {{ $t('Modules.GlobalSettings.RestartNeeded') }}
             </b-tooltip>
-            <b-form-select id="LogLevel" name="LogLevel" type="text" class="form-control" v-model="LogLevel" :disabled=false :maxlength=2 v-on:change="setLogLevel" :options="logLevels"></b-form-select>
+            <b-form-select id="LogLevel" name="LogLevel" type="text" class="form-control" v-model="LogLevel" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'Log.fileLevel')" :options="logLevels"></b-form-select>
         </b-input-group>
 
         <b-input-group id="LogLevelConsoleGrp" :prepend="$t('Modules.GlobalSettings.LogLevelConsole')" class="mt-3">
             <b-tooltip target="LogLevelConsoleGrp" triggers="hover">
               {{ $t('Modules.GlobalSettings.RestartNeeded') }}
             </b-tooltip>
-            <b-form-select id="LogLevelConsole" name="LogLevelConsole" type="text" class="form-control" v-model="LogLevelConsole" :disabled=false :maxlength=2 v-on:change="setLogLevelConsole" :options="logLevels"></b-form-select>
+            <b-form-select id="LogLevelConsole" name="LogLevelConsole" type="text" class="form-control" v-model="LogLevelConsole" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'Log.consoleLevel')" :options="logLevels"></b-form-select>
         </b-input-group>
 
         <b-input-group id="LogLevelSizeGrp" :prepend="$t('Modules.GlobalSettings.LogSize')" class="mt-3">
@@ -54,6 +51,76 @@
             <b-form-select id="Update" name="Update" type="text" class="form-control" v-model="Update" :disabled=false :maxlength=2 v-on:change="setUpdate" :options="UpdateLevels">
                 {{ this.getUpdate() }}
             </b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeMovie" :prepend="$t('Modules.GlobalSettings.ContainerSizeMovie')" class="mt-3">
+            <b-tooltip target="ContainerSizeMovie" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeMovie" name="ContainerSizeMovie" type="text" class="form-control" v-model="ContainerSizeMovie" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.1')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeShow" :prepend="$t('Modules.GlobalSettings.ContainerSizeShow')" class="mt-3">
+            <b-tooltip target="ContainerSizeShow" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeShow" name="ContainerSizeShow" type="text" class="form-control" v-model="ContainerSizeShow" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.2')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeEpisode" :prepend="$t('Modules.GlobalSettings.ContainerSizeEpisode')" class="mt-3">
+            <b-tooltip target="ContainerSizeEpisode" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeEpisode" name="ContainerSizeEpisode" type="text" class="form-control" v-model="ContainerSizeEpisode" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.4')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeArtist" :prepend="$t('Modules.GlobalSettings.ContainerSizeArtist')" class="mt-3">
+            <b-tooltip target="ContainerSizeArtist" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeArtist" name="ContainerSizeArtist" type="text" class="form-control" v-model="ContainerSizeArtist" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.8')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeAlbum" :prepend="$t('Modules.GlobalSettings.ContainerSizeAlbum')" class="mt-3">
+            <b-tooltip target="ContainerSizeAlbum" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeAlbum" name="ContainerSizeAlbum" type="text" class="form-control" v-model="ContainerSizeAlbum" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.9')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeTrack" :prepend="$t('Modules.GlobalSettings.ContainerSizeTrack')" class="mt-3">
+            <b-tooltip target="ContainerSizeTrack" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeTrack" name="ContainerSizeTrack" type="text" class="form-control" v-model="ContainerSizeTrack" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.10')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizePhoto" :prepend="$t('Modules.GlobalSettings.ContainerSizePhoto')" class="mt-3">
+            <b-tooltip target="ContainerSizePhoto" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizePhoto" name="ContainerSizePhoto" type="text" class="form-control" v-model="ContainerSizePhoto" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.13')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizePlaylist" :prepend="$t('Modules.GlobalSettings.ContainerSizePlaylist')" class="mt-3">
+            <b-tooltip target="ContainerSizePlaylist" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizePlaylist" name="ContainerSizePlaylist" type="text" class="form-control" v-model="ContainerSizePlaylist" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.15')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizeLibraries" :prepend="$t('Modules.GlobalSettings.ContainerSizeLibraries')" class="mt-3">
+            <b-tooltip target="ContainerSizeLibraries" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizeLibraries" name="ContainerSizeLibraries" type="text" class="form-control" v-model="ContainerSizeLibraries" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.1002')"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="ContainerSizePlaylists" :prepend="$t('Modules.GlobalSettings.ContainerSizePlaylists')" class="mt-3">
+            <b-tooltip target="ContainerSizePlaylists" triggers="hover">
+              {{ $t('Modules.GlobalSettings.TTContainerSize') }}
+            </b-tooltip>
+            <b-form-select id="ContainerSizePlaylists" name="ContainerSizePlaylists" type="text" class="form-control" v-model="ContainerSizePlaylists" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.3001')"></b-form-select>
         </b-input-group>
 
         <!-- Factory Reset -->
@@ -94,7 +161,17 @@
                 LogLevelConsole: wtconfig.get('Log.consoleLevel'),
                 LogLevelSize: this.getLogFileSize(),
                 BetaTester: this.getBeta(),
-                Update: this.getUpdate()
+                Update: this.getUpdate(),
+                ContainerSizeMovie: wtconfig.get('PMS.ContainerSize.1'),
+                ContainerSizeShow: wtconfig.get('PMS.ContainerSize.2'),
+                ContainerSizeEpisode: wtconfig.get('PMS.ContainerSize.4'),
+                ContainerSizeArtist: wtconfig.get('PMS.ContainerSize.8'),
+                ContainerSizeAlbum: wtconfig.get('PMS.ContainerSize.9'),
+                ContainerSizeTrack: wtconfig.get('PMS.ContainerSize.10'),
+                ContainerSizePhoto: wtconfig.get('PMS.ContainerSize.13'),
+                ContainerSizePlaylist: wtconfig.get('PMS.ContainerSize.15'),
+                ContainerSizeLibraries: wtconfig.get('PMS.ContainerSize.1002'),
+                ContainerSizePlaylists: wtconfig.get('PMS.ContainerSize.3001')
             }
         },
         methods: {
@@ -173,10 +250,6 @@
             setTimeOut: function(){
                 wtconfig.set('PMS.TimeOut', this.TimeOut)
             },
-            setLogLevel: function(value){
-                log.info(`Log file level set to ${value}`)
-                wtconfig.set('Log.fileLevel', value)
-            },
             setBeta: function(value){
                 log.info(`Beta level set to ${value}`);
                 wtconfig.set('Update.Beta', value == i18n.t('Modules.GlobalSettings.True'));
@@ -185,9 +258,9 @@
                 log.info(`Update set to ${value}`);
                 wtconfig.set('Update.Update', value == i18n.t('Modules.GlobalSettings.True'));
             },
-            setLogLevelConsole: function(value){
-                log.info(`Log Console level set to ${value}`);
-                wtconfig.set('Log.consoleLevel', value);
+            setPrefs: function(value, name){
+                log.info(`Update prefs for ${name} set to ${value}`);
+                wtconfig.set(name, value);
             },
             getLogFileSize: function(){
                 const logSizeBytes = wtconfig.get('Log.maxSize');
@@ -247,6 +320,10 @@
             }
         },
         computed: {
+            ContainerSizes: function() {
+                const options = [20, 30, 40, 50, 60, 70, 80, 90, 100];
+                return options;
+            },
             logLevels: function() {
                 const options = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'];
                 return options;

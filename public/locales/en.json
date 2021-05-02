@@ -273,7 +273,18 @@
             "FactoryResetConfirmBody": "Doing a Factory Reset will erase all your settings, as it was when first installed",
             "FactoryResetConfirmBody2": "After doing a Factory Reset, you must start {0} again",
             "FactoryResetBtnCancel": "Cancel",
-            "FactoryResetBtnOk": "Do a Factory Reset"
+            "FactoryResetBtnOk": "Do a Factory Reset",
+            "TTContainerSize": "Amount of items to fetch from the server. Warning: Increasing this will add stress to the server",
+            "ContainerSizeMovie": "Amount of movies (Default: 30)",
+            "ContainerSizeShow": "Amount of shows (Default: 30)",
+            "ContainerSizeEpisode": "Amount of episodes (Default: 30)",
+            "ContainerSizeArtist": "Amount of artists (Default: 30)",
+            "ContainerSizeAlbum": "Amount of albums (Default: 30)",
+            "ContainerSizeTrack": "Amount of tracks (Default: 30)",
+            "ContainerSizePhoto": "Amount of photos (Default: 30)",
+            "ContainerSizePlaylist": "Amount of playlists (Default: 30)",
+            "ContainerSizeLibraries": "Amount of libraries (Default: 30)",
+            "ContainerSizePlaylists": "Amount of playlists (Default: 30)"
         },
         "PMS": {
             "Name": "Plex Media Server",

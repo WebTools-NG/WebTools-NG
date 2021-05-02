@@ -3,6 +3,7 @@
 ## V0.3.8
 
 * [#357 Default "Original Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/357)
+* [#358 PMS page size](https://github.com/WebTools-NG/WebTools-NG/issues/358)
 
 ## V0.3.7
 
