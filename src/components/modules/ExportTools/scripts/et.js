@@ -803,8 +803,9 @@ const excel2 = new class Excel {
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
                     {
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
                         // Override with title if not found
-                        if (val == wtconfig.get('ET.NotAvail'))
+                        if (val == compNA)
                         {
                             retVal = title;
                         }
@@ -819,7 +820,8 @@ const excel2 = new class Excel {
                     if (wtconfig.get('ET.SortTitleNull'))
                     {
                         // Override with title if not found
-                        if (val == wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV'))
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        if (val == compNA)
                         {
                             retVal = title;
                         }
@@ -829,7 +831,8 @@ const excel2 = new class Excel {
                     }
                     else
                     {
-                        if (val == wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV'))
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        if (val == compNA)
                         {
                             retVal = wtconfig.get('ET.NotAvail');
                         }
@@ -845,23 +848,19 @@ const excel2 = new class Excel {
                         break;
                     }
                     start = val.indexOf("imdb://");
-                    console.log('Ged2 start', start)
                     if (start == -1)
                     {
                         retVal = wtconfig.get('ET.NotAvail');
                         break;
                     }
                     strStart = val.substring(start);
-                    console.log('Ged3 strStart', strStart)
                     end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    console.log('Ged4 end', end)
                     result = ''
                     if (end == -1)
                     { result = strStart.substring(7) }
                     else
                     { result = strStart.substring(7, end) }
                     retVal = result;
-                    console.log('Ged5 retVal', retVal)
                     break;
                 case "IMDB ID (Legacy)":
                     if (val == wtconfig.get('ET.NotAvail'))
@@ -1105,11 +1104,10 @@ const excel2 = new class Excel {
         }
     }
 
-    async addRowToTmp( { libType, level, data, stream, pListType }) {
+    async addRowToTmp( { libType, level, data, stream, fields }) {
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let date, year, month, day, hours, minutes, seconds
-        const fields = et.getFields( libType, level, pListType)
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
         let str = ''
         let result = ''
@@ -1239,7 +1237,8 @@ const excel2 = new class Excel {
         }
         // Remove first character
         result = str.substr(1);
-        await stream.write( result + "\n");
+        //await stream.write( result + "\n");
+        stream.write( result + "\n");
     }
 
     async sleep(ms) {
@@ -1350,20 +1349,24 @@ const excel2 = new class Excel {
                 jPath = "$.MediaContainer.Metadata[*]";
             }
 
+            const bExportPosters = wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false);
+            const bExportArt = wtconfig.get(`ET.CustomLevels.${libType}.Art.${level}`, false);
+
             for (x=0; x<sectionData.length; x++)
             {
                 store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}));
                 sectionChunk = await JSONPath({path: jPath, json: sectionData[x]});
+                const fields = et.getFields( libType, level);
                 if ( call == 1 )
                 {
                     for (item of sectionChunk){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
-                        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
+                        if (bExportPosters)
                         {
                             await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
-                        if (wtconfig.get(`ET.CustomLevels.${libType}.Art.${level}`, false))
+                        if (bExportArt)
                         {
                             await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
@@ -1384,15 +1387,15 @@ const excel2 = new class Excel {
                     const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                     for (item of contentsItems){
                         store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        if (wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false))
+                        if (bExportPosters)
                         {
                             await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
-                        if (wtconfig.get(`ET.CustomLevels.${libType}.Art.${level}`, false))
+                        if (bExportArt)
                         {
                             await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
                         }
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, pListType: pListType } );
+                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
                         counter += 1;
                         await new Promise(resolve => setTimeout(resolve, 1));
                     }
