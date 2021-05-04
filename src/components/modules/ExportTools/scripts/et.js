@@ -133,6 +133,41 @@ const et = new class ET {
             ]
         }
     }
+    async exportMedias() {
+        var baseURL = store.getters.getSelectedServerAddress;
+        var accessToken = store.getters.getSelectedServerToken;
+        var libType = store.getters.getLibType;
+        var pListType = store.getters.getSelectedLibTypeSec;
+
+        console.log('Ged 1', baseURL)
+        console.log('Ged 2', accessToken)
+        console.log('Ged 3', libType)
+        console.log('Ged 4', pListType)
+
+        let levelName;
+        var libName = et.getLibDisplayName(store.getters.getSelectedSection, store.getters.getPmsSections);
+        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
+        {
+          levelName = 'All'
+        }
+        else
+        {
+          levelName = et.getLevelDisplayName(store.getters.getSelectedExportLevel, libType);
+        }
+        console.log('Ged 7', levelName)
+
+
+        excel2.createOutFile( {
+          libName: libName,
+          level: levelName,
+          libType: libType,
+          baseURL: baseURL,
+          accessToken: accessToken,
+          exType: libType,
+          pListType: pListType,
+          libTypeSec: store.getSelectedLibTypeSec
+        } );
+    }
 
     async getSectionData({sectionName, baseURL, accessToken, libType, libTypeSec})
     {

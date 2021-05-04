@@ -461,7 +461,8 @@
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
       this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));
-      this.$store.dispatch("exportMedias");
+      et.exportMedias();
+      //this.$store.dispatch("exportMedias");
     },
     async checkSrvSelected() {
       log.debug("checkSrvSelected started");

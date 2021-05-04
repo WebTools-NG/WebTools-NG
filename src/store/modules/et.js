@@ -52,10 +52,8 @@ const actions = {
     exportMedias({ getters }) {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
-        //var libType = (et.RevETmediaType[getters.getLibType]).toString().toLowerCase();
         var libType = getters.getLibType;
         var pListType = getters.getSelectedLibTypeSec;
-        //var pListType = getters.getSelectedPListType;
         let levelName;
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
