@@ -70,7 +70,7 @@ const et = new class ET {
             2003: 'Photo',
             3001: 'Playlists'
         },
-        this.selSecOption ={
+        this.selSecOption = {
             1: [
                 {
                     "text": i18n.t('Modules.ET.optExpType.SecMovies'),
@@ -131,55 +131,48 @@ const et = new class ET {
                     "value": this.ETmediaType.Libraries
                 }
             ]
+        },
+        this.expSettings = {
+            baseURL: '',
+            accessToken: '',
+            libType: '',
+            libTypeSec: '',
+            exportLevel: '',
+            selLibKey: '',
+            levelName: '',
+            libName: ''
         }
     }
+
     async exportMedias() {
-        var baseURL = store.getters.getSelectedServerAddress;
-        var accessToken = store.getters.getSelectedServerToken;
-        var libType = store.getters.getLibType;
-        var pListType = store.getters.getSelectedLibTypeSec;
-
-        console.log('Ged 1', baseURL)
-        console.log('Ged 2', accessToken)
-        console.log('Ged 3', libType)
-        console.log('Ged 4', pListType)
-
-        let levelName;
-        var libName = et.getLibDisplayName(store.getters.getSelectedSection, store.getters.getPmsSections);
-        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
+        this.expSettings.libName = et.getLibDisplayName(this.expSettings.selLibKey, store.getters.getPmsSections);
+        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.expSettings.libType) > -1)
         {
-          levelName = 'All'
+            this.expSettings.levelName = 'All'
         }
         else
         {
-          levelName = et.getLevelDisplayName(store.getters.getSelectedExportLevel, libType);
+            this.expSettings.levelName = et.getLevelDisplayName(this.expSettings.exportLevel, this.expSettings.libType);
         }
-        console.log('Ged 7', levelName)
-
-
-        excel2.createOutFile( {
-          libName: libName,
-          level: levelName,
-          libType: libType,
-          baseURL: baseURL,
-          accessToken: accessToken,
-          exType: libType,
-          pListType: pListType,
-          libTypeSec: store.getSelectedLibTypeSec
+        await excel2.createOutFile( {
+          libName: this.expSettings.libName,
+          level: this.expSettings.levelName,
+          libType: this.expSettings.libType,
+          baseURL: this.expSettings.baseURL,
+          accessToken: this.expSettings.accessToken,
+          exType: this.expSettings.libType,
+          pListType: this.expSettings.libTypeSec,
+          libTypeSec: this.expSettings.libTypeSec
         } );
     }
 
-    async getSectionData({sectionName, baseURL, accessToken, libType, libTypeSec})
+    async getSectionData()
     {
         const sectionData = []
         // Find LibType steps
-        const step = wtconfig.get("PMS.ContainerSize." + libType, 20)
+        const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20)
         log.debug(`Got Step size as: ${step}`)
-        let libKey, element
-
-        // Get Section Key
-        libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
-        log.debug(`Got SectionKey as: ${libKey}`)
+        let element
         // Now read the fields and level defs
         // Current item
         let idx = 0
@@ -187,33 +180,34 @@ const et = new class ET {
         let chuncks, postURI
         let size
         do {
-            if (libType == et.ETmediaType.Photo)
+            if (this.expSettings.libType == et.ETmediaType.Photo)
             {
-                element = '/library/sections/' + libKey + '/all';
-                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${libTypeSec}&${this.uriParams}`;
+                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
             }
-            else if (libType == et.ETmediaType.Playlist)
+            else if (this.expSettings.libType == et.ETmediaType.Playlist)
             {
-                element = '/playlists/' + libKey;
+                element = '/playlists/' + this.expSettings.selLibKey;
                 postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
-            else if (libType == et.ETmediaType.Libraries)
+            else if (this.expSettings.libType == et.ETmediaType.Libraries)
             {
                 element = '/library/sections/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
-            else if (libType == et.ETmediaType.Playlists)
+            else if (this.expSettings.libType == et.ETmediaType.Playlists)
             {
                 element = '/playlists/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
             }
             else
             {
-                element = '/library/sections/' + libKey + '/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${libTypeSec}&${this.uriParams}`;
+                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
             }
-            log.info(`Calling getSectionData url ${baseURL + element + postURI}`);
-            chuncks = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: element, postURI: postURI});
+
+            log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI}`);
+            chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
             log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
@@ -225,34 +219,6 @@ const et = new class ET {
         log.silly(`SectionData to return is:`);
         log.silly(JSON.stringify(sectionData));
         return sectionData;
-    }
-
-    async getSectionSizeByKey({sectionKey, baseURL, accessToken, libType})
-    {
-        let sizeURI, sizePostURI, sizeContents;
-        if (libType == 'playlist')
-        {
-            sizeURI = '/playlists/' + sectionKey
-            sizePostURI = '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-        }
-        else
-        {
-            sizeURI = '/library/sections/' + sectionKey
-            sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-        }
-        sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});
-        const size = await JSONPath({path: '$..totalSize', json: sizeContents});
-        return size
-    }
-
-    async getSectionSizeByName({sectionName, baseURL, accessToken})
-    {
-        const libKey = await et.getSectionKey({libName: sectionName, baseURL: baseURL, accessToken: accessToken})
-        const sizeURI = '/library/sections/' + libKey
-        const sizePostURI = '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-        const sizeContents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: sizeURI, postURI: sizePostURI});
-        const size = await JSONPath({path: '$..totalSize', json: sizeContents});
-        return size
     }
 
     async getItemData({baseURL, accessToken, element, postURI=defpostURI})
@@ -534,7 +500,6 @@ const et = new class ET {
     getFieldSubtype(libType, fieldName) {
         return defFields['fields'][fieldName]['subtype'];
     }
-
 
     getFieldsKeyVal( libType, level) {
         // Get fields for level
@@ -1349,7 +1314,7 @@ const excel2 = new class Excel {
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType, libTypeSec} )
+    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
     {
         const header = excel2.GetHeader(level, libType, pListType);
         log.debug(`header: ${header}`);
@@ -1365,7 +1330,7 @@ const excel2 = new class Excel {
         var sectionData, x;
         {
             // Get all the items in small chuncks
-            sectionData = await et.getSectionData({sectionName: libName, baseURL: baseURL, accessToken: accessToken, libType: libType, libTypeSec: libTypeSec});
+            sectionData = await et.getSectionData();
             log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
             let item;
             let counter = 1;
@@ -1451,4 +1416,4 @@ const excel2 = new class Excel {
     }
 }
 
-export {et, excel2};
+export { et, excel2 };

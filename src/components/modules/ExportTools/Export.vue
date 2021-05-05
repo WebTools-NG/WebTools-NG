@@ -53,7 +53,7 @@
                 v-model="selLibrary"
                 id="selLibrary"
                 :options="selLibraryOptions"
-                @change="selLibraryChanged"
+                @change="selLibraryChanged($event, selLibrary)"
                 name="selLibrary">
               </b-form-select>
             </b-form-group>
@@ -175,26 +175,32 @@
       await this.getPMSSections();
       this.selLibraryWait = true;
     },
+    /* 
     selLibrary: async function(){
       this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
     },
+ */
     selMediaType: async function(){
-      this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
+//      this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
       this.selLevel = "";
       this.selLibrary = "";
     },
+/* 
     selExpTypeSec: async function(){
       this.$store.commit("UPDATE_SELECTEDLIBTYPESEC", this.selExpTypeSec);
     },
     selLevel: async function(){
       this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
     },
+     */
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
     },
+/* 
     selPType: async function(){
       this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
     }
+     */
   },
   created() {
     log.info("ET Created");
@@ -209,12 +215,12 @@
       }
       else if ( this.selExpTypeSec == et.ETmediaType.Libraries)
       {
-        this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
+        //this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
         return false;
       }
       else if (this.selExpTypeSec == et.ETmediaType.Playlists)
       {
-        this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
+        //this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
         return false;
       }
       else
@@ -339,9 +345,12 @@
       }
       log.verbose(`Sections to select among are: ${JSON.stringify(this.selLibraryOptions)}`);
     },
-    selLibraryChanged: async function(){
+    selLibraryChanged: async function(value, name){
+
+      console.log('Ged 5566', value, name)
+
       log.verbose(`Library key to export selected as: ${arguments[0]}`);
-      
+      et.expSettings.selLibKey = this.selLibrary;
 
     },
     selExpTypeSecChanged: async function(){
@@ -444,7 +453,7 @@
       }
       this.selLibraryOptions = result;
     },
-    getMedia() {
+    async getMedia() {
       log.info("getMedia Called");
       if (wtconfig.get('General.ExportPath', "") == "")
       {
@@ -458,11 +467,20 @@
         })
         return
       }
-      this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
-      this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
       this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));
-      et.exportMedias();
-      //this.$store.dispatch("exportMedias");
+      console.log('Ged before export')
+
+      // Populate et. settings with the selected values
+      et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
+      et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
+      et.expSettings.libType = this.selMediaType;
+      et.expSettings.libTypeSec = this.selExpTypeSec;
+      et.expSettings.exportLevel = this.selLevel;
+      //et.expSettings.selLibKey = this.selLibrary;
+
+
+      await et.exportMedias();
+      console.log('Ged after export')
     },
     async checkSrvSelected() {
       log.debug("checkSrvSelected started");
