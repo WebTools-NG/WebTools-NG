@@ -243,7 +243,7 @@ const et = new class ET {
         {
             if (libType == et.ETmediaType.Playlist)
             {
-                libType = store.getters.getSelectedLibTypeSec.toString();
+                libType = et.expSettings.libTypeSec;
             }
             levelName = defLevels[libType]['levels'][level]
             if (levelName == undefined)
@@ -300,7 +300,8 @@ const et = new class ET {
         // return displayname for the buildin levels
         if (libType == et.ETmediaType.Playlist)
         {
-            libType = store.getters.getSelectedLibTypeSec;
+            //libType = store.getters.getSelectedLibTypeSec;
+            libType = et.expSettings.libTypeSec;
         }
         if (libType == et.ETmediaType.Libraries)
         {
@@ -349,10 +350,13 @@ const et = new class ET {
     getLevelFields(level, libType) {
         // return fields in a level
         const out = []
+        
         if (libType == et.ETmediaType.Playlist)
         {
-            libType = store.getters.getSelectedLibTypeSec;
+            libType = et.expSettings.libTypeSec;
+            //libType = store.getters.getSelectedLibTypeSec;
         }
+
         let realName = et.getRealLevelName(level, libType);
         log.debug(`RealName is ${realName}`);
         // We need to load fields and defs into def var
@@ -420,14 +424,9 @@ const et = new class ET {
     }
 
     async getLevelCall (libType, level) {
-        // this will return number of calls needed
         if (libType == et.ETmediaType.Playlist)
         {
-            libType = store.getters.getSelectedLibTypeSec.toString();
-        }
-        else if (libType == et.ETmediaType.Libraries)
-        {
-            libType = store.getters.getSelectedLibTypeSec.toString();
+            libType = et.expSettings.libTypeSec;
         }
         const count = await defLevels[libType]['LevelCount'][level]
         log.debug('Count needed is: ' + count)
@@ -436,7 +435,7 @@ const et = new class ET {
 
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
-        const levels = defLevels[libType]['levels']
+        const levels = defLevels[libType]['levels'];
         log.debug(`ET LevelNames: ${JSON.stringify(levels)}`);
         return levels
     }

@@ -53,7 +53,7 @@
                 v-model="selLibrary"
                 id="selLibrary"
                 :options="selLibraryOptions"
-                @change="selLibraryChanged($event, selLibrary)"
+                @change="selLibraryChanged"
                 name="selLibrary">
               </b-form-select>
             </b-form-group>
@@ -345,13 +345,9 @@
       }
       log.verbose(`Sections to select among are: ${JSON.stringify(this.selLibraryOptions)}`);
     },
-    selLibraryChanged: async function(value, name){
-
-      console.log('Ged 5566', value, name)
-
-      log.verbose(`Library key to export selected as: ${arguments[0]}`);
+    selLibraryChanged: async function(){
+      log.verbose(`Library key to export selected as: ${this.selLibrary}`);
       et.expSettings.selLibKey = this.selLibrary;
-
     },
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
