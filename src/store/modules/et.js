@@ -9,7 +9,8 @@ const state = {
     selectedExportLevel: "",
     selectedLibType: "",
     selectedPListType: "",
-    exportStatus: ""
+    exportStatus: {},
+    ETStatus: ''
 };
 
 const mutations = {
@@ -29,7 +30,7 @@ const mutations = {
         state.selectedExportLevel = payload
     },
     UPDATE_EXPORTSTATUS(state, payload) {
-      state.exportStatus = payload
+      state.exportStatus1 = payload
     },
     UPDATE_EXPORTLEVELS(state, payload) {
       state.exportLevels = payload
@@ -39,6 +40,9 @@ const mutations = {
     },
     UPDATE_SELECTEDLIBTYPESEC(state, payload) {
       state.selectedLibTypeSec = payload
+    },
+    UPDATE_SELECTEDETStatus(state, payload) {
+      state.ETStatus = payload
     }
   };
 
@@ -85,7 +89,8 @@ const getters = {
     getExportLevels: state => state.exportLevels,
     getExportStatus: state => state.exportStatus,
     getSelectedPListType: state => state.selectedPListType,
-    getSelectedLibTypeSec: state => state.selectedLibTypeSec
+    getSelectedLibTypeSec: state => state.selectedLibTypeSec,
+    getETStatus: state => state.ETStatus
 };
 
 const etModule = {

@@ -176,7 +176,6 @@
             "LevelInfo": "Export level determines which data are going to be exported.",
             "Name": "ExportTools",
             "NoLevelFound": "N/A",
-            
             "optExpType": {
                 "lblBtnExportMedia": "Export Media",
                 "lblExportLevel": "Export Level",
@@ -227,7 +226,20 @@
                 "Art_Dimensions_TT": "Art height*width, If 'Export Art' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art"
             },
             "Status": {
+                "Names":{
+                    "Status": "Status",
+                    "Chuncks":"Chuncks",
+                    "Items":"Items",
+                    "Info": "Info",
+                    "OutFile": "Output File",
+                    "StartTime": "Start time",
+                    "EndTime": "End Time",
+                    "TimeElapsed": "Time Elapsed",
+                    "RunningTime": "Running time"
+                },
+                "Finished": "Export finished",
                 "Idle": "Idle",
+                "Running": "Export in progress",
                 "Status": "Status",
                 "Processing-Chunk": "Processing chunk {current} of {total}",
                 "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nitems to export: {urlStr}",
@@ -235,6 +247,7 @@
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}",
                 "CreateExlsFile": "Creating Excel file",
                 "ProcessItem": "Processing item {count} of {total}"
+                
             },
             "RadioPlayListsInfo": "Playlist Info",
             "RadioLibraryInfo": "Library Info",
