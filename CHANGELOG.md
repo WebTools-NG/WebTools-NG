@@ -3,7 +3,8 @@
 ## V0.3.9
 
 * [#359 ET: Log time it took](https://github.com/WebTools-NG/WebTools-NG/issues/359)
-* ET: Added field "View Count" to episodes
+* [#364 ET: Make status windows better when exporting](https://github.com/WebTools-NG/WebTools-NG/issues/364)
+* ET: Added field "View Count" to episodes (No GHI for that one)
 
 ## V0.3.8
 
