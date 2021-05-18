@@ -159,9 +159,15 @@
           pListGrpDisabled: true,
           etLibraryGroupDisabled: false,
           etLevelGroupDisabled: false,
+          statusMsg: 'Idle'
         };
   },
   watch: {
+    // Watch for status update
+    ETStatus: function() {
+      this.statusMsg = this.$store.getters.getETStatus;
+      //this.genStatusMsg();
+    },
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       // Changed, so we need to update the libraries
@@ -175,33 +181,22 @@
       await this.getPMSSections();
       this.selLibraryWait = true;
     },
-    selLibrary: async function(){
-      this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
-    },
     selMediaType: async function(){
-      this.$store.commit("UPDATE_SELECTEDLIBTYPE", this.selMediaType);
       this.selLevel = "";
       this.selLibrary = "";
-    },
-    selExpTypeSec: async function(){
-      this.$store.commit("UPDATE_SELECTEDLIBTYPESEC", this.selExpTypeSec);
-    },
-    selLevel: async function(){
-      this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
     },
     selectedServerAddressUpdateInProgress: async function(){
       this.selLibraryWait = false;
     },
-    selPType: async function(){
-      this.$store.commit("UPDATE_SELECTEDPLISTTYPE", this.selPType);
-    }
   },
   created() {
     log.info("ET Created");
-    this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.Idle"));
-    this.checkSrvSelected();
+    et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
   },
   computed: {
+    ETStatus: function(){
+      return this.$store.getters.getETStatus;
+    },
     btnDisable: function(){
       if (this.selLevel !== "" && this.selLibrary!=='')
       {
@@ -209,12 +204,12 @@
       }
       else if ( this.selExpTypeSec == et.ETmediaType.Libraries)
       {
-        this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
+        //this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
         return false;
       }
       else if (this.selExpTypeSec == et.ETmediaType.Playlists)
       {
-        this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
+        //this.$store.commit("UPDATE_EXPORTLEVEL", 'all');
         return false;
       }
       else
@@ -228,9 +223,6 @@
     selectedServerAddressUpdateInProgress(){
       return this.$store.getters.getSelectedServerAddressUpdateInProgress
     },
-    statusMsg: function(){
-      return this.$store.getters.getExportStatus
-    }
   },
   methods: {
     // Get levels for the selected media type
@@ -340,9 +332,8 @@
       log.verbose(`Sections to select among are: ${JSON.stringify(this.selLibraryOptions)}`);
     },
     selLibraryChanged: async function(){
-      log.verbose(`Library key to export selected as: ${arguments[0]}`);
-      
-
+      log.verbose(`Library key to export selected as: ${this.selLibrary}`);
+      et.expSettings.selLibKey = this.selLibrary;
     },
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
@@ -444,7 +435,7 @@
       }
       this.selLibraryOptions = result;
     },
-    getMedia() {
+    async getMedia() {
       log.info("getMedia Called");
       if (wtconfig.get('General.ExportPath', "") == "")
       {
@@ -458,10 +449,15 @@
         })
         return
       }
-      this.$store.commit("UPDATE_EXPORTLEVEL", this.selLevel);
-      this.$store.commit("UPDATE_SELECTEDSECTION", this.selLibrary);
-      this.$store.commit("UPDATE_EXPORTSTATUS", i18n.t("Modules.ET.Status.StartExport"));
-      this.$store.dispatch("exportMedias");
+      et.clearStatus();
+      et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+      // Populate et. settings with the selected values
+      et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
+      et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
+      et.expSettings.libType = this.selMediaType;
+      et.expSettings.libTypeSec = this.selExpTypeSec;
+      et.expSettings.exportLevel = this.selLevel;
+      await et.exportMedias();
     },
     async checkSrvSelected() {
       log.debug("checkSrvSelected started");

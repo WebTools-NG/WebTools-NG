@@ -9,7 +9,7 @@ const state = {
     selectedExportLevel: "",
     selectedLibType: "",
     selectedPListType: "",
-    exportStatus: ""
+    ETStatus: ''
 };
 
 const mutations = {
@@ -28,9 +28,6 @@ const mutations = {
     UPDATE_EXPORTLEVEL(state, payload) {
         state.selectedExportLevel = payload
     },
-    UPDATE_EXPORTSTATUS(state, payload) {
-      state.exportStatus = payload
-    },
     UPDATE_EXPORTLEVELS(state, payload) {
       state.exportLevels = payload
     },
@@ -39,6 +36,9 @@ const mutations = {
     },
     UPDATE_SELECTEDLIBTYPESEC(state, payload) {
       state.selectedLibTypeSec = payload
+    },
+    UPDATE_SELECTEDETStatus(state, payload) {
+      state.ETStatus = payload
     }
   };
 
@@ -52,10 +52,8 @@ const actions = {
     exportMedias({ getters }) {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
-        //var libType = (et.RevETmediaType[getters.getLibType]).toString().toLowerCase();
         var libType = getters.getLibType;
         var pListType = getters.getSelectedLibTypeSec;
-        //var pListType = getters.getSelectedPListType;
         let levelName;
         var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
@@ -85,9 +83,9 @@ const getters = {
     getSelectedExportLevel: state => state.selectedExportLevel,
     getLibType: state  => state.selectedLibType,
     getExportLevels: state => state.exportLevels,
-    getExportStatus: state => state.exportStatus,
     getSelectedPListType: state => state.selectedPListType,
-    getSelectedLibTypeSec: state => state.selectedLibTypeSec
+    getSelectedLibTypeSec: state => state.selectedLibTypeSec,
+    getETStatus: state => state.ETStatus
 };
 
 const etModule = {
