@@ -3,6 +3,7 @@
 ## V0.3.9
 
 * [#359 ET: Log time it took](https://github.com/WebTools-NG/WebTools-NG/issues/359)
+* ET: Added field "View Count" to episodes
 
 ## V0.3.8
 
