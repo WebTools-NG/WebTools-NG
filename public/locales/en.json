@@ -229,7 +229,6 @@
                 "Names":{
                     "Status": "Status",
                     "Chuncks": "Chuncks",
-                    "ChuncksDetails": "Chuncks Details",
                     "Items": "Items",
                     "Info": "Info",
                     "OutFile": "Output File",
@@ -243,12 +242,10 @@
                 "Running": "Export in progress",
                 "Status": "Status",
                 "Processing-Chunk": "Processing chunk {current} of {total}",
-                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.Items to export: {urlStr}",
                 "StartExport": "Starting to Export",
-                "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}",
+                "GetSectionItems": "Fetching {totalSize} items in chunks of {chunck}",
                 "CreateExlsFile": "Creating Excel file",
                 "ProcessItem": "Processing item {count} of {total}"
-                
             },
             "RadioPlayListsInfo": "Playlist Info",
             "RadioLibraryInfo": "Library Info",

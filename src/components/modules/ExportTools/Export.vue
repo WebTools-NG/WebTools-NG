@@ -449,7 +449,6 @@
         })
         return
       }
-      console.log('Ged before export')
       et.clearStatus();
       et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
       // Populate et. settings with the selected values

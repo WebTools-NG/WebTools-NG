@@ -156,8 +156,7 @@ const et = new class ET {
             'StartTime': 6,
             'EndTime': 7,
             'TimeElapsed': 8,
-            'RunningTime': 9,
-            'ChuncksDetails': 10
+            'RunningTime': 9
         },
         this.revRawMsgType = {
             1: 'Status',
@@ -168,8 +167,7 @@ const et = new class ET {
             6: 'StartTime',
             7: 'EndTime',
             8: 'TimeElapsed',
-            9: 'RunningTime',
-            10: 'ChuncksDetails'
+            9: 'RunningTime'
         },
         this.msgType = {
             1: i18n.t("Modules.ET.Status.Names.Status"),
@@ -180,9 +178,21 @@ const et = new class ET {
             6: i18n.t("Modules.ET.Status.Names.StartTime"),
             7: i18n.t("Modules.ET.Status.Names.EndTime"),
             8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
-            9: i18n.t("Modules.ET.Status.Names.RunningTime"),
-            10: i18n.t("Modules.ET.Status.Names.ChuncksDetails")
+            9: i18n.t("Modules.ET.Status.Names.RunningTime")
         }
+    }
+
+    async getStartEndTime(StartEnd){
+        let now;
+        if (StartEnd == 'start')
+        {
+            now = et.StartTime;
+        }
+        else
+        {
+            now = et.EndTime;
+        }
+        return now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
     }
 
     async clearStatus()
@@ -265,13 +275,14 @@ const et = new class ET {
           pListType: this.expSettings.libTypeSec,
           libTypeSec: this.expSettings.libTypeSec
         });
+        // Update status window
         et.clearStatus();
         et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
-        et.updateStatusMsg( et.rawMsgType.StartTime, et.StartTime);
-        this.getNowTime('end')
-        et.updateStatusMsg( et.rawMsgType.EndTime, et.EndTime);
+        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getStartEndTime('start'));
+        this.getNowTime('end');
+        et.updateStatusMsg( et.rawMsgType.EndTime, await this.getStartEndTime('end'));
         et.updateStatusMsg( et.rawMsgType.TimeElapsed, await this.getTimeElapsed());
-        et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile);
+        et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
     }
 
     async getSectionData()
@@ -319,7 +330,8 @@ const et = new class ET {
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
             log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
-            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
+            // et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
+            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
             sectionData.push(chuncks)
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
@@ -1213,12 +1225,7 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp( { libType, level, data, stream, fields }) {
-
         et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
-
-
-
-
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let date, year, month, day, hours, minutes, seconds
@@ -1468,8 +1475,7 @@ const excel2 = new class Excel {
 
             for (x=0; x<sectionData.length; x++)
             {
-                //store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}));
-                et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length}));
+                et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
                 sectionChunk = await JSONPath({path: jPath, json: sectionData[x]});
                 const fields = et.getFields( libType, level);
                 if ( call == 1 )
@@ -1494,15 +1500,14 @@ const excel2 = new class Excel {
                     // Get ratingKeys in the chunk
                     const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
                     let urlStr = urls.join(',');
-                    log.verbose(`Items to lookup are: ${urlStr}`)
-                    // store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}));
-                    et.updateStatusMsg(et.rawMsgType.ChuncksDetails, i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length}));
+                    log.verbose(`Items to lookup are: ${urlStr}`);
+                    et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
                     const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
                     log.verbose(`Items retrieved`);
                     const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
                     const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
                     for (item of contentsItems){
-                        store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                        et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
                         if (bExportPosters)
                         {
                             await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
@@ -1525,11 +1530,9 @@ const excel2 = new class Excel {
         // Need to export to xlsx as well?
         if (wtconfig.get('ET.ExpExcel')){
             log.info('We need to create an xlsx file as well');
-            store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.CreateExlsFile'));
+            et.updateStatusMsg( et.rawMsgType.Info, i18n.t('Modules.ET.Status.CreateExlsFile'));
             await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
         }
-        et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile);
-        store.commit("UPDATE_EXPORTSTATUS", `Export finished. File:"${newFile}" created`);
     }
 }
 
