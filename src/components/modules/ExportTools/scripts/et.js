@@ -156,7 +156,8 @@ const et = new class ET {
             'StartTime': 6,
             'EndTime': 7,
             'TimeElapsed': 8,
-            'RunningTime': 9
+            'RunningTime': 9,
+            'ChuncksDetails': 10
         },
         this.revRawMsgType = {
             1: 'Status',
@@ -167,7 +168,8 @@ const et = new class ET {
             6: 'StartTime',
             7: 'EndTime',
             8: 'TimeElapsed',
-            9: 'RunningTime'
+            9: 'RunningTime',
+            10: 'ChuncksDetails'
         },
         this.msgType = {
             1: i18n.t("Modules.ET.Status.Names.Status"),
@@ -178,7 +180,8 @@ const et = new class ET {
             6: i18n.t("Modules.ET.Status.Names.StartTime"),
             7: i18n.t("Modules.ET.Status.Names.EndTime"),
             8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
-            9: i18n.t("Modules.ET.Status.Names.RunningTime")
+            9: i18n.t("Modules.ET.Status.Names.RunningTime"),
+            10: i18n.t("Modules.ET.Status.Names.ChuncksDetails")
         }
     }
 
@@ -205,22 +208,24 @@ const et = new class ET {
     }
 
     async getTimeElapsed(){
-        const diff = et.EndTime.getTime() - et.StartTime.getTime();
-        const duration = Math.floor(diff / 1000 % 60);
-        var hrs = Math.floor(duration / 3600);
-        var mins = Math.floor((duration % 3600) / 60);
-        var secs = Math.floor(duration % 60);
-        return hrs + ':' + mins + ':' + secs
+        let elapsedSeconds = Math.floor((et.EndTime.getTime() - et.StartTime.getTime()) / 1000);
+        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
+        const hours = Math.floor(parseFloat(elapsedStr) / 3600);
+        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
+        const minutes = Math.floor(elapsedSeconds / 60);
+        const seconds = elapsedSeconds - minutes * 60;
+        return hours + ':' + minutes + ':' + seconds
     }
 
     async getRunningTimeElapsed(){
         const now = new Date();
-        const diff = now.getTime() - et.StartTime.getTime();
-        const duration = Math.floor(diff / 1000 % 60);
-        var hrs = Math.floor(duration / 3600);
-        var mins = Math.floor((duration % 3600) / 60);
-        var secs = Math.floor(duration % 60);
-        return hrs + ':' + mins + ':' + secs
+        let elapsedSeconds = Math.floor((now.getTime() - et.StartTime.getTime()) / 1000);
+        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
+        const hours = Math.floor(parseFloat(elapsedStr) / 3600);
+        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
+        const minutes = Math.floor(elapsedSeconds / 60);
+        const seconds = elapsedSeconds - minutes * 60;
+        return hours + ':' + minutes + ':' + seconds
     }
 
     async getNowTime(StartEnd){
@@ -1490,7 +1495,8 @@ const excel2 = new class Excel {
                     const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
                     let urlStr = urls.join(',');
                     log.verbose(`Items to lookup are: ${urlStr}`)
-                    store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}));
+                    // store.commit("UPDATE_EXPORTSTATUS", i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length, urlStr: urlStr}));
+                    et.updateStatusMsg(et.rawMsgType.ChuncksDetails, i18n.t('Modules.ET.Status.Processing-Chunk-Detailed', {current: x, total: sectionData.length}));
                     const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
                     log.verbose(`Items retrieved`);
                     const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});

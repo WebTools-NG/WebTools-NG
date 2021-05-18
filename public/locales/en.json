@@ -228,8 +228,9 @@
             "Status": {
                 "Names":{
                     "Status": "Status",
-                    "Chuncks":"Chuncks",
-                    "Items":"Items",
+                    "Chuncks": "Chuncks",
+                    "ChuncksDetails": "Chuncks Details",
+                    "Items": "Items",
                     "Info": "Info",
                     "OutFile": "Output File",
                     "StartTime": "Start time",
@@ -242,7 +243,7 @@
                 "Running": "Export in progress",
                 "Status": "Status",
                 "Processing-Chunk": "Processing chunk {current} of {total}",
-                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.\nitems to export: {urlStr}",
+                "Processing-Chunk-Detailed": "Processing chunk {current} of {total}.Items to export: {urlStr}",
                 "StartExport": "Starting to Export",
                 "GetSectionItems": "Fetching items {idx} in chunks of {chunck} with a total of {totalSize}",
                 "CreateExlsFile": "Creating Excel file",
