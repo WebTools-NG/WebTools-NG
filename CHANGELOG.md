@@ -1,5 +1,11 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.9
+
+* [#359 ET: Log time it took](https://github.com/WebTools-NG/WebTools-NG/issues/359)
+* [#364 ET: Make status windows better when exporting](https://github.com/WebTools-NG/WebTools-NG/issues/364)
+* ET: Added field "View Count" to episodes (No GHI for that one)
+
 ## V0.3.8
 
 * [#357 Default "Original Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/357)
