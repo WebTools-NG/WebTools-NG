@@ -1,5 +1,9 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.10
+
+* [#365 Dig into algorithm](https://github.com/WebTools-NG/WebTools-NG/issues/365)
+
 ## V0.3.9
 
 * [#359 ET: Log time it took](https://github.com/WebTools-NG/WebTools-NG/issues/359)
