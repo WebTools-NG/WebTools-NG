@@ -15,9 +15,6 @@
     <b-input-group id="ColumnSepGrp" :prepend="$t('Modules.ET.Settings.ColumnSep')" class="mt-3">
         <b-form-input id="ColumnSep" name="ColumnSep" type="text" class="form-control" v-model="ColumnSep" :disabled=false :maxlength=1 @change="setColumnSep"></b-form-input>
     </b-input-group>
-    <b-input-group id="TimeOutGrp" :prepend="$t('Modules.ET.Settings.TimeOut')" class="mt-3">
-        <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
-    </b-input-group>
     <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
         <b-tooltip target="PosterGrp" triggers="hover">
               {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
@@ -68,23 +65,20 @@
                 ColumnSep: '',
                 PosterDim: wtconfig.get('ET.Posters_Dimensions', '75*75'),
                 ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
-                TimeOut: wtconfig.get('PMS.TimeOut'),
                 cbSelected: [],
                 cbOptions: [
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpExcel' },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
-                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
-                    { text: i18n.t('Modules.ET.Settings.AutoXLSCol'), value: 'AutoXLSCol', disabled: true },
-                    { text: i18n.t('Modules.ET.Settings.AutoXLSRow'), value: 'AutoXLSRow', disabled: true }
+                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' }
                 ]
             };
         },
         methods: {
             getcbDefaults(){
-                const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"];
+                const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
-                        this.cbSelected.push(cbItems[i])
+                        this.cbSelected.push(cbItems[i]);
                     }
                 }
             },
@@ -126,9 +120,6 @@
             },
             setNotAvailIndicator: function(){
                 wtconfig.set('ET.NotAvail', this.NotAvailIndicator)
-            },
-            setTimeOut: function(){
-                wtconfig.set('PMS.TimeOut', this.TimeOut)
             },
             setPosters_Dimensions: function(){
                 wtconfig.set('ET.Posters_Dimensions', this.PosterDim);
