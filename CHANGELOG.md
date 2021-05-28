@@ -3,6 +3,7 @@
 ## V0.3.10
 
 * [#366 if possible allow lan only connections](https://github.com/WebTools-NG/WebTools-NG/issues/366)
+* [#373 Remove setting from ExportTools Settings](https://github.com/WebTools-NG/WebTools-NG/issues/373)
 
 ## V0.3.9
 
