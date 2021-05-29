@@ -6,6 +6,8 @@
 * [#373 Remove setting from ExportTools Settings](https://github.com/WebTools-NG/WebTools-NG/issues/373)
 * [#374 Change the Poster/Art Height * Width settings](https://github.com/WebTools-NG/WebTools-NG/issues/374)
 
+NOTE: Hight and Width has been reversed for Poster and Art Export!
+
 ## V0.3.9
 
 * [#359 ET: Log time it took](https://github.com/WebTools-NG/WebTools-NG/issues/359)
