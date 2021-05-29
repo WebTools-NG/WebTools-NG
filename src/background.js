@@ -104,3 +104,34 @@ if (isDevelopment) {
     })
   }
 }
+
+const ipcMain = require('electron').ipcMain;
+const axios = require('axios')
+const fs = require('fs')
+
+ipcMain.on('downloadFile', function (event, data) {
+  const filePath = data.filePath;
+  const item = data.item;
+  const https = require('https');
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+  axios({
+    method: 'GET',
+    url: item,
+    responseType: 'stream',
+    httpsAgent: agent
+  }).then((response) => {
+    response.data.pipe(fs.createWriteStream(filePath))
+    response.data.on('end', () => {
+      event.sender.send('downloadEnd');
+    })
+    response.data.on('error', (error) => {
+      log.error(`Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+      event.sender.send('downloadError', error);
+    })
+  }).catch((error) => {
+    log.error(`Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+    event.sender.send('downloadError', error);
+  })
+})

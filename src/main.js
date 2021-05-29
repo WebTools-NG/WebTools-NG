@@ -33,8 +33,8 @@ log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 log.info('*********************************')
 log.info(`Starting ${wtutils.AppName} Version: ${wtutils.AppVersion}`);
-log.info(`Running on ${wtutils.RunningOS}`)
-log.info(`Log level set to ${log.transports.file.level}`)
+log.info(`Running on ${wtutils.RunningOS}`);
+log.info(`Log level set to ${log.transports.file.level}`);
 // Logging ended
 
 // Log Commandline Params
@@ -53,18 +53,14 @@ params.forEach(param => {
 // Handles dev stuff from Json
 const token = wtconfig.get('Developer.X-Plex-Token', '');
 if ( token != ''){
-  log.verbose(`Logging in with Dev Token`)
+  log.verbose(`Logging in with Dev Token`);
   store.commit("UPDATE_AUTHTOKEN", token);
 }
-
-
-
-
 
 // Prepopulate config file with defaults
 if (wtconfig.get("general.version", "") != wtutils.AppVersion){
 	// Config file out of date, so prepopulate with default values if missing
-	wtutils.UpdateConfigFile()
+	wtutils.UpdateConfigFile();
 }
 
 // Log prefs settings
@@ -76,16 +72,18 @@ log.verbose(prefs);
 log.verbose('***** Prefs Ended *****');
 
 // Get saved language to use, and default to en
-i18n.locale = wtconfig.get('General.language', 'en')
+i18n.locale = wtconfig.get('General.language', 'en');
 
 // App Menu Bar
-log.verbose('Starting to build App Menu')
-const menuTemplate = require('./components/layout/script/menubar')
-const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default)
-require('electron').remote.Menu.setApplicationMenu(menu)
-log.verbose('App Menu builded')
+log.verbose('Starting to build App Menu');
+const menuTemplate = require('./components/layout/script/menubar');
+const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default);
+require('electron').remote.Menu.setApplicationMenu(menu);
+log.verbose('App Menu builded');
 
 Vue.config.productionTip = false;
+
+
 
 
 new Vue({
