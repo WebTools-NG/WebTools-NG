@@ -9,6 +9,9 @@ const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwi
 import {wtconfig, wtutils} from '../../General/wtutils';
 import i18n from '../../../../i18n';
 
+import {ipcRenderer} from 'electron';
+//const fs = require('fs');
+
 import filesize from 'filesize';
 var path = require("path");
 
@@ -365,14 +368,15 @@ const et = new class ET {
             {
                 libType = et.expSettings.libTypeSec;
             }
-            levelName = defLevels[libType]['levels'][level]
+            levelName = defLevels[libType]['levels'][level];
             if (levelName == undefined)
             {
                 // We are dealing with a custom level here
-                levelName = level
+                levelName = et.expSettings.exportLevel;
             }
         }
-        return levelName
+        et.expSettings.levelName = levelName;
+        return levelName;
     }
 
     async getSections(address, accessToken)
@@ -469,12 +473,10 @@ const et = new class ET {
 
     getLevelFields(level, libType) {
         // return fields in a level
-        const out = []
-        
+        const out = [];
         if (libType == et.ETmediaType.Playlist)
         {
             libType = et.expSettings.libTypeSec;
-            //libType = store.getters.getSelectedLibTypeSec;
         }
 
         let realName = et.getRealLevelName(level, libType);
@@ -535,12 +537,12 @@ const et = new class ET {
         if (levels == undefined)
         {
             // We are dealing with a custom level
-            levels = wtconfig.get(`ET.CustomLevels.${libType}.level.${realName}`);
+            levels = wtconfig.get(`ET.CustomLevels.${this.expSettings.libTypeSec}.level.${realName}`);
         }
         Object.keys(levels).forEach(function(key) {
             out.push(levels[key])
           });
-        return out
+        return out;
     }
 
     async getLevelCall (libType, level) {
@@ -1170,14 +1172,26 @@ const excel2 = new class Excel {
     }
 
     async forceDownload(url, target) {
-        const fs = require('fs');
-        //var out = fs.createWriteStream(target);
-        var request = require('request');
-        await new Promise(resolve =>
-            request(url)
-              .pipe(fs.createWriteStream(target))
-              .on('finish', resolve));
-      }
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            _this.isDownloading = true;
+            ipcRenderer.send('downloadFile', {
+                item: url,
+                filePath: target
+            })
+            ipcRenderer.on('downloadEnd', () => {
+                ipcRenderer.removeAllListeners('downloadEnd');
+                ipcRenderer.removeAllListeners('downloadError');
+                resolve(target);
+            })
+
+            ipcRenderer.on('downloadError', (event, error) => {
+                ipcRenderer.removeAllListeners('downloadEnd');
+                ipcRenderer.removeAllListeners('downloadError');
+                reject(error);
+            })
+        })
+    }
 
     async exportPics( { type: extype, data, baseURL, accessToken} ) {
         let ExpDir, picUrl, resolutions;
@@ -1214,8 +1228,8 @@ const excel2 = new class Excel {
                 fileName
                 );
             // Build up pic url
-            const width = res.split('*')[0].trim();
-            const hight = res.split('*')[1].trim();
+            const width = res.split('*')[1].trim();
+            const hight = res.split('*')[0].trim();
             let URL = baseURL + '/photo/:/transcode?width=';
             URL += width + '&height=' + hight;
             URL += '&minSize=1&url=';
@@ -1469,10 +1483,8 @@ const excel2 = new class Excel {
             {
                 jPath = "$.MediaContainer.Metadata[*]";
             }
-
-            const bExportPosters = wtconfig.get(`ET.CustomLevels.${libType}.Posters.${level}`, false);
-            const bExportArt = wtconfig.get(`ET.CustomLevels.${libType}.Art.${level}`, false);
-
+            const bExportPosters = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Posters.${et.expSettings.levelName}`, false);
+            const bExportArt = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Art.${et.expSettings.levelName}`, false);
             for (x=0; x<sectionData.length; x++)
             {
                 et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
