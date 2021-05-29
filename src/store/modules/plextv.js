@@ -15,7 +15,7 @@ const state = {
   authToken: '',
   avatar: '',
   plexname: '',
-  users: {}  
+  users: {}
 };
 
 const mutations = {
@@ -27,10 +27,10 @@ const mutations = {
   },
   UPDATE_SELECTED_SERVER(state, value) {
       state.selectedServer = value;
-      state.selectedServerToken = value.accessToken; 
+      state.selectedServerToken = value.accessToken;
   },
   UPDATE_SELECTED_SERVER_ADDRESS(state, value) {
-    state.selectedServerAddress = value;    
+    state.selectedServerAddress = value;
   },
   UPDATE_AUTHENTICATED(state, value){
     state.authenticated = value;
@@ -53,38 +53,38 @@ const actions = {
   async fetchUsers( { commit, getters }){
     log.debug('Getting users from plex.tv');
     let header = wtutils.PMSHeader;
-    header['X-Plex-Token'] = getters.getAuthToken;    
+    header['X-Plex-Token'] = getters.getAuthToken;
     await axios({
       method: 'get',
-      url: 'https://plex.tv/api/v2/friends',          
+      url: 'https://plex.tv/api/v2/friends',
       headers: header
     })
-      .then((response) => {        
+      .then((response) => {
         const ptvusers = {};
-        log.debug('Response from fetchUsers recieved');        
-        response.data.forEach((req) => {          
+        log.debug('Response from fetchUsers recieved');
+        response.data.forEach((req) => {
           ptvusers[req.id] = req;
         })
         commit('UPDATE_USERS', ptvusers);
         log.verbose('Users added to store')
       })
       .catch(function (error) {
-        if (error.response) {                  
+        if (error.response) {
             log.error('fetchUsers: ' + error.response.data);
             alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
         } else if (error.request) {
             log.error('fetchUsers: ' + error.request);
         } else {
             log.error('fetchUsers: ' + error.message);
-      }    
+      }
     });
   },
   fetchPlexServers({ commit, getters }) {
     let header = wtutils.PMSHeader;
-    header['X-Plex-Token'] = getters.getAuthToken;      
+    header['X-Plex-Token'] = getters.getAuthToken;
       axios({
           method: 'get',
-          url: 'https://plex.tv/api/v2/resources',          
+          url: 'https://plex.tv/api/v2/resources',
           headers: header,
           params: {
             'includeHttps' : '1',
@@ -109,44 +109,44 @@ const actions = {
                   result.push(pmsServer);
                 }
               } else {
-                if (req.owned == true && req.product == "Plex Media Server") {                                  
+                if (req.owned == true && req.product == "Plex Media Server") {
                   let pmsServer = {};
                   pmsServer['name'] = req.name;
                   pmsServer['accessToken'] = req.accessToken;
                   pmsServer['connections'] = req.connections;
-                  pmsServer['clientIdentifier'] = req.clientIdentifier                                                                      
+                  pmsServer['clientIdentifier'] = req.clientIdentifier
                   result.push(pmsServer);
                 }
-              } 
+              }
             })
             commit('UPDATE_PLEX_SERVERS', result);
           })
           .catch(function (error) {
-            if (error.response) {                  
+            if (error.response) {
                 log.error('fetchPlexServers: ' + error.response.data);
                 alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
             } else if (error.request) {
                 log.error('fetchPlexServers: ' + error.request);
             } else {
                 log.error('fetchPlexServers: ' + error.message);
-     }    
+     }
    });
   },
-  loginToPlex({ commit }, payload){    
+  loginToPlex({ commit }, payload){
     log.info("loginToPlex called")
-    var url = 'https://plex.tv/api/v2/users/signin';    
+    var url = 'https://plex.tv/api/v2/users/signin';
     url = url + '?login=' + require('querystring').escape(payload.username);
     url = url + '&password=' + require('querystring').escape(payload.password);
     if ( payload.twoFA ){
       url = url + '&verificationCode=' + payload.twoFA
-    }    
+    }
     axios({
       method: 'POST',
-      url: url,      
-      headers: wtutils.PMSHeader      
-    })  
+      url: url,
+      headers: wtutils.PMSHeader
+    })
       .then(function (response) {
-        log.debug('loginToPlex: Response from fetchPlexServers recieved')        
+        log.debug('loginToPlex: Response from fetchPlexServers recieved')
         commit('UPDATE_AUTHTOKEN', response.data.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.thumb)
@@ -154,7 +154,7 @@ const actions = {
         router.replace({name: "home"});
     })
       .catch(function (error) {
-         if (error.response) {                  
+         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
           log.error(`loginToPlex status: ${error.response.status}`);
@@ -179,24 +179,24 @@ const actions = {
           log.error('loginToPlex: ' + error.message)
         }})
   },
-  loginToPlexWithToken({ commit }, payload){    
+  loginToPlexWithToken({ commit }, payload){
     log.info("loginToPlex called, using a Token")
-    const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;    
+    const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;
     axios({
       method: 'POST',
       url: url,
-      headers: wtutils.PMSHeader      
-    })  
+      headers: wtutils.PMSHeader
+    })
       .then(function (response) {
         log.debug('loginToPlex: Response from fetchPlexServers recieved')
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)
         commit('UPDATE_PLEXNAME', response.data.user.username)
-        router.replace({name: "home"}); 
+        router.replace({name: "home"});
     })
       .catch(function (error) {
-         if (error.response) {                  
+         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
           log.error('loginToPlex: ' + error.response.status);
@@ -213,7 +213,7 @@ const actions = {
           log.error('loginToPlex: ' + error.message)
         }})
   },
-  updatingServerAddress({ commit}, status){    
+  updatingServerAddress({ commit}, status){
     commit('UPDATE_PLEX_SELECTED_SERVER_STATUS', status)
   }
 };

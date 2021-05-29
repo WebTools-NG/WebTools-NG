@@ -1,35 +1,35 @@
 <template>
-    
+
     <div class="col-lg-10 col-md-12 col-xs-12">
-    <h3>{{ $t("Modules.PMS.Name") }} <br>      
-    </h3>    
+    <h3>{{ $t("Modules.PMS.Name") }} <br>
+    </h3>
     {{ $t("Modules.PMS.Description") }}
 
     <br />
-    </div>              
-    
-  
+    </div>
+
+
 </template>
 
-<script>  
+<script>
   import i18n from '../../../i18n';
   import store from '../../../store';
   import { wtconfig } from '../General/wtutils';
 
   i18n, store, wtconfig
-  
+
   const log = require("electron-log");
   export default {
       data() {
-        return {   
-          selLibraryWait: true,              
-          btnDisable: true,                  
+        return {
+          selLibraryWait: true,
+          btnDisable: true,
           selMediaType: "movie",
           selLibrary: "",
           selLibraryOptions: [],
-          selLevel: "",                            
+          selLevel: "",
         };
-  },  
+  },
   created() {
     log.info("PMS Created");
     this.serverSelected();
@@ -42,10 +42,10 @@
         log.debug("serverCheck is none");
         this.$bvToast.toast(this.$t("Modules.PMS.ErrorNoServerSelectedMsg"), {
           title: this.$t("Modules.PMS.ErrorNoServerSelectedTitle"),
-          autoHideDelay: 4000,          
+          autoHideDelay: 4000,
           solid: true,
           variant: 'primary',
-          toaster: 'b-toaster-bottom-right' 
+          toaster: 'b-toaster-bottom-right'
         });
       }
     }

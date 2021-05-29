@@ -9,13 +9,15 @@ console.log = log.log;
 log.transports.file.fileName = wtutils.AppName;
 
 import {
-  createProtocol  
+  createProtocol
 } from 'vue-cli-plugin-electron-builder/lib'
 //import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-
+// Bad thing, but need to disable cert checks, since connecting via ip
+// to a cert issued for plex.direct
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -47,9 +49,9 @@ function createWindow () {
   })
 
   // Set proper title for main window
-  win.webContents.on('did-finish-load', () => {    
-    let windowtitle = wtutils.AppName + " v" + wtutils.AppVersion;    
-    win.setTitle(windowtitle);    
+  win.webContents.on('did-finish-load', () => {
+    let windowtitle = wtutils.AppName + " v" + wtutils.AppVersion;
+    win.setTitle(windowtitle);
   })
 
 }
@@ -60,7 +62,7 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
-  }  
+  }
 })
 
 app.on('activate', () => {
@@ -76,9 +78,9 @@ app.on('activate', () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
-    try {       
+    try {
       //await installExtension(VUEJS_DEVTOOLS)
-      console.log('VUE DevTools disabled for now')       
+      console.log('VUE DevTools disabled for now')
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
@@ -102,3 +104,34 @@ if (isDevelopment) {
     })
   }
 }
+
+const ipcMain = require('electron').ipcMain;
+const axios = require('axios')
+const fs = require('fs')
+
+ipcMain.on('downloadFile', function (event, data) {
+  const filePath = data.filePath;
+  const item = data.item;
+  const https = require('https');
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+  axios({
+    method: 'GET',
+    url: item,
+    responseType: 'stream',
+    httpsAgent: agent
+  }).then((response) => {
+    response.data.pipe(fs.createWriteStream(filePath))
+    response.data.on('end', () => {
+      event.sender.send('downloadEnd');
+    })
+    response.data.on('error', (error) => {
+      log.error(`Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+      event.sender.send('downloadError', error);
+    })
+  }).catch((error) => {
+    log.error(`Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+    event.sender.send('downloadError', error);
+  })
+})
