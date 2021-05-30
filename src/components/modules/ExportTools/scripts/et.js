@@ -4,10 +4,11 @@ var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')))
 
 const log = require('electron-log');
 console.log = log.log;
-const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
+
 
 import {wtconfig, wtutils} from '../../General/wtutils';
 import i18n from '../../../../i18n';
+import {etHelper} from './etHelper';
 
 import {ipcRenderer} from 'electron';
 //const fs = require('fs');
@@ -200,27 +201,9 @@ const et = new class ET {
         return now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
     }
 
-    async clearStatus()
-    {
-        this.statusmsg = {};
-        store.commit("UPDATE_SELECTEDETStatus", '');
-    }
+    
 
-    async updateStatusMsg(msgType, msg)
-    {
-        // Update relevant key
-        this.statusmsg[msgType] = msg;
-        // Tmp store of new msg
-        let newMsg = '';
-        // Walk each current msg keys
-        Object.entries(this.statusmsg).forEach(([key, value]) => {
-            if ( value != '')
-            {
-                newMsg += this.msgType[key] + ': ' + value + '\n';
-            }
-        })
-        store.commit("UPDATE_SELECTEDETStatus", newMsg);
-    }
+   
 
     async getLibSize(){
         // Will return the size of a library or playlist
@@ -266,25 +249,9 @@ const et = new class ET {
         return hours + ':' + minutes + ':' + seconds
     }
 
-    async getNowTime(StartEnd){
-        let now = new Date();
-        if (StartEnd == 'start')
-        {
-            et.StartTime = now;
-        }
-        else
-        {
-            et.EndTime = now;
-        }
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        return hours + ':' + minutes + ':' + seconds;
-    }
-
-    async exportMedias() {
-        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getNowTime('start'));
-        this.expSettings.libName = et.getLibDisplayName(this.expSettings.selLibKey, store.getters.getPmsSections);
+        async exportMedias() {
+        etHelper.updateStatusMsg( et.rawMsgType.StartTime, await etHelper.getNowTimeW('start'));
+        this.expSettings.libName = etHelper.getLibDisplayName(this.expSettings.selLibKey, store.getters.getPmsSections);
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.expSettings.libType) > -1)
         {
             this.expSettings.levelName = 'All'
@@ -304,13 +271,92 @@ const et = new class ET {
           libTypeSec: this.expSettings.libTypeSec
         });
         // Update status window
-        et.clearStatus();
-        et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
-        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getStartEndTime('start'));
-        this.getNowTime('end');
-        et.updateStatusMsg( et.rawMsgType.EndTime, await this.getStartEndTime('end'));
-        et.updateStatusMsg( et.rawMsgType.TimeElapsed, await this.getTimeElapsed());
-        et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
+        etHelper.clearStatus();
+        etHelper.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
+        etHelper.updateStatusMsg( et.rawMsgType.StartTime, await this.getStartEndTime('start'));
+        etHelper.getNowTime('end');
+        etHelper.updateStatusMsg( et.rawMsgType.EndTime, await this.getStartEndTime('end'));
+        etHelper.updateStatusMsg( et.rawMsgType.TimeElapsed, await this.getTimeElapsed());
+        etHelper.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
+    }
+
+
+    getSectionData(startItem)
+    {
+        return new Promise(function(resolve) {
+            console.log('Ged 5 start', startItem)
+
+            const sectionData = [];
+            // Find LibType steps
+            const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20);
+            log.debug(`Got Step size as: ${step}`);
+            // Current item
+            let idx = startItem * step;
+            log.debug(`IDX start is: ${idx}`);
+            let element
+            // Now read the fields and level defs
+
+            // Now let's walk the section
+            let chuncks, postURI
+            let size
+
+             
+            do {
+                if (this.expSettings.libType == et.ETmediaType.Photo)
+                {
+                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                    postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
+                }
+                else if (this.expSettings.libType == et.ETmediaType.Playlist)
+                {
+                    element = '/playlists/' + this.expSettings.selLibKey;
+                    postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                }
+                else if (this.expSettings.libType == et.ETmediaType.Libraries)
+                {
+                    element = '/library/sections/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                }
+                else if (this.expSettings.libType == et.ETmediaType.Playlists)
+                {
+                    element = '/playlists/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                }
+                else
+                {
+                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
+                }
+
+
+                log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI}`);
+                //chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
+                //chuncks = et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
+                chuncks = (async () => {
+                    await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
+                
+                    // all of the script.... 
+                
+                })();
+                
+                size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
+                const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
+                log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
+                etHelper.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
+                sectionData.push(chuncks)
+                log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
+                idx = idx + step;
+            } while (size > 1);
+
+ 
+
+
+            log.silly(`SectionData to return is:`);
+            log.silly(JSON.stringify(sectionData));
+            console.log('Ged 77 end')
+            //return sectionData;
+            resolve(sectionData);
+        });
     }
 
     async getSectionData1()
@@ -358,8 +404,7 @@ const et = new class ET {
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
             log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
-            // et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
-            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
+            etHelper.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
             sectionData.push(chuncks)
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
@@ -369,7 +414,8 @@ const et = new class ET {
         return sectionData;
     }
 
-    async getSectionData(startItem)
+
+    async getSectionData2(startItem)
     {
         console.log('Ged 5 start', startItem)
 
@@ -412,25 +458,24 @@ const et = new class ET {
                 element = '/library/sections/' + this.expSettings.selLibKey + '/all';
                 postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
             }
-
             log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI}`);
             chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
-            log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
-            // et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
-            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
+            log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`);
+            etHelper.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
             sectionData.push(chuncks)
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
         } while (size > 1);
         log.silly(`SectionData to return is:`);
         log.silly(JSON.stringify(sectionData));
+        console.log('Ged 77 end')
         return sectionData;
 
     }
 
-    async getItemData({baseURL, accessToken, element, postURI=defpostURI})
+    async getItemData({baseURL, accessToken, element, postURI=etHelper.defpostURI})
     {
         const url = baseURL + element + postURI;
         this.PMSHeader["X-Plex-Token"] = accessToken;
@@ -544,18 +589,7 @@ const et = new class ET {
         return result;
     }
 
-    getLibDisplayName(libKey, sections){
-        // return displayname for library
-        let result = '';
-        for (var i=0; i<sections.length; i++){
-            if ( JSONPath({path: '$..key', json: sections[i]}) == libKey)
-            {
-                result = JSONPath({path: '$..title', json: sections[i]});
-                i = sections.length;
-            }
-        }
-        return result;
-    }
+
 
     getLevelFields(level, libType) {
         // return fields in a level
@@ -700,26 +734,13 @@ const et = new class ET {
         return defFields['fields'][fieldName]['type'];
     }
 
-    getFieldCall(libType, fieldName) {
-        return defFields['fields'][fieldName]['call'];
-    }
+    
 
     getFieldSubtype(libType, fieldName) {
         return defFields['fields'][fieldName]['subtype'];
     }
 
-    getFieldsKeyVal( libType, level) {
-        // Get fields for level
-        let fields
-        fields = et.getLevelFields(level, libType)
-        const out = []
-        fields.forEach(element => {
-            const item = {}
-            item[element] = et.getFieldKey(libType, element)
-            out.push(item)
-        });
-        return out
-    }
+
 
     getFieldsKeyValType( libType, level) {
         // Get field and type for level
@@ -738,7 +759,7 @@ const et = new class ET {
 
     // Returns the name of the libtype
     getLibTypeName( libType) {
-        if (this.isPlaylist(libType))
+        if (etHelper.isPlaylist())
         {
             return 'playlist-' + (et.RevETmediaType[libType]).toLowerCase();
         }
@@ -748,10 +769,6 @@ const et = new class ET {
         }
     }
 
-    // Returns true if libtype is a playlist
-    isPlaylist( libType ) {
-        return [et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType) == true;
-    }
 
     // Return all field keys defined for a lib type, in a sorted array of json, with an index
     getAllFields( {libType}) {
@@ -821,18 +838,7 @@ const et = new class ET {
         return out
     }
 
-    async getSectionNameSize(baseURI, accessToken, sectionID) {
-        //getSectionNameAndSize(baseURI, accessToken, sectionID)
-        const url = baseURI + '/library/sections/' + sectionID + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-        this.PMSHeader["X-Plex-Token"] = accessToken;
-        const result = {}
-        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        let resp = await response.json();
-        const respJSON = await Promise.resolve(resp)
-        result['size'] = JSONPath({path: '$.MediaContainer.totalSize', json: respJSON});
-        result['name'] = JSONPath({path: '$.MediaContainer.librarySectionTitle', json: respJSON});
-        return result
-    }
+    
 
     checkServerConnect(server) {
         server.connections.forEach((val) => {
@@ -1325,7 +1331,7 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp( { data, stream, fields, textSep }) {
-        et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
+        etHelper.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let date, year, month, day, hours, minutes, seconds
         let lookup, val, array, i, valArray, valArrayVal, subType, subKey
@@ -1458,7 +1464,7 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp1( { libType, level, data, stream, fields }) {
-        et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
+        etHelper.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
         log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let date, year, month, day, hours, minutes, seconds
@@ -1716,34 +1722,48 @@ const excel2 = new class Excel {
 
         if (et.expSettings.levelCall == 1)
         {
-            for (x=0; x<et.expSettings.chunksSize; x++)
-            {
-                et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: et.expSettings.chunksSize}));
-                sectionData = await et.getSectionData(x);
-                sectionData = await JSONPath({path: jPath, json: item})[0];
-                for (item of sectionData){
-                    //item = await JSONPath({path: jPath, json: item})[0];
-                    if (item){
-                        et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields, textSep: textSep } );
-                        if (bExportPosters)
-                        {
-                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
+            try {
+                for (x=0; x<et.expSettings.chunksSize; x++)
+                {
+                    etHelper.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: et.expSettings.chunksSize}));
+                    sectionData = await et.getSectionData(x)[0];
+                    console.log('Ged 12-0', jPath)
+                    //sectionData = await JSONPath({path: jPath, json: item})[0];
+                    sectionData = await JSONPath({path: jPath, json: sectionData});
+
+                    for (item of sectionData){
+                        //item = await JSONPath({path: jPath, json: item})[0];
+                        if (item){
+                            etHelper.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                            await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields, textSep: textSep } );
+                            if (bExportPosters)
+                            {
+                                await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
+                            }
+                            if (bExportArt)
+                            {
+                                await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
+                            }
+                            counter += 1;
+                            await new Promise(resolve => setTimeout(resolve, 1));
                         }
-                        if (bExportArt)
-                        {
-                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        counter += 1;
-                        await new Promise(resolve => setTimeout(resolve, 1));
                     }
                 }
-
+            }
+            catch(error)
+            {
+                log.error(`Exception 2 cought in createOutFile was ${error}`)
             }
         }
         else
         {
-            console.log('Ged 3-1 more than 1 call')
+            try {
+                console.log('Ged 3-1 more than 1 call')
+            }
+            catch(error) {
+                log.error(`Exception 3 cought in createOutFile was ${error}`)
+            }
+
         }
 
         stream.end();
@@ -1754,7 +1774,7 @@ const excel2 = new class Excel {
         // Need to export to xlsx as well?
         if (wtconfig.get('ET.ExpExcel')){
             log.info('We need to create an xlsx file as well');
-            et.updateStatusMsg( et.rawMsgType.Info, i18n.t('Modules.ET.Status.CreateExlsFile'));
+            etHelper.updateStatusMsg( et.rawMsgType.Info, i18n.t('Modules.ET.Status.CreateExlsFile'));
             await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
         }
 
@@ -1821,4 +1841,94 @@ const excel2 = new class Excel {
     }
 }
 
+/* 
+getLibDisplayName_ET(libKey, sections){
+    // return displayname for library
+    let result = '';
+    for (var i=0; i<sections.length; i++){
+        if ( JSONPath({path: '$..key', json: sections[i]}) == libKey)
+        {
+            result = JSONPath({path: '$..title', json: sections[i]});
+            i = sections.length;
+        }
+    }
+    return result;
+}
+
+async getSectionNameSize_ET(baseURI, accessToken, sectionID) {
+    //getSectionNameAndSize(baseURI, accessToken, sectionID)
+    const url = baseURI + '/library/sections/' + sectionID + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+    this.PMSHeader["X-Plex-Token"] = accessToken;
+    const result = {}
+    let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+    let resp = await response.json();
+    const respJSON = await Promise.resolve(resp)
+    result['size'] = JSONPath({path: '$.MediaContainer.totalSize', json: respJSON});
+    result['name'] = JSONPath({path: '$.MediaContainer.librarySectionTitle', json: respJSON});
+    return result
+}
+
+    // Returns true if libtype is a playlist
+    isPlaylist_ET( libType ) {
+        return [et.ETmediaType.Playlist_Audio, et.ETmediaType.Playlist_Photo, et.ETmediaType.Playlist_Video].includes(libType) == true;
+    }
+async getNowTime_ET(StartEnd){
+        let now = new Date();
+        if (StartEnd == 'start')
+        {
+            et.StartTime = now;
+        }
+        else
+        {
+            et.EndTime = now;
+        }
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        return hours + ':' + minutes + ':' + seconds;
+    }
+
+const defpostURI_ET = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
+
+getFieldCall_ET(libType, fieldName) {
+        return defFields['fields'][fieldName]['call'];
+    }
+
+
+    getFieldsKeyVal_ET( libType, level) {
+        // Get fields for level
+        let fields
+        fields = et.getLevelFields(level, libType)
+        const out = []
+        fields.forEach(element => {
+            const item = {}
+            item[element] = et.getFieldKey(libType, element)
+            out.push(item)
+        });
+        return out
+    }
+
+async clearStatus_ET()
+    {
+        this.statusmsg = {};
+        store.commit("UPDATE_SELECTEDETStatus", '');
+    }    
+
+ async updateStatusMsg_ET(msgType, msg)
+    {
+        // Update relevant key
+        this.statusmsg[msgType] = msg;
+        // Tmp store of new msg
+        let newMsg = '';
+        // Walk each current msg keys
+        Object.entries(this.statusmsg).forEach(([key, value]) => {
+            if ( value != '')
+            {
+                newMsg += this.msgType[key] + ': ' + value + '\n';
+            }
+        })
+        store.commit("UPDATE_SELECTEDETStatus", newMsg);
+    }
+
+ */
 export { et, excel2 };

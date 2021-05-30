@@ -114,6 +114,8 @@
   import { et } from "./scripts/et";
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
+  import { etHelper } from "./scripts/etHelper";
+  
 
 
   const log = require("electron-log");
@@ -191,7 +193,7 @@
   },
   created() {
     log.info("ET Created");
-    et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
+    etHelper.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
   },
   computed: {
     ETStatus: function(){
@@ -449,14 +451,24 @@
         })
         return
       }
-      et.clearStatus();
-      et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+      etHelper.clearStatus();
+      etHelper.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
       // Populate et. settings with the selected values
       et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
       et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
       et.expSettings.libType = this.selMediaType;
       et.expSettings.libTypeSec = this.selExpTypeSec;
       et.expSettings.exportLevel = this.selLevel;
+
+      // Initialize export settings
+      etHelper.initExpSettings({
+        baseURL: this.$store.getters.getSelectedServerAddress,
+        accessToken: this.$store.getters.getSelectedServerToken,
+        libType: this.selMediaType,
+        libTypeSec: this.selExpTypeSec,
+        exportLevel: this.selLevel
+      });
+
       await et.exportMedias();
     },
     async checkSrvSelected() {
