@@ -220,10 +220,10 @@
                 "ExportToExcel": "Export to xlsx as well as csv",
                 "NotAvailIndicator": "What to use if a field can't be found",
                 "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)",
-                "Posters_Dimensions": "Poster height * width",
-                "Posters_Dimensions_TT": "Poster height*width, If 'Export Posters' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the poster",
-                "Art_Dimensions": "Art height * width",
-                "Art_Dimensions_TT": "Art height*width, If 'Export Art' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art"
+                "Posters_Dimensions": "Poster width * height",
+                "Posters_Dimensions_TT": "Poster width*height, If 'Export Posters' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the poster",
+                "Art_Dimensions": "Art width * height",
+                "Art_Dimensions_TT": "Art width*height, If 'Export Art' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art"
             },
             "Status": {
                 "Names":{
