@@ -1,5 +1,9 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.11
+
+* [#384 I need better error logging for Poster Export](https://github.com/WebTools-NG/WebTools-NG/issues/384)
+
 ## V0.3.10
 
 * [#366 if possible allow lan only connections](https://github.com/WebTools-NG/WebTools-NG/issues/366)
