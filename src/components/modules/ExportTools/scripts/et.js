@@ -1174,15 +1174,30 @@ const excel2 = new class Excel {
     async forceDownload(url, target) {
         const _this = this;
         return new Promise((resolve, reject) => {
-            _this.isDownloading = true;
-            ipcRenderer.send('downloadFile', {
-                item: url,
-                filePath: target
-            })
+            try
+            {
+                _this.isDownloading = true;
+                ipcRenderer.send('downloadFile', {
+                    item: url,
+                    filePath: target
+                })
+            }
+            catch (error)
+            {
+                log.error(`Exception in et.js forceDownload was: ${error}`);
+            }
+           
             ipcRenderer.on('downloadEnd', () => {
-                ipcRenderer.removeAllListeners('downloadEnd');
-                ipcRenderer.removeAllListeners('downloadError');
-                resolve(target);
+                try
+                {
+                    ipcRenderer.removeAllListeners('downloadEnd');
+                    ipcRenderer.removeAllListeners('downloadError');
+                    resolve(target);
+                }
+                catch (error)
+                {
+                    log.error(`Exception in et.js forceDownload-downloadEnd was: ${error}`);
+                }                
             })
 
             ipcRenderer.on('downloadError', (event, error) => {
@@ -1223,7 +1238,8 @@ const excel2 = new class Excel {
         let title = String(JSONPath({path: '$.title', json: data})[0]);
         // Get resolutions to export as
         for(let res of resolutions) {
-            const fileName = key + '_' + title + '_' + res.trim() + '.jpg'
+            const fileName = key + '_' + title + '_' + res.trim().replace("*", "x"); + '.jpg';
+            
             let outFile = path.join(
                 ExpDir,
                 fileName

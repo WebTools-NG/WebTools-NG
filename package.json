@@ -42,6 +42,7 @@
     "levenary": "^1.1.1",
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.1",
+    "node-sass": "^6.0.0",
     "popper.js": "^1.16.1",
     "rimraf": "^2.7.1",
     "secure-ls": "^1.2.6",

@@ -3,6 +3,7 @@
 ## V0.3.11
 
 * [#384 I need better error logging for Poster Export](https://github.com/WebTools-NG/WebTools-NG/issues/384)
+* [#382 Exporting Posters and Art not working](https://github.com/WebTools-NG/WebTools-NG/issues/382)
 
 ## V0.3.10
 
