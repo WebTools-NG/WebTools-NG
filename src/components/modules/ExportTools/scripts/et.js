@@ -1195,6 +1195,7 @@ const excel2 = new class Excel {
 
     async exportPics( { type: extype, data, baseURL, accessToken} ) {
         let ExpDir, picUrl, resolutions;
+        log.verbose(`Going to export ${extype}`);
         if (extype == 'posters')
         {
             picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
@@ -1215,7 +1216,7 @@ const excel2 = new class Excel {
         }
         // Create export dir
         var fs = require('fs');
-         if (!fs.existsSync(ExpDir)){
+        if (!fs.existsSync(ExpDir)){
             fs.mkdirSync(ExpDir);
         }
         let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
@@ -1233,7 +1234,10 @@ const excel2 = new class Excel {
             let URL = baseURL + '/photo/:/transcode?width=';
             URL += width + '&height=' + hight;
             URL += '&minSize=1&url=';
-            URL += picUrl + '&X-Plex-Token=' + accessToken;
+            URL += picUrl;
+            log.verbose(`Url for ${extype} is ${URL}`);
+            log.verbose(`Outfile is ${outFile}`);
+            URL += '&X-Plex-Token=' + accessToken;
             await this.forceDownload(URL, outFile);
         }
     }
