@@ -1174,15 +1174,30 @@ const excel2 = new class Excel {
     async forceDownload(url, target) {
         const _this = this;
         return new Promise((resolve, reject) => {
-            _this.isDownloading = true;
-            ipcRenderer.send('downloadFile', {
-                item: url,
-                filePath: target
-            })
+            try
+            {
+                _this.isDownloading = true;
+                ipcRenderer.send('downloadFile', {
+                    item: url,
+                    filePath: target
+                })
+            }
+            catch (error)
+            {
+                log.error(`Exception in et.js forceDownload was: ${error}`);
+            }
+           
             ipcRenderer.on('downloadEnd', () => {
-                ipcRenderer.removeAllListeners('downloadEnd');
-                ipcRenderer.removeAllListeners('downloadError');
-                resolve(target);
+                try
+                {
+                    ipcRenderer.removeAllListeners('downloadEnd');
+                    ipcRenderer.removeAllListeners('downloadError');
+                    resolve(target);
+                }
+                catch (error)
+                {
+                    log.error(`Exception in et.js forceDownload-downloadEnd was: ${error}`);
+                }                
             })
 
             ipcRenderer.on('downloadError', (event, error) => {
@@ -1195,6 +1210,7 @@ const excel2 = new class Excel {
 
     async exportPics( { type: extype, data, baseURL, accessToken} ) {
         let ExpDir, picUrl, resolutions;
+        log.verbose(`Going to export ${extype}`);
         if (extype == 'posters')
         {
             picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
@@ -1215,14 +1231,15 @@ const excel2 = new class Excel {
         }
         // Create export dir
         var fs = require('fs');
-         if (!fs.existsSync(ExpDir)){
+        if (!fs.existsSync(ExpDir)){
             fs.mkdirSync(ExpDir);
         }
         let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
         let title = String(JSONPath({path: '$.title', json: data})[0]);
         // Get resolutions to export as
         for(let res of resolutions) {
-            const fileName = key + '_' + title + '_' + res.trim() + '.jpg'
+            const fileName = key + '_' + title + '_' + res.trim().replace("*", "x"); + '.jpg';
+            
             let outFile = path.join(
                 ExpDir,
                 fileName
@@ -1233,7 +1250,10 @@ const excel2 = new class Excel {
             let URL = baseURL + '/photo/:/transcode?width=';
             URL += width + '&height=' + hight;
             URL += '&minSize=1&url=';
-            URL += picUrl + '&X-Plex-Token=' + accessToken;
+            URL += picUrl;
+            log.verbose(`Url for ${extype} is ${URL}`);
+            log.verbose(`Outfile is ${outFile}`);
+            URL += '&X-Plex-Token=' + accessToken;
             await this.forceDownload(URL, outFile);
         }
     }
