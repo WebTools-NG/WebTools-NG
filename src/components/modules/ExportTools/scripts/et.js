@@ -1211,24 +1211,34 @@ const excel2 = new class Excel {
     async exportPics( { type: extype, data, baseURL, accessToken} ) {
         let ExpDir, picUrl, resolutions;
         log.verbose(`Going to export ${extype}`);
-        if (extype == 'posters')
+        try
         {
-            picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
-            resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
-            ExpDir = path.join(
-                wtconfig.get('General.ExportPath'),
-                wtutils.AppName,
-                'ExportTools', 'Posters');
+            if (extype == 'posters')
+            {
+                picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                ExpDir = path.join(
+                    wtconfig.get('General.ExportPath'),
+                    wtutils.AppName,
+                    'ExportTools', 'Posters');
+            }
+            else
+            {
+                picUrl = String(JSONPath({path: '$.art', json: data})[0]);
+                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
+                ExpDir = path.join(
+                    wtconfig.get('General.ExportPath'),
+                    wtutils.AppName,
+                    'ExportTools', 'Art');
+            }
         }
-        else
+        catch (error)
         {
-            picUrl = String(JSONPath({path: '$.art', json: data})[0]);
-            resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
-            ExpDir = path.join(
-                wtconfig.get('General.ExportPath'),
-                wtutils.AppName,
-                'ExportTools', 'Art');
+            log.error(`Exception in exportPics is: ${error}`);
         }
+        log.verbose(`picUrl is: ${picUrl}`);
+        log.verbose(`resolutions is: ${JSON.stringify(resolutions)}`);
+        log.verbose(`ExpDir is: ${ExpDir}`);
         // Create export dir
         var fs = require('fs');
         if (!fs.existsSync(ExpDir)){
