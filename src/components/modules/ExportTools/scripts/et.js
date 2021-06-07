@@ -1238,8 +1238,7 @@ const excel2 = new class Excel {
         let title = String(JSONPath({path: '$.title', json: data})[0]);
         // Get resolutions to export as
         for(let res of resolutions) {
-            const fileName = key + '_' + title + '_' + res.trim().replace("*", "x"); + '.jpg';
-            
+            const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '_' + res.trim().replace("*", "x") + '.jpg';
             let outFile = path.join(
                 ExpDir,
                 fileName
