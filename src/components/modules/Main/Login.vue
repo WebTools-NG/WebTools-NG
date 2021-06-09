@@ -63,7 +63,7 @@ import store from '../../../store';
 import { wtutils, wtconfig } from '../General/wtutils';
 const log = require('electron-log');
 console.log = log.log;
-log.transports.file.fileName = wtutils.AppName;
+log.transports.file.fileName = wtutils.logFileName;
 
 var userName = "";
 

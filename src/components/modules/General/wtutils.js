@@ -15,6 +15,7 @@ const wtconfig = new Store({ name: (electron.app || electron.remote.app).getName
 const wtutils = new class WTUtils {
 
     constructor() {
+        this.logFileName = this.AppName + '.log';
     }
 
     get ConfigFileName(){

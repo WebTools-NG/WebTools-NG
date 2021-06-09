@@ -22,7 +22,7 @@ Vue.use(BootstrapVueIcons);
 // Logging start
 // Remember to define log in all components where its used, as in below
 const log = require('electron-log');
-log.transports.file.fileName = wtutils.AppName;
+log.transports.file.fileName = wtutils.logFileName;
 console.log = log.log;
 // Default file log level is info
 log.transports.file.level = wtconfig.get('Log.fileLevel', 'info');

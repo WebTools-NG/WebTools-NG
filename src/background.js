@@ -6,7 +6,7 @@ const log = require('electron-log');
 console.log = log.log;
 
 // Sadly needs below, since part of main process, so not inherited
-log.transports.file.fileName = wtutils.AppName;
+log.transports.file.fileName = wtutils.logFileName;
 
 import {
   createProtocol

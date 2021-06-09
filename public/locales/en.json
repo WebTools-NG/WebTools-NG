@@ -293,7 +293,7 @@
             "ContainerSizeAlbum": "Amount of albums (Default: 30)",
             "ContainerSizeTrack": "Amount of tracks (Default: 30)",
             "ContainerSizePhoto": "Amount of photos (Default: 30)",
-            "ContainerSizePlaylist": "Amount of playlists (Default: 30)",
+            "ContainerSizePlaylist": "Amount of playlist (Default: 30)",
             "ContainerSizeLibraries": "Amount of libraries (Default: 30)",
             "ContainerSizePlaylists": "Amount of playlists (Default: 30)"
         },
