@@ -1,5 +1,9 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.13
+
+* [#380 Split ET scripts into separate files](https://github.com/WebTools-NG/WebTools-NG/issues/380)
+
 ## V0.3.12
 
 * [#382 Exporting Posters and Art not working (Revisit)](https://github.com/WebTools-NG/WebTools-NG/issues/382)
