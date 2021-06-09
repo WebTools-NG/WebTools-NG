@@ -8,6 +8,7 @@ const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwi
 
 import {wtconfig, wtutils} from '../../General/wtutils';
 import i18n from '../../../../i18n';
+import pms from '../../General/pms';
 
 import {ipcRenderer} from 'electron';
 //const fs = require('fs');
@@ -288,7 +289,7 @@ const et = new class ET {
         et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
     }
 
-    async getSectionData()
+    async getSectionData_GED()
     {
         const sectionData = []
         // Find LibType steps
@@ -1261,7 +1262,7 @@ const excel2 = new class Excel {
             URL += '&minSize=1&url=';
             URL += picUrl;
             log.verbose(`Url for ${extype} is ${URL}`);
-            log.verbose(`Outfile is ${outFile}`);
+            log.verbose(`Pic Outfile is ${outFile}`);
             URL += '&X-Plex-Token=' + accessToken;
             await this.forceDownload(URL, outFile);
         }
@@ -1484,6 +1485,7 @@ const excel2 = new class Excel {
         log.debug(`header: ${header}`);
         const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
+        console.log('GED 2-0', libType, '*', level)
         const call = await et.getLevelCall(libType, level);
         // Open a file stream
         const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
@@ -1494,7 +1496,11 @@ const excel2 = new class Excel {
         var sectionData, x;
         {
             // Get all the items in small chuncks
-            sectionData = await et.getSectionData();
+            console.log('GED 3-0')
+            pms.test
+            console.log('GED 3-1')
+            sectionData = await pms.getSectionData();
+            console.log('GED 3-4')
             log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
             let item;
             let counter = 1;
