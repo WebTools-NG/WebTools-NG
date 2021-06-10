@@ -8,7 +8,7 @@ const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwi
 
 import {wtconfig, wtutils} from '../../General/wtutils';
 import i18n from '../../../../i18n';
-import pms from '../../General/pms';
+import {pmsutils} from '../../General/pms';
 
 import {ipcRenderer} from 'electron';
 //const fs = require('fs');
@@ -1497,9 +1497,7 @@ const excel2 = new class Excel {
         {
             // Get all the items in small chuncks
             console.log('GED 3-0')
-            pms.test
-            console.log('GED 3-1')
-            sectionData = await pms.getSectionData();
+            sectionData = await pmsutils.getSectionData();
             console.log('GED 3-4')
             log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
             let item;

@@ -3,8 +3,6 @@ This file contains different functions and methods
 that we use in our solution.
  */
 
-//import i18n from '../../../i18n';
-
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -25,8 +23,6 @@ const wtutils = new class WTUtils {
     }
 
     get ExportDirPresent(){
-
-
         log.info('Checking ExportPath')
         const ExportPath = wtconfig.get('General.ExportPath', 'N/A');
         if ( ExportPath == 'N/A' ){
@@ -56,8 +52,6 @@ const wtutils = new class WTUtils {
             }
         }
         return false;
-
-
     }
 
     get RunningOS(){
@@ -199,7 +193,6 @@ const wtutils = new class WTUtils {
             else
             {
                 localHome = __dirname.replace('node_modules/electron/dist/resources/electron.asar/renderer', 'public/locales');
-
             }
         }
         else
