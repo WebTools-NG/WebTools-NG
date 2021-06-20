@@ -7,6 +7,7 @@ console.log = log.log;
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 import {wtconfig, wtutils} from '../../General/wtutils';
+import {csv} from './csv';
 import i18n from '../../../../i18n';
 
 import {ipcRenderer} from 'electron';
@@ -288,6 +289,80 @@ const et = new class ET {
         et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
     }
 
+    async getAndSaveItemsToFile({stream: stream, call: call})
+    {
+        stream, call
+        // Find LibType steps
+        const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20);
+        log.debug(`Got Step size as: ${step}`);
+        // Now read the fields and level defs
+        const fields = et.getFields( this.expSettings.libType, this.expSettings.exportLevel);
+        fields
+        // Current item
+        let idx = 0
+        // Now let's walk the section
+        let chuncks, postURI, size, element, item
+
+        chuncks, element, postURI
+        // get element and portURI
+        switch (this.expSettings.libType) {
+            case et.ETmediaType.Photo:
+                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
+                break;
+            case et.ETmediaType.Playlist:
+                element = '/playlists/' + this.expSettings.selLibKey;
+                postURI = `/items?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
+                break;
+            case et.ETmediaType.Libraries:
+                element = '/library/sections/all';
+                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
+                break;
+            case et.ETmediaType.Playlists:
+                element = '/playlists/all';
+                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
+                break;
+            default:
+                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                postURI = `?X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
+        }
+        do {
+            log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI + idx}`);
+            chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI + idx});
+            size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
+            const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
+            log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
+            // et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
+            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
+            // Inc our step/idx
+            idx += step;
+            log.silly(`Chunks returned as: ${JSON.stringify(chuncks)}`);
+            let chunckMedia = JSONPath({path: '$.MediaContainer.Metadata[*]', json: chuncks});
+            log.silly(`chunckMedia returned as: ${JSON.stringify(chunckMedia)}`);
+            try{
+                if (call == 1)
+                {
+                    // We don't need to call each media, so simply add to output
+                    console.log('Ged 2 single call')
+                    for (item of chunckMedia){
+                        log.silly(`Item is: ${JSON.stringify(item)}`);
+                        //et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
+                        await excel2.addRowToTmp( { libType: this.expSettings.libType, level: this.expSettings.exportLevel, data: item, stream: stream, fields: fields } );
+                        await csv.addRowToTmp({ stream: stream, item: item});
+                    }
+
+                }else{
+                    // We need to call the individual medias to get all the info
+                    console.log('Ged 3 multiple calls')
+                }
+            }
+            catch (error)
+            {
+                log.error(`Exception in et.js getAndSaveItemsToFile was: ${error}`)
+            }
+        } while (size > 1);
+    }
+
     async getSectionData()
     {
         const sectionData = []
@@ -302,33 +377,29 @@ const et = new class ET {
         let chuncks, postURI
         let size
         do {
-            if (this.expSettings.libType == et.ETmediaType.Photo)
-            {
-                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
+            switch (this.expSettings.libType) {
+                case et.ETmediaType.Photo:
+                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                    postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
+                    break;
+                case et.ETmediaType.Playlist:
+                    element = '/playlists/' + this.expSettings.selLibKey;
+                    postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                    break;
+                case et.ETmediaType.Libraries:
+                    element = '/library/sections/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                    break;
+                case et.ETmediaType.Playlists:
+                    element = '/playlists/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                    break;
+                default:
+                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
             }
-            else if (this.expSettings.libType == et.ETmediaType.Playlist)
-            {
-                element = '/playlists/' + this.expSettings.selLibKey;
-                postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            }
-            else if (this.expSettings.libType == et.ETmediaType.Libraries)
-            {
-                element = '/library/sections/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            }
-            else if (this.expSettings.libType == et.ETmediaType.Playlists)
-            {
-                element = '/playlists/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            }
-            else
-            {
-                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
-            }
-
             log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI}`);
+ 
             chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
@@ -1268,141 +1339,145 @@ const excel2 = new class Excel {
     }
 
     async addRowToTmp( { libType, level, data, stream, fields }) {
-        et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
-        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
-        log.silly(`Data is: ${JSON.stringify(data)}`)
-        let date, year, month, day, hours, minutes, seconds
-        let lookup, val, array, i, valArray, valArrayVal, subType, subKey
-        let str = ''
-        let result = ''
-        let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
-        if ( textSep === ' ')
-        {
-            textSep = '';
-        }
-        for (var x=0; x<fields.length; x++) {
-            var name = Object.keys(fields[x]);
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];
-            switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
-                case "string":
-                    val = String(JSONPath({path: String(lookup), json: data})[0]);
-                    // Make N/A if not found
-                    val = this.isEmpty( { val: val });
-                    // Remove CR, LineFeed ' and " from the
-                    // string if present, and replace with a space
-                    val = val.replace(/'|"|\r|\n/g, ' ');
-                    val = textSep + val + textSep;
-                    break;
-                case "array":
-                    array = JSONPath({path: lookup, json: data});
-                    if (array === undefined || array.length == 0) {
-                        val = wtconfig.get('ET.NotAvail', 'N/A');
-                    }
-                    else
-                    {
-                        valArray = []
-                        for (i=0; i<array.length; i++) {
-                            subType = JSONPath({path: '$..subtype', json: fields[x]});
-                            subKey = JSONPath({path: '$..subkey', json: fields[x]});
-                            switch(String(subType)) {
-                                case "string":
-                                    valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);
-                                    // Make N/A if not found
-                                    valArrayVal = this.isEmpty( { val: valArrayVal });
-                                    // Remove CR, LineFeed ' and " from the string if present
-                                    valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                    break;
-                                case "time":
-                                    valArrayVal = JSONPath({path: String(subKey), json: array[i]});
-                                    // Make N/A if not found
-                                    if (valArrayVal == null || valArrayVal == "")
-                                    {
-                                        valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
-                                    }
-                                    else
-                                    {
-                                        const total = valArrayVal.length
-                                        for (let i=0; i<total; i++) {
-                                            seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();
-                                            minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();
-                                            hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();
-                                            // Will display time in 10:30:23 format
-                                            valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    log.error('NO ARRAY HIT (addRowToSheet-array)')
-                            }
-                            valArray.push(valArrayVal)
-                        }
-                        val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                        if ( String(subType) == 'string')
-                        {
-                            val = textSep + val + textSep;
-                        }
-                    }
-                    break;
-                case "array-count":
-                    val = JSONPath({path: String(lookup), json: data}).length;
-                    break;
-                case "int":
-                    val = JSONPath({path: String(lookup), json: data})[0];
-                    break;
-                case "time":
-                    val = JSONPath({path: String(lookup), json: data});
-                    if ( typeof val !== 'undefined' && val  && val != '')
-                    {
-                        seconds = '0' + (Math.round(val/1000)%60).toString();
-                        minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();
-                        hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();
-                        // Will display time in 10:30:23 format
-                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                    }
-                    else
-                    {
-                        val = wtconfig.get('ET.NotAvail', 'N/A')
-                    }
-                    break;
-                case "datetime":
-                    val = JSONPath({path: String(lookup), json: data});
-                    if ( typeof val !== 'undefined' && val && val != '')
-                    {
-                        // Create a new JavaScript Date object based on the timestamp
-                        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                        date = new Date(val * 1000);
-                        year = date.getFullYear().toString();
-                        month = ('0' + date.getMonth().toString()).substr(-2);
-                        day = ('0' +  date.getDate().toString()).substr(-2);
-                        hours = date.getHours();
-                        minutes = "0" + date.getMinutes();
-                        seconds = "0" + date.getSeconds();
-                        // Will display time in 10:30:23 format
-                        val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                    }
-                    else
-                    {
-                        val = wtconfig.get('ET.NotAvail', 'N/A')
-                    }
-                    break;
-            }
-            let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
-            if ( doPostProc == 'true')
+        return new Promise(function(resolve) {
+            //et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
+            console.log('GED 99 FIX ABOVE')
+            log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
+            log.silly(`Data is: ${JSON.stringify(data)}`)
+            let date, year, month, day, hours, minutes, seconds
+            let lookup, val, array, i, valArray, valArrayVal, subType, subKey
+            let str = ''
+            let result = ''
+            let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
+            if ( textSep === ' ')
             {
-                if (!["Original Title","Sort title"].includes(name)){
-                    const title = JSONPath({path: String('$.title'), json: data})[0];
-                    val = await this.postProcess( {name: name, val: val, title: title} );
-                }
-                else {
-                    val = await this.postProcess( {name: name, val: val} );
-                }
+                textSep = '';
             }
-            str += wtconfig.get('ET.ColumnSep') + val;
-        }
-        // Remove first character
-        result = str.substr(1);
-        //await stream.write( result + "\n");
-        stream.write( result + "\n");
+            for (var x=0; x<fields.length; x++) {
+                var name = Object.keys(fields[x]);
+                lookup = JSONPath({path: '$..key', json: fields[x]})[0];
+                switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
+                    case "string":
+                        val = String(JSONPath({path: String(lookup), json: data})[0]);
+                        // Make N/A if not found
+                        val = this.isEmpty( { val: val });
+                        // Remove CR, LineFeed ' and " from the
+                        // string if present, and replace with a space
+                        val = val.replace(/'|"|\r|\n/g, ' ');
+                        val = textSep + val + textSep;
+                        break;
+                    case "array":
+                        array = JSONPath({path: lookup, json: data});
+                        if (array === undefined || array.length == 0) {
+                            val = wtconfig.get('ET.NotAvail', 'N/A');
+                        }
+                        else
+                        {
+                            valArray = []
+                            for (i=0; i<array.length; i++) {
+                                subType = JSONPath({path: '$..subtype', json: fields[x]});
+                                subKey = JSONPath({path: '$..subkey', json: fields[x]});
+                                switch(String(subType)) {
+                                    case "string":
+                                        valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);
+                                        // Make N/A if not found
+                                        valArrayVal = this.isEmpty( { val: valArrayVal });
+                                        // Remove CR, LineFeed ' and " from the string if present
+                                        valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
+                                        break;
+                                    case "time":
+                                        valArrayVal = JSONPath({path: String(subKey), json: array[i]});
+                                        // Make N/A if not found
+                                        if (valArrayVal == null || valArrayVal == "")
+                                        {
+                                            valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                        }
+                                        else
+                                        {
+                                            const total = valArrayVal.length
+                                            for (let i=0; i<total; i++) {
+                                                seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();
+                                                minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();
+                                                hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();
+                                                // Will display time in 10:30:23 format
+                                                valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        log.error('NO ARRAY HIT (addRowToSheet-array)')
+                                }
+                                valArray.push(valArrayVal)
+                            }
+                            val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                            if ( String(subType) == 'string')
+                            {
+                                val = textSep + val + textSep;
+                            }
+                        }
+                        break;
+                    case "array-count":
+                        val = JSONPath({path: String(lookup), json: data}).length;
+                        break;
+                    case "int":
+                        val = JSONPath({path: String(lookup), json: data})[0];
+                        break;
+                    case "time":
+                        val = JSONPath({path: String(lookup), json: data});
+                        if ( typeof val !== 'undefined' && val  && val != '')
+                        {
+                            seconds = '0' + (Math.round(val/1000)%60).toString();
+                            minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();
+                            hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();
+                            // Will display time in 10:30:23 format
+                            val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        }
+                        else
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A')
+                        }
+                        break;
+                    case "datetime":
+                        val = JSONPath({path: String(lookup), json: data});
+                        if ( typeof val !== 'undefined' && val && val != '')
+                        {
+                            // Create a new JavaScript Date object based on the timestamp
+                            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                            date = new Date(val * 1000);
+                            year = date.getFullYear().toString();
+                            month = ('0' + date.getMonth().toString()).substr(-2);
+                            day = ('0' +  date.getDate().toString()).substr(-2);
+                            hours = date.getHours();
+                            minutes = "0" + date.getMinutes();
+                            seconds = "0" + date.getSeconds();
+                            // Will display time in 10:30:23 format
+                            val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        }
+                        else
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A')
+                        }
+                        break;
+                }
+                let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
+                if ( doPostProc == 'true')
+                {
+                    if (!["Original Title","Sort title"].includes(name)){
+    //                    const title = JSONPath({path: String('$.title'), json: data})[0];
+   //                     val = await this.postProcess( {name: name, val: val, title: title} );
+                    }
+                    else {
+    //                    val = await this.postProcess( {name: name, val: val} );
+                    }
+                }
+                str += wtconfig.get('ET.ColumnSep') + val;
+            }
+            // Remove first character
+            result = str.substr(1);
+            //await stream.write( result + "\n");
+            stream.write( result + "\n");
+            resolve;
+        })
     }
 
     async sleep(ms) {
@@ -1491,29 +1566,35 @@ const excel2 = new class Excel {
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
         stream.write( strHeader + "\n");
+
+        baseURL, accessToken
+
+
         var sectionData, x;
         {
+            sectionData, x
+
+            et.getAndSaveItemsToFile({stream: stream, call: call});
+ /*            
             // Get all the items in small chuncks
             sectionData = await et.getSectionData();
+
             log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
             let item;
             let counter = 1;
             const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
             let jPath, sectionChunk;
-            if (libType == et.ETmediaType.Libraries)
-            {
-                jPath = "$.MediaContainer.Directory[*]";
-            }
-            else if (libType == et.ETmediaType.Playlists)
-            {
-                jPath = "$.MediaContainer.Metadata[*]";
-            }
-            else
-            {
-                jPath = "$.MediaContainer.Metadata[*]";
+            // We need to load fields and defs into def var
+            switch(libType) {
+                case et.ETmediaType.Libraries:
+                    jPath = "$.MediaContainer.Directory[*]";
+                    break;
+                default:
+                    jPath = "$.MediaContainer.Metadata[*]";
             }
             const bExportPosters = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Posters.${et.expSettings.levelName}`, false);
             const bExportArt = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Art.${et.expSettings.levelName}`, false);
+            
             for (x=0; x<sectionData.length; x++)
             {
                 et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
@@ -1563,7 +1644,16 @@ const excel2 = new class Excel {
                     }
                 }
             }
+
+
+ */
+
+
         }
+
+
+
+
         stream.end();
         // Rename to real file name
         var newFile = tmpFile.replace('.tmp', '.csv')
