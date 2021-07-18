@@ -8,6 +8,7 @@ const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwi
 
 import {wtconfig, wtutils} from '../../General/wtutils';
 import {csv} from './csv';
+import {etHelper} from './ethelper';
 import i18n from '../../../../i18n';
 
 import {ipcRenderer} from 'electron';
@@ -291,13 +292,33 @@ const et = new class ET {
 
     async getAndSaveItemsToFile({stream: stream, call: call})
     {
-        stream, call
-        // Find LibType steps
-        const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20);
-        log.debug(`Got Step size as: ${step}`);
-        // Now read the fields and level defs
-        const fields = et.getFields( this.expSettings.libType, this.expSettings.exportLevel);
-        fields
+        call
+        const fields = await etHelper.getFieldHeader();
+        if (wtconfig.get("ET.ExpCSV", true)){
+            await csv.addHeaderToTmp({ stream: stream, item: fields});
+        }
+        if (wtconfig.get("ET.ExpExcel", false)){
+            //await csv.addHeaderToTmp({ stream: stream, item: fields});
+            // TODO: Add XLS Header
+        }
+        console.log('Ged 4-5')
+
+        
+        log.debug(`Got level as: ${etHelper.Settings.Level} and libType as: ${etHelper.Settings.libType}`)
+
+        // Get element and postURI
+        const element = etHelper.getElement();
+        const postURI = etHelper.getPostURI();
+        
+
+        element, postURI
+
+        console.log(`Ged 55-1 Element: ` + element)
+        console.log(`Ged 55-2 postURI: ` + postURI)
+
+
+
+/*         
         // Current item
         let idx = 0
         // Now let's walk the section
@@ -305,27 +326,7 @@ const et = new class ET {
 
         chuncks, element, postURI
         // get element and portURI
-        switch (this.expSettings.libType) {
-            case et.ETmediaType.Photo:
-                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
-                break;
-            case et.ETmediaType.Playlist:
-                element = '/playlists/' + this.expSettings.selLibKey;
-                postURI = `/items?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
-                break;
-            case et.ETmediaType.Libraries:
-                element = '/library/sections/all';
-                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
-                break;
-            case et.ETmediaType.Playlists:
-                element = '/playlists/all';
-                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
-                break;
-            default:
-                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                postURI = `?X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
-        }
+        
         do {
             log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI + idx}`);
             chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI + idx});
@@ -347,8 +348,10 @@ const et = new class ET {
                     for (item of chunckMedia){
                         log.silly(`Item is: ${JSON.stringify(item)}`);
                         //et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: this.expSettings.libType, level: this.expSettings.exportLevel, data: item, stream: stream, fields: fields } );
+                        //await excel2.addRowToTmp( { libType: this.expSettings.libType, level: this.expSettings.exportLevel, data: item, stream: stream, fields: fields } );
+                        console.log('Ged 33 start CSV')
                         await csv.addRowToTmp({ stream: stream, item: item});
+                        console.log('Ged 33-1 end CSV')
                     }
 
                 }else{
@@ -361,6 +364,10 @@ const et = new class ET {
                 log.error(`Exception in et.js getAndSaveItemsToFile was: ${error}`)
             }
         } while (size > 1);
+
+ */
+        
+
     }
 
     async getSectionData()
@@ -886,17 +893,21 @@ const excel2 = new class Excel {
         return sheet
     }
 
-    GetHeader(Level, libType) {
+/* 
+
+    GetHeader_GED_DELME(Level, libType) {
         const columns = []
         log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
         const fields = et.getLevelFields(Level, libType)
         for (var i=0; i<fields.length; i++) {
-            log.verbose(`Column: ${fields[i]}`)
+            log.verbose(`Column11: ${fields[i]}`)
             columns.push(fields[i])
         }
         return columns
     }
+
+ */
 
     async AddHeader(Sheet, Level, libType) {
         const columns = []
@@ -904,7 +915,7 @@ const excel2 = new class Excel {
         // Get level fields
         const fields = et.getLevelFields(Level, libType)
         for (var i=0; i<fields.length; i++) {
-            log.verbose('Column: ' + fields[i] + ' - ' + fields[i])
+            log.verbose('Column12: ' + fields[i] + ' - ' + fields[i])
             let column = { header: fields[i], key: fields[i], width: 5 }
             columns.push(column)
         }
@@ -1555,9 +1566,9 @@ const excel2 = new class Excel {
 
     async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
     {
-        const header = excel2.GetHeader(level, libType, pListType);
-        log.debug(`header: ${header}`);
-        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
+        //const header = excel2.GetHeader(level, libType, pListType);
+        //log.debug(`header: ${header}`);
+        //const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
         // Now we need to find out how many calls to make
         const call = await et.getLevelCall(libType, level);
         // Open a file stream
@@ -1565,7 +1576,7 @@ const excel2 = new class Excel {
         var fs = require('fs');
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
         // Add the header
-        stream.write( strHeader + "\n");
+        //stream.write( strHeader + "\n");
 
         baseURL, accessToken
 
@@ -1574,7 +1585,8 @@ const excel2 = new class Excel {
         {
             sectionData, x
 
-            et.getAndSaveItemsToFile({stream: stream, call: call});
+            //etHelper.getAndSaveItemsToFile({stream: stream, call: call});
+            await et.getAndSaveItemsToFile({stream: stream, call: call});
  /*            
             // Get all the items in small chuncks
             sectionData = await et.getSectionData();

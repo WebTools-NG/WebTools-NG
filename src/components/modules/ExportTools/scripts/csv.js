@@ -1,22 +1,23 @@
 // This file handles CSV exports
 
+//import {wtconfig, wtutils} from '../../General/wtutils';
+import {wtconfig} from '../../General/wtutils';
+const log = require('electron-log');
+console.log = log.log;
+
 
 
 const csv = new class CSV {
     constructor() {
     }
 
-    async addRowToTmp({ stream: stream, item: item})
+    async addHeaderToTmp({ stream: stream, item: item})
     {
-        return new Promise(function(resolve) {
-            stream
-            console.log('Ged 6 CSV addRowToTmp', JSON.stringify(item))
-            resolve();
-        });
-        
+        const strHeader = item.join(wtconfig.get('ET.ColumnSep', ','));
+        // Add the header
+        await stream.write( strHeader + "\n");
+        log.verbose(`Added CSV Header as: ${strHeader}`);
     }
-
-
 
 }
 

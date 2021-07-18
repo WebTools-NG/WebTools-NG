@@ -114,6 +114,7 @@
   import { et } from "./scripts/et";
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
+  import { etHelper } from "./scripts/ethelper";
 
 
   const log = require("electron-log");
@@ -333,7 +334,8 @@
     },
     selLibraryChanged: async function(){
       log.verbose(`Library key to export selected as: ${this.selLibrary}`);
-      et.expSettings.selLibKey = this.selLibrary;
+      etHelper.Settings.selLibKey = this.selLibrary;
+
     },
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
@@ -454,9 +456,16 @@
       // Populate et. settings with the selected values
       et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
       et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
+      console.log('Ged below depreciated')
       et.expSettings.libType = this.selMediaType;
       et.expSettings.libTypeSec = this.selExpTypeSec;
       et.expSettings.exportLevel = this.selLevel;
+
+      console.log('Ged USE below')
+      etHelper.Settings.libType = this.selMediaType;
+      etHelper.Settings.Level = this.selLevel;
+      etHelper.Settings.libTypeSec = this.selExpTypeSec;
+
       await et.exportMedias();
     },
     async checkSrvSelected() {
