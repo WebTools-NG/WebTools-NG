@@ -1,5 +1,9 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.13
+
+* [#395 Show alert if we can't connect to plex.tv](https://github.com/WebTools-NG/WebTools-NG/issues/395)
+
 ## V0.3.12
 
 * [#382 Exporting Posters and Art not working (Revisit)](https://github.com/WebTools-NG/WebTools-NG/issues/382)

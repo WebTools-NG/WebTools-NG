@@ -9,7 +9,9 @@ const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwi
 import {wtconfig, wtutils} from '../../General/wtutils';
 import {csv} from './csv';
 import {etHelper} from './ethelper';
-import i18n from '../../../../i18n';
+//import i18n from '../../../../i18n';
+
+import i18n from '../../../../i18n'
 
 import {ipcRenderer} from 'electron';
 //const fs = require('fs');
@@ -75,6 +77,10 @@ const et = new class ET {
             2003: 'Photo',
             3001: 'Playlists'
         },
+        this.selSecOption2 = {
+            1: ['Modules.ET.optExpType.SecMovies'],
+            2: ['Modules.ET.optExpType.SecTVEpisodes']
+        }
         this.selSecOption = {
             1: [
                 {
@@ -301,9 +307,7 @@ const et = new class ET {
             //await csv.addHeaderToTmp({ stream: stream, item: fields});
             // TODO: Add XLS Header
         }
-        console.log('Ged 4-5')
 
-        
         log.debug(`Got level as: ${etHelper.Settings.Level} and libType as: ${etHelper.Settings.libType}`)
 
         // Get element and postURI
@@ -313,8 +317,7 @@ const et = new class ET {
 
         element, postURI
 
-        console.log(`Ged 55-1 Element: ` + element)
-        console.log(`Ged 55-2 postURI: ` + postURI)
+        
 
 
 

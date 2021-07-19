@@ -80,6 +80,7 @@ const etHelper = new class ETHELPER {
             default:
                 element = '/library/sections/' + this.selLibKey + '/all';
         }
+        log.debug(`Got element as ${element}`);
         return element;
     }
 
@@ -104,6 +105,7 @@ const etHelper = new class ETHELPER {
             default:
                 postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
         }
+        log.debug(`Got postURI as ${postURI}`);
         return postURI;
     }
 

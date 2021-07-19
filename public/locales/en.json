@@ -40,7 +40,9 @@
             "LoginBtn": "Sign in",
             "twoFA": "2Factor Authentication verification code",
             "twoFAPrompt": "If using 2FA, enter your code here, else leave as blank (optional)",
-            "Missing2FACode": "Please enter the verification code"
+            "Missing2FACode": "Please enter the verification code",
+            "LoginConnectErrToken": "Could not connect to plex.tv with a Token",
+            "LoginConnectErr": "Could not connect to plex.tv"
         },
         "SelServer": "Select Server",
         "Menu": {

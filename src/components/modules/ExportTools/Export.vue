@@ -382,7 +382,12 @@
       this.selLibrary = '';
       this.selLibraryOptions = [];
       this.exportLevels = [];
-      this.selExpTypeMain= arguments[0];
+      this.selExpTypeMain = arguments[0];
+      console.log('Ged 99: ' + JSON.stringify(arguments[0]))
+      console.log('Ged 99-2: ' + JSON.stringify(et.selSecOption[arguments[0]]))
+      console.log('Ged 99-3: ' + i18n.t('Modules.ET.optExpType.SecMovies'))
+      console.log('Ged 99-4: ' + JSON.stringify(et.selSecOption2[arguments[0]]))
+      
       this.optExpTypeSec = et.selSecOption[arguments[0]]
       log.verbose(`Export Main type selected: ${arguments[0]}`);
     },
