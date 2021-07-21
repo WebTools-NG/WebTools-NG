@@ -72,6 +72,7 @@
                 v-model="selLevel"
                 id="selLevel"
                 :options="exportLevels"
+                @change="selLevelChanged"
                 name="selLevel">
               </b-form-select>
             </b-form-group>
@@ -167,7 +168,6 @@
     // Watch for status update
     ETStatus: function() {
       this.statusMsg = this.$store.getters.getETStatus;
-      //this.genStatusMsg();
     },
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
@@ -192,7 +192,7 @@
   },
   created() {
     log.info("ET Created");
-    et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
+    et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
   },
   computed: {
     ETStatus: function(){
@@ -332,10 +332,23 @@
       }
       log.verbose(`Sections to select among are: ${JSON.stringify(this.selLibraryOptions)}`);
     },
-    selLibraryChanged: async function(){
+    getText: async function search(nameKey, myArray){
+    for (var i=0; i < myArray.length; i++) {
+        if (myArray[i].value == nameKey) {
+          return myArray[i].text;
+        }
+      }
+    },
+    selLevelChanged: async function(myarg){
+      log.verbose(`Level to export selected as: ${this.selLevel}`);
+      etHelper.Settings.Level = this.selLevel;
+      etHelper.Settings.LibName = await this.getText(myarg, this.exportLevels);
+      console.log('Ged5544332211: ' + etHelper.Settings.LibName)
+    },
+    selLibraryChanged: async function(myarg){
       log.verbose(`Library key to export selected as: ${this.selLibrary}`);
       etHelper.Settings.selLibKey = this.selLibrary;
-
+      etHelper.Settings.levelName = await this.getText(myarg, this.selLibraryOptions);
     },
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
@@ -456,22 +469,26 @@
         })
         return
       }
-      et.clearStatus();
-      et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+      etHelper.clearStatus();
+      console.log('Ged 2-1')
+//      et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+      
       // Populate et. settings with the selected values
-      et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
-      et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
       console.log('Ged below depreciated')
       et.expSettings.libType = this.selMediaType;
       et.expSettings.libTypeSec = this.selExpTypeSec;
       et.expSettings.exportLevel = this.selLevel;
+      et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
+      et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
 
       console.log('Ged USE below')
       etHelper.Settings.libType = this.selMediaType;
       etHelper.Settings.Level = this.selLevel;
       etHelper.Settings.libTypeSec = this.selExpTypeSec;
+      etHelper.Settings.baseURL = this.$store.getters.getSelectedServerAddress;
+      etHelper.Settings.accessToken = this.$store.getters.getSelectedServerToken;
 
-      await et.exportMedias();
+      await etHelper.exportMedias();
     },
     async checkSrvSelected() {
       log.debug("checkSrvSelected started");

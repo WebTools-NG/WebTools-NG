@@ -16,7 +16,7 @@ const csv = new class CSV {
         const strHeader = item.join(wtconfig.get('ET.ColumnSep', ','));
         // Add the header
         await stream.write( strHeader + "\n");
-        log.verbose(`Added CSV Header as: ${strHeader}`);
+        log.info(`Added CSV Header as: ${strHeader}`);
     }
 
 }

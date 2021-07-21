@@ -7,8 +7,8 @@ console.log = log.log;
 const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 import {wtconfig, wtutils} from '../../General/wtutils';
-import {csv} from './csv';
-import {etHelper} from './ethelper';
+
+//import {etHelper} from './ethelper';
 //import i18n from '../../../../i18n';
 
 import i18n from '../../../../i18n'
@@ -23,7 +23,7 @@ const fetch = require('node-fetch');
 
 const {JSONPath} = require('jsonpath-plus');
 import axios from 'axios'
-import store from '../../../../store';
+//import store from '../../../../store';
 
 const et = new class ET {
     constructor() {
@@ -158,7 +158,7 @@ const et = new class ET {
         this.StartTime = null,
         this.EndTime = null,
         this.OutFile = null,
-        this.rawMsgType = {
+        this.rawMsgTypeGED = {
             'Status': 1,
             'Info': 2,
             'Chuncks': 3,
@@ -193,50 +193,11 @@ const et = new class ET {
         }
     }
 
-    async getStartEndTime(StartEnd){
-        let now;
-        if (StartEnd == 'start')
-        {
-            now = et.StartTime;
-        }
-        else
-        {
-            now = et.EndTime;
-        }
-        return now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    }
 
-    async clearStatus()
-    {
-        this.statusmsg = {};
-        store.commit("UPDATE_SELECTEDETStatus", '');
-    }
 
-    async updateStatusMsg(msgType, msg)
-    {
-        // Update relevant key
-        this.statusmsg[msgType] = msg;
-        // Tmp store of new msg
-        let newMsg = '';
-        // Walk each current msg keys
-        Object.entries(this.statusmsg).forEach(([key, value]) => {
-            if ( value != '')
-            {
-                newMsg += this.msgType[key] + ': ' + value + '\n';
-            }
-        })
-        store.commit("UPDATE_SELECTEDETStatus", newMsg);
-    }
 
-    async getTimeElapsed(){
-        let elapsedSeconds = Math.floor((et.EndTime.getTime() - et.StartTime.getTime()) / 1000);
-        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
-        const hours = Math.floor(parseFloat(elapsedStr) / 3600);
-        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
-        const minutes = Math.floor(elapsedSeconds / 60);
-        const seconds = elapsedSeconds - minutes * 60;
-        return hours + ':' + minutes + ':' + seconds
-    }
+
+
 
     async getRunningTimeElapsed(){
         const now = new Date();
@@ -249,129 +210,9 @@ const et = new class ET {
         return hours + ':' + minutes + ':' + seconds
     }
 
-    async getNowTime(StartEnd){
-        let now = new Date();
-        if (StartEnd == 'start')
-        {
-            et.StartTime = now;
-        }
-        else
-        {
-            et.EndTime = now;
-        }
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        return hours + ':' + minutes + ':' + seconds;
-    }
+    
 
-    async exportMedias() {
-        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getNowTime('start'));
-        this.expSettings.libName = et.getLibDisplayName(this.expSettings.selLibKey, store.getters.getPmsSections);
-        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.expSettings.libType) > -1)
-        {
-            this.expSettings.levelName = 'All'
-        }
-        else
-        {
-            this.expSettings.levelName = et.getLevelDisplayName(this.expSettings.exportLevel, this.expSettings.libType);
-        }
-        await excel2.createOutFile( {
-          libName: this.expSettings.libName,
-          level: this.expSettings.levelName,
-          libType: this.expSettings.libType,
-          baseURL: this.expSettings.baseURL,
-          accessToken: this.expSettings.accessToken,
-          exType: this.expSettings.libType,
-          pListType: this.expSettings.libTypeSec,
-          libTypeSec: this.expSettings.libTypeSec
-        });
-        // Update status window
-        et.clearStatus();
-        et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
-        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getStartEndTime('start'));
-        this.getNowTime('end');
-        et.updateStatusMsg( et.rawMsgType.EndTime, await this.getStartEndTime('end'));
-        et.updateStatusMsg( et.rawMsgType.TimeElapsed, await this.getTimeElapsed());
-        et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
-    }
-
-    async getAndSaveItemsToFile({stream: stream, call: call})
-    {
-        call
-        const fields = await etHelper.getFieldHeader();
-        if (wtconfig.get("ET.ExpCSV", true)){
-            await csv.addHeaderToTmp({ stream: stream, item: fields});
-        }
-        if (wtconfig.get("ET.ExpExcel", false)){
-            //await csv.addHeaderToTmp({ stream: stream, item: fields});
-            // TODO: Add XLS Header
-        }
-
-        log.debug(`Got level as: ${etHelper.Settings.Level} and libType as: ${etHelper.Settings.libType}`)
-
-        // Get element and postURI
-        const element = etHelper.getElement();
-        const postURI = etHelper.getPostURI();
-        
-
-        element, postURI
-
-        
-
-
-
-/*         
-        // Current item
-        let idx = 0
-        // Now let's walk the section
-        let chuncks, postURI, size, element, item
-
-        chuncks, element, postURI
-        // get element and portURI
-        
-        do {
-            log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI + idx}`);
-            chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI + idx});
-            size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
-            const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
-            log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
-            // et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
-            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
-            // Inc our step/idx
-            idx += step;
-            log.silly(`Chunks returned as: ${JSON.stringify(chuncks)}`);
-            let chunckMedia = JSONPath({path: '$.MediaContainer.Metadata[*]', json: chuncks});
-            log.silly(`chunckMedia returned as: ${JSON.stringify(chunckMedia)}`);
-            try{
-                if (call == 1)
-                {
-                    // We don't need to call each media, so simply add to output
-                    console.log('Ged 2 single call')
-                    for (item of chunckMedia){
-                        log.silly(`Item is: ${JSON.stringify(item)}`);
-                        //et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        //await excel2.addRowToTmp( { libType: this.expSettings.libType, level: this.expSettings.exportLevel, data: item, stream: stream, fields: fields } );
-                        console.log('Ged 33 start CSV')
-                        await csv.addRowToTmp({ stream: stream, item: item});
-                        console.log('Ged 33-1 end CSV')
-                    }
-
-                }else{
-                    // We need to call the individual medias to get all the info
-                    console.log('Ged 3 multiple calls')
-                }
-            }
-            catch (error)
-            {
-                log.error(`Exception in et.js getAndSaveItemsToFile was: ${error}`)
-            }
-        } while (size > 1);
-
- */
-        
-
-    }
+    
 
     async getSectionData()
     {
@@ -896,22 +737,6 @@ const excel2 = new class Excel {
         return sheet
     }
 
-/* 
-
-    GetHeader_GED_DELME(Level, libType) {
-        const columns = []
-        log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
-        // Get level fields
-        const fields = et.getLevelFields(Level, libType)
-        for (var i=0; i<fields.length; i++) {
-            log.verbose(`Column11: ${fields[i]}`)
-            columns.push(fields[i])
-        }
-        return columns
-    }
-
- */
-
     async AddHeader(Sheet, Level, libType) {
         const columns = []
         log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
@@ -937,30 +762,6 @@ const excel2 = new class Excel {
             to: 'D1',
           } */
         return true;
-    }
-
-    async getFileName({ Library, Level, Type, Module, exType }){
-        const dateFormat = require('dateformat');
-        const OutDir = wtconfig.get('General.ExportPath');
-        const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
-        const path = require('path');
-        let outFile = store.getters.getSelectedServer.name + '_';
-        outFile += Library + '_';
-        outFile += et.RevETmediaType[exType.toString()] + '_';
-        outFile += Level + '_';
-        outFile += timeStamp + '.' + Type;
-        et.OutFile = outFile;
-        const targetDir = path.join(
-            OutDir, wtutils.AppName, Module);
-        const outFileWithPath = path.join(
-            targetDir, outFile);
-        // Make sure target dir exists
-        const fs = require('fs')
-        if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir);
-        }
-        log.info(`OutFile is ${outFileWithPath}`);
-        return outFileWithPath;
     }
 
     async SaveWorkbook({ Workbook, Library, Level, Type, exType } ) {
@@ -1567,119 +1368,8 @@ const excel2 = new class Excel {
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
-    {
-        //const header = excel2.GetHeader(level, libType, pListType);
-        //log.debug(`header: ${header}`);
-        //const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
-        // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level);
-        // Open a file stream
-        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
-        var fs = require('fs');
-        var stream = fs.createWriteStream(tmpFile, {flags:'a'});
-        // Add the header
-        //stream.write( strHeader + "\n");
-
-        baseURL, accessToken
 
 
-        var sectionData, x;
-        {
-            sectionData, x
-
-            //etHelper.getAndSaveItemsToFile({stream: stream, call: call});
-            await et.getAndSaveItemsToFile({stream: stream, call: call});
- /*            
-            // Get all the items in small chuncks
-            sectionData = await et.getSectionData();
-
-            log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
-            let item;
-            let counter = 1;
-            const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
-            let jPath, sectionChunk;
-            // We need to load fields and defs into def var
-            switch(libType) {
-                case et.ETmediaType.Libraries:
-                    jPath = "$.MediaContainer.Directory[*]";
-                    break;
-                default:
-                    jPath = "$.MediaContainer.Metadata[*]";
-            }
-            const bExportPosters = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Posters.${et.expSettings.levelName}`, false);
-            const bExportArt = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Art.${et.expSettings.levelName}`, false);
-            
-            for (x=0; x<sectionData.length; x++)
-            {
-                et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
-                sectionChunk = await JSONPath({path: jPath, json: sectionData[x]});
-                const fields = et.getFields( libType, level);
-                if ( call == 1 )
-                {
-                    for (item of sectionChunk){
-                        et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
-                        if (bExportPosters)
-                        {
-                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        if (bExportArt)
-                        {
-                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        counter += 1;
-                        await new Promise(resolve => setTimeout(resolve, 1));
-                    }
-                }
-                else
-                {
-                    // Get ratingKeys in the chunk
-                    const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
-                    let urlStr = urls.join(',');
-                    log.verbose(`Items to lookup are: ${urlStr}`);
-                    et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
-                    const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
-                    log.verbose(`Items retrieved`);
-                    const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
-                    const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
-                    for (item of contentsItems){
-                        et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        if (bExportPosters)
-                        {
-                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        if (bExportArt)
-                        {
-                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
-                        counter += 1;
-                        await new Promise(resolve => setTimeout(resolve, 1));
-                    }
-                }
-            }
-
-
- */
-
-
-        }
-
-
-
-
-        stream.end();
-        // Rename to real file name
-        var newFile = tmpFile.replace('.tmp', '.csv')
-        fs.renameSync(tmpFile, newFile);
-        // Need to export to xlsx as well?
-        if (wtconfig.get('ET.ExpExcel')){
-            log.info('We need to create an xlsx file as well');
-            et.updateStatusMsg( et.rawMsgType.Info, i18n.t('Modules.ET.Status.CreateExlsFile'));
-            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
-        }
-    }
 }
 
 export { et, excel2 };
