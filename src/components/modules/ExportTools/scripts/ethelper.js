@@ -115,7 +115,6 @@ const etHelper = new class ETHELPER {
             2003: 'Photo',
             3001: 'Playlists'
         };
-        
     }
 
     async exportMedias() {
@@ -126,10 +125,12 @@ const etHelper = new class ETHELPER {
         {
             this.Settings.levelName = 'All'
         }
+/* 
         else
         {
             this.Settings.levelName = et.getLevelDisplayName(this.Settings.exportLevel, this.Settings.libType);
         }
+         */
         await this.createOutFile();
         // Update status window
         this.clearStatus();
@@ -149,7 +150,6 @@ const etHelper = new class ETHELPER {
         const tmpFile = await etHelper.getFileName({ Type: 'csv' })
         var fs = require('fs');
         var stream = fs.createWriteStream(tmpFile, {flags:'a'});
-        
 
         var sectionData, x;
         {
@@ -329,7 +329,8 @@ const etHelper = new class ETHELPER {
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += this.Settings.LibName + '_';
         outFile += this.RevETmediaType[this.Settings.libType.toString()] + '_';
-        outFile += this.Settings.Level + '_';
+        outFile += this.Settings.levelName + '_';
+        console.log('Ged 554400-1: ' + this.Settings.levelName)
         outFile += timeStamp + '.' + Type + '.tmp';
         this.Settings.OutFile = outFile;
         const targetDir = path.join(

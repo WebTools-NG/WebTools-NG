@@ -342,13 +342,12 @@
     selLevelChanged: async function(myarg){
       log.verbose(`Level to export selected as: ${this.selLevel}`);
       etHelper.Settings.Level = this.selLevel;
-      etHelper.Settings.LibName = await this.getText(myarg, this.exportLevels);
-      console.log('Ged5544332211: ' + etHelper.Settings.LibName)
+      etHelper.Settings.levelName = await this.getText(myarg, this.exportLevels);
     },
     selLibraryChanged: async function(myarg){
       log.verbose(`Library key to export selected as: ${this.selLibrary}`);
       etHelper.Settings.selLibKey = this.selLibrary;
-      etHelper.Settings.levelName = await this.getText(myarg, this.selLibraryOptions);
+      etHelper.Settings.LibName = await this.getText(myarg, this.selLibraryOptions);
     },
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
