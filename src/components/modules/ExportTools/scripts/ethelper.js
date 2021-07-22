@@ -139,7 +139,8 @@ const etHelper = new class ETHELPER {
         this.getNowTime('end');
         this.updateStatusMsg( this.#_RawMsgType.EndTime, await this.getStartEndTime('end'));
         this.updateStatusMsg( this.#_RawMsgType.TimeElapsed, await this.getTimeElapsed());
-        this.updateStatusMsg( this.#_RawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
+        //this.updateStatusMsg( this.#_RawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
+        this.updateStatusMsg( this.#_RawMsgType.OutFile, this.Settings.OutFile);
     }
 
     async createOutFile()

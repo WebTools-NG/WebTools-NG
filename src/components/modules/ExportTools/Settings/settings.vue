@@ -67,6 +67,7 @@
                 ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
                 cbSelected: [],
                 cbOptions: [
+                    { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpExcel' },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' }
@@ -75,7 +76,7 @@
         },
         methods: {
             getcbDefaults(){
-                const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull"];
+                const cbItems = ["ExpCSV","ExpExcel", "OrgTitleNull", "SortTitleNull"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
@@ -84,7 +85,7 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
+                for( var cbItem of ["ExpCSV","ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
             },

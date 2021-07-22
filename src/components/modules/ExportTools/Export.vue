@@ -468,6 +468,24 @@
         })
         return
       }
+      console.log('Ged 66:' + wtconfig.get("ET.ExpCSV") + '*' + wtconfig.get("ET.ExpExcel"))
+      console.log('Ged 66-1:' + (wtconfig.get("ET.ExpCSV")=== true))
+      console.log('Ged 66-2:' + (wtconfig.get("ET.ExpExcel")=== true))
+      if ( !wtconfig.get("ET.ExpCSV"))
+      {
+        if ( !wtconfig.get("ET.ExpExcel"))
+        {
+          log.error('ET: No output format defined')
+          this.$bvToast.toast(this.$t("Modules.ET.ErrorNoOutputFormatMsg"), {
+            title: this.$t("Modules.ET.ErrorNoOutputFormatTitle"),
+            autoHideDelay: 3000,
+            solid: true,
+            variant: 'primary',
+            toaster: 'b-toaster-bottom-right'
+          })
+          return
+        }
+      }
       etHelper.clearStatus();
       console.log('Ged 2-1')
 //      et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
