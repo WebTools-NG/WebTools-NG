@@ -395,11 +395,6 @@
       this.selLibraryOptions = [];
       this.exportLevels = [];
       this.selExpTypeMain = arguments[0];
-      console.log('Ged 99: ' + JSON.stringify(arguments[0]))
-      console.log('Ged 99-2: ' + JSON.stringify(et.selSecOption[arguments[0]]))
-      console.log('Ged 99-3: ' + i18n.t('Modules.ET.optExpType.SecMovies'))
-      console.log('Ged 99-4: ' + JSON.stringify(et.selSecOption2[arguments[0]]))
-      
       this.optExpTypeSec = et.selSecOption[arguments[0]]
       log.verbose(`Export Main type selected: ${arguments[0]}`);
     },
@@ -468,9 +463,6 @@
         })
         return
       }
-      console.log('Ged 66:' + wtconfig.get("ET.ExpCSV") + '*' + wtconfig.get("ET.ExpExcel"))
-      console.log('Ged 66-1:' + (wtconfig.get("ET.ExpCSV")=== true))
-      console.log('Ged 66-2:' + (wtconfig.get("ET.ExpExcel")=== true))
       if ( !wtconfig.get("ET.ExpCSV"))
       {
         if ( !wtconfig.get("ET.ExpExcel"))
@@ -487,7 +479,6 @@
         }
       }
       etHelper.clearStatus();
-      console.log('Ged 2-1')
 //      et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
       
       // Populate et. settings with the selected values

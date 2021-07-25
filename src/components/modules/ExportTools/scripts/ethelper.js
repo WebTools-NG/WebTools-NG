@@ -12,16 +12,14 @@ const log = require('electron-log');
 console.log = log.log;
 
 var def;
-
-
+var defLevels = JSON.parse(JSON.stringify(require('./../defs/def-Levels.json')));
+var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')));
+const {JSONPath} = require('jsonpath-plus');
 
 //#region *** Internal functions ****
-
-
 function isEmpty(obj) {
     return !Object.keys(obj).length > 0;
   }
-
 //#endregion
 
 const etHelper = new class ETHELPER {
@@ -52,6 +50,7 @@ const etHelper = new class ETHELPER {
         8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
         9: i18n.t("Modules.ET.Status.Names.RunningTime")
     }
+    #_defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1';
 
     constructor() {
         this.Settings = {
@@ -63,10 +62,16 @@ const etHelper = new class ETHELPER {
             outFile: null,
             baseURL: null,
             accessToken: null,
-            levelName: null
+            levelName: null,
+            csvFile: null,
+            csvStream: null,
+            xlsxFile: null,
+            xlsxStream: null,
+            call: null,
+            fields: null
         };
+        this.PMSHeader = wtutils.PMSHeader;
         this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
-        this.#_FieldHeader = [];
         this.ETmediaType = {
             Movie: 1,
             Show: 2,
@@ -115,23 +120,269 @@ const etHelper = new class ETHELPER {
             2003: 'Photo',
             3001: 'Playlists'
         };
+        this.intSep = '{*WTNG-ET*}';
+    }
+
+    isEmpty( {val} )
+    {
+        if ([null, 'undefined', ''].indexOf(val) > -1)
+        {
+            return wtconfig.get('ET.NotAvail', 'N/A');
+        }
+        else
+        {
+            return val;
+        }
+    }
+
+    async addRowToTmp( { data, fields }) {
+        //this.updateStatusMsg( et.rawMsgType.RunningTime, this.getRunningTimeElapsed());
+        console.log('GED 99 FIX ABOVE')
+        log.debug(`Start addRowToTmp`)
+        log.silly(`Data is: ${JSON.stringify(data)}`)
+        let date, year, month, day, hours, minutes, seconds
+        let lookup, val, array, i, valArray, valArrayVal, subType, subKey
+        let str = ''
+        //let result = ''
+        let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
+        if ( textSep === ' ')
+        {
+            textSep = '';
+        }
+        try
+        {
+            for (var x=0; x<fields.length; x++) {
+                var fieldDef = JSONPath({path: '$.fields.' + fields[x], json: defFields})[0];
+                const name = fields[x];
+                const key = fieldDef["key"];
+                const type = fieldDef["type"];
+                //switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
+                switch(type) {
+                    case "string":
+                        val = String(JSONPath({path: key, json: data})[0]);
+                        // Make N/A if not found
+                        if (!val)
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A');
+                        }
+                        val = etHelper.isEmpty( { "val": val } );
+                        // Remove CR, LineFeed ' and " from the
+                        // string if present, and replace with a space
+                        //val = val.replace(/'|"|\r|\n/g, ' ');
+                        val = val.replace(/\r|\n/g, ' ');
+                        //val = val + etHelper.intSep;
+                        break;
+                    case "array":
+                        array = JSONPath({path: lookup, json: data});
+                        if (array === undefined || array.length == 0) {
+                            val = wtconfig.get('ET.NotAvail', 'N/A');
+                        }
+                        else
+                        {
+                            valArray = []
+                            for (i=0; i<array.length; i++) {
+                                subType = JSONPath({path: '$..subtype', json: fields[x]});
+                                subKey = JSONPath({path: '$..subkey', json: fields[x]});
+                                switch(String(subType)) {
+                                    case "string":
+                                        valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);
+                                        // Make N/A if not found
+                                        valArrayVal = this.isEmpty( { val: valArrayVal });
+                                        // Remove CR, LineFeed ' and " from the string if present
+                                        //valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
+                                        valArrayVal = valArrayVal.replace(/\r|\n/g, ' ');
+
+                                        break;
+                                    case "time":
+                                        valArrayVal = JSONPath({path: String(subKey), json: array[i]});
+                                        // Make N/A if not found
+                                        if (valArrayVal == null || valArrayVal == "")
+                                        {
+                                            valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                        }
+                                        else
+                                        {
+                                            const total = valArrayVal.length
+                                            for (let i=0; i<total; i++) {
+                                                seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();
+                                                minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();
+                                                hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();
+                                                // Will display time in 10:30:23 format
+                                                valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        log.error('NO ARRAY HIT (addRowToSheet-array)')
+                                }
+                                valArray.push(valArrayVal)
+                            }
+                            val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                            if ( String(subType) == 'string')
+                            {
+                                val = textSep + val + textSep;
+                            }
+                        }
+                        break;
+                    case "array-count":
+                        val = JSONPath({path: String(lookup), json: data}).length;
+                        break;
+                    case "int":
+                        val = JSONPath({path: String(lookup), json: data})[0];
+                        break;
+                    case "time":
+                        val = JSONPath({path: String(lookup), json: data});
+                        if ( typeof val !== 'undefined' && val  && val != '')
+                        {
+                            seconds = '0' + (Math.round(val/1000)%60).toString();
+                            minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();
+                            hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();
+                            // Will display time in 10:30:23 format
+                            val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        }
+                        else
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A')
+                        }
+                        break;
+                    case "datetime":
+                        val = JSONPath({path: String(lookup), json: data});
+                        if ( typeof val !== 'undefined' && val && val != '')
+                        {
+                            // Create a new JavaScript Date object based on the timestamp
+                            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                            date = new Date(val * 1000);
+                            year = date.getFullYear().toString();
+                            month = ('0' + date.getMonth().toString()).substr(-2);
+                            day = ('0' +  date.getDate().toString()).substr(-2);
+                            hours = date.getHours();
+                            minutes = "0" + date.getMinutes();
+                            seconds = "0" + date.getSeconds();
+                            // Will display time in 10:30:23 format
+                            val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        }
+                        else
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A')
+                        }
+                        break;
+                }
+                let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
+                if ( doPostProc == 'true')
+                {
+                    console.log('GED LOOK INTO THIS ***** TODO *****')
+                    if (!["Original Title","Sort title"].includes(name)){
+                        const title = JSONPath({path: String('$.title'), json: data})[0];
+                        val = await this.postProcess( {name: name, val: val, title: title} );
+                    }
+                    else {
+                        val = await this.postProcess( {name: name, val: val} );
+                    }
+                }
+                // str += wtconfig.get('ET.ColumnSep') + val;
+                str += val + etHelper.intSep;
+            }
+        }
+        catch (error)
+        {
+            log.error(`We had an exception in ethelper addRowToTmp as ${error}`)
+        }
+        // Remove last internal separator
+        const internalLength = etHelper.intSep.length;
+        str = str.substring(0,str.length-internalLength);
+        log.silly(`etHelper addRowToTmp returned: ${JSON.stringify(str)}`);
+        return str;
+    }
+
+    async populateExpFiles(){
+        log.info('Populating export files');
+        // Current item counter
+        let idx = 0;
+        // Chunck step
+        const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
+        let size = 0;   // amount of items fetched each time
+        let chunck; // placeholder for items fetched
+        let chunckItems; // Array of items in the chunck
+        this.Settings.element = this.getElement();
+        let postURI = this.getPostURI();
+        // Get the fields for this level
+
+        do  // Walk section in steps
+        {
+            chunck = await this.getItemData({
+                postURI: postURI + idx});
+            size = JSONPath({path: '$.MediaContainer.size', json: chunck});
+            log.silly(`Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
+            chunckItems = JSONPath({path: '$.MediaContainer.Metadata.*', json: chunck});
+            let tmpRow;
+            // Walk each item retrieved
+            for (var item in chunckItems)
+            {
+                if (this.Settings.call == 1)
+                {
+                    // Let's get the needed row
+
+
+                    tmpRow = await this.addRowToTmp({ data: chunckItems[item], fields: this.Settings.fields});
+
+
+                    if (this.Settings.csvFile){
+                        console.log('Ged 12-4 We need to exp to CSV')
+                        csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
+                    }
+                    if (this.Settings.xlsxFile){
+                        console.log('Ged 12-4 We need to exp to XLSX')
+                    }
+                    //console.log('Ged 12-3: ' + JSON.stringify(chunckItems[item]))
+                }
+                else
+                {
+                    console.log('Ged 12-6 We need to call the item for more details')
+                }
+            }
+            idx += step;
+        } while (size == step);
+    }
+
+    async getItemData({ postURI=this.#_defpostURI })
+    {
+        const url = this.Settings.baseURL + this.Settings.element + postURI;
+        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+        log.verbose(`Calling url in getItemData: ${url}`)
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
+        return resp
+    }
+
+    async getLevelCall () {
+        if (this.Settings.libType == this.ETmediaType.Playlist)
+        {
+            this.Settings.libType = this.Settings.libTypeSec;
+        }
+        const count = await defLevels[this.Settings.libType]['LevelCount'][this.Settings.levelName]
+        log.info('Count needed is: ' + count)
+        return count
     }
 
     async exportMedias() {
         this.updateStatusMsg( this.#_RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
         this.updateStatusMsg( this.#_RawMsgType.StartTime, await this.getNowTime('start'));
-        //this.Settings.libName = et.getLibDisplayName(this.Settings.selLibKey, store.getters.getPmsSections);
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.Settings.libType) > -1)
         {
             this.Settings.levelName = 'All'
         }
-/* 
-        else
-        {
-            this.Settings.levelName = et.getLevelDisplayName(this.Settings.exportLevel, this.Settings.libType);
-        }
-         */
+        // Create outfiles and streams
         await this.createOutFile();
+       // Now we need to find out how many calls to make
+       this.Settings.call = await this.getLevelCall();
+
+        // Get items from PMS, and populate export files
+       await this.populateExpFiles();
+
+        
+        await this.closeOutFile();
+
         // Update status window
         this.clearStatus();
         this.updateStatusMsg( this.#_RawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
@@ -143,21 +394,56 @@ const etHelper = new class ETHELPER {
         this.updateStatusMsg( this.#_RawMsgType.OutFile, this.Settings.OutFile);
     }
 
+    async closeOutFile()
+    {
+        var fs = require('fs');
+        let newFile;
+        if (wtconfig.get("ET.ExpCSV", true)){
+            this.Settings.csvStream.end();
+            // Rename to real file name
+            newFile = this.Settings.csvFile.replace('.tmp', '')
+            fs.renameSync(this.Settings.csvFile, newFile);
+        }
+        if (wtconfig.get("ET.ExpExcel", false)){
+            this.Settings.xlsxStream.end();
+            // Rename to real file name
+            newFile = this.Settings.xlsxFile.replace('.tmp', '')
+            fs.renameSync(this.Settings.xlsxFile, newFile);
+        }
+    }
+
     async createOutFile()
     {
-        // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(this.Settings.libType, this.Settings.level);
-        // Open a file stream
-        const tmpFile = await etHelper.getFileName({ Type: 'csv' })
+        // Get Header fields
+        this.Settings.fields = await etHelper.getFieldHeader();
         var fs = require('fs');
-        var stream = fs.createWriteStream(tmpFile, {flags:'a'});
+        // Create CSV Stream
+        if (wtconfig.get("ET.ExpCSV", true)){
+            // Open a file stream
+            this.Settings.csvFile = await etHelper.getFileName({ Type: 'csv' });
+            this.Settings.csvStream = fs.createWriteStream(this.Settings.csvFile, {flags:'a'});
+            //await this.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
+            await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
+        }
+        // Create XLSX Stream
+        if (wtconfig.get("ET.ExpExcel", false)){
+            // Open a file stream
+            this.Settings.xlsxFile = await etHelper.getFileName({ Type: 'xlsx' });
+            this.Settings.xlsxStream = fs.createWriteStream(this.Settings.xlsxFile, {flags:'a'});
+            // TODO: Add XLS Header
+            // await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
+        }
+
+        
+
+/* 
 
         var sectionData, x;
         {
             sectionData, x
 
-            await etHelper.getAndSaveItemsToFile({stream: stream, call: call});
- /*            
+           // await etHelper.getAndSaveItemsToFile({stream: stream});
+            
             // Get all the items in small chuncks
             sectionData = await et.getSectionData();
 
@@ -226,13 +512,11 @@ const etHelper = new class ETHELPER {
                     }
                 }
             }
- */
+
 
         }
-        stream.end();
-        // Rename to real file name
-        var newFile = tmpFile.replace('.tmp', '')
-        fs.renameSync(tmpFile, newFile);
+         */
+        
 /* 
         // Need to export to xlsx as well?
         if (wtconfig.get('ET.ExpExcel')){
@@ -243,9 +527,8 @@ const etHelper = new class ETHELPER {
          */
     }
 
-    async getAndSaveItemsToFile({stream: stream, call: call})
+    async getAndSaveItemsToFile({stream: stream})
     {
-        call
         const fields = await etHelper.getFieldHeader();
         if (wtconfig.get("ET.ExpCSV", true)){
             //await this.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
@@ -331,7 +614,6 @@ const etHelper = new class ETHELPER {
         outFile += this.Settings.LibName + '_';
         outFile += this.RevETmediaType[this.Settings.libType.toString()] + '_';
         outFile += this.Settings.levelName + '_';
-        console.log('Ged 554400-1: ' + this.Settings.levelName)
         outFile += timeStamp + '.' + Type + '.tmp';
         this.Settings.OutFile = outFile;
         const targetDir = path.join(
@@ -351,10 +633,10 @@ const etHelper = new class ETHELPER {
         let element
         switch (this.Settings.libType) {
             case this.ETmediaType.Photo:
-                element = '/library/sections/' + this.selLibKey + '/all';
+                element = '/library/sections/' + this.Settings.selLibKey + '/all';
                 break;
             case this.ETmediaType.Playlist:
-                element = '/playlists/' + this.selLibKey;
+                element = '/playlists/' + this.Settings.selLibKey;
                 break;
             case this.ETmediaType.Libraries:
                 element = '/library/sections/all';
@@ -363,7 +645,7 @@ const etHelper = new class ETHELPER {
                 element = '/playlists/all';
                 break;
             default:
-                element = '/library/sections/' + this.selLibKey + '/all';
+                element = '/library/sections/' + this.Settings.selLibKey + '/all';
         }
         log.debug(`Got element as ${element}`);
         return element;
@@ -479,7 +761,6 @@ const etHelper = new class ETHELPER {
 
     async updateStatusMsg(msgType, msg)
     {
-        console.log('Ged5544: ' + msgType + ' *-* ' + msg)
         // Update relevant key
         this.#_statusmsg[msgType] = msg;
         // Tmp store of new msg
@@ -567,6 +848,17 @@ const etHelper = new class ETHELPER {
             now = this.#_EndTime;
         }
         return now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    }
+
+    async getRunningTimeElapsed(){
+        const now = new Date();
+        let elapsedSeconds = Math.floor((now.getTime() - this.#_StartTime.getTime()) / 1000);
+        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
+        const hours = Math.floor(parseFloat(elapsedStr) / 3600);
+        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
+        const minutes = Math.floor(elapsedSeconds / 60);
+        const seconds = elapsedSeconds - minutes * 60;
+        return hours + ':' + minutes + ':' + seconds
     }
     //#endregion
 }

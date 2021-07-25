@@ -467,16 +467,6 @@ const et = new class ET {
         return out;
     }
 
-    async getLevelCall (libType, level) {
-        if (libType == et.ETmediaType.Playlist)
-        {
-            libType = et.expSettings.libTypeSec;
-        }
-        const count = await defLevels[libType]['LevelCount'][level]
-        log.debug('Count needed is: ' + count)
-        return count
-    }
-
     getLevels(libType) {
         // Returns an json of levels for a selected type og medias, like 'movie'
         const levels = defLevels[libType]['levels'];
@@ -1158,7 +1148,7 @@ const excel2 = new class Excel {
             //et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
             console.log('GED 99 FIX ABOVE')
             log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
-            log.silly(`Data is: ${JSON.stringify(data)}`)
+            log.silly(`etHelper addRowToTmp data is: ${JSON.stringify(data)}`)
             let date, year, month, day, hours, minutes, seconds
             let lookup, val, array, i, valArray, valArrayVal, subType, subKey
             let str = ''
