@@ -6,7 +6,9 @@ import store from '../../../../store';
 import {csv} from './csv';
 import {et} from './et';
 import i18n from '../../../../i18n';
-//import i18n from '../../../../i18n';
+import filesize from 'filesize';
+
+var path = require("path");
 
 const log = require('electron-log');
 console.log = log.log;
@@ -34,6 +36,8 @@ function setStrSeperator( {str: str})
             } else { return str; }
         }
     }
+
+
 
 
 //#endregion
@@ -151,13 +155,291 @@ const etHelper = new class ETHELPER {
         }
     }
 
+    async postProcess( {name, val, title=""} ){
+        const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
+        let retArray = [];
+        let x, retVal, start, strStart, end, result;
+        try {
+            switch ( String(name) ){
+                case "Audience Rating":
+                    console.log('Ged 77 Audience Rating: ' + val)
+                    retVal = val.substring(0, 3);
+                    console.log('Ged 77-1 Audience Rating: ' + retVal)
+                    break;
+                case "Part File":
+                    for (x=0; x<valArray.length; x++) {
+                        retArray.push(path.basename(valArray[x]))
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                    break;
+                case "Part File Path":
+                    for (x=0; x<valArray.length; x++) {
+                        retArray.push(path.dirname(valArray[x]));
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
+                    break;
+                case "Part Size":
+                    for (x=0; x<valArray.length; x++) {
+                        let theSize = valArray[x].replaceAll('"', '').replaceAll(wtconfig.get('ET.TextQualifierCSV'),'');
+                        if (theSize.startsWith('"')){
+                            theSize = theSize.slice(1,-1);
+                        }
+                        try{
+                            retArray.push(filesize(theSize));
+                        }
+                        catch (error)
+                        {
+                            log.error(`Error getting Part Size was ${error} for ${theSize}`);
+                        }
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                    break;
+                case "Original Title":
+                    if (wtconfig.get('ET.OrgTitleNull'))
+                    {
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        // Override with title if not found
+                        if (val == compNA)
+                        {
+                            retVal = title;
+                        }
+                        else { retVal = val; }
+                    }
+                    else
+                    {
+                        retVal = val;
+                    }
+                    break;
+                case "Sort title":
+                    if (wtconfig.get('ET.SortTitleNull'))
+                    {
+                        // Override with title if not found
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        if (val == compNA)
+                        {
+                            retVal = title;
+                        }
+                        else {
+                            retVal = val;
+                        }
+                    }
+                    else
+                    {
+                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        if (val == compNA)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        else {
+                            retVal = val;
+                        }
+                    }
+                    break;
+                case "IMDB ID":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("imdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    retVal = result;
+                    break;
+                case "IMDB ID (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    // Cut off start of string
+                    start = val.indexOf("tt");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    result = strStart.split('?')[0]
+                    retVal = result;
+                    break;
+                case "IMDB Language (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    retVal = val.split('=')[1];
+                    if (retVal == 'undefined')
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
+                    break;
+                case "IMDB Link":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        start = val.indexOf("imdb://");
+                        if (start == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        strStart = val.substring(start);
+                        end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                        result = ''
+                        if (end == -1)
+                        { result = strStart.substring(7) }
+                        else
+                        { result = strStart.substring(7, end) }
+                        result = 'https://www.imdb.com/title/' + result;
+                        retVal = result;
+                        break;
+                case "IMDB Link (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
+                    else
+                    {
+                        retVal = 'https://imdb.com/' + val.split('//')[1];
+                        retVal = retVal.split('?')[0];
+                    }
+                    break;
+                case "TVDB ID":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("tvdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    retVal = result;
+                    break;
+                case "TVDB ID (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        // Cut off start of string
+                        start = val.indexOf("thetvdb://");
+                        if (start == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        strStart = val.substring(start);
+                        result = strStart.split('?')[0]
+                        retVal = result;
+                        break;
+                case "TVDB Language (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        if (val.indexOf("tvdb://") == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        retVal = val.split('=')[1];
+                        if (retVal == 'undefined')
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        break;
+                case "TMDB ID":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("tmdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    retVal = result;
+                    break;
+                case "TMDB Link":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("tmdb://");
+                    strStart = val.substring(start);
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    result = 'https://www.themoviedb.org/movie/' + result;
+                    retVal = result;
+                    break;
+                default:
+                    log.error(`postProcess no hit for: ${name}`)
+                    break;
+            }
+        } catch (error) {
+            retVal = 'ERROR'
+        }
+        return await retVal;
+    }
+
     async addRowToTmp( { data, fields }) {
         //this.updateStatusMsg( et.rawMsgType.RunningTime, this.getRunningTimeElapsed());
         console.log('GED 99 FIX ABOVE')
         log.debug(`Start addRowToTmp`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
-        let date, year, month, day, hours, minutes, seconds
-        let lookup, val, array, i, valArray, valArrayVal, subType, subKey
+        let name, key, type, subType, subKey;
+        let date, year, month, day, hours, minutes, seconds;
+        //let lookup, val, array, i, valArray, valArrayVal, subType, subKey
+        let lookup, val, array, i, valArray, valArrayVal
         let str = ''
         //let result = ''
         let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
@@ -169,12 +451,16 @@ const etHelper = new class ETHELPER {
         {
             for (var x=0; x<fields.length; x++) {
                 var fieldDef = JSONPath({path: '$.fields.' + fields[x], json: defFields})[0];
-                const name = fields[x];
-                const key = fieldDef["key"];
-                const type = fieldDef["type"];
+                name = fields[x];
+                key = fieldDef["key"];
+                type = fieldDef["type"];
+                subType = fieldDef["subtype"];
+                subKey = fieldDef["subkey"];
+                console.log(`Ged 34-2 subKey: ${subKey}, name: ${name}, key: ${key}, type: ${type}, subType: ${subType}`)
                 //switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
                 switch(type) {
                     case "string":
+                        console.log(`Ged 23 name: ${name}, val: ${JSONPath({path: key, json: data})[0]}`)
                         val = String(JSONPath({path: key, json: data})[0]);
                         // Make N/A if not found
                         if (!val)
@@ -187,10 +473,9 @@ const etHelper = new class ETHELPER {
                         val = val.replace(/'|"|\r|\n/g, ' ');
                         //val = val.replace(/\r|\n/g, ' ');
                         val = setStrSeperator( {str: val});
-                        
                         break;
                     case "array":
-                        array = JSONPath({path: lookup, json: data});
+                        array = JSONPath({path: key, json: data});
                         if (array === undefined || array.length == 0) {
                             val = wtconfig.get('ET.NotAvail', 'N/A');
                         }
@@ -198,17 +483,13 @@ const etHelper = new class ETHELPER {
                         {
                             valArray = []
                             for (i=0; i<array.length; i++) {
-                                subType = JSONPath({path: '$..subtype', json: fields[x]});
-                                subKey = JSONPath({path: '$..subkey', json: fields[x]});
                                 switch(String(subType)) {
                                     case "string":
-                                        valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);
+                                        valArrayVal = String(JSONPath({path: String(subKey), json: array[i]}));
                                         // Make N/A if not found
                                         valArrayVal = this.isEmpty( { val: valArrayVal });
                                         // Remove CR, LineFeed ' and " from the string if present
                                         valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                        //valArrayVal = valArrayVal.replace(/\r|\n/g, ' ');
-                                        valArrayVal = setStrSeperator( {str: valArrayVal});
                                         break;
                                     case "time":
                                         valArrayVal = JSONPath({path: String(subKey), json: array[i]});
@@ -235,11 +516,12 @@ const etHelper = new class ETHELPER {
                                 valArray.push(valArrayVal)
                             }
                             val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                            if ( String(subType) == 'string')
+                            /* if ( String(subType) == 'string')
                             {
                                 val = textSep + val + textSep;
-                            }
+                            } */
                         }
+                        console.log('Ged 44: ' + val)
                         break;
                     case "array-count":
                         val = JSONPath({path: String(lookup), json: data}).length;
@@ -302,7 +584,8 @@ const etHelper = new class ETHELPER {
         }
         catch (error)
         {
-            log.error(`We had an exception in ethelper addRowToTmp as ${error}`)
+            log.error(`We had an exception in ethelper addRowToTmp as ${error}`);
+            log.error(`Fields are name: ${name}, key: ${key}, type: ${type}, subType: ${subType}, subKey: ${subKey}`);
         }
         // Remove last internal separator
         const internalLength = etHelper.intSep.length;
@@ -771,10 +1054,11 @@ const etHelper = new class ETHELPER {
     }
 
     //#region *** StatusMsg ***
-    clearStatus()
+    async clearStatus()
     {
-        this.statusmsg = {};
+        this.#_statusmsg = {};
         store.commit("UPDATE_SELECTEDETStatus", '');
+        return;
     }
 
     async updateStatusMsg(msgType, msg)

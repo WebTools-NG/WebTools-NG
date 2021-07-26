@@ -478,7 +478,7 @@
           return
         }
       }
-      etHelper.clearStatus();
+      await etHelper.clearStatus();
 //      et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
       
       // Populate et. settings with the selected values
