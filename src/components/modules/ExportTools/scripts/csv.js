@@ -32,6 +32,7 @@ const csv = new class CSV {
         // placeholder for the row
         let row = '';
         row
+        await stream.write( item + "\n");
 
     }
 

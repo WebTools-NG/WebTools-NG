@@ -17,9 +17,25 @@ var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')))
 const {JSONPath} = require('jsonpath-plus');
 
 //#region *** Internal functions ****
-function isEmpty(obj) {
+
+// Returns boolean if object is empty or not
+function isEmptyObj(obj) {
     return !Object.keys(obj).length > 0;
   }
+
+// Adds the String Qualifier if needed
+function setStrSeperator( {str: str})
+    {
+        if ( wtconfig.get('ET.TextQualifierCSV') )
+        {
+            if ( wtconfig.get('ET.TextQualifierCSV') != ' ')
+            {
+                return wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV');
+            } else { return str; }
+        }
+    }
+
+
 //#endregion
 
 const etHelper = new class ETHELPER {
@@ -168,9 +184,10 @@ const etHelper = new class ETHELPER {
                         val = etHelper.isEmpty( { "val": val } );
                         // Remove CR, LineFeed ' and " from the
                         // string if present, and replace with a space
-                        //val = val.replace(/'|"|\r|\n/g, ' ');
-                        val = val.replace(/\r|\n/g, ' ');
-                        //val = val + etHelper.intSep;
+                        val = val.replace(/'|"|\r|\n/g, ' ');
+                        //val = val.replace(/\r|\n/g, ' ');
+                        val = setStrSeperator( {str: val});
+                        
                         break;
                     case "array":
                         array = JSONPath({path: lookup, json: data});
@@ -189,9 +206,9 @@ const etHelper = new class ETHELPER {
                                         // Make N/A if not found
                                         valArrayVal = this.isEmpty( { val: valArrayVal });
                                         // Remove CR, LineFeed ' and " from the string if present
-                                        //valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                        valArrayVal = valArrayVal.replace(/\r|\n/g, ' ');
-
+                                        valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
+                                        //valArrayVal = valArrayVal.replace(/\r|\n/g, ' ');
+                                        valArrayVal = setStrSeperator( {str: valArrayVal});
                                         break;
                                     case "time":
                                         valArrayVal = JSONPath({path: String(subKey), json: array[i]});
@@ -291,6 +308,7 @@ const etHelper = new class ETHELPER {
         const internalLength = etHelper.intSep.length;
         str = str.substring(0,str.length-internalLength);
         log.silly(`etHelper addRowToTmp returned: ${JSON.stringify(str)}`);
+        str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
         return str;
     }
 
@@ -783,7 +801,7 @@ const etHelper = new class ETHELPER {
     async getFieldHeader() {
         log.info('FieldHeader requested');
         try{
-            if (isEmpty(this.#_FieldHeader))
+            if (isEmptyObj(this.#_FieldHeader))
             {
                 log.verbose(`Need to generate the header`);
                 this.#_FieldHeader = await etHelper.#SetFieldHeader()
