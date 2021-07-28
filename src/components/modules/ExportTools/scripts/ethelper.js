@@ -48,17 +48,7 @@ const etHelper = new class ETHELPER {
     #_StartTime = null;
     #_EndTime = null;
     #_statusmsg = {};
-    #_RawMsgType = {
-        'Status': 1,
-        'Info': 2,
-        'Chuncks': 3,
-        'Items': 4,
-        'OutFile': 5,
-        'StartTime': 6,
-        'EndTime': 7,
-        'TimeElapsed': 8,
-        'RunningTime': 9
-    };
+    
     #_msgType = {
         1: i18n.t("Modules.ET.Status.Names.Status"),
         2: i18n.t("Modules.ET.Status.Names.Info"),
@@ -143,6 +133,18 @@ const etHelper = new class ETHELPER {
             3001: 'Playlists'
         };
         this.intSep = '{*WTNG-ET*}';
+        this.RawMsgType = {
+            'Status': 1,
+            'Info': 2,
+            'Chuncks': 3,
+            'Items': 4,
+            'OutFile': 5,
+            'StartTime': 6,
+            'EndTime': 7,
+            'TimeElapsed': 8,
+            'RunningTime': 9
+        };
+
     }
 
     isEmpty( {val} )
@@ -164,10 +166,17 @@ const etHelper = new class ETHELPER {
         try {
             switch ( String(name) ){
                 case "Audience Rating":
-                    console.log('Ged 77 Audience Rating: ' + val)
-                    retVal = val.substring(0, 3);
-                    console.log('Ged 77-1 Audience Rating: ' + retVal)
-                    break;
+                    {
+                        let TextQualifierCSV = wtconfig.get('ET.TextQualifierCSV', '');
+                        retVal = TextQualifierCSV + val.replaceAll(TextQualifierCSV, '').substring(0, 3) + TextQualifierCSV;
+                        break;
+                    }
+                case "Rating":
+                    {
+                        let TextQualifierCSV = wtconfig.get('ET.TextQualifierCSV', '');
+                        retVal = TextQualifierCSV + val.replaceAll(TextQualifierCSV, '').substring(0, 3) + TextQualifierCSV;
+                        break;
+                    }
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
                         retArray.push(path.basename(valArray[x]))
@@ -433,13 +442,13 @@ const etHelper = new class ETHELPER {
         return await retVal;
     }
 
-    async addRowToTmp( { data, fields }) {
+    async addRowToTmp( { data }) {
         this.Settings.currentItem +=1;
-        this.updateStatusMsg(this.#_RawMsgType.Items, i18n.t('Modules.ET.Status.Processing-Item', {current: this.Settings.currentItem, total: this.Settings.totalItems}));
+        this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
         console.log('GED 99 FIX ABOVE')
         log.debug(`Start addRowToTmp`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
-        let name, key, type, subType, subKey;
+        let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
         //let lookup, val, array, i, valArray, valArrayVal, subType, subKey
         let lookup, val, array, i, valArray, valArrayVal
@@ -452,19 +461,17 @@ const etHelper = new class ETHELPER {
         }
         try
         {
-            for (var x=0; x<fields.length; x++) {
-                this.updateStatusMsg(this.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
-                var fieldDef = JSONPath({path: '$.fields.' + fields[x], json: defFields})[0];
-                name = fields[x];
+            for (var x=0; x<this.Settings.fields.length; x++) {
+                this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
+                var fieldDef = JSONPath({path: '$.fields.' + this.Settings.fields[x], json: defFields})[0];
+                name = this.Settings.fields[x];
                 key = fieldDef["key"];
                 type = fieldDef["type"];
                 subType = fieldDef["subtype"];
                 subKey = fieldDef["subkey"];
-                console.log(`Ged 34-2 subKey: ${subKey}, name: ${name}, key: ${key}, type: ${type}, subType: ${subType}`)
-                //switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
+                doPostProc = fieldDef["postProcess"];
                 switch(type) {
                     case "string":
-                        console.log(`Ged 23 name: ${name}, val: ${JSONPath({path: key, json: data})[0]}`)
                         val = String(JSONPath({path: key, json: data})[0]);
                         // Make N/A if not found
                         if (!val)
@@ -525,7 +532,6 @@ const etHelper = new class ETHELPER {
                                 val = textSep + val + textSep;
                             } */
                         }
-                        console.log('Ged 44: ' + val)
                         break;
                     case "array-count":
                         val = JSONPath({path: String(lookup), json: data}).length;
@@ -534,7 +540,8 @@ const etHelper = new class ETHELPER {
                         val = JSONPath({path: String(lookup), json: data})[0];
                         break;
                     case "time":
-                        val = JSONPath({path: String(lookup), json: data});
+                        //val = JSONPath({path: String(lookup), json: data});
+                        val = JSONPath({path: key, json: data});
                         if ( typeof val !== 'undefined' && val  && val != '')
                         {
                             seconds = '0' + (Math.round(val/1000)%60).toString();
@@ -549,7 +556,8 @@ const etHelper = new class ETHELPER {
                         }
                         break;
                     case "datetime":
-                        val = JSONPath({path: String(lookup), json: data});
+                        //val = JSONPath({path: String(lookup), json: data});
+                        val = JSONPath({path: key, json: data});
                         if ( typeof val !== 'undefined' && val && val != '')
                         {
                             // Create a new JavaScript Date object based on the timestamp
@@ -570,10 +578,8 @@ const etHelper = new class ETHELPER {
                         }
                         break;
                 }
-                let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
-                if ( doPostProc == 'true')
+                if ( doPostProc )
                 {
-                    console.log('GED LOOK INTO THIS ***** TODO *****')
                     if (!["Original Title","Sort title"].includes(name)){
                         const title = JSONPath({path: String('$.title'), json: data})[0];
                         val = await this.postProcess( {name: name, val: val, title: title} );
@@ -591,8 +597,7 @@ const etHelper = new class ETHELPER {
             log.error(`Fields are name: ${name}, key: ${key}, type: ${type}, subType: ${subType}, subKey: ${subKey}`);
         }
         // Remove last internal separator
-        const internalLength = etHelper.intSep.length;
-        str = str.substring(0,str.length-internalLength);
+        str = str.substring(0,str.length-etHelper.intSep.length);
         log.silly(`etHelper addRowToTmp returned: ${JSON.stringify(str)}`);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
         return str;
@@ -625,19 +630,13 @@ const etHelper = new class ETHELPER {
                 if (this.Settings.call == 1)
                 {
                     // Let's get the needed row
-
-
-                    tmpRow = await this.addRowToTmp({ data: chunckItems[item], fields: this.Settings.fields});
-
-
+                    tmpRow = await this.addRowToTmp({ data: chunckItems[item]});
                     if (this.Settings.csvFile){
-                        console.log('Ged 12-4 We need to exp to CSV')
                         csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
                     }
                     if (this.Settings.xlsxFile){
                         console.log('Ged 12-4 We need to exp to XLSX')
                     }
-                    //console.log('Ged 12-3: ' + JSON.stringify(chunckItems[item]))
                 }
                 else
                 {
@@ -682,36 +681,29 @@ const etHelper = new class ETHELPER {
     }
 
     async exportMedias() {
-        this.updateStatusMsg( this.#_RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
-        this.updateStatusMsg( this.#_RawMsgType.StartTime, await this.getNowTime('start'));
+        this.updateStatusMsg( this.RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+        this.updateStatusMsg( this.RawMsgType.StartTime, await this.getNowTime('start'));
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.Settings.libType) > -1)
         {
             this.Settings.levelName = 'All'
         }
         // Create outfiles and streams
         await this.createOutFile();
-       // Now we need to find out how many calls to make
-       this.Settings.call = await this.getLevelCall();
-
-       // Get total size of the section
-       this.Settings.totalItems = await this.getSectionSize();
-       console.log('Ged 445: ' + this.Settings.totalItems)
-
+        // Now we need to find out how many calls to make
+        this.Settings.call = await this.getLevelCall();
+        // Get total size of the section
+        this.Settings.totalItems = await this.getSectionSize();
         // Get items from PMS, and populate export files
-       await this.populateExpFiles();
-
-        
+        await this.populateExpFiles();
         await this.closeOutFile();
-
         // Update status window
         this.clearStatus();
-        this.updateStatusMsg( this.#_RawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
-        this.updateStatusMsg( this.#_RawMsgType.StartTime, await this.getStartEndTime('start'));
+        this.updateStatusMsg( this.RawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
+        this.updateStatusMsg( this.RawMsgType.StartTime, await this.getStartEndTime('start'));
         this.getNowTime('end');
-        this.updateStatusMsg( this.#_RawMsgType.EndTime, await this.getStartEndTime('end'));
-        this.updateStatusMsg( this.#_RawMsgType.TimeElapsed, await this.getTimeElapsed());
-        //this.updateStatusMsg( this.#_RawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
-        this.updateStatusMsg( this.#_RawMsgType.OutFile, this.Settings.OutFile);
+        this.updateStatusMsg( this.RawMsgType.EndTime, await this.getStartEndTime('end'));
+        this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getTimeElapsed());
+        this.updateStatusMsg( this.RawMsgType.OutFile, this.Settings.OutFile);
     }
 
     async closeOutFile()

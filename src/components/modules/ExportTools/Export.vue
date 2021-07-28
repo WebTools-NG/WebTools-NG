@@ -192,7 +192,7 @@
   },
   created() {
     log.info("ET Created");
-    et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
+    etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
   },
   computed: {
     ETStatus: function(){
@@ -479,7 +479,7 @@
         }
       }
       await etHelper.clearStatus();
-//      et.updateStatusMsg( etHelper.rawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+      etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
       
       // Populate et. settings with the selected values
       console.log('Ged below depreciated')

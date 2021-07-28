@@ -193,13 +193,7 @@ const et = new class ET {
         }
     }
 
-
-
-
-
-
-
-    async getRunningTimeElapsed(){
+    async GEDDELgetRunningTimeElapsed(){
         const now = new Date();
         let elapsedSeconds = Math.floor((now.getTime() - et.StartTime.getTime()) / 1000);
         let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
@@ -209,10 +203,6 @@ const et = new class ET {
         const seconds = elapsedSeconds - minutes * 60;
         return hours + ':' + minutes + ':' + seconds
     }
-
-    
-
-    
 
     async getSectionData()
     {
