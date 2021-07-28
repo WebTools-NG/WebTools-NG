@@ -88,7 +88,9 @@ const etHelper = new class ETHELPER {
             xlsxFile: null,
             xlsxStream: null,
             call: null,
-            fields: null
+            fields: null,
+            currentItem: 0,
+            totalItems: null
         };
         this.PMSHeader = wtutils.PMSHeader;
         this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
@@ -432,7 +434,8 @@ const etHelper = new class ETHELPER {
     }
 
     async addRowToTmp( { data, fields }) {
-        //this.updateStatusMsg( et.rawMsgType.RunningTime, this.getRunningTimeElapsed());
+        this.Settings.currentItem +=1;
+        this.updateStatusMsg(this.#_RawMsgType.Items, i18n.t('Modules.ET.Status.Processing-Item', {current: this.Settings.currentItem, total: this.Settings.totalItems}));
         console.log('GED 99 FIX ABOVE')
         log.debug(`Start addRowToTmp`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
@@ -450,6 +453,7 @@ const etHelper = new class ETHELPER {
         try
         {
             for (var x=0; x<fields.length; x++) {
+                this.updateStatusMsg(this.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
                 var fieldDef = JSONPath({path: '$.fields.' + fields[x], json: defFields})[0];
                 name = fields[x];
                 key = fieldDef["key"];
@@ -578,7 +582,6 @@ const etHelper = new class ETHELPER {
                         val = await this.postProcess( {name: name, val: val} );
                     }
                 }
-                // str += wtconfig.get('ET.ColumnSep') + val;
                 str += val + etHelper.intSep;
             }
         }
@@ -597,7 +600,7 @@ const etHelper = new class ETHELPER {
 
     async populateExpFiles(){
         log.info('Populating export files');
-        // Current item counter
+        // Current item counter in the chunck
         let idx = 0;
         // Chunck step
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
@@ -645,6 +648,18 @@ const etHelper = new class ETHELPER {
         } while (size == step);
     }
 
+    async getSectionSize()
+    {
+        const url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
+        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+        log.verbose(`Calling url in getSectionSize: ${url}`)
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        var totalSize = JSONPath({path: '$..totalSize', json: resp});
+        log.silly(`Response in getSectionSize: ${totalSize}`);
+        return totalSize;
+    }
+
     async getItemData({ postURI=this.#_defpostURI })
     {
         const url = this.Settings.baseURL + this.Settings.element + postURI;
@@ -677,6 +692,10 @@ const etHelper = new class ETHELPER {
         await this.createOutFile();
        // Now we need to find out how many calls to make
        this.Settings.call = await this.getLevelCall();
+
+       // Get total size of the section
+       this.Settings.totalItems = await this.getSectionSize();
+       console.log('Ged 445: ' + this.Settings.totalItems)
 
         // Get items from PMS, and populate export files
        await this.populateExpFiles();

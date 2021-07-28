@@ -162,6 +162,7 @@
                 "Idle": "Idle",
                 "Status": "Status",
                 "Processing-Chunk": "Processing chunk {current} of {total}",
+                "Processing-Item": "Processing item {current} of {total}",
                 "StartExport": "Starting to Export",
                 "GetSectionItems": "Fetching {totalSize} items in chunks of {chunck}",
                 "CreateExlsFile": "Creating Excel file",
