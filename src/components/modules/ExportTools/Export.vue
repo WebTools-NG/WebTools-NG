@@ -192,6 +192,7 @@
   },
   created() {
     log.info("ET Created");
+    this.serverSelected();
     etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
   },
   computed: {
@@ -226,6 +227,19 @@
     },
   },
   methods: {
+    async serverSelected() {
+      let serverCheck = this.$store.getters.getSelectedServer;
+      if (serverCheck == "none") {
+        log.debug("serverCheck is none");
+        this.$bvToast.toast(this.$t("Modules.PMS.ErrorNoServerSelectedMsg"), {
+          title: this.$t("Modules.PMS.ErrorNoServerSelectedTitle"),
+          autoHideDelay: 4000,
+          solid: true,
+          variant: 'primary',
+          toaster: 'b-toaster-bottom-right'
+        });
+      }
+    },
     // Get levels for the selected media type
     getLevels: async function(){
       log.verbose(`Getting levels for: ${this.selExpTypeSec}`);
@@ -465,7 +479,7 @@
       }
       if ( !wtconfig.get("ET.ExpCSV"))
       {
-        if ( !wtconfig.get("ET.ExpExcel"))
+        if ( !wtconfig.get("ET.ExpXLSX"))
         {
           log.error('ET: No output format defined')
           this.$bvToast.toast(this.$t("Modules.ET.ErrorNoOutputFormatMsg"), {

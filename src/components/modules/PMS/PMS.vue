@@ -36,7 +36,6 @@
   },
   methods: {
     async serverSelected() {
-
       let serverCheck = this.$store.getters.getSelectedServer;
       if (serverCheck == "none") {
         log.debug("serverCheck is none");

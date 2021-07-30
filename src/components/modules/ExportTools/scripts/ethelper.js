@@ -7,6 +7,7 @@ import {csv} from './csv';
 import {et} from './et';
 import i18n from '../../../../i18n';
 import filesize from 'filesize';
+import Excel from 'exceljs'
 
 var path = require("path");
 
@@ -716,7 +717,7 @@ const etHelper = new class ETHELPER {
             newFile = this.Settings.csvFile.replace('.tmp', '')
             fs.renameSync(this.Settings.csvFile, newFile);
         }
-        if (wtconfig.get("ET.ExpExcel", false)){
+        if (wtconfig.get("ET.ExpXLSX", false)){
             this.Settings.xlsxStream.end();
             // Rename to real file name
             newFile = this.Settings.xlsxFile.replace('.tmp', '')
@@ -737,13 +738,46 @@ const etHelper = new class ETHELPER {
             //await this.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
             await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
         }
-        // Create XLSX Stream
-        if (wtconfig.get("ET.ExpExcel", false)){
-            // Open a file stream
-            this.Settings.xlsxFile = await etHelper.getFileName({ Type: 'xlsx' });
-            this.Settings.xlsxStream = fs.createWriteStream(this.Settings.xlsxFile, {flags:'a'});
-            // TODO: Add XLS Header
-            // await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
+        try
+        {
+            // Create XLSX Stream
+            if (wtconfig.get("ET.ExpXLSX", false)){
+                console.log('Ged 3-0')
+                //const Excel = require('exceljs');
+                
+                console.log('Ged 3-1')
+                // Open a file stream
+
+                this.Settings.xlsxFile = await etHelper.getFileName({ Type: 'xlsx' });
+                console.log('Ged 3-2')
+                //this.Settings.xlsxStream = fs.createWriteStream(this.Settings.xlsxFile, {flags:'a'});
+                // construct a streaming XLSX workbook writer with styles and shared strings
+                const options = {
+                    filename: this.Settings.xlsxFile,
+                    useStyles: true,
+                    useSharedStrings: true
+                };
+                console.log('Ged 3-3')
+                
+                console.log('Ged 3-3-1')
+                var streamGed = new Excel.stream.xlsx();
+                streamGed
+
+                console.log('Ged 3-3-1-1')
+
+                var ged = new Excel.stream.xlsx.WorkbookWriter(options);
+                ged
+
+                console.log('Ged 3-3-2')
+
+                this.Settings.xlsxStream = new Excel.stream.xlsx.WorkbookWriter(options);
+                console.log('Ged 3-4')
+                // TODO: Add XLS Header
+                // await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
+            }
+        }
+        catch (error){
+            log.error(`etHelper: Exception happened when creating xlsx stream as: ${error}`);
         }
 
         
@@ -831,7 +865,7 @@ const etHelper = new class ETHELPER {
         
 /* 
         // Need to export to xlsx as well?
-        if (wtconfig.get('ET.ExpExcel')){
+        if (wtconfig.get('ET.ExpXLSX')){
             log.info('We need to create an xlsx file as well');
             et.updateStatusMsg( et.rawMsgType.Info, i18n.t('Modules.ET.Status.CreateExlsFile'));
             await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
@@ -846,7 +880,7 @@ const etHelper = new class ETHELPER {
             //await this.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
             await csv.addHeaderToTmp({ stream: stream, item: fields});
         }
-        if (wtconfig.get("ET.ExpExcel", false)){
+        if (wtconfig.get("ET.ExpXLSX", false)){
             //await csv.addHeaderToTmp({ stream: stream, item: fields});
             // TODO: Add XLS Header
         }
