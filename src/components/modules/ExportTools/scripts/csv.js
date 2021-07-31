@@ -21,19 +21,7 @@ const csv = new class CSV {
 
     async addRowToTmp({ stream: stream, item: item})
     {
-        stream, item
-        console.log('Ged CSV-1 adding to outfile')
-        console.log('Ged CSV-2: ' + JSON.stringify(item))
-        let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
-        if ( textSep === ' ')
-        {
-            textSep = '';
-        }
-        // placeholder for the row
-        let row = '';
-        row
         await stream.write( item + "\n");
-
     }
 
 }
