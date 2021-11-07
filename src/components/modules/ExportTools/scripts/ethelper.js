@@ -49,7 +49,7 @@ const etHelper = new class ETHELPER {
     #_StartTime = null;
     #_EndTime = null;
     #_statusmsg = {};
-    
+
     #_msgType = {
         1: i18n.t("Modules.ET.Status.Names.Status"),
         2: i18n.t("Modules.ET.Status.Names.Info"),
@@ -83,6 +83,7 @@ const etHelper = new class ETHELPER {
             currentItem: 0,
             totalItems: null
         };
+
         this.PMSHeader = wtutils.PMSHeader;
         this.uriParams = 'checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1';
         this.ETmediaType = {
@@ -150,11 +151,9 @@ const etHelper = new class ETHELPER {
 
     resetETHelper() {
         this.#_FieldHeader = [];
-        
         this.Settings.Level = null;
         this.Settings.libType = null;
         this.Settings.libTypeSec = null;
-        
         this.Settings.outFile = null;
         this.Settings.baseURL = null;
         this.Settings.accessToken = null;
@@ -168,8 +167,6 @@ const etHelper = new class ETHELPER {
         this.Settings.currentItem = 0;
         this.Settings.totalItems = null;
     }
-    //this.Settings.selLibKey = null;
-    //this.Settings.LibName = null;
 
     isEmpty( {val} )
     {
@@ -469,15 +466,12 @@ const etHelper = new class ETHELPER {
     async addRowToTmp( { data }) {
         this.Settings.currentItem +=1;
         this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
-        log.debug(`Start addRowToTmp`)
+        log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
-        //let lookup, val, array, i, valArray, valArrayVal, subType, subKey
-        //let lookup, val, array, i, valArray, valArrayVal
         let val, array, i, valArray, valArrayVal
         let str = ''
-        //let result = ''
         let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
         if ( textSep === ' ')
         {
@@ -693,6 +687,7 @@ const etHelper = new class ETHELPER {
             }
             idx += step;
         } while (size == step);
+        log.info('Populating export files ended');
     }
 
     async getSectionSize()
@@ -752,7 +747,7 @@ const etHelper = new class ETHELPER {
         this.getNowTime('end');
         this.updateStatusMsg( this.RawMsgType.EndTime, await this.getStartEndTime('end'));
         this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getTimeElapsed());
-        this.updateStatusMsg( this.RawMsgType.OutFile, this.Settings.OutFile);
+        this.updateStatusMsg( this.RawMsgType.OutFile, this.Settings.outFile);
     }
 
     async closeOutFile()
@@ -771,6 +766,7 @@ const etHelper = new class ETHELPER {
             newFile = this.Settings.xlsxFile.replace('.tmp', '')
             fs.renameSync(this.Settings.xlsxFile, newFile);
         }
+        this.Settings.outFile = newFile;
     }
 
     async createOutFile()
@@ -922,7 +918,7 @@ const etHelper = new class ETHELPER {
         outFile += this.RevETmediaType[this.Settings.libType.toString()] + '_';
         outFile += this.Settings.levelName + '_';
         outFile += timeStamp + '.' + Type + '.tmp';
-        this.Settings.OutFile = outFile;
+        this.Settings.outFile = outFile;
         const targetDir = path.join(
             OutDir, wtutils.AppName, i18n.t('Modules.ET.Name'));
         const outFileWithPath = path.join(
