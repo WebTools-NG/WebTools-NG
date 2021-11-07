@@ -28,7 +28,7 @@ module.exports = {
         linux: {
           category: "Utility",
           icon: './src/assets/WebTools-512.png',
-          target: 'AppImage'                  
+          target: 'AppImage'
         },
         win: {
           icon: './src/assets/WebTools-512.png'

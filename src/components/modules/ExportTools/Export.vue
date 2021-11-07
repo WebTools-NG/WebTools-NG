@@ -228,6 +228,7 @@
   },
   methods: {
     async serverSelected() {
+      etHelper.resetETHelper();
       let serverCheck = this.$store.getters.getSelectedServer;
       if (serverCheck == "none") {
         log.debug("serverCheck is none");
@@ -355,10 +356,12 @@
     },
     selLevelChanged: async function(myarg){
       log.verbose(`Level to export selected as: ${this.selLevel}`);
+      etHelper.resetETHelper();
       etHelper.Settings.Level = this.selLevel;
       etHelper.Settings.levelName = await this.getText(myarg, this.exportLevels);
     },
     selLibraryChanged: async function(myarg){
+      etHelper.resetETHelper();
       log.verbose(`Library key to export selected as: ${this.selLibrary}`);
       etHelper.Settings.selLibKey = this.selLibrary;
       etHelper.Settings.LibName = await this.getText(myarg, this.selLibraryOptions);
@@ -496,16 +499,18 @@
       etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
       
       // Populate et. settings with the selected values
-      console.log('Ged below depreciated')
+      /* console.log('Ged below depreciated')
       et.expSettings.libType = this.selMediaType;
       et.expSettings.libTypeSec = this.selExpTypeSec;
       et.expSettings.exportLevel = this.selLevel;
       et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
       et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
 
-      console.log('Ged USE below')
+      console.log('Ged USE below') */
+      etHelper.Settings.currentItem = 0;
       etHelper.Settings.libType = this.selMediaType;
       etHelper.Settings.Level = this.selLevel;
+      
       etHelper.Settings.libTypeSec = this.selExpTypeSec;
       etHelper.Settings.baseURL = this.$store.getters.getSelectedServerAddress;
       etHelper.Settings.accessToken = this.$store.getters.getSelectedServerToken;

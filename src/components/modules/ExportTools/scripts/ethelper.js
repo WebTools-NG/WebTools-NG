@@ -148,6 +148,29 @@ const etHelper = new class ETHELPER {
 
     }
 
+    resetETHelper() {
+        this.#_FieldHeader = [];
+        
+        this.Settings.Level = null;
+        this.Settings.libType = null;
+        this.Settings.libTypeSec = null;
+        
+        this.Settings.outFile = null;
+        this.Settings.baseURL = null;
+        this.Settings.accessToken = null;
+        this.Settings.levelName = null;
+        this.Settings.csvFile = null;
+        this.Settings.csvStream = null;
+        this.Settings.xlsxFile = null;
+        this.Settings.xlsxStream = null;
+        this.Settings.call = null;
+        this.Settings.fields = null;
+        this.Settings.currentItem = 0;
+        this.Settings.totalItems = null;
+    }
+    //this.Settings.selLibKey = null;
+    //this.Settings.LibName = null;
+
     isEmpty( {val} )
     {
         if ([null, 'undefined', ''].indexOf(val) > -1)
@@ -497,17 +520,12 @@ const etHelper = new class ETHELPER {
                             for (i=0; i<array.length; i++) {
                                 switch(String(subType)) {
                                     case "string":
-                                        console.log('Ged 44-0: ' + key + '*' + subKey)
-                                        console.log('Ged 44-1: ' + JSON.stringify(array[i]))
                                         valArrayVal = String(JSONPath({path: String(subKey), json: array[i]}));
                                         // Make N/A if not found
-                                        
-                                        console.log('Ged 44-2: ' + JSON.stringify(valArrayVal))
                                         valArrayVal = this.isEmpty( { val: valArrayVal });
-                                        console.log('Ged 44-3: ' + JSON.stringify(valArrayVal))
                                         // Remove CR, LineFeed ' and " from the string if present
                                         valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                        console.log('Ged 44-4: ' + JSON.stringify(valArrayVal))
+                                        valArrayVal = setStrSeperator( {str: valArrayVal});
                                         break;
                                     case "time":
                                         valArrayVal = JSONPath({path: String(subKey), json: array[i]});
@@ -705,6 +723,7 @@ const etHelper = new class ETHELPER {
         {
             this.Settings.libType = this.Settings.libTypeSec;
         }
+        log.debug(`LibType: ${this.Settings.libType} * LevelName: ${this.Settings.levelName}`);
         const count = await defLevels[this.Settings.libType]['LevelCount'][this.Settings.levelName]
         log.info('Count needed is: ' + count)
         return count
@@ -913,7 +932,7 @@ const etHelper = new class ETHELPER {
         if (!fs.existsSync(targetDir)) {
             fs.mkdirSync(targetDir);
         }
-        log.info(`OutFile is ${outFileWithPath}`);
+        log.info(`OutFile ET is ${outFileWithPath}`);
         return outFileWithPath;
     }
 
@@ -1028,7 +1047,12 @@ const etHelper = new class ETHELPER {
                 // code block
                 log.error(`Unknown libtype: "${this.Settings.libType}" or level: "${this.Settings.level}" in "getLevelFields"`);
             }
-            let levels = def[this.Settings.libType.toString()]['level'][this.Settings.levelName];
+            if ( this.Settings.levelName == 'All')
+            {
+                this.Settings.levelName = 'all';
+            }
+            let levels = def[this.Settings.libType.toString()]['level'][this.Settings.Level];
+            //let levels = def[this.Settings.libType.toString()]['level'][this.Settings.levelName];
             if (levels == undefined)
             {
                 // We are dealing with a custom level
