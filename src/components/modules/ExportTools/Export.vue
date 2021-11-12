@@ -62,7 +62,7 @@
       </b-form-row>
       <b-form-row> <!-- Select Export Level -->
         <b-col>
-          <div> 
+          <div>
             <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.optExpType.lblExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
               <b-tooltip target="etLevelGroup" triggers="hover">
                 {{ $t('Modules.ET.optExpType.ttExpLevel') }}
@@ -82,12 +82,13 @@
       <div class="buttons"> <!-- Buttons -->
         <b-button
           type="is-primary"
-          @click="getMedia"
+          @click="showStartEnd"
           icon-left="fas fa-file-download"
           icon-pack="fas"
           :disabled="btnDisable == true"
           variant="success"
-        >{{ $t("Modules.ET.optExpType.lblBtnExportMedia") }}</b-button>
+        >
+        {{ $t("Modules.ET.optExpType.lblBtnExportMedia") }}</b-button>
       </div>
       <br>
       <b-container fluid> <!-- Status -->
@@ -107,6 +108,26 @@
           </b-col>
         </b-row>
       </b-container>
+      <b-modal ref="startEnd" hide-footer v-bind:title=this.startEnd>
+          <div class="d-block">
+            {{ this.startEndBody }}
+            {{ this.startEndBody2 }}
+            <br>
+            {{ this.startEndBody3 }}
+            <br>
+            <br>
+            {{ this.startEndBody4 }}
+            <br>
+            <br>
+            <b-input-group id="itemStart" :prepend="$t('Modules.ET.optExpType.startStopStartingItem')" class="mt-3">
+              <b-form-input id="itemStartNo" name="itemStartNo" type="number" class="form-control" v-model="itemStartNo" :min=0 :max=this.sectionMaxItems.toString() :disabled=false @change.native="setItemStartNo()"></b-form-input>
+            </b-input-group>
+            <b-input-group id="itemEnd" :prepend="$t('Modules.ET.optExpType.startStopEndingItem')" class="mt-3">
+              <b-form-input id="itemEndNo" name="itemEndNo" type="number" class="form-control" v-model="itemEndNo" :disabled=false :min=this.itemStartNo.toString() :max=this.sectionMaxItems.toString() @change.native="setItemEndNo()"></b-form-input>
+            </b-input-group>
+          </div>
+        <b-button class="mt-3" variant="success" block @click="getMedia">{{ this.startEndBtn }}</b-button>
+      </b-modal>
     </div>
   </b-container>
 </template>
@@ -161,7 +182,16 @@
           pListGrpDisabled: true,
           etLibraryGroupDisabled: false,
           etLevelGroupDisabled: false,
-          statusMsg: 'Idle'
+          statusMsg: 'Idle',
+          startEnd: i18n.t("Modules.ET.optExpType.startStopTitle"),
+          startEndBody: i18n.t("Modules.ET.optExpType.startStopDesc"),
+          startEndBody2: i18n.t("Modules.ET.optExpType.startStopDesc2"),
+          startEndBody3: i18n.t("Modules.ET.optExpType.startStopDesc3"),
+          startEndBody4: i18n.t("Modules.ET.optExpType.startStopDesc4"),
+          startEndBtn: i18n.t("Modules.ET.optExpType.lblBtnExportMedia"),
+          itemStartNo: etHelper.Settings.currentItem,
+          itemEndNo: 0,
+          sectionMaxItems: 0
         };
   },
   watch: {
@@ -227,6 +257,36 @@
     },
   },
   methods: {
+    setItemStartNo: async function(){
+      // Update settings with new start value
+      etHelper.Settings.startItem = this.itemStartNo;
+    },
+    setItemEndNo: async function(){
+      // Update settings with new start value
+      if (Number(this.sectionMaxItems) < Number(this.itemEndNo)){
+        this.itemEndNo = this.sectionMaxItems
+      }
+      etHelper.Settings.endItem = this.itemEndNo;
+    },
+    showStartEnd: async function(){
+      // Will ask for a starting item as well as an ending item, then export
+      // Start by getting the maximum and min items
+      etHelper.Settings.currentItem = 0;
+      etHelper.Settings.baseURL = this.$store.getters.getSelectedServerAddress;
+      etHelper.Settings.accessToken = this.$store.getters.getSelectedServerToken;
+      etHelper.Settings.totalItems = await etHelper.getSectionSize();
+      this.itemEndNo = etHelper.Settings.totalItems;
+      this.sectionMaxItems = this.itemEndNo;
+      this.$refs['startEnd'].show();
+
+
+    // getMedia()
+
+    },
+    hideStartEnd: async function(){
+    // Hide StartEnd modal
+      this.$refs['startEnd'].hide();
+    },
     async serverSelected() {
       etHelper.resetETHelper();
       let serverCheck = this.$store.getters.getSelectedServer;
@@ -369,6 +429,7 @@
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
       log.verbose(`Secondary export type selected as: ${arguments[0]}`);
+      etHelper.Settings.selType = arguments[0];
       // Set selMediaType to the type we want, and has to handle exceptions
       switch(arguments[0]) {
         // Set type for episodes to shows
@@ -468,6 +529,7 @@
     },
     async getMedia() {
       log.info("getMedia Called");
+      this.hideStartEnd();
       if (wtconfig.get('General.ExportPath', "") == "")
       {
         log.info('ET: No output dir defined')
@@ -507,14 +569,10 @@
       et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
 
       console.log('Ged USE below') */
-      etHelper.Settings.currentItem = 0;
+
       etHelper.Settings.libType = this.selMediaType;
       etHelper.Settings.Level = this.selLevel;
-      
       etHelper.Settings.libTypeSec = this.selExpTypeSec;
-      etHelper.Settings.baseURL = this.$store.getters.getSelectedServerAddress;
-      etHelper.Settings.accessToken = this.$store.getters.getSelectedServerToken;
-
       await etHelper.exportMedias();
     },
     async checkSrvSelected() {

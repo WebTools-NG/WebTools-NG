@@ -81,7 +81,11 @@ const etHelper = new class ETHELPER {
             call: null,
             fields: null,
             currentItem: 0,
-            totalItems: null
+            totalItems: null,
+            startItem: 0,
+            endItem: null,
+            count: 0,
+            selType: null
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -465,7 +469,7 @@ const etHelper = new class ETHELPER {
 
     async addRowToTmp( { data }) {
         this.Settings.currentItem +=1;
-        this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
+        this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
@@ -480,7 +484,7 @@ const etHelper = new class ETHELPER {
         try
         {
             for (var x=0; x<this.Settings.fields.length; x++) {
-                this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.currentItem, total: this.Settings.totalItems}));
+                this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
                 var fieldDef = JSONPath({path: '$.fields.' + this.Settings.fields[x], json: defFields})[0];
                 name = this.Settings.fields[x];
                 key = fieldDef["key"];
@@ -638,7 +642,9 @@ const etHelper = new class ETHELPER {
     async populateExpFiles(){
         log.info('Populating export files');
         // Current item counter in the chunck
-        let idx = 0;
+        //let idx = 0;
+        let idx = this.Settings.startItem;
+        this.Settings.count = idx;
         // Chunck step
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         let size = 0;   // amount of items fetched each time
@@ -682,22 +688,28 @@ const etHelper = new class ETHELPER {
                     if (this.Settings.xlsxFile){
                         console.log('Ged 12-4 We need to exp to XLSX')
                     }
-
+                }
+                ++this.Settings.count;
+                console.log('Ged 8 counter: ' + this.Settings.count)
+                console.log('Ged 8-1 Max: ' + this.Settings.endItem)
+                if ( this.Settings.count >= this.Settings.endItem) {
+                    console.log('Ged 8-3 counter break')
+                    break;
                 }
             }
-            idx += step;
-        } while (size == step);
+            idx = Number(idx) + Number(step);
+        } while (this.Settings.count < this.Settings.endItem);
         log.info('Populating export files ended');
     }
 
     async getSectionSize()
     {
-        const url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
+        const url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0&type=' + this.Settings.selType;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        var totalSize = JSONPath({path: '$..totalSize', json: resp});
+        var totalSize = JSONPath({path: '$..totalSize', json: resp})[0];
         log.silly(`Response in getSectionSize: ${totalSize}`);
         return totalSize;
     }
@@ -917,6 +929,7 @@ const etHelper = new class ETHELPER {
         outFile += this.Settings.LibName + '_';
         outFile += this.RevETmediaType[this.Settings.libType.toString()] + '_';
         outFile += this.Settings.levelName + '_';
+        outFile += 'Item ' + this.Settings.startItem + '-' + this.Settings.endItem + '_';
         outFile += timeStamp + '.' + Type + '.tmp';
         this.Settings.outFile = outFile;
         const targetDir = path.join(

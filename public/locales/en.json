@@ -251,7 +251,16 @@
                 "ttExpLibrary": "Here you select the library to export",
                 "ttExpTypeSec": "Here you select the sub type",
                 "ttExpType": "Here you select the type of library you want to export",
-                "SecPlaylists": "Playlists"
+                "SecPlaylists": "Playlists",
+                "itemStart": "The starting item (Normally 0)",
+                "itemEnd": "The ending item (Normally the last item in the library)",
+                "startStopDesc": "Here you have the option to define what item to start exporting with,",
+                "startStopDesc2": "as well as specifying the item to end the export.",
+                "startStopDesc3": "Use this to split export files into smaller chuncks (files) if needed.",
+                "startStopDesc4": "We default to export everything.",
+                "startStopStartingItem": "Item to start with",
+                "startStopEndingItem": "Item to end with",
+                "startStopTitle": "Limit Export"
             }
         },
         "About": {
