@@ -276,12 +276,9 @@
       etHelper.Settings.accessToken = this.$store.getters.getSelectedServerToken;
       etHelper.Settings.totalItems = await etHelper.getSectionSize();
       this.itemEndNo = etHelper.Settings.totalItems;
+      etHelper.Settings.endItem = this.itemEndNo;
       this.sectionMaxItems = this.itemEndNo;
       this.$refs['startEnd'].show();
-
-
-    // getMedia()
-
     },
     hideStartEnd: async function(){
     // Hide StartEnd modal

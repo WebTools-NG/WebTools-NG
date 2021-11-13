@@ -690,10 +690,7 @@ const etHelper = new class ETHELPER {
                     }
                 }
                 ++this.Settings.count;
-                console.log('Ged 8 counter: ' + this.Settings.count)
-                console.log('Ged 8-1 Max: ' + this.Settings.endItem)
                 if ( this.Settings.count >= this.Settings.endItem) {
-                    console.log('Ged 8-3 counter break')
                     break;
                 }
             }
@@ -747,8 +744,6 @@ const etHelper = new class ETHELPER {
         await this.createOutFile();
         // Now we need to find out how many calls to make
         this.Settings.call = await this.getLevelCall();
-        // Get total size of the section
-        this.Settings.totalItems = await this.getSectionSize();
         // Get items from PMS, and populate export files
         await this.populateExpFiles();
         await this.closeOutFile();
