@@ -85,7 +85,9 @@ const etHelper = new class ETHELPER {
             startItem: 0,
             endItem: null,
             count: 0,
-            selType: null
+            selType: null,
+            fileMajor: null,
+            fileMinor: null,
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -922,8 +924,8 @@ const etHelper = new class ETHELPER {
         const path = require('path');
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += this.Settings.LibName + '_';
-        outFile += this.RevETmediaType[this.Settings.libType.toString()] + '_';
-        outFile += this.RevETmediaType[this.Settings.libTypeSec.toString()] + '_';
+        outFile += this.Settings.fileMajor + '_';
+        outFile += this.Settings.fileMinor + '_';
         outFile += this.Settings.levelName + '_';
         outFile += 'Item ' + this.Settings.startItem + '-' + this.Settings.endItem + '_';
         outFile += timeStamp + '.' + Type + '.tmp';

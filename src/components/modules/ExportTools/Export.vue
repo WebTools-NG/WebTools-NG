@@ -426,6 +426,7 @@
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
       log.verbose(`Secondary export type selected as: ${arguments[0]}`);
+      etHelper.Settings.fileMinor = this.optExpTypeSec.filter(it => it.value === arguments[0])[0]['text'];
       etHelper.Settings.selType = arguments[0];
       // Set selMediaType to the type we want, and has to handle exceptions
       switch(arguments[0]) {
@@ -470,7 +471,8 @@
       this.selLibraryOptions = [];
       this.exportLevels = [];
       this.selExpTypeMain = arguments[0];
-      this.optExpTypeSec = et.selSecOption[arguments[0]]
+      this.optExpTypeSec = et.selSecOption[arguments[0]];
+      etHelper.Settings.fileMajor = this.optExpTypeMain.filter(it => it.value === arguments[0])[0]['text'];
       log.verbose(`Export Main type selected: ${arguments[0]}`);
     },
     getPMSSections: async function(){
@@ -556,17 +558,7 @@
       }
       await etHelper.clearStatus();
       etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
-      
       // Populate et. settings with the selected values
-      /* console.log('Ged below depreciated')
-      et.expSettings.libType = this.selMediaType;
-      et.expSettings.libTypeSec = this.selExpTypeSec;
-      et.expSettings.exportLevel = this.selLevel;
-      et.expSettings.baseURL = this.$store.getters.getSelectedServerAddress;
-      et.expSettings.accessToken = this.$store.getters.getSelectedServerToken;
-
-      console.log('Ged USE below') */
-
       etHelper.Settings.libType = this.selMediaType;
       etHelper.Settings.Level = this.selLevel;
       etHelper.Settings.libTypeSec = this.selExpTypeSec;
