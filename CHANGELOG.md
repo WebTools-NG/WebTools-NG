@@ -8,6 +8,7 @@
 * [#399 [RFE] ET: Consider splitting outfile into many](https://github.com/WebTools-NG/WebTools-NG/issues/399)
 * [#396 [RFE] ET: Seperate xlsx and csv export](https://github.com/WebTools-NG/WebTools-NG/issues/396)
 * [#410 [RFE] ET: Add sub category to export file name](https://github.com/WebTools-NG/WebTools-NG/issues/410)
+* [#407 Can't export libraries with a forward slash (/) in the name](https://github.com/WebTools-NG/WebTools-NG/issues/407)
 
 ## V0.3.12
 

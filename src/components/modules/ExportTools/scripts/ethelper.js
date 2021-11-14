@@ -927,6 +927,8 @@ const etHelper = new class ETHELPER {
         outFile += this.Settings.levelName + '_';
         outFile += 'Item ' + this.Settings.startItem + '-' + this.Settings.endItem + '_';
         outFile += timeStamp + '.' + Type + '.tmp';
+        // Remove unwanted chars from outfile name
+        outFile = outFile.replaceAll('/', '_');
         this.Settings.outFile = outFile;
         const targetDir = path.join(
             OutDir, wtutils.AppName, i18n.t('Modules.ET.Name'));
