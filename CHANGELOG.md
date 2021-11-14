@@ -7,6 +7,7 @@
 * [#395 Show alert if we can't connect to plex.tv](https://github.com/WebTools-NG/WebTools-NG/issues/395)
 * [#399 [RFE] ET: Consider splitting outfile into many](https://github.com/WebTools-NG/WebTools-NG/issues/399)
 * [#396 [RFE] ET: Seperate xlsx and csv export](https://github.com/WebTools-NG/WebTools-NG/issues/396)
+* [#410 [RFE] ET: Add sub category to export file name](https://github.com/WebTools-NG/WebTools-NG/issues/410)
 
 ## V0.3.12
 

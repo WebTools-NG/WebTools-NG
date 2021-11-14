@@ -923,6 +923,7 @@ const etHelper = new class ETHELPER {
         let outFile = store.getters.getSelectedServer.name + '_';
         outFile += this.Settings.LibName + '_';
         outFile += this.RevETmediaType[this.Settings.libType.toString()] + '_';
+        outFile += this.RevETmediaType[this.Settings.libTypeSec.toString()] + '_';
         outFile += this.Settings.levelName + '_';
         outFile += 'Item ' + this.Settings.startItem + '-' + this.Settings.endItem + '_';
         outFile += timeStamp + '.' + Type + '.tmp';
