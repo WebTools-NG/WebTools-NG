@@ -729,8 +729,14 @@ const etHelper = new class ETHELPER {
         {
             this.Settings.libType = this.Settings.libTypeSec;
         }
-        log.debug(`LibType: ${this.Settings.libType} * LevelName: ${this.Settings.levelName}`);
-        const count = await defLevels[this.Settings.libType]['LevelCount'][this.Settings.levelName]
+        log.debug(`LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
+        let count = await defLevels[this.Settings.libTypeSec]['LevelCount'][this.Settings.levelName]
+        if (count == undefined)
+        {
+            // We are dealing with a custom level
+            log.debug('Count requested for a custom level')
+            count = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.LevelCount.${this.Settings.levelName}`);
+        }
         log.info('Count needed is: ' + count)
         return count
     }
@@ -1001,9 +1007,10 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.libType = etHelper.Settings.libTypeSec;
             }
-            
             //let r1ealName = et.getRealLevelName(level, this.Settings.libType);
             //log.debug(`R1ealName is ${r1ealName}`);
+
+            console.log('Ged 665 libType: ' + this.Settings.libType)
             // We need to load fields and defs into def var
             switch(this.Settings.libType) {
                 case etHelper.ETmediaType.Movie:
@@ -1065,7 +1072,11 @@ const etHelper = new class ETHELPER {
             if (levels == undefined)
             {
                 // We are dealing with a custom level
-                levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libType}.level.${this.Settings.levelName}`);
+                console.log('Ged 8877 Custom level detected with name: ' + this.Settings.levelName)
+                console.log('Ged 8877-1 Custom level Sec Type is: ' + this.Settings.libTypeSec)
+                //levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libType}.level.${this.Settings.levelName}`);
+                levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.level.${this.Settings.levelName}`);
+                console.log('Ged 8877-2 Custom level detected as: ' + JSON.stringify(levels))
             }
             Object.keys(levels).forEach(function(key) {
                 out.push(levels[key])
