@@ -187,10 +187,11 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title=""} ){
-        const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
+        log.silly(`postProcess val is: ${JSON.stringify(val)}`)
         let retArray = [];
         let x, retVal, start, strStart, end, result;
         try {
+            const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
             switch ( String(name) ){
                 case "Audience Rating":
                     {
@@ -465,6 +466,7 @@ const etHelper = new class ETHELPER {
             }
         } catch (error) {
             retVal = 'ERROR'
+            log.error(`We had an error as: ${error} . So postProcess retVal set to ERROR`);
         }
         return await retVal;
     }
