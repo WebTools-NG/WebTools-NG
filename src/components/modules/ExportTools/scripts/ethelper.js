@@ -236,7 +236,11 @@ const etHelper = new class ETHELPER {
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
                     {
+                        log.silly(`We need to override Original Titel, if not avail`);
+                        log.silly(`Got Original title as: ${val}`);
+                        log.silly(`Alternative might be title as: ${title}`);
                         let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
+                        log.silly(`compNA is: ${compNA}`);
                         // Override with title if not found
                         if (val == compNA)
                         {
@@ -248,6 +252,7 @@ const etHelper = new class ETHELPER {
                     {
                         retVal = val;
                     }
+                    log.debug(`Original Title returned as: ${retVal}`)
                     break;
                 case "Sort title":
                     if (wtconfig.get('ET.SortTitleNull'))
@@ -607,13 +612,8 @@ const etHelper = new class ETHELPER {
                 }
                 if ( doPostProc )
                 {
-                    if (!["Original Title","Sort title"].includes(name)){
-                        const title = JSONPath({path: String('$.title'), json: data})[0];
-                        val = await this.postProcess( {name: name, val: val, title: title} );
-                    }
-                    else {
-                        val = await this.postProcess( {name: name, val: val} );
-                    }
+                    const title = JSONPath({path: String('$.title'), json: data})[0];
+                    val = await this.postProcess( {name: name, val: val, title: title} );
                 }
                 str += val + etHelper.intSep;
             }
