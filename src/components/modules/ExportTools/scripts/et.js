@@ -16,7 +16,6 @@ import i18n from '../../../../i18n'
 import {ipcRenderer} from 'electron';
 //const fs = require('fs');
 
-
 var path = require("path");
 
 const fetch = require('node-fetch');

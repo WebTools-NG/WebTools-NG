@@ -705,7 +705,18 @@ const etHelper = new class ETHELPER {
 
     async getSectionSize()
     {
-        const url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0&type=' + this.Settings.selType;
+        let url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
+        const noSelTypeArr=[this.ETmediaType.Libraries];
+        if (!noSelTypeArr.includes(this.Settings.selType))
+        {
+            url += '&type=' + this.Settings.selType;
+            log.silly('getSectionSize arr: ' + JSON.stringify(noSelTypeArr) + ' and testing against: ' + this.Settings.selType);
+            log.silly(`So adding "&type=${this.Settings.selType}"" to the url`)
+        }
+
+
+
+        
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
@@ -1139,7 +1150,10 @@ const etHelper = new class ETHELPER {
 
     // Private methode to set the header
     async #SetFieldHeader(){
+        //if (this.Settings.Level)
+        console.log('Ged 11: Level: ' + this.Settings.Level)
         log.verbose(`GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
+        
         //const fields2 = await this.getLevelFields(this.Settings.Level);
         //return fields2;
         return await this.getLevelFields();
