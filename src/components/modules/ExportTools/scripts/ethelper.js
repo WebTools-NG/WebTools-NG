@@ -29,23 +29,22 @@ function isEmptyObj(obj) {
 // Adds the String Qualifier if needed
 function setStrSeperator( {str: str})
     {
-        console.log('Ged 56 Str: ' + str)
-        console.log('Ged 56-1 Qualifier: ' + wtconfig.get('ET.TextQualifierCSV'))
         if ( wtconfig.get('ET.TextQualifierCSV') )
         {
-            console.log('Ged 56-2 got qualifier')
             if ( wtconfig.get('ET.TextQualifierCSV') != ' ')
             {
-                console.log('Ged 56-3 not space')
-                console.log('Ged 56-4 returning: ' + wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV'))
+                log.silly(`etHelper (setStrSeperator): Returning: ${wtconfig.get('ET.TextQualifierCSV')}${str}${wtconfig.get('ET.TextQualifierCSV')}`);
                 return wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV');
-            } 
-            else 
-            { 
-                console.log('Ged 56-5 returning str as: ' + str)
+            }
+            else
+            {
+                log.silly(`etHelper (setStrSeperator) No sep, so returning ${str}`);
                 return str; }
         }
-        console.log('Ged 56-6 UPS no qualifier, so returning nothing')
+        else
+        {
+            log.error(`etHelper (setStrSeperator): UPS no qualifier, so returning nothing`);
+        }
     }
 
 
@@ -514,24 +513,17 @@ const etHelper = new class ETHELPER {
                 switch(type) {
                     case "string":
                         val = String(JSONPath({path: key, json: data})[0]);
-
-                        console.log('Ged 55 val: ' + val)
                         // Make N/A if not found
                         if (!val)
                         {
-                            console.log('Ged 55-2 val not found')
                             val = wtconfig.get('ET.NotAvail', 'N/A');
-                            console.log('Ged 55-2 Val now: ' + val)
                         }
                         val = etHelper.isEmpty( { "val": val } );
-                        console.log('Ged 55-3 Val now: ' + val)
                         // Remove CR, LineFeed ' and " from the
                         // string if present, and replace with a space
                         val = val.replace(/'|"|\r|\n/g, ' ');
-                        console.log('Ged 55-4 Val now: ' + val)
                         //val = val.replace(/\r|\n/g, ' ');
                         val = setStrSeperator( {str: val} );
-                        console.log('Ged 55-5 Val now: ' + val)
                         break;
                     case "array":
                         array = JSONPath({path: key, json: data});
@@ -630,13 +622,7 @@ const etHelper = new class ETHELPER {
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
-                    log.silly(`ETHelper(addRowToTmp): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
-
-
-                    console.log('Ged44 Name: ' + name)
-                    console.log('Ged44-1 Title: ' + title)
-                    console.log('Ged44-2 Val: ' + val)
-
+                    log.silly(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
                     val = await this.postProcess( {name: name, val: val, title: title} );
                 }
                 str += val + etHelper.intSep;
@@ -649,9 +635,9 @@ const etHelper = new class ETHELPER {
         }
         // Remove last internal separator
         str = str.substring(0,str.length-etHelper.intSep.length);
-        log.silly(`etHelper addRowToTmp returned: ${JSON.stringify(str)}`);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
         this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
+        log.silly(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
         return str;
     }
 
@@ -740,7 +726,7 @@ const etHelper = new class ETHELPER {
 
 
 
-        
+
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
@@ -854,7 +840,7 @@ const etHelper = new class ETHELPER {
                 streamGed
 
 
-               
+
 
                 this.Settings.xlsxStream = new Excel.stream.xlsx.WorkbookWriter(options);
 
@@ -866,16 +852,16 @@ const etHelper = new class ETHELPER {
             log.error(`etHelper: Exception happened when creating xlsx stream as: ${error}`);
         }
 
-        
 
-/* 
+
+/*
 
         var sectionData, x;
         {
             sectionData, x
 
            // await etHelper.getAndSaveItemsToFile({stream: stream});
-            
+
             // Get all the items in small chuncks
             sectionData = await et.getSectionData();
 
@@ -894,7 +880,7 @@ const etHelper = new class ETHELPER {
             }
             const bExportPosters = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Posters.${et.expSettings.levelName}`, false);
             const bExportArt = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Art.${et.expSettings.levelName}`, false);
-            
+
             for (x=0; x<sectionData.length; x++)
             {
                 et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
@@ -948,8 +934,8 @@ const etHelper = new class ETHELPER {
 
         }
          */
-        
-/* 
+
+/*
         // Need to export to xlsx as well?
         if (wtconfig.get('ET.ExpXLSX')){
             log.info('We need to create an xlsx file as well');
@@ -1044,10 +1030,7 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.libType = etHelper.Settings.libTypeSec;
             }
-            //let r1ealName = et.getRealLevelName(level, this.Settings.libType);
-            //log.debug(`R1ealName is ${r1ealName}`);
-
-            console.log('Ged 665 libType: ' + this.Settings.libType)
+            log.silly(`etHelper (getLevelFields) libType is: ${this.Settings.libType}`);
             // We need to load fields and defs into def var
             switch(this.Settings.libType) {
                 case etHelper.ETmediaType.Movie:
@@ -1098,7 +1081,7 @@ const etHelper = new class ETHELPER {
                     break;
                 default:
                 // code block
-                log.error(`Unknown libtype: "${this.Settings.libType}" or level: "${this.Settings.level}" in "getLevelFields"`);
+                log.error(`etHelper (getLevelFields) Unknown libtype: "${this.Settings.libType}" or level: "${this.Settings.level}" in "getLevelFields"`);
             }
             if ( this.Settings.levelName == 'All')
             {
@@ -1109,11 +1092,8 @@ const etHelper = new class ETHELPER {
             if (levels == undefined)
             {
                 // We are dealing with a custom level
-                console.log('Ged 8877 Custom level detected with name: ' + this.Settings.levelName)
-                console.log('Ged 8877-1 Custom level Sec Type is: ' + this.Settings.libTypeSec)
-                //levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libType}.level.${this.Settings.levelName}`);
                 levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.level.${this.Settings.levelName}`);
-                console.log('Ged 8877-2 Custom level detected as: ' + JSON.stringify(levels))
+                log.silly(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
             }
             Object.keys(levels).forEach(function(key) {
                 out.push(levels[key])
@@ -1174,12 +1154,7 @@ const etHelper = new class ETHELPER {
 
     // Private methode to set the header
     async #SetFieldHeader(){
-        //if (this.Settings.Level)
-        console.log('Ged 11: Level: ' + this.Settings.Level)
-        log.verbose(`GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
-        
-        //const fields2 = await this.getLevelFields(this.Settings.Level);
-        //return fields2;
+        log.verbose(`etHelper (#SetFieldHeader): GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
         return await this.getLevelFields();
     }
     //#endregion
