@@ -29,13 +29,23 @@ function isEmptyObj(obj) {
 // Adds the String Qualifier if needed
 function setStrSeperator( {str: str})
     {
+        console.log('Ged 56 Str: ' + str)
+        console.log('Ged 56-1 Qualifier: ' + wtconfig.get('ET.TextQualifierCSV'))
         if ( wtconfig.get('ET.TextQualifierCSV') )
         {
+            console.log('Ged 56-2 got qualifier')
             if ( wtconfig.get('ET.TextQualifierCSV') != ' ')
             {
+                console.log('Ged 56-3 not space')
+                console.log('Ged 56-4 returning: ' + wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV'))
                 return wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV');
-            } else { return str; }
+            } 
+            else 
+            { 
+                console.log('Ged 56-5 returning str as: ' + str)
+                return str; }
         }
+        console.log('Ged 56-6 UPS no qualifier, so returning nothing')
     }
 
 
@@ -187,7 +197,7 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title=""} ){
-        log.silly(`postProcess val is: ${JSON.stringify(val)}`)
+        log.silly(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`)
         let retArray = [];
         let x, retVal, start, strStart, end, result;
         try {
@@ -471,7 +481,7 @@ const etHelper = new class ETHELPER {
             }
         } catch (error) {
             retVal = 'ERROR'
-            log.error(`We had an error as: ${error} . So postProcess retVal set to ERROR`);
+            log.error(`ETHelper(postProcess): We had an error as: ${error} . So postProcess retVal set to ERROR`);
         }
         return await retVal;
     }
@@ -504,17 +514,24 @@ const etHelper = new class ETHELPER {
                 switch(type) {
                     case "string":
                         val = String(JSONPath({path: key, json: data})[0]);
+
+                        console.log('Ged 55 val: ' + val)
                         // Make N/A if not found
                         if (!val)
                         {
+                            console.log('Ged 55-2 val not found')
                             val = wtconfig.get('ET.NotAvail', 'N/A');
+                            console.log('Ged 55-2 Val now: ' + val)
                         }
                         val = etHelper.isEmpty( { "val": val } );
+                        console.log('Ged 55-3 Val now: ' + val)
                         // Remove CR, LineFeed ' and " from the
                         // string if present, and replace with a space
                         val = val.replace(/'|"|\r|\n/g, ' ');
+                        console.log('Ged 55-4 Val now: ' + val)
                         //val = val.replace(/\r|\n/g, ' ');
-                        val = setStrSeperator( {str: val});
+                        val = setStrSeperator( {str: val} );
+                        console.log('Ged 55-5 Val now: ' + val)
                         break;
                     case "array":
                         array = JSONPath({path: key, json: data});
@@ -613,6 +630,13 @@ const etHelper = new class ETHELPER {
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
+                    log.silly(`ETHelper(addRowToTmp): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+
+
+                    console.log('Ged44 Name: ' + name)
+                    console.log('Ged44-1 Title: ' + title)
+                    console.log('Ged44-2 Val: ' + val)
+
                     val = await this.postProcess( {name: name, val: val, title: title} );
                 }
                 str += val + etHelper.intSep;
