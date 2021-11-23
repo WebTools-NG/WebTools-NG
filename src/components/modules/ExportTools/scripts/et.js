@@ -182,12 +182,12 @@ const et = new class ET {
     }
 
 
-    async getSectionData()
+    async GEDDELETE_getSectionData()
     {
         const sectionData = []
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20)
-        log.debug(`Got Step size as: ${step}`)
+        log.debug(`!!!! et (getSectionData): Got Step size as: ${step}`)
         let element
         // Now read the fields and level defs
         // Current item
@@ -238,10 +238,10 @@ const et = new class ET {
     {
         const url = baseURL + element + postURI;
         this.PMSHeader["X-Plex-Token"] = accessToken;
-        log.verbose(`Calling url in getItemData: ${url}`)
+        log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
+        log.silly(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
         return resp
     }
 

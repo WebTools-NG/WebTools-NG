@@ -654,7 +654,7 @@ const etHelper = new class ETHELPER {
     }
 
     async populateExpFiles(){
-        log.info('Populating export files');
+        log.info('etHelper(populateExpFiles): Populating export files');
         // Current item counter in the chunck
         //let idx = 0;
         let idx = this.Settings.startItem;
@@ -673,13 +673,20 @@ const etHelper = new class ETHELPER {
             chunck = await this.getItemData({
                 postURI: postURI + idx});
             size = JSONPath({path: '$.MediaContainer.size', json: chunck});
-            log.silly(`Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
-            chunckItems = JSONPath({path: '$.MediaContainer.Metadata.*', json: chunck});
+            log.silly(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
+            if ( this.Settings.libType == this.ETmediaType.Libraries)
+            {
+                chunckItems = JSONPath({path: '$.MediaContainer.Directory.*', json: chunck});
+            }
+            else
+            {
+                chunckItems = JSONPath({path: '$.MediaContainer.Metadata.*', json: chunck});
+            }
             let tmpRow;
             // Walk each item retrieved
             for (var item in chunckItems)
             {
-                if (this.Settings.call == 1)
+                if (parseInt(this.Settings.call, 10) === 1)
                 {
                     // Let's get the needed row
                     tmpRow = await this.addRowToTmp({ data: chunckItems[item]});
@@ -710,23 +717,25 @@ const etHelper = new class ETHELPER {
             }
             idx = Number(idx) + Number(step);
         } while (this.Settings.count < this.Settings.endItem);
-        log.info('Populating export files ended');
+        log.info('etHelper(populateExpFiles): Populating export files ended');
     }
 
     async getSectionSize()
     {
-        let url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
+        let url = this.Settings.baseURL + '/library/sections/';
+        
         const noSelTypeArr=[this.ETmediaType.Libraries];
         if (!noSelTypeArr.includes(this.Settings.selType))
         {
+            url += this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
             url += '&type=' + this.Settings.selType;
             log.silly('getSectionSize arr: ' + JSON.stringify(noSelTypeArr) + ' and testing against: ' + this.Settings.selType);
             log.silly(`So adding "&type=${this.Settings.selType}"" to the url`)
         }
-
-
-
-
+        else
+        {
+            url += '?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
+        }
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
@@ -740,10 +749,10 @@ const etHelper = new class ETHELPER {
     {
         const url = this.Settings.baseURL + this.Settings.element + postURI;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
-        log.verbose(`Calling url in getItemData: ${url}`)
+        log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
+        log.silly(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
         return resp
     }
 
@@ -1087,6 +1096,10 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.levelName = 'all';
             }
+            if ( this.Settings.selType == this.ETmediaType.Libraries)
+            {
+                this.Settings.Level = 'all';
+            }
             let levels = def[this.Settings.libType.toString()]['level'][this.Settings.Level];
             //let levels = def[this.Settings.libType.toString()]['level'][this.Settings.levelName];
             if (levels == undefined)
@@ -1136,25 +1149,25 @@ const etHelper = new class ETHELPER {
         try{
             if (isEmptyObj(this.#_FieldHeader))
             {
-                log.verbose(`Need to generate the header`);
+                log.verbose(`etHelper(getFieldHeader): Need to generate the header`);
                 this.#_FieldHeader = await etHelper.#SetFieldHeader()
             }
             else
             {
-                log.verbose(`Returning cached headers`);
+                log.verbose(`etHelper(getFieldHeader): Returning cached headers`);
             }
         }
         catch (error)
         {
-            log.error(`Cought error in etHelper getFieldHeader as ${error}`);
+            log.error(`etHelper(getFieldHeader): ${error}`);
         }
-        log.verbose(`Field header is: ${JSON.stringify(this.#_FieldHeader)}`);
+        log.verbose(`etHelper(getFieldHeader): Field header is: ${JSON.stringify(this.#_FieldHeader)}`);
         return this.#_FieldHeader;
     }
 
     // Private methode to set the header
     async #SetFieldHeader(){
-        log.verbose(`etHelper (#SetFieldHeader): GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
+        log.verbose(`etHelper (SetFieldHeader): GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
         return await this.getLevelFields();
     }
     //#endregion
