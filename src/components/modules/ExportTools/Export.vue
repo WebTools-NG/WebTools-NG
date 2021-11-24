@@ -428,6 +428,7 @@
       log.verbose(`Secondary export type selected as: ${arguments[0]}`);
       etHelper.Settings.fileMinor = this.optExpTypeSec.filter(it => it.value === arguments[0])[0]['text'];
       etHelper.Settings.selType = arguments[0];
+      etHelper.Settings.libTypeSec = arguments[0];
       // Set selMediaType to the type we want, and has to handle exceptions
       switch(arguments[0]) {
         // Set type for episodes to shows
@@ -468,7 +469,7 @@
     selExpTypeMainChanged: async function(){
       console.log('Ged 1: ' + arguments[0])
 
-      
+
       this.optExpTypeSec = [];
       this.selLibrary = '';
       this.selLibraryOptions = [];

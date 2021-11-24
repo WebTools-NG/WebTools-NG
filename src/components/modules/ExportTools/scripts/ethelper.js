@@ -97,6 +97,7 @@ const etHelper = new class ETHELPER {
             selType: null,
             fileMajor: null,
             fileMinor: null,
+            element: null
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -168,7 +169,7 @@ const etHelper = new class ETHELPER {
         this.#_FieldHeader = [];
         this.Settings.Level = null;
         this.Settings.libType = null;
-        this.Settings.libTypeSec = null;
+//        this.Settings.libTypeSec = null;
         this.Settings.outFile = null;
         this.Settings.baseURL = null;
         this.Settings.accessToken = null;
@@ -722,8 +723,47 @@ const etHelper = new class ETHELPER {
 
     async getSectionSize()
     {
-        let url = this.Settings.baseURL + '/library/sections/';
-        
+        console.log('Ged 8-1 url: ' + this.Settings.selType)
+        console.log('Ged 8-1-1 libTypeSec: ' + this.Settings.libTypeSec)
+        console.log('Ged 8-2 url: ' + this.ETmediaType.Playlist_Folder)
+        let url = '';
+        switch(this.Settings.selType) {
+            case this.ETmediaType.Playlist_Video:
+              url = this.Settings.baseURL + '/playlists/' + this.Settings.selLibKey + '/items?';
+              break;
+            case this.ETmediaType.Playlist_Audio:
+                url = this.Settings.baseURL + '/playlists/' + this.Settings.selLibKey + '/items?';
+                break;
+            case this.ETmediaType.Playlist_Photo:
+                url = this.Settings.baseURL + '/playlists/' + this.Settings.selLibKey + '/items?';
+                break;
+            case this.ETmediaType.Playlists:
+                url = this.Settings.baseURL + '/playlists?';
+                break;
+            case this.ETmediaType.Episode:
+                url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?type=' + this.ETmediaType.Episode + '&';
+                break;
+            case this.ETmediaType.Libraries:
+                url = this.Settings.baseURL + '/library/sections?'
+                break;
+            case this.ETmediaType.Album:
+                url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?type=' + this.ETmediaType.Album + '&';
+                break;
+            case this.ETmediaType.Track:
+                url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?type=' + this.ETmediaType.Track + '&';
+                break;
+            case this.ETmediaType.Artist:
+                url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?type=' + this.ETmediaType.Artist + '&';
+                break;
+            default:
+              // code block
+              url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?';
+          }
+        //let url = this.Settings.baseURL + '/library/sections/';
+
+        url += 'X-Plex-Container-Start=0&X-Plex-Container-Size=0';
+        console.log('Ged 8-4 url: ' + url)
+/*         
         const noSelTypeArr=[this.ETmediaType.Libraries];
         if (!noSelTypeArr.includes(this.Settings.selType))
         {
@@ -736,6 +776,9 @@ const etHelper = new class ETHELPER {
         {
             url += '?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
         }
+ */
+
+
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
@@ -747,6 +790,7 @@ const etHelper = new class ETHELPER {
 
     async getItemData({ postURI=this.#_defpostURI })
     {
+        console.log('Ged 9 Element: ' + this.Settings.element)
         const url = this.Settings.baseURL + this.Settings.element + postURI;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
@@ -818,6 +862,10 @@ const etHelper = new class ETHELPER {
 
     async createOutFile()
     {
+        if (this.Settings.libType == this.ETmediaType.Libraries)
+        {
+            this.Settings.LibName = 'All';
+        }
         // Get Header fields
         this.Settings.fields = await etHelper.getFieldHeader();
         var fs = require('fs');
@@ -985,7 +1033,8 @@ const etHelper = new class ETHELPER {
 
     getElement(){
         let element
-        switch (this.Settings.libType) {
+        console.log('Ged 12 element sectype: ' + this.Settings.libTypeSec)
+        switch (this.Settings.libTypeSec) {
             case this.ETmediaType.Photo:
                 element = '/library/sections/' + this.Settings.selLibKey + '/all';
                 break;
@@ -998,8 +1047,11 @@ const etHelper = new class ETHELPER {
             case this.ETmediaType.Playlists:
                 element = '/playlists/all';
                 break;
+            case this.ETmediaType.Playlist_Audio:
+                element = `/playlists/${this.Settings.selLibKey}/items`;
+                break;
             default:
-                element = '/library/sections/' + this.Settings.selLibKey + '/all';
+                element = `/library/sections/${this.Settings.selLibKey}/all`;
         }
         log.debug(`Got element as ${element}`);
         return element;
@@ -1022,6 +1074,9 @@ const etHelper = new class ETHELPER {
                 break;
             case this.ETmediaType.Playlists:
                 postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
+                break;
+            case this.ETmediaType.Playlist_Audio:
+                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
                 break;
             default:
                 postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
