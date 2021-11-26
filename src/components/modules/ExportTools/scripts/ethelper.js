@@ -729,6 +729,7 @@ const etHelper = new class ETHELPER {
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
+              console.log('Ged 8-4 Playlist_Video')
               url = this.Settings.baseURL + '/playlists/' + this.Settings.selLibKey + '/items?';
               break;
             case this.ETmediaType.Playlist_Audio:
@@ -1035,8 +1036,8 @@ const etHelper = new class ETHELPER {
         let element
         console.log('Ged 12 element sectype: ' + this.Settings.libTypeSec)
         switch (this.Settings.libTypeSec) {
-            case this.ETmediaType.Photo:
-                element = '/library/sections/' + this.Settings.selLibKey + '/all';
+            case this.ETmediaType.Playlist_Photo:
+                element = `/playlists/${this.Settings.selLibKey}/items`;
                 break;
             case this.ETmediaType.Playlist:
                 element = '/playlists/' + this.Settings.selLibKey;
@@ -1048,6 +1049,9 @@ const etHelper = new class ETHELPER {
                 element = '/playlists/all';
                 break;
             case this.ETmediaType.Playlist_Audio:
+                element = `/playlists/${this.Settings.selLibKey}/items`;
+                break;
+            case this.ETmediaType.Playlist_Video:
                 element = `/playlists/${this.Settings.selLibKey}/items`;
                 break;
             default:
@@ -1076,6 +1080,12 @@ const etHelper = new class ETHELPER {
                 postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`;
                 break;
             case this.ETmediaType.Playlist_Audio:
+                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
+                break;
+            case this.ETmediaType.Playlist_Photo:
+                postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
+                break;
+            case this.ETmediaType.Playlist_Video:
                 postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
                 break;
             default:

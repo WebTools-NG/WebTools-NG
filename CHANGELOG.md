@@ -3,12 +3,19 @@
 ## V0.3.13
 
 **Note**:   This version is an Beta version
+**Note 2**: This version is a huge refactoring of Export module, due to memory issues
+**Note 3**: In this version, the following is disabled:
+
+* Export of Pictures
+* Export to xlsx format ([See](https://github.com/WebTools-NG/WebTools-NG/issues/331))
 
 * [#395 Show alert if we can't connect to plex.tv](https://github.com/WebTools-NG/WebTools-NG/issues/395)
 * [#399 [RFE] ET: Consider splitting outfile into many](https://github.com/WebTools-NG/WebTools-NG/issues/399)
 * [#396 [RFE] ET: Seperate xlsx and csv export](https://github.com/WebTools-NG/WebTools-NG/issues/396)
 * [#410 [RFE] ET: Add sub category to export file name](https://github.com/WebTools-NG/WebTools-NG/issues/410)
 * [#407 Can't export libraries with a forward slash (/) in the name](https://github.com/WebTools-NG/WebTools-NG/issues/407)
+* [#412 [RFE] ET: Export should allow us to export in smaller chunks](https://github.com/WebTools-NG/WebTools-NG/issues/412)
+* [#413 Translations should be in it's own branch](https://github.com/WebTools-NG/WebTools-NG/issues/413)
 
 ## V0.3.12
 
@@ -46,9 +53,12 @@ NOTE: Hight and Width has been reversed for Poster and Art Export!
 
 **Note**:   This version is an Beta version
 
+**Changes**:
+
 * [#357 Default "Original Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/357)
 * [#358 PMS page size](https://github.com/WebTools-NG/WebTools-NG/issues/358)
 * [#360 ET Audio Export is empty](https://github.com/WebTools-NG/WebTools-NG/issues/360)
+/issues/358)
 
 ## V0.3.7
 

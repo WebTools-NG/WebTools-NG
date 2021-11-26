@@ -234,7 +234,7 @@ const et = new class ET {
         return sectionData;
     }
 
-    async getItemData({baseURL, accessToken, element, postURI=defpostURI})
+    async GEDOLD_getItemData({baseURL, accessToken, element, postURI=defpostURI})
     {
         const url = baseURL + element + postURI;
         this.PMSHeader["X-Plex-Token"] = accessToken;

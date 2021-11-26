@@ -159,7 +159,8 @@
             },
             {
               "text": i18n.t('Modules.ET.optExpType.MainPhoto'),
-              "value": et.ETmediaType.Photo
+              "value": et.ETmediaType.Photo,
+              "disabled": true
             },
             {
               "text": i18n.t('Modules.ET.optExpType.MainPlaylist'),
