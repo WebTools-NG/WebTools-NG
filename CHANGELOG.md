@@ -21,21 +21,21 @@
 * [#412 [RFE] ET: Export should allow us to export in smaller chunks](https://github.com/WebTools-NG/WebTools-NG/issues/412)
 * [#413 Translations should be in it's own branch](https://github.com/WebTools-NG/WebTools-NG/issues/413)
 
-## V0.3.12
+## V0.3.12 (20210709)
 
 **Note**:   This version is an Beta version
 
 * [#382 Exporting Posters and Art not working (Revisit)](https://github.com/WebTools-NG/WebTools-NG/issues/382)
 * [#381 Duplicate setting in Global Settings](https://github.com/WebTools-NG/WebTools-NG/issues/381)
 
-## V0.3.11
+## V0.3.11 (20210707)
 
 **Note**:   This version is an Beta version
 
 * [#384 I need better error logging for Poster Export](https://github.com/WebTools-NG/WebTools-NG/issues/384)
 * [#382 Exporting Posters and Art not working](https://github.com/WebTools-NG/WebTools-NG/issues/382)
 
-## V0.3.10
+## V0.3.10 (20210531)
 
 **Note**:   This version is an Beta version
 
@@ -45,7 +45,7 @@
 
 NOTE: Hight and Width has been reversed for Poster and Art Export!
 
-## V0.3.9
+## V0.3.9 (20210520)
 
 **Note**:   This version is an Beta version
 
