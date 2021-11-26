@@ -723,13 +723,11 @@ const etHelper = new class ETHELPER {
 
     async getSectionSize()
     {
-        console.log('Ged 8-1 url: ' + this.Settings.selType)
-        console.log('Ged 8-1-1 libTypeSec: ' + this.Settings.libTypeSec)
-        console.log('Ged 8-2 url: ' + this.ETmediaType.Playlist_Folder)
+        log.silly(`etHelper (getItemData): selType: ${this.Settings.selType}`)
+        log.silly(`etHelper (getItemData): libTypeSec: ${this.Settings.libTypeSec}`)
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
-              console.log('Ged 8-4 Playlist_Video')
               url = this.Settings.baseURL + '/playlists/' + this.Settings.selLibKey + '/items?';
               break;
             case this.ETmediaType.Playlist_Audio:
@@ -760,26 +758,7 @@ const etHelper = new class ETHELPER {
               // code block
               url = this.Settings.baseURL + '/library/sections/' + this.Settings.selLibKey + '/all?';
           }
-        //let url = this.Settings.baseURL + '/library/sections/';
-
         url += 'X-Plex-Container-Start=0&X-Plex-Container-Size=0';
-        console.log('Ged 8-4 url: ' + url)
-/*         
-        const noSelTypeArr=[this.ETmediaType.Libraries];
-        if (!noSelTypeArr.includes(this.Settings.selType))
-        {
-            url += this.Settings.selLibKey + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
-            url += '&type=' + this.Settings.selType;
-            log.silly('getSectionSize arr: ' + JSON.stringify(noSelTypeArr) + ' and testing against: ' + this.Settings.selType);
-            log.silly(`So adding "&type=${this.Settings.selType}"" to the url`)
-        }
-        else
-        {
-            url += '?X-Plex-Container-Start=0&X-Plex-Container-Size=0';
-        }
- */
-
-
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
@@ -791,7 +770,7 @@ const etHelper = new class ETHELPER {
 
     async getItemData({ postURI=this.#_defpostURI })
     {
-        console.log('Ged 9 Element: ' + this.Settings.element)
+        log.silly(`etHelper (getItemData): Element is: ${this.Settings.element}`)
         const url = this.Settings.baseURL + this.Settings.element + postURI;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
@@ -806,7 +785,7 @@ const etHelper = new class ETHELPER {
         {
             this.Settings.libType = this.Settings.libTypeSec;
         }
-        log.debug(`LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
+        log.debug(`etHelper (getLevelCall): LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
         let count = await defLevels[this.Settings.libTypeSec]['LevelCount'][this.Settings.levelName]
         if (count == undefined)
         {

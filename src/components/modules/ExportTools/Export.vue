@@ -468,9 +468,6 @@
       }
     },
     selExpTypeMainChanged: async function(){
-      console.log('Ged 1: ' + arguments[0])
-
-
       this.optExpTypeSec = [];
       this.selLibrary = '';
       this.selLibraryOptions = [];
