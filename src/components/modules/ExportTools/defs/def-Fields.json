@@ -70,7 +70,8 @@
             {
                 "key": "audienceRating",
                 "call": 1,
-                "type": "string"
+                "type": "string",
+                "postProcess": true
             },
         "Audio Stream Album Gain":
             {
@@ -998,7 +999,8 @@
             {
                 "key": "$.rating",
                 "call": 1,
-                "type": "string"
+                "type": "string",
+                "postProcess": true
             },
         "Refreshing":
             {

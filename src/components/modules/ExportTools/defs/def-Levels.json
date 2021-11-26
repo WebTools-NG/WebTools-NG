@@ -8,7 +8,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "8": {
@@ -20,7 +21,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "4": {
@@ -32,22 +34,21 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "1" : {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
-            "All": "all",
-            "dev tommy": "devTommy"
-
+            "All": "all"
         },
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
             "All": 2,
-            "devTommy": 2
+            "all": 2
         }
     },
     "2": {
@@ -59,7 +60,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "10": {
@@ -71,7 +73,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "13": {
@@ -83,7 +86,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "2001": {
@@ -95,7 +99,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "2003": {
@@ -107,7 +112,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "2002": {
@@ -119,7 +125,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "1002": {
@@ -127,7 +134,8 @@
             "All": "all"
         },
         "LevelCount": {
-            "All": 1
+            "All": 1,
+            "all": 1
         }
     },
     "3001": {
@@ -135,7 +143,8 @@
             "All": "all"
         },
         "LevelCount": {
-            "All": 1
+            "All": 1,
+            "all": 1
         }
     }
 }

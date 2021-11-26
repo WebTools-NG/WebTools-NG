@@ -173,7 +173,9 @@ const actions = {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          log.error('loginToPlex: ' + error.request)
+          // log.error('loginToPlex: ' + error.request)
+          log.error('Could not connect to plex.tv');
+          alert(i18n.t('Common.Login.LoginConnectErr'));
         } else {
           // Something happened in setting up the request that triggered an Error
           log.error('loginToPlex: ' + error.message)
@@ -199,18 +201,20 @@ const actions = {
          if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          log.error('loginToPlex: ' + error.response.status);
-          log.error('loginToPlex: ' + JSON.stringify(error.response.data));
+          log.error('loginToPlexToken1: ' + error.response.status);
+          log.error('loginToPlexToken2: ' + JSON.stringify(error.response.data));
           alert(error.response.data.error)
           //this.danger(error.response.status, error.response.data.error);
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          log.error('loginToPlex: ' + error.request)
+          // log.error('loginToPlexToken3: ' + JSON.stringify(error.request));
+          log.error('Could not connect to plex.tv with a Token');
+          alert(i18n.t('Common.Login.LoginConnectErrToken'));
         } else {
           // Something happened in setting up the request that triggered an Error
-          log.error('loginToPlex: ' + error.message)
+          log.error('loginToPlexToken4: ' + error.message)
         }})
   },
   updatingServerAddress({ commit}, status){

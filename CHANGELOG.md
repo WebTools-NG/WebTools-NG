@@ -1,16 +1,39 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.13
+
+**Note**:   This version is an Beta version
+**Note 2**: This version is a huge refactoring of Export module, due to memory issues
+**Note 3**: In this version, the following is disabled:
+
+* Export of Pictures
+* Export to xlsx format ([See](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+
+* [#395 Show alert if we can't connect to plex.tv](https://github.com/WebTools-NG/WebTools-NG/issues/395)
+* [#399 [RFE] ET: Consider splitting outfile into many](https://github.com/WebTools-NG/WebTools-NG/issues/399)
+* [#396 [RFE] ET: Seperate xlsx and csv export](https://github.com/WebTools-NG/WebTools-NG/issues/396)
+* [#410 [RFE] ET: Add sub category to export file name](https://github.com/WebTools-NG/WebTools-NG/issues/410)
+* [#407 Can't export libraries with a forward slash (/) in the name](https://github.com/WebTools-NG/WebTools-NG/issues/407)
+* [#412 [RFE] ET: Export should allow us to export in smaller chunks](https://github.com/WebTools-NG/WebTools-NG/issues/412)
+* [#413 Translations should be in it's own branch](https://github.com/WebTools-NG/WebTools-NG/issues/413)
+
 ## V0.3.12
+
+**Note**:   This version is an Beta version
 
 * [#382 Exporting Posters and Art not working (Revisit)](https://github.com/WebTools-NG/WebTools-NG/issues/382)
 * [#381 Duplicate setting in Global Settings](https://github.com/WebTools-NG/WebTools-NG/issues/381)
 
 ## V0.3.11
 
+**Note**:   This version is an Beta version
+
 * [#384 I need better error logging for Poster Export](https://github.com/WebTools-NG/WebTools-NG/issues/384)
 * [#382 Exporting Posters and Art not working](https://github.com/WebTools-NG/WebTools-NG/issues/382)
 
 ## V0.3.10
+
+**Note**:   This version is an Beta version
 
 * [#366 if possible allow lan only connections](https://github.com/WebTools-NG/WebTools-NG/issues/366)
 * [#373 Remove setting from ExportTools Settings](https://github.com/WebTools-NG/WebTools-NG/issues/373)
@@ -20,25 +43,38 @@ NOTE: Hight and Width has been reversed for Poster and Art Export!
 
 ## V0.3.9
 
+**Note**:   This version is an Beta version
+
 * [#359 ET: Log time it took](https://github.com/WebTools-NG/WebTools-NG/issues/359)
 * [#364 ET: Make status windows better when exporting](https://github.com/WebTools-NG/WebTools-NG/issues/364)
 * ET: Added field "View Count" to episodes (No GHI for that one)
 
 ## V0.3.8
 
+**Note**:   This version is an Beta version
+
+**Changes**:
+
 * [#357 Default "Original Title" to "Title", if empty](https://github.com/WebTools-NG/WebTools-NG/issues/357)
 * [#358 PMS page size](https://github.com/WebTools-NG/WebTools-NG/issues/358)
 * [#360 ET Audio Export is empty](https://github.com/WebTools-NG/WebTools-NG/issues/360)
+/issues/358)
 
 ## V0.3.7
+
+**Note**:   This version is an Beta version
 
 * [#355 ET no output produced](https://github.com/WebTools-NG/WebTools-NG/issues/355)
 
 ## V0.3.6
 
+**Note**:   This version is an Beta version
+
 * [#353 Levels can't be selected](https://github.com/WebTools-NG/WebTools-NG/issues/353)
 
 ## V0.3.5
+
+**Note**:   This version is an Beta version
 
 * [#339 IMDB ID not available for movies](https://github.com/WebTools-NG/WebTools-NG/issues/339)
 * [#342 Rename "Export Arts"](https://github.com/WebTools-NG/WebTools-NG/issues/342)
@@ -47,6 +83,8 @@ NOTE: Hight and Width has been reversed for Poster and Art Export!
 * [#349 Simplify ET Custom screen](https://github.com/WebTools-NG/WebTools-NG/issues/349)
 
 ## V0.3.4
+
+**Note**:   This version is an Beta version
 
 * [#306 Export posters and Art](https://github.com/WebTools-NG/WebTools-NG/issues/306)
 

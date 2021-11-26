@@ -1,4 +1,6 @@
-import {et, excel2} from '../../components/modules/ExportTools/scripts/et'
+//import {et, excel2} from '../../components/modules/ExportTools/scripts/et'
+import {et} from '../../components/modules/ExportTools/scripts/et'
+//import { etHelper } from '../../components/modules/ExportTools/scripts/ethelper'
 
 const log = require('electron-log');
 console.log = log.log;
@@ -48,7 +50,10 @@ const actions = {
         var baseURL = getters.getSelectedServerAddress
         var accessToken = getters.getSelectedServerToken
         commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))
-    },
+    }
+    
+    /* 
+    ,
     exportMedias({ getters }) {
         var baseURL = getters.getSelectedServerAddress;
         var accessToken = getters.getSelectedServerToken;
@@ -63,7 +68,8 @@ const actions = {
         else
         {
           levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
-        }
+        } */
+        /* 
         excel2.createOutFile( {
           libName: libName,
           level: levelName,
@@ -74,7 +80,19 @@ const actions = {
           pListType: pListType,
           libTypeSec: getters.getSelectedLibTypeSec
         } );
-    }
+ */
+/* 
+        etHelper.createOutFile({
+          libName: libName,
+          level: levelName,
+          libType: libType,
+          baseURL: baseURL,
+          accessToken: accessToken,
+          exType: libType,
+          pListType: pListType,
+          libTypeSec: getters.getSelectedLibTypeSec
+        } );
+    } */
 }
 
 const getters = {

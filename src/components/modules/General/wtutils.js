@@ -291,6 +291,9 @@ const wtutils = new class WTUtils {
             wtconfig.set('PMS.ContainerSize.3001', 20)
         }
         // ET Settings
+        if ( wtconfig.get('ET.TextQualifierCSV', 'N/A') == 'N/A' ){
+            wtconfig.set('ET.TextQualifierCSV', '"')
+        }
         if ( wtconfig.get('ET.ArraySep', 'N/A') == 'N/A' ){
             wtconfig.set('ET.ArraySep', '-')
         }

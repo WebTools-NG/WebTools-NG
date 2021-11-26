@@ -40,7 +40,9 @@
             "LoginBtn": "Sign in",
             "twoFA": "2Factor Authentication verification code",
             "twoFAPrompt": "If using 2FA, enter your code here, else leave as blank (optional)",
-            "Missing2FACode": "Please enter the verification code"
+            "Missing2FACode": "Please enter the verification code",
+            "LoginConnectErrToken": "Could not connect to plex.tv with a Token",
+            "LoginConnectErr": "Could not connect to plex.tv"
         },
         "SelServer": "Select Server",
         "Menu": {
@@ -143,7 +145,8 @@
                 "SortTitleNull": "Default \"Sort Title\" to \"Title\", if empty",
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
-                "ExportToExcel": "Export to xlsx as well as csv",
+                "ExportToExcel": "Export to xlsx",
+                "ExportToCSV": "Export to csv",
                 "NotAvailIndicator": "What to use if a field can't be found",
                 "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)",
                 "Posters_Dimensions": "Poster width * height",
@@ -181,6 +184,8 @@
             "ErrorBadSep": "Column separator can only be one character",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server to export from",
+            "ErrorNoOutputFormatTitle": "No output format selected",
+            "ErrorNoOutputFormatMsg": "You need to select an output format in the @:Modules.ET.Name settings, like csv or xlsx",
             "Custom": {
                 "Title": "Custom levels",
                 "Description": "A custom level allows you to create your own export levels",
@@ -246,7 +251,16 @@
                 "ttExpLibrary": "Here you select the library to export",
                 "ttExpTypeSec": "Here you select the sub type",
                 "ttExpType": "Here you select the type of library you want to export",
-                "SecPlaylists": "Playlists"
+                "SecPlaylists": "Playlists",
+                "itemStart": "The starting item (Normally 0)",
+                "itemEnd": "The ending item (Normally the last item in the library)",
+                "startStopDesc": "Here you have the option to define what item to start exporting with,",
+                "startStopDesc2": "as well as specifying the item to end the export.",
+                "startStopDesc3": "Use this to split export files into smaller chuncks (files) if needed.",
+                "startStopDesc4": "We default to export everything.",
+                "startStopStartingItem": "Item to start with",
+                "startStopEndingItem": "Item to end with",
+                "startStopTitle": "Limit Export"
             }
         },
         "About": {
