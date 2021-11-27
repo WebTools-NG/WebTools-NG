@@ -26,27 +26,50 @@ function isEmptyObj(obj) {
     return !Object.keys(obj).length > 0;
   }
 
+
+// Set Qualifier
+function setQualifier( {str:str})
+{
+    log.silly(`etHelper (setQualifier): String is: ${str}`);
+
+    if (wtconfig.get('ET.TextQualifierCSV', 'N/A') == '"')
+    {
+        str = `"${str}"`
+    }
+    else if (wtconfig.get('ET.TextQualifierCSV', 'N/A') == wtconfig.get('ET.NotAvail', 'N/A'))
+    {
+        console.log('Ged 6 We got N/A')
+    }
+    else
+    {
+        str = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
+    }
+    log.silly(`etHelper (setQualifier): Returning: ${str}`);
+    return str;
+}
+
+/* 
 // Adds the String Qualifier if needed
 function setStrSeperator( {str: str})
+{
+    if ( wtconfig.get('ET.TextQualifierCSV') )
     {
-        if ( wtconfig.get('ET.TextQualifierCSV') )
+        if ( wtconfig.get('ET.TextQualifierCSV') != ' ')
         {
-            if ( wtconfig.get('ET.TextQualifierCSV') != ' ')
-            {
-                log.silly(`etHelper (setStrSeperator): Returning: ${wtconfig.get('ET.TextQualifierCSV')}${str}${wtconfig.get('ET.TextQualifierCSV')}`);
-                return wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV');
-            }
-            else
-            {
-                log.silly(`etHelper (setStrSeperator) No sep, so returning ${str}`);
-                return str; }
+            log.silly(`etHelper (setStrSeperator): Returning: ${wtconfig.get('ET.TextQualifierCSV')}${str}${wtconfig.get('ET.TextQualifierCSV')}`);
+            return wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV');
         }
         else
         {
-            log.error(`etHelper (setStrSeperator): UPS no qualifier, so returning nothing`);
-        }
+            log.silly(`etHelper (setStrSeperator) No sep, so returning ${str}`);
+            return str; }
     }
-
+    else
+    {
+        log.error(`etHelper (setStrSeperator): UPS no qualifier, so returning nothing`);
+    }
+}
+ */
 
 
 
@@ -217,13 +240,13 @@ const etHelper = new class ETHELPER {
                     }
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.basename(valArray[x]))
+                        retArray.push(path.basename(valArray[x]).slice(0, -1))
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
                     break;
                 case "Part File Path":
                     for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.dirname(valArray[x]));
+                        retArray.push(path.dirname(valArray[x]).substring(1));
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
                     break;
@@ -522,9 +545,15 @@ const etHelper = new class ETHELPER {
                         val = etHelper.isEmpty( { "val": val } );
                         // Remove CR, LineFeed ' and " from the
                         // string if present, and replace with a space
-                        val = val.replace(/'|"|\r|\n/g, ' ');
-                        //val = val.replace(/\r|\n/g, ' ');
-                        val = setStrSeperator( {str: val} );
+                        console.log('Ged 1 SANITIZE STRING')
+                        //val = val.replace(/'|"|\r|\n/g, ' ');
+                        
+                        
+                        //val = setStrSeperator( {str: val} );
+
+                        val = setQualifier( {str: val} );
+
+                        
                         break;
                     case "array":
                         array = JSONPath({path: key, json: data});
@@ -540,9 +569,15 @@ const etHelper = new class ETHELPER {
                                         valArrayVal = String(JSONPath({path: String(subKey), json: array[i]}));
                                         // Make N/A if not found
                                         valArrayVal = this.isEmpty( { val: valArrayVal });
-                                        // Remove CR, LineFeed ' and " from the string if present
+                                        
+                                        
+                                        /* // Remove CR, LineFeed ' and " from the string if present
                                         valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                        valArrayVal = setStrSeperator( {str: valArrayVal});
+                                        valArrayVal = setStrSeperator( {str: valArrayVal}); */
+
+                                        console.log('Ged 2 SANITIZE STRING')
+                                        valArrayVal = setQualifier( {str: valArrayVal} );
+
                                         break;
                                     case "time":
                                         valArrayVal = JSONPath({path: String(subKey), json: array[i]});
