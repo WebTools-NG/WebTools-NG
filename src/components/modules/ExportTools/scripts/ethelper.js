@@ -31,13 +31,9 @@ function setQualifier( {str:str})
 {
     const validQ = ["`", "'", "\""];
     log.silly(`etHelper (setQualifier): String is: ${str}`);
-    //str = str.replaceAll(wtconfig.get('ET.TextQualifierCSV', 'N/A'),``);
-
-    //var count = str.indexOf(wtconfig.get('ET.TextQualifierCSV'))
-    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) > 0)
+    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) >= 0)
     {
         let selectedQ;
-
         for(const val of validQ) {
             if ( val != wtconfig.get('ET.TextQualifierCSV', 'N/A'))
             {
@@ -45,21 +41,9 @@ function setQualifier( {str:str})
                 break;
             }
         }
-
-
-
         log.silly(`etHelper (setQualifier) string contained Qualifier`);
-        console.log('Ged 2-0 str now: ' + str)
-        console.log('Ged 2-1 str after: ' + str.replaceAll(wtconfig.get('ET.TextQualifierCSV'), selectedQ))
-
         str = str.replaceAll(wtconfig.get('ET.TextQualifierCSV'), selectedQ);
-
-
-        console.log('Ged 2-2 str Now: ' + str)
-        //console.log('Ged 3-0 Count: ' + count)
-
     }
-
     if (wtconfig.get('ET.TextQualifierCSV', 'N/A') == '"')
     {
         str = `"${str}"`
@@ -579,7 +563,6 @@ const etHelper = new class ETHELPER {
                                         valArrayVal = String(JSONPath({path: String(subKey), json: array[i]}));
                                         // Make N/A if not found
                                         valArrayVal = this.isEmpty( { val: valArrayVal });
-                                        //valArrayVal = setQualifier( {str: valArrayVal} );
                                         break;
                                     case "time":
                                         valArrayVal = JSONPath({path: String(subKey), json: array[i]});
