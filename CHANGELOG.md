@@ -20,6 +20,7 @@
 * [#407 Can't export libraries with a forward slash (/) in the name](https://github.com/WebTools-NG/WebTools-NG/issues/407)
 * [#412 [RFE] ET: Export should allow us to export in smaller chunks](https://github.com/WebTools-NG/WebTools-NG/issues/412)
 * [#413 Translations should be in it's own branch](https://github.com/WebTools-NG/WebTools-NG/issues/413)
+* [#418 If selected qualifier in string things break](https://github.com/WebTools-NG/WebTools-NG/issues/418)
 
 ## V0.3.12 (20210709)
 
