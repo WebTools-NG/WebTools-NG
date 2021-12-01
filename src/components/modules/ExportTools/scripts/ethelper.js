@@ -26,29 +26,35 @@ function isEmptyObj(obj) {
     return !Object.keys(obj).length > 0;
   }
 
-// Adds the String Qualifier if needed
-function setStrSeperator( {str: str})
+// Set Qualifier
+function setQualifier( {str:str})
+{
+    const validQ = ["`", "'", "\""];
+    log.silly(`etHelper (setQualifier): String is: ${str}`);
+    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) >= 0)
     {
-        if ( wtconfig.get('ET.TextQualifierCSV') )
-        {
-            if ( wtconfig.get('ET.TextQualifierCSV') != ' ')
+        let selectedQ;
+        for(const val of validQ) {
+            if ( val != wtconfig.get('ET.TextQualifierCSV', 'N/A'))
             {
-                log.silly(`etHelper (setStrSeperator): Returning: ${wtconfig.get('ET.TextQualifierCSV')}${str}${wtconfig.get('ET.TextQualifierCSV')}`);
-                return wtconfig.get('ET.TextQualifierCSV') + str + wtconfig.get('ET.TextQualifierCSV');
+                selectedQ = val;
+                break;
             }
-            else
-            {
-                log.silly(`etHelper (setStrSeperator) No sep, so returning ${str}`);
-                return str; }
         }
-        else
-        {
-            log.error(`etHelper (setStrSeperator): UPS no qualifier, so returning nothing`);
-        }
+        log.silly(`etHelper (setQualifier) string contained Qualifier`);
+        str = str.replaceAll(wtconfig.get('ET.TextQualifierCSV'), selectedQ);
     }
-
-
-
+    if (wtconfig.get('ET.TextQualifierCSV', 'N/A') == '"')
+    {
+        str = `"${str}"`
+    }
+    else
+    {
+        str = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
+    }
+    log.silly(`etHelper (setQualifier): Returning: ${str}`);
+    return str;
+}
 
 //#endregion
 
@@ -197,7 +203,9 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title=""} ){
-        log.silly(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`)
+        log.silly(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
+        log.silly(`ETHelper(postProcess): name is: ${name}`);
+        log.silly(`ETHelper(postProcess): title is: ${title}`);
         let retArray = [];
         let x, retVal, start, strStart, end, result;
         try {
@@ -217,13 +225,13 @@ const etHelper = new class ETHELPER {
                     }
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.basename(valArray[x]))
+                        retArray.push(setQualifier( {str:path.basename(valArray[x]).slice(0, -1)}));
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
                     break;
                 case "Part File Path":
                     for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.dirname(valArray[x]));
+                        retArray.push(setQualifier( {str:path.dirname(valArray[x]).substring(1)}));
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
                     break;
@@ -241,7 +249,7 @@ const etHelper = new class ETHELPER {
                             log.error(`Error getting Part Size was ${error} for ${theSize}`);
                         }
                     }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                    retVal = setQualifier( {str:retArray.join(wtconfig.get('ET.ArraySep', ' * '))} );
                     break;
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
@@ -254,7 +262,7 @@ const etHelper = new class ETHELPER {
                         // Override with title if not found
                         if (val == compNA)
                         {
-                            retVal = title;
+                            retVal = setQualifier( {str:title} );
                         }
                         else { retVal = val; }
                     }
@@ -343,6 +351,8 @@ const etHelper = new class ETHELPER {
                     {
                         retVal = wtconfig.get('ET.NotAvail');
                     }
+                    retVal = retVal.slice(0, -1);
+                    retVal = setQualifier( {str:retVal} );
                     break;
                 case "IMDB Link":
                         if (val == wtconfig.get('ET.NotAvail'))
@@ -400,8 +410,14 @@ const etHelper = new class ETHELPER {
                     if (end == -1)
                     { result = strStart.substring(7) }
                     else
-                    { result = strStart.substring(7, end) }
-                    retVal = result;
+                    {
+                        result = strStart.substring(7, end)
+                    }
+                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
+                    {
+                        result = result.slice(0,-1);
+                    }
+                    retVal = setQualifier( {str:result} );
                     break;
                 case "TVDB ID (Legacy)":
                         if (val == wtconfig.get('ET.NotAvail'))
@@ -453,10 +469,18 @@ const etHelper = new class ETHELPER {
                     end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
                     result = ''
                     if (end == -1)
-                    { result = strStart.substring(7) }
+                    {
+                        result = strStart.substring(7);
+                    }
                     else
-                    { result = strStart.substring(7, end) }
-                    retVal = result;
+                    {
+                        result = strStart.substring(7, end)
+                    }
+                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
+                    {
+                        result = result.slice(0,-1);
+                    }
+                    retVal = setQualifier( {str:result} );
                     break;
                 case "TMDB Link":
                     if (val == wtconfig.get('ET.NotAvail'))
@@ -472,8 +496,13 @@ const etHelper = new class ETHELPER {
                     { result = strStart.substring(7) }
                     else
                     { result = strStart.substring(7, end) }
+
                     result = 'https://www.themoviedb.org/movie/' + result;
-                    retVal = result;
+                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
+                    {
+                        result = result.slice(0,-1);
+                    }
+                    retVal = setQualifier( {str:result} );
                     break;
                 default:
                     log.error(`postProcess no hit for: ${name}`)
@@ -520,11 +549,7 @@ const etHelper = new class ETHELPER {
                             val = wtconfig.get('ET.NotAvail', 'N/A');
                         }
                         val = etHelper.isEmpty( { "val": val } );
-                        // Remove CR, LineFeed ' and " from the
-                        // string if present, and replace with a space
-                        val = val.replace(/'|"|\r|\n/g, ' ');
-                        //val = val.replace(/\r|\n/g, ' ');
-                        val = setStrSeperator( {str: val} );
+                        val = setQualifier( {str: val} );
                         break;
                     case "array":
                         array = JSONPath({path: key, json: data});
@@ -540,9 +565,6 @@ const etHelper = new class ETHELPER {
                                         valArrayVal = String(JSONPath({path: String(subKey), json: array[i]}));
                                         // Make N/A if not found
                                         valArrayVal = this.isEmpty( { val: valArrayVal });
-                                        // Remove CR, LineFeed ' and " from the string if present
-                                        valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                        valArrayVal = setStrSeperator( {str: valArrayVal});
                                         break;
                                     case "time":
                                         valArrayVal = JSONPath({path: String(subKey), json: array[i]});
@@ -569,6 +591,7 @@ const etHelper = new class ETHELPER {
                                 valArray.push(valArrayVal)
                             }
                             val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                            val = setQualifier( {str: val} );
                             /* if ( String(subType) == 'string')
                             {
                                 val = textSep + val + textSep;
@@ -596,6 +619,7 @@ const etHelper = new class ETHELPER {
                         {
                             val = wtconfig.get('ET.NotAvail', 'N/A')
                         }
+                        val = setQualifier( {str: val} );
                         break;
                     case "datetime":
                         //val = JSONPath({path: String(lookup), json: data});
@@ -618,6 +642,7 @@ const etHelper = new class ETHELPER {
                         {
                             val = wtconfig.get('ET.NotAvail', 'N/A')
                         }
+                        val = setQualifier( {str: val} );
                         break;
                 }
                 if ( doPostProc )
@@ -854,7 +879,6 @@ const etHelper = new class ETHELPER {
             // Open a file stream
             this.Settings.csvFile = await etHelper.getFileName({ Type: 'csv' });
             this.Settings.csvStream = fs.createWriteStream(this.Settings.csvFile, {flags:'a'});
-            //await this.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
             await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
         }
         try
@@ -1013,7 +1037,6 @@ const etHelper = new class ETHELPER {
 
     getElement(){
         let element
-        console.log('Ged 12 element sectype: ' + this.Settings.libTypeSec)
         switch (this.Settings.libTypeSec) {
             case this.ETmediaType.Playlist_Photo:
                 element = `/playlists/${this.Settings.selLibKey}/items`;
@@ -1153,6 +1176,8 @@ const etHelper = new class ETHELPER {
                 log.silly(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
             }
             Object.keys(levels).forEach(function(key) {
+
+                //out.push(wtconfig.get(`ET.TextQualifierCSV`, "\"") + levels[key] + wtconfig.get(`ET.TextQualifierCSV`, "\""))
                 out.push(levels[key])
             });
             resolve(out);
