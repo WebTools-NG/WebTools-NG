@@ -351,6 +351,8 @@ const etHelper = new class ETHELPER {
                     {
                         retVal = wtconfig.get('ET.NotAvail');
                     }
+                    retVal = retVal.slice(0, -1);
+                    retVal = setQualifier( {str:retVal} );
                     break;
                 case "IMDB Link":
                         if (val == wtconfig.get('ET.NotAvail'))
