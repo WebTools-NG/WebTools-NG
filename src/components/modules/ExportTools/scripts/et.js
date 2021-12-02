@@ -744,7 +744,7 @@ const excel2 = new class Excel {
         }
     }
 
-    async forceDownload(url, target) {
+    async OLDDELforceDownload(url, target) {
         const _this = this;
         return new Promise((resolve, reject) => {
             try
@@ -781,7 +781,7 @@ const excel2 = new class Excel {
         })
     }
 
-    async exportPics( { type: extype, data, baseURL, accessToken} ) {
+    async OLD_DELexportPics( { type: extype, data, baseURL, accessToken} ) {
         let ExpDir, picUrl, resolutions;
         log.verbose(`Going to export ${extype}`);
         try

@@ -1,13 +1,12 @@
 // This file holds generic et functions
-
-
+import {ipcRenderer} from 'electron';
 import { wtconfig, wtutils } from '../../General/wtutils';
 import store from '../../../../store';
 import {csv} from './csv';
 import {et} from './et';
 import i18n from '../../../../i18n';
 import filesize from 'filesize';
-import Excel from 'exceljs'
+import Excel from 'exceljs';
 
 var path = require("path");
 
@@ -64,7 +63,6 @@ const etHelper = new class ETHELPER {
     #_StartTime = null;
     #_EndTime = null;
     #_statusmsg = {};
-
     #_msgType = {
         1: i18n.t("Modules.ET.Status.Names.Status"),
         2: i18n.t("Modules.ET.Status.Names.Info"),
@@ -652,7 +650,7 @@ const etHelper = new class ETHELPER {
         str = str.substring(0,str.length-etHelper.intSep.length);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
 
-        
+
 
 
         this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
@@ -672,12 +670,61 @@ const etHelper = new class ETHELPER {
         return resp
     }
 
+    async forceDownload(url, target) {
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            try
+            {
+                _this.isDownloading = true;
+                ipcRenderer.send('downloadFile', {
+                    item: url,
+                    filePath: target
+                })
+            }
+            catch (error)
+            {
+                log.error(`etHelper (forceDownload) Exception was: ${error}`);
+            }
+
+            ipcRenderer.on('downloadEnd', () => {
+                try
+                {
+                    ipcRenderer.removeAllListeners('downloadEnd');
+                    ipcRenderer.removeAllListeners('downloadError');
+                    resolve(target);
+                }
+                catch (error)
+                {
+                    log.error(`etHelper (forceDownload-downloadEnd) Exception was: ${error}`);
+                }
+            })
+
+            ipcRenderer.on('downloadError', (event, error) => {
+                ipcRenderer.removeAllListeners('downloadEnd');
+                ipcRenderer.removeAllListeners('downloadError');
+                reject(error);
+            })
+        })
+    }
+
     async populateExpFiles(){
         log.info('etHelper(populateExpFiles): Populating export files');
         // Current item counter in the chunck
         //let idx = 0;
         let idx = this.Settings.startItem;
         this.Settings.count = idx;
+        // Get status for exporting arts and posters
+
+        console.log('Ged 13-2 libTypeSec: ' + this.Settings.libTypeSec + ' levelName : ' + this.Settings.levelName)
+
+
+        const bExportPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Posters.${this.Settings.levelName}`, false);
+        const bExportArt = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Art.${this.Settings.levelName}`, false);
+
+
+        console.log('Ged 13-5 bExportPosters: ' + bExportPosters)
+        console.log('Ged 13-6 bExportArt: ' + bExportArt)
+
         // Chunck step
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         let size = 0;   // amount of items fetched each time
@@ -728,6 +775,14 @@ const etHelper = new class ETHELPER {
                     if (this.Settings.xlsxFile){
                         console.log('Ged 12-4 We need to exp to XLSX')
                     }
+                }
+                if (bExportPosters)
+                {
+                    await this.exportPics( { type: 'posters', data: chunckItems[item] } )
+                }
+                if (bExportArt)
+                {
+                    await this.exportPics( { type: 'arts', data: chunckItems[item] } )
                 }
                 ++this.Settings.count;
                 if ( this.Settings.count >= this.Settings.endItem) {
@@ -856,6 +911,67 @@ const etHelper = new class ETHELPER {
             fs.renameSync(this.Settings.xlsxFile, newFile);
         }
         this.Settings.outFile = newFile;
+    }
+
+    async exportPics( { type: extype, data: data} ) {
+        let ExpDir, picUrl, resolutions;
+        log.verbose(`Going to export ${extype}`);
+
+        console.log('Ged 17 data: ' + JSON.stringify(data))
+        try
+        {
+            if (extype == 'posters')
+            {
+                picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                ExpDir = path.join(
+                    wtconfig.get('General.ExportPath'),
+                    wtutils.AppName,
+                    'ExportTools', 'Posters');
+            }
+            else
+            {
+                picUrl = String(JSONPath({path: '$.art', json: data})[0]);
+                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
+                ExpDir = path.join(
+                    wtconfig.get('General.ExportPath'),
+                    wtutils.AppName,
+                    'ExportTools', 'Art');
+            }
+        }
+        catch (error)
+        {
+            log.error(`Exception in exportPics is: ${error}`);
+        }
+        log.verbose(`picUrl is: ${picUrl}`);
+        log.verbose(`resolutions is: ${JSON.stringify(resolutions)}`);
+        log.verbose(`ExpDir is: ${ExpDir}`);
+        // Create export dir
+        var fs = require('fs');
+        if (!fs.existsSync(ExpDir)){
+            fs.mkdirSync(ExpDir);
+        }
+        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
+        let title = String(JSONPath({path: '$.title', json: data})[0]);
+        // Get resolutions to export as
+        for(let res of resolutions) {
+            const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '_' + res.trim().replace("*", "x") + '.jpg';
+            let outFile = path.join(
+                ExpDir,
+                fileName
+                );
+            // Build up pic url
+            const width = res.split('*')[1].trim();
+            const hight = res.split('*')[0].trim();
+            let URL = this.Settings.baseURL + '/photo/:/transcode?width=';
+            URL += width + '&height=' + hight;
+            URL += '&minSize=1&url=';
+            URL += picUrl;
+            log.verbose(`Url for ${extype} is ${URL}`);
+            log.verbose(`Outfile is ${outFile}`);
+            URL += '&X-Plex-Token=' + this.Settings.accessToken;
+            await this.forceDownload(URL, outFile);
+        }
     }
 
     async createOutFile()
