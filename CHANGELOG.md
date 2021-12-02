@@ -23,6 +23,7 @@
 * [#418 If selected qualifier in string things break](https://github.com/WebTools-NG/WebTools-NG/issues/418)
 * [#386 When exporting using ExportTools, the ' is missing from the Column "Part File Combined"](https://github.com/WebTools-NG/WebTools-NG/issues/386)
 * [#420 ET Refactor Movies Verify all fields are quoted correctly](https://github.com/WebTools-NG/WebTools-NG/issues/420)
+* [#404 Exporting issues with delimiters under windows](https://github.com/WebTools-NG/WebTools-NG/issues/404)
 
 ## V0.3.12 (20210709)
 
