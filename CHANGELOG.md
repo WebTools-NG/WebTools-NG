@@ -22,6 +22,7 @@
 * [#413 Translations should be in it's own branch](https://github.com/WebTools-NG/WebTools-NG/issues/413)
 * [#418 If selected qualifier in string things break](https://github.com/WebTools-NG/WebTools-NG/issues/418)
 * [#386 When exporting using ExportTools, the ' is missing from the Column "Part File Combined"](https://github.com/WebTools-NG/WebTools-NG/issues/386)
+* [#420 ET Refactor Movies Verify all fields are quoted correctly](https://github.com/WebTools-NG/WebTools-NG/issues/420)
 
 ## V0.3.12 (20210709)
 
