@@ -670,9 +670,9 @@ const etHelper = new class ETHELPER {
         return resp
     }
 
-    async forceDownload(url, target) {
+    async forceDownload( { url: url, target: target, title: title } ) {
         const _this = this;
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             try
             {
                 _this.isDownloading = true;
@@ -683,7 +683,7 @@ const etHelper = new class ETHELPER {
             }
             catch (error)
             {
-                log.error(`etHelper (forceDownload) Exception was: ${error}`);
+                log.error(`etHelper (forceDownload) downloading pic for ${title} cougth an exception as: ${error}`);
             }
 
             ipcRenderer.on('downloadEnd', () => {
@@ -695,14 +695,15 @@ const etHelper = new class ETHELPER {
                 }
                 catch (error)
                 {
-                    log.error(`etHelper (forceDownload-downloadEnd) Exception was: ${error}`);
+                    log.error(`etHelper (forceDownload-downloadEnd) downloading pic for "${title}" caused an exception as: ${error}`);
                 }
             })
 
             ipcRenderer.on('downloadError', (event, error) => {
                 ipcRenderer.removeAllListeners('downloadEnd');
                 ipcRenderer.removeAllListeners('downloadError');
-                reject(error);
+                log.error(`etHelper (forceDownload-downloadError) downloading pic for "${title}" caused an exception as: ${error}`);
+                resolve();
             })
         })
     }
@@ -714,17 +715,8 @@ const etHelper = new class ETHELPER {
         let idx = this.Settings.startItem;
         this.Settings.count = idx;
         // Get status for exporting arts and posters
-
-        console.log('Ged 13-2 libTypeSec: ' + this.Settings.libTypeSec + ' levelName : ' + this.Settings.levelName)
-
-
         const bExportPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Posters.${this.Settings.levelName}`, false);
         const bExportArt = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Art.${this.Settings.levelName}`, false);
-
-
-        console.log('Ged 13-5 bExportPosters: ' + bExportPosters)
-        console.log('Ged 13-6 bExportArt: ' + bExportArt)
-
         // Chunck step
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         let size = 0;   // amount of items fetched each time
@@ -916,8 +908,6 @@ const etHelper = new class ETHELPER {
     async exportPics( { type: extype, data: data} ) {
         let ExpDir, picUrl, resolutions;
         log.verbose(`Going to export ${extype}`);
-
-        console.log('Ged 17 data: ' + JSON.stringify(data))
         try
         {
             if (extype == 'posters')
@@ -970,7 +960,7 @@ const etHelper = new class ETHELPER {
             log.verbose(`Url for ${extype} is ${URL}`);
             log.verbose(`Outfile is ${outFile}`);
             URL += '&X-Plex-Token=' + this.Settings.accessToken;
-            await this.forceDownload(URL, outFile);
+            await this.forceDownload( { url:URL, target:outFile, title:title} );
         }
     }
 

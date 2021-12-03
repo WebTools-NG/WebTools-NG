@@ -128,11 +128,11 @@ ipcMain.on('downloadFile', function (event, data) {
       event.sender.send('downloadEnd');
     })
     response.data.on('error', (error) => {
-      log.error(`Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+      log.error(`background (downloadFile): Failed to download ${item.split('&X-Plex-Token=')[0]}`);
       event.sender.send('downloadError', error);
     })
   }).catch((error) => {
-    log.error(`Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+    log.error(`background (downloadFile): ${item.split('&X-Plex-Token=')[0]}`);
     event.sender.send('downloadError', error);
   })
 })
