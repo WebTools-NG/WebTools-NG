@@ -703,6 +703,15 @@ const etHelper = new class ETHELPER {
                 ipcRenderer.removeAllListeners('downloadEnd');
                 ipcRenderer.removeAllListeners('downloadError');
                 log.error(`etHelper (forceDownload-downloadError) downloading pic for "${title}" caused an exception as: ${error}`);
+                let errorFile = path.join(path.dirname(target), '__ERROR__' + path.basename(target));
+                errorFile = errorFile.replace('.jpg', '.txt');
+                const fs = require('fs');
+                try {
+                    fs.writeFileSync( errorFile, `etHelper (forceDownload-downloadError) downloading pic for "${title}" caused an exception as: ${error}`, 'utf-8');
+                }
+                catch(e) {
+                    log.error(`etHelper (forceDownload-downloadError) failed to save error file`);
+                }
                 resolve();
             })
         })
