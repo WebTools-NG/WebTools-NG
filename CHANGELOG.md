@@ -9,6 +9,7 @@
 **Note 3**: In this version, the following is disabled:
 
 * Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
 
 **Changes**:
 

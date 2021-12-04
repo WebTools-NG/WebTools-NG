@@ -49,7 +49,15 @@
             "Level 2": 1,
             "All": 2,
             "all": 2
+        },
+        "Include": {
+            "Level 1": "",
+            "Level 2": "",
+            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1",
+            "Missing": "includeAllConcerts=1&includeChildren=1&includeConcerts=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1",
+            "Everything": "checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1"
         }
+
     },
     "2": {
         "levels": {

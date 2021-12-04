@@ -734,7 +734,6 @@ const etHelper = new class ETHELPER {
         this.Settings.element = this.getElement();
         let postURI = this.getPostURI();
         // Get the fields for this level
-
         do  // Walk section in steps
         {
             chunck = await this.getItemData({
@@ -1172,10 +1171,10 @@ const etHelper = new class ETHELPER {
     }
 
     getPostURI(){
-        let postURI;
+        let postURI, includeInfo;
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
-        log.debug(`Got Step size as: ${step}`);
+        log.debug(`etHelper (getPostURI): Got Step size as: ${step}`);
         switch (this.Settings.libType) {
             case this.ETmediaType.Photo:
                 postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
@@ -1199,9 +1198,17 @@ const etHelper = new class ETHELPER {
                 postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
                 break;
             default:
-                postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
+                includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+                if (includeInfo != '')
+                {
+                    postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${includeInfo}&X-Plex-Container-Start=`;
+                }
+                else
+                {
+                    postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&X-Plex-Container-Start=`;
+                }
         }
-        log.debug(`Got postURI as ${postURI}`);
+        log.debug(`etHelper (getPostURI): Got postURI as ${postURI}`);
         return postURI;
     }
 
