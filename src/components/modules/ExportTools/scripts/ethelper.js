@@ -29,8 +29,8 @@ function isEmptyObj(obj) {
 function setQualifier( {str:str})
 {
     const validQ = ["`", "'", "\""];
-    log.silly(`etHelper (setQualifier): String is: ${str}`);
-    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) >= 0)
+    let result = wtconfig.get('ET.TextQualifierCSV', 'N/A');
+    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) > -1)
     {
         let selectedQ;
         for(const val of validQ) {
@@ -40,19 +40,14 @@ function setQualifier( {str:str})
                 break;
             }
         }
-        log.silly(`etHelper (setQualifier) string contained Qualifier`);
-        str = str.replaceAll(wtconfig.get('ET.TextQualifierCSV'), selectedQ);
-    }
-    if (wtconfig.get('ET.TextQualifierCSV', 'N/A') == '"')
-    {
-        str = `"${str}"`
+        result = str.replaceAll(wtconfig.get('ET.TextQualifierCSV', 'N/A'), selectedQ);
     }
     else
     {
-        str = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
+        result = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
     }
-    log.silly(`etHelper (setQualifier): Returning: ${str}`);
-    return str;
+    log.silly(`etHelper (setQualifier): Got: _WTNG_${str}_WTNG_ and returning ${result}`);
+    return result;
 }
 
 //#endregion
@@ -204,6 +199,7 @@ const etHelper = new class ETHELPER {
         log.silly(`ETHelper(postProcess): name is: ${name}`);
         log.silly(`ETHelper(postProcess): title is: ${title}`);
         let retArray = [];
+        let guidArr;
         let x, retVal, start, strStart, end, result;
         try {
             const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
@@ -378,31 +374,14 @@ const etHelper = new class ETHELPER {
                     }
                     break;
                 case "TVDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tvdb://") )
+                        {
+                            retVal = item.substring(7);
+                        }
                     }
-                    start = val.indexOf("tvdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    {
-                        result = strStart.substring(7, end)
-                    }
-                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
-                    {
-                        result = result.slice(0,-1);
-                    }
-                    retVal = setQualifier( {str:result} );
                     break;
                 case "TVDB ID (Legacy)":
                         if (val == wtconfig.get('ET.NotAvail'))
@@ -439,55 +418,24 @@ const etHelper = new class ETHELPER {
                         }
                         break;
                 case "TMDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tmdb://") )
+                        {
+                            retVal = item.substring(7);
+                        }
                     }
-                    start = val.indexOf("tmdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    {
-                        result = strStart.substring(7);
-                    }
-                    else
-                    {
-                        result = strStart.substring(7, end)
-                    }
-                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
-                    {
-                        result = result.slice(0,-1);
-                    }
-                    retVal = setQualifier( {str:result} );
                     break;
                 case "TMDB Link":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tmdb://") )
+                        {
+                            retVal = result = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                        }
                     }
-                    start = val.indexOf("tmdb://");
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    { result = strStart.substring(7, end) }
-
-                    result = 'https://www.themoviedb.org/movie/' + result;
-                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
-                    {
-                        result = result.slice(0,-1);
-                    }
-                    retVal = setQualifier( {str:result} );
                     break;
                 default:
                     log.error(`postProcess no hit for: ${name}`)
@@ -1175,6 +1123,8 @@ const etHelper = new class ETHELPER {
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         log.debug(`etHelper (getPostURI): Got Step size as: ${step}`);
+        log.silly(`etHelper (getPostURI): libType is: ${this.Settings.libType}`);
+        log.silly(`etHelper (getPostURI): libTypeSec is: ${this.Settings.libTypeSec}`);
         switch (this.Settings.libType) {
             case this.ETmediaType.Photo:
                 postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
@@ -1199,6 +1149,7 @@ const etHelper = new class ETHELPER {
                 break;
             default:
                 includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+                log.silly(`etHelper (getPostURI): includeInfo is: ${includeInfo}`);
                 if (includeInfo != '')
                 {
                     postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${includeInfo}&X-Plex-Container-Start=`;
@@ -1221,17 +1172,15 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.libType = etHelper.Settings.libTypeSec;
             }
-            log.silly(`etHelper (getLevelFields) libType is: ${this.Settings.libType}`);
+            log.silly(`etHelper (getLevelFields) libTypeSec is: ${this.Settings.libTypeSec}`);
             // We need to load fields and defs into def var
-            switch(this.Settings.libType) {
+            switch(this.Settings.libTypeSec) {
                 case etHelper.ETmediaType.Movie:
-                // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
-                break;
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
+                    break;
                 case etHelper.ETmediaType.Episode:
-                // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
-                break;
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
+                    break;
                 case etHelper.ETmediaType.Show:
                     // code block
                     def = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
@@ -1282,7 +1231,8 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.Level = 'all';
             }
-            let levels = def[this.Settings.libType.toString()]['level'][this.Settings.Level];
+//            let levels = def[this.Settings.libType.toString()]['level'][this.Settings.Level];
+            let levels = def[this.Settings.libTypeSec.toString()]['level'][this.Settings.Level];
             //let levels = def[this.Settings.libType.toString()]['level'][this.Settings.levelName];
             if (levels == undefined)
             {
@@ -1329,7 +1279,7 @@ const etHelper = new class ETHELPER {
 
     // Public methode to get the Header
     async getFieldHeader() {
-        log.info('FieldHeader requested');
+        log.info('etHelper (getFieldHeader): FieldHeader requested');
         try{
             if (isEmptyObj(this.#_FieldHeader))
             {

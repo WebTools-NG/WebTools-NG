@@ -25,6 +25,7 @@
 * [#420 ET Refactor Movies Verify all fields are quoted correctly](https://github.com/WebTools-NG/WebTools-NG/issues/420)
 * [#404 Exporting issues with delimiters under windows](https://github.com/WebTools-NG/WebTools-NG/issues/404)
 * [#408 Poster export stops when no poster attached to a Plex movie](https://github.com/WebTools-NG/WebTools-NG/issues/408)
+* Removed `YEAR` from Episode, since not avail
 
 ## V0.3.12 (20210709)
 
