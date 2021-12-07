@@ -597,10 +597,6 @@ const etHelper = new class ETHELPER {
         // Remove last internal separator
         str = str.substring(0,str.length-etHelper.intSep.length);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
-
-
-
-
         this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
         log.silly(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
         return str;
@@ -608,13 +604,13 @@ const etHelper = new class ETHELPER {
 
     async getItemDetails( { key })
     {
-        const url = this.Settings.baseURL + key + this.#_defpostURI;
+        const url = this.Settings.baseURL + key + '?' + this.getIncludeInfo();
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getItemDetails: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         resp = JSONPath({path: '$.MediaContainer.Metadata.*', json: resp})[0];
-        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`);
+        log.silly(`Response in getItemDetails: ${JSON.stringify(resp)}`);
         return resp
     }
 
@@ -680,12 +676,12 @@ const etHelper = new class ETHELPER {
         let chunck; // placeholder for items fetched
         let chunckItems; // Array of items in the chunck
         this.Settings.element = this.getElement();
-        let postURI = this.getPostURI();
+//        let postURI = this.getPostURI();
         // Get the fields for this level
         do  // Walk section in steps
         {
-            chunck = await this.getItemData({
-                postURI: postURI + idx});
+            //chunck = await this.getItemData({postURI: postURI + idx});
+            chunck = await this.getSectionData();
             size = JSONPath({path: '$.MediaContainer.size', json: chunck});
             log.silly(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
             if ( this.Settings.libType == this.ETmediaType.Libraries)
@@ -744,8 +740,8 @@ const etHelper = new class ETHELPER {
 
     async getSectionSize()
     {
-        log.silly(`etHelper (getItemData): selType: ${this.Settings.selType}`)
-        log.silly(`etHelper (getItemData): libTypeSec: ${this.Settings.libTypeSec}`)
+        log.silly(`etHelper (getSectionSize): selType: ${this.Settings.selType}`)
+        log.silly(`etHelper (getSectionSize): libTypeSec: ${this.Settings.libTypeSec}`)
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
@@ -789,7 +785,19 @@ const etHelper = new class ETHELPER {
         return totalSize;
     }
 
-    async getItemData({ postURI=this.#_defpostURI })
+    async getSectionData()
+    {
+        log.silly(`etHelper (getSectionData): Element is: ${this.Settings.element}`)
+        const url = this.Settings.baseURL + this.Settings.element + '?' + this.getPostURI() + this.Settings.count;
+        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+        log.verbose(`etHelper (getSectionData): Calling url in getSectionData: ${url}`)
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        log.silly(`etHelper (getSectionData): Response in getSectionData: ${JSON.stringify(resp)}`)
+        return resp
+    }
+
+    async OLDDELGed_getItemData({ postURI=this.#_defpostURI })
     {
         log.silly(`etHelper (getItemData): Element is: ${this.Settings.element}`)
         const url = this.Settings.baseURL + this.Settings.element + postURI;
@@ -1118,6 +1126,12 @@ const etHelper = new class ETHELPER {
         return element;
     }
 
+    getIncludeInfo(){
+        let includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+        log.silly(`etHelper (getInclude): returning: ${includeInfo}`);
+        return includeInfo;
+    }
+
     getPostURI(){
         let postURI, includeInfo;
         // Find LibType steps
@@ -1148,7 +1162,7 @@ const etHelper = new class ETHELPER {
                 postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
                 break;
             default:
-                includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+                includeInfo = this.getIncludeInfo();
                 log.silly(`etHelper (getPostURI): includeInfo is: ${includeInfo}`);
                 if (includeInfo != '')
                 {
@@ -1231,9 +1245,7 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.Level = 'all';
             }
-//            let levels = def[this.Settings.libType.toString()]['level'][this.Settings.Level];
             let levels = def[this.Settings.libTypeSec.toString()]['level'][this.Settings.Level];
-            //let levels = def[this.Settings.libType.toString()]['level'][this.Settings.levelName];
             if (levels == undefined)
             {
                 // We are dealing with a custom level
@@ -1241,9 +1253,11 @@ const etHelper = new class ETHELPER {
                 log.silly(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
             }
             Object.keys(levels).forEach(function(key) {
-
-                //out.push(wtconfig.get(`ET.TextQualifierCSV`, "\"") + levels[key] + wtconfig.get(`ET.TextQualifierCSV`, "\""))
-                out.push(levels[key])
+                // Skip picture export fields
+                if ( !["Export Art", "Export Posters"].includes(levels[key]) )
+                {
+                    out.push(levels[key])
+                }
             });
             resolve(out);
         });

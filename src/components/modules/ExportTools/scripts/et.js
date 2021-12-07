@@ -4,7 +4,7 @@ var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')))
 
 const log = require('electron-log');
 console.log = log.log;
-const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
+//const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 import {wtconfig, wtutils} from '../../General/wtutils';
 
@@ -232,17 +232,6 @@ const et = new class ET {
         log.silly(`SectionData to return is:`);
         log.silly(JSON.stringify(sectionData));
         return sectionData;
-    }
-
-    async GEDOLD_getItemData({baseURL, accessToken, element, postURI=defpostURI})
-    {
-        const url = baseURL + element + postURI;
-        this.PMSHeader["X-Plex-Token"] = accessToken;
-        log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
-        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        let resp = await response.json();
-        log.silly(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
-        return resp
     }
 
     getRealLevelName(level, libType) {

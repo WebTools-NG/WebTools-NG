@@ -312,6 +312,18 @@
                     case "20Mb":
                         size = "20971520";
                         break;
+                    case "40Mb":
+                        size = "41943040";
+                        break;
+                    case "60Mb":
+                        size = "62914560";
+                        break;
+                    case "100Mb":
+                        size = "104857600";
+                        break;
+                    case "200Mb":
+                        size = "209715200";
+                        break;
                     default:
                         size = "1048576"
                 }
@@ -329,7 +341,7 @@
                 return options;
             },
             LogLevelSizes: function() {
-                const options = ['1Mb', '2Mb', '4Mb', '8Mb', '10Mb', '20Mb'];
+                const options = ['1Mb', '2Mb', '4Mb', '8Mb', '10Mb', '20Mb', '40Mb', '60Mb', '100Mb', '200Mb'];
                 return options;
             },
             BetaLevels: function() {
