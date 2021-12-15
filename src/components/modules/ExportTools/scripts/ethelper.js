@@ -1128,6 +1128,15 @@ const etHelper = new class ETHELPER {
 
     getIncludeInfo(){
         let includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+        if (includeInfo == 'undefined')
+        {
+            includeInfo = ''
+        }
+        if (includeInfo == null)
+        {
+            includeInfo = ''
+        }
+        
         log.silly(`etHelper (getInclude): returning: ${includeInfo}`);
         return includeInfo;
     }

@@ -157,7 +157,7 @@ const et = new class ET {
         this.StartTime = null,
         this.EndTime = null,
         this.OutFile = null,
-        this.revRawMsgType = {
+        this.revRawMsgTypeOLDDELGED = {
             1: 'Status',
             2: 'Info',
             3: 'Chuncks',
@@ -165,10 +165,10 @@ const et = new class ET {
             5: 'OutFile',
             6: 'StartTime',
             7: 'EndTime',
-            8: 'TimeElapsed',
+            8: '1TimeElapsed',
             9: 'RunningTime'
         },
-        this.msgType = {
+        this.msgTypeOLDDELGED = {
             1: i18n.t("Modules.ET.Status.Names.Status"),
             2: i18n.t("Modules.ET.Status.Names.Info"),
             3: i18n.t("Modules.ET.Status.Names.Chuncks"),

@@ -26,6 +26,7 @@
 * [#404 Exporting issues with delimiters under windows](https://github.com/WebTools-NG/WebTools-NG/issues/404)
 * [#408 Poster export stops when no poster attached to a Plex movie](https://github.com/WebTools-NG/WebTools-NG/issues/408)
 * Removed `YEAR` from Episode, since not avail
+* Added `Item Counts` to Shows Export
 
 ## V0.3.12 (20210709)
 
