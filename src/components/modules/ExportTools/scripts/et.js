@@ -229,8 +229,8 @@ const et = new class ET {
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
         } while (size > 1);
-        log.silly(`SectionData to return is:`);
-        log.silly(JSON.stringify(sectionData));
+        log.debug(`SectionData to return is:`);
+        log.debug(JSON.stringify(sectionData));
         return sectionData;
     }
 

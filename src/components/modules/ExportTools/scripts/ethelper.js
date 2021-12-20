@@ -46,7 +46,7 @@ function setQualifier( {str:str})
     {
         result = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
     }
-    log.silly(`etHelper (setQualifier): Got: _WTNG_${str}_WTNG_ and returning ${result}`);
+    log.debug(`etHelper (setQualifier): Got: _WTNG_${str}_WTNG_ and returning ${result}`);
     return result;
 }
 
@@ -195,9 +195,9 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title=""} ){
-        log.silly(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
-        log.silly(`ETHelper(postProcess): name is: ${name}`);
-        log.silly(`ETHelper(postProcess): title is: ${title}`);
+        log.debug(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
+        log.debug(`ETHelper(postProcess): name is: ${name}`);
+        log.debug(`ETHelper(postProcess): title is: ${title}`);
         let retArray = [];
         let guidArr;
         let x, retVal, start, strStart, end, result;
@@ -241,9 +241,9 @@ const etHelper = new class ETHELPER {
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
                     {
-                        log.silly(`We need to override Original Titel, if not avail`);
-                        log.silly(`Got Original title as: ${val}`);
-                        log.silly(`Alternative might be title as: ${title}`);
+                        log.debug(`We need to override Original Titel, if not avail`);
+                        log.debug(`Got Original title as: ${val}`);
+                        log.debug(`Alternative might be title as: ${title}`);
                         // Override with title if not found
                         if (val == wtconfig.get('ET.NotAvail'))
                         {
@@ -452,7 +452,7 @@ const etHelper = new class ETHELPER {
         this.Settings.currentItem +=1;
         this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
-        log.silly(`Data is: ${JSON.stringify(data)}`)
+        log.debug(`Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
         let val, array, i, valArray, valArrayVal
@@ -578,7 +578,7 @@ const etHelper = new class ETHELPER {
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
-                    log.silly(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+                    log.debug(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
                     val = await this.postProcess( {name: name, val: val, title: title} );
                 }
                 // Here we add qualifier, if not a number
@@ -598,7 +598,7 @@ const etHelper = new class ETHELPER {
         str = str.substring(0,str.length-etHelper.intSep.length);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
         this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
-        log.silly(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
+        log.debug(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
         return str;
     }
 
@@ -610,7 +610,7 @@ const etHelper = new class ETHELPER {
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         resp = JSONPath({path: '$.MediaContainer.Metadata.*', json: resp})[0];
-        log.silly(`Response in getItemDetails: ${JSON.stringify(resp)}`);
+        log.debug(`Response in getItemDetails: ${JSON.stringify(resp)}`);
         return resp
     }
 
@@ -683,7 +683,7 @@ const etHelper = new class ETHELPER {
             //chunck = await this.getItemData({postURI: postURI + idx});
             chunck = await this.getSectionData();
             size = JSONPath({path: '$.MediaContainer.size', json: chunck});
-            log.silly(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
+            log.debug(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
             if ( this.Settings.libType == this.ETmediaType.Libraries)
             {
                 chunckItems = JSONPath({path: '$.MediaContainer.Directory.*', json: chunck});
@@ -696,6 +696,7 @@ const etHelper = new class ETHELPER {
             // Walk each item retrieved
             for (var item in chunckItems)
             {
+                //ProcessItem
                 if (parseInt(this.Settings.call, 10) === 1)
                 {
                     // Let's get the needed row
@@ -740,8 +741,8 @@ const etHelper = new class ETHELPER {
 
     async getSectionSize()
     {
-        log.silly(`etHelper (getSectionSize): selType: ${this.Settings.selType}`)
-        log.silly(`etHelper (getSectionSize): libTypeSec: ${this.Settings.libTypeSec}`)
+        log.debug(`etHelper (getSectionSize): selType: ${this.Settings.selType}`)
+        log.debug(`etHelper (getSectionSize): libTypeSec: ${this.Settings.libTypeSec}`)
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
@@ -781,31 +782,32 @@ const etHelper = new class ETHELPER {
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         var totalSize = JSONPath({path: '$..totalSize', json: resp})[0];
-        log.silly(`Response in getSectionSize: ${totalSize}`);
+        log.debug(`Response in getSectionSize: ${totalSize}`);
         return totalSize;
     }
 
     async getSectionData()
     {
-        log.silly(`etHelper (getSectionData): Element is: ${this.Settings.element}`)
-        const url = this.Settings.baseURL + this.Settings.element + '?' + this.getPostURI() + this.Settings.count;
+        log.debug(`etHelper (getSectionData): Element is: ${this.Settings.element}`)
+        //const url = this.Settings.baseURL + this.Settings.element + '?' + this.getPostURI() + this.Settings.count;
+        const url = this.Settings.baseURL + this.Settings.element + this.getPostURI() + this.Settings.count;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`etHelper (getSectionData): Calling url in getSectionData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.silly(`etHelper (getSectionData): Response in getSectionData: ${JSON.stringify(resp)}`)
+        log.debug(`etHelper (getSectionData): Response in getSectionData: ${JSON.stringify(resp)}`)
         return resp
     }
 
     async OLDDELGed_getItemData({ postURI=this.#_defpostURI })
     {
-        log.silly(`etHelper (getItemData): Element is: ${this.Settings.element}`)
+        log.debug(`etHelper (getItemData): Element is: ${this.Settings.element}`)
         const url = this.Settings.baseURL + this.Settings.element + postURI;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.silly(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
+        log.debug(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
         return resp
     }
 
@@ -1137,7 +1139,7 @@ const etHelper = new class ETHELPER {
             includeInfo = ''
         }
         
-        log.silly(`etHelper (getInclude): returning: ${includeInfo}`);
+        log.debug(`etHelper (getInclude): returning: ${includeInfo}`);
         return includeInfo;
     }
 
@@ -1146,8 +1148,8 @@ const etHelper = new class ETHELPER {
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         log.debug(`etHelper (getPostURI): Got Step size as: ${step}`);
-        log.silly(`etHelper (getPostURI): libType is: ${this.Settings.libType}`);
-        log.silly(`etHelper (getPostURI): libTypeSec is: ${this.Settings.libTypeSec}`);
+        log.debug(`etHelper (getPostURI): libType is: ${this.Settings.libType}`);
+        log.debug(`etHelper (getPostURI): libTypeSec is: ${this.Settings.libTypeSec}`);
         switch (this.Settings.libType) {
             case this.ETmediaType.Photo:
                 postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
@@ -1172,7 +1174,7 @@ const etHelper = new class ETHELPER {
                 break;
             default:
                 includeInfo = this.getIncludeInfo();
-                log.silly(`etHelper (getPostURI): includeInfo is: ${includeInfo}`);
+                log.debug(`etHelper (getPostURI): includeInfo is: ${includeInfo}`);
                 if (includeInfo != '')
                 {
                     postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${includeInfo}&X-Plex-Container-Start=`;
@@ -1195,7 +1197,7 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.libType = etHelper.Settings.libTypeSec;
             }
-            log.silly(`etHelper (getLevelFields) libTypeSec is: ${this.Settings.libTypeSec}`);
+            log.debug(`etHelper (getLevelFields) libTypeSec is: ${this.Settings.libTypeSec}`);
             // We need to load fields and defs into def var
             switch(this.Settings.libTypeSec) {
                 case etHelper.ETmediaType.Movie:
@@ -1259,7 +1261,7 @@ const etHelper = new class ETHELPER {
             {
                 // We are dealing with a custom level
                 levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.level.${this.Settings.levelName}`);
-                log.silly(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
+                log.debug(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
             }
             Object.keys(levels).forEach(function(key) {
                 // Skip picture export fields

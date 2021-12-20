@@ -27,6 +27,7 @@
 * [#408 Poster export stops when no poster attached to a Plex movie](https://github.com/WebTools-NG/WebTools-NG/issues/408)
 * Removed `YEAR` from Episode, since not avail
 * Added `Item Counts` to Shows Export
+* [#425 ET Level 1 Export progress](https://github.com/WebTools-NG/WebTools-NG/issues/425)
 
 ## V0.3.12 (20210709)
 
