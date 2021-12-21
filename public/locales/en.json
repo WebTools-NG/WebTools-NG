@@ -152,7 +152,12 @@
                 "Posters_Dimensions": "Poster width * height",
                 "Posters_Dimensions_TT": "Poster width*height, If 'Export Posters' is a field in the export. Can be separated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the poster",
                 "Art_Dimensions": "Art width * height",
-                "Art_Dimensions_TT": "Art width*height, If 'Export Art' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art"
+                "Art_Dimensions_TT": "Art width*height, If 'Export Art' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art",
+                "ChReturn": "Replace Return character with",
+                "ChReturn_TT": "Leave blank to not replace",
+                "ChNewLine": "Replace NewLine character with",
+                "ChNewLine_TT": "Leave blank to not replace"
+
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "SelectLevel": "Select level",

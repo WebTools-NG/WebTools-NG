@@ -45,54 +45,12 @@ const mutations = {
   };
 
 const actions = {
-    async fetchSections({ commit, getters }) {
-        log.info("fetchSections called")
-        var baseURL = getters.getSelectedServerAddress
-        var accessToken = getters.getSelectedServerToken
-        commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))
-    }
-    
-    /* 
-    ,
-    exportMedias({ getters }) {
-        var baseURL = getters.getSelectedServerAddress;
-        var accessToken = getters.getSelectedServerToken;
-        var libType = getters.getLibType;
-        var pListType = getters.getSelectedLibTypeSec;
-        let levelName;
-        var libName = et.getLibDisplayName(getters.getSelectedSection, getters.getPmsSections);
-        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(libType) > -1)
-        {
-          levelName = 'All'
-        }
-        else
-        {
-          levelName = et.getLevelDisplayName(getters.getSelectedExportLevel, libType);
-        } */
-        /* 
-        excel2.createOutFile( {
-          libName: libName,
-          level: levelName,
-          libType: libType,
-          baseURL: baseURL,
-          accessToken: accessToken,
-          exType: libType,
-          pListType: pListType,
-          libTypeSec: getters.getSelectedLibTypeSec
-        } );
- */
-/* 
-        etHelper.createOutFile({
-          libName: libName,
-          level: levelName,
-          libType: libType,
-          baseURL: baseURL,
-          accessToken: accessToken,
-          exType: libType,
-          pListType: pListType,
-          libTypeSec: getters.getSelectedLibTypeSec
-        } );
-    } */
+  async fetchSections({ commit, getters }) {
+      log.info("fetchSections called")
+      var baseURL = getters.getSelectedServerAddress
+      var accessToken = getters.getSelectedServerToken
+      commit('UPDATE_SECTIONS', await et.getSections(baseURL, accessToken))
+  }
 }
 
 const getters = {

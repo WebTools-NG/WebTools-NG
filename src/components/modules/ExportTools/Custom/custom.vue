@@ -267,10 +267,9 @@
             var fields = def['fields'];
             // Release def memory again
             def = null;
-            //const revSelMediaType = et.getLibTypeName(this.selMediaType);
-            //const levelFields = wtconfig.get(`ET.CustomLevels.${revSelMediaType}.level.${this.selCustLevel}`);
             const levelFields = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
             let curLevel = 0;
+            let includeFields = '';
             levelFields.forEach(function (item) {
                 // Get field level
                 var count = fields[item]['call'];
@@ -278,9 +277,24 @@
                 {
                     curLevel = count;
                 }
+                // Get Include
+                var includeField = fields[item]['include'];
+                if ( typeof includeField !== 'undefined' && includeField )
+                {
+                    if ( includeFields == '')
+                    {
+                        includeFields = includeField;
+                    }
+                    else if ( !includeFields.includes(includeField))
+                    {
+                        includeFields = includeFields + '&' + includeField;
+                    }
+                }
             });
             log.info(`LevelCount for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${curLevel}`);
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount.${this.selCustLevel}`, curLevel);
+            log.info(`includeFields for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${includeFields}`);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Include.${this.selCustLevel}`, includeFields);
         },
         changeType: function() {
             // Triggers when lib type is changed

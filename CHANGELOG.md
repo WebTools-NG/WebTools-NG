@@ -9,6 +9,7 @@
 **Note 3**: In this version, the following is disabled:
 
 * Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
 
 **Changes**:
 
@@ -24,6 +25,10 @@
 * [#420 ET Refactor Movies Verify all fields are quoted correctly](https://github.com/WebTools-NG/WebTools-NG/issues/420)
 * [#404 Exporting issues with delimiters under windows](https://github.com/WebTools-NG/WebTools-NG/issues/404)
 * [#408 Poster export stops when no poster attached to a Plex movie](https://github.com/WebTools-NG/WebTools-NG/issues/408)
+* Removed `YEAR` from Episode, since not avail
+* Added `Item Counts` to Shows Export
+* [#425 ET Level 1 Export progress](https://github.com/WebTools-NG/WebTools-NG/issues/425)
+* [#426 Replace format chars in text fields](https://github.com/WebTools-NG/WebTools-NG/issues/426)
 
 ## V0.3.12 (20210709)
 

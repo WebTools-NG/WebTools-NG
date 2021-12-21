@@ -4,7 +4,7 @@ var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')))
 
 const log = require('electron-log');
 console.log = log.log;
-const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
+//const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 import {wtconfig, wtutils} from '../../General/wtutils';
 
@@ -157,7 +157,7 @@ const et = new class ET {
         this.StartTime = null,
         this.EndTime = null,
         this.OutFile = null,
-        this.revRawMsgType = {
+        this.revRawMsgTypeOLDDELGED = {
             1: 'Status',
             2: 'Info',
             3: 'Chuncks',
@@ -165,10 +165,10 @@ const et = new class ET {
             5: 'OutFile',
             6: 'StartTime',
             7: 'EndTime',
-            8: 'TimeElapsed',
+            8: '1TimeElapsed',
             9: 'RunningTime'
         },
-        this.msgType = {
+        this.msgTypeOLDDELGED = {
             1: i18n.t("Modules.ET.Status.Names.Status"),
             2: i18n.t("Modules.ET.Status.Names.Info"),
             3: i18n.t("Modules.ET.Status.Names.Chuncks"),
@@ -229,20 +229,9 @@ const et = new class ET {
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
         } while (size > 1);
-        log.silly(`SectionData to return is:`);
-        log.silly(JSON.stringify(sectionData));
+        log.debug(`SectionData to return is:`);
+        log.debug(JSON.stringify(sectionData));
         return sectionData;
-    }
-
-    async GEDOLD_getItemData({baseURL, accessToken, element, postURI=defpostURI})
-    {
-        const url = baseURL + element + postURI;
-        this.PMSHeader["X-Plex-Token"] = accessToken;
-        log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
-        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        let resp = await response.json();
-        log.silly(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
-        return resp
     }
 
     getRealLevelName(level, libType) {
