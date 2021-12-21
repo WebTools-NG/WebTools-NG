@@ -28,6 +28,7 @@
 * Removed `YEAR` from Episode, since not avail
 * Added `Item Counts` to Shows Export
 * [#425 ET Level 1 Export progress](https://github.com/WebTools-NG/WebTools-NG/issues/425)
+* [#426 Replace format chars in text fields](https://github.com/WebTools-NG/WebTools-NG/issues/426)
 
 ## V0.3.12 (20210709)
 

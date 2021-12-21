@@ -41,6 +41,19 @@ function setQualifier( {str:str})
             }
         }
         result = str.replaceAll(wtconfig.get('ET.TextQualifierCSV', 'N/A'), selectedQ);
+        // Now remove fancy Return
+        const ChReturn =  wtconfig.get('ET.ChReturn', '');
+        if ( ChReturn != '')
+        {
+            result = result.replaceAll('\r', ChReturn);
+        }
+        // Now remove fancy NewLine
+        const ChNewLine =  wtconfig.get('ET.ChNewLine', '');
+        if ( ChNewLine != '')
+        {
+            result = result.replaceAll('\r', ChNewLine);
+        }
+        result = result.replaceAll('\n', wtconfig.get('ET.ChNewLine', '<NEWLINE>'));
     }
     else
     {
@@ -1129,7 +1142,14 @@ const etHelper = new class ETHELPER {
     }
 
     getIncludeInfo(){
-        let includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+        console.log('Ged 33-0: ' + this.Settings.libTypeSec + ' -*- ' + this.Settings.levelName)
+        let includeInfo;
+        try {
+            includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+        }
+        catch (error) {
+            includeInfo = ''
+        }
         if (includeInfo == 'undefined')
         {
             includeInfo = ''
@@ -1138,7 +1158,6 @@ const etHelper = new class ETHELPER {
         {
             includeInfo = ''
         }
-        
         log.debug(`etHelper (getInclude): returning: ${includeInfo}`);
         return includeInfo;
     }
