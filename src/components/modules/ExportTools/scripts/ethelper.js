@@ -29,8 +29,8 @@ function isEmptyObj(obj) {
 function setQualifier( {str:str})
 {
     const validQ = ["`", "'", "\""];
-    log.silly(`etHelper (setQualifier): String is: ${str}`);
-    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) >= 0)
+    let result = wtconfig.get('ET.TextQualifierCSV', 'N/A');
+    if (str.indexOf(wtconfig.get('ET.TextQualifierCSV', 'N/A')) > -1)
     {
         let selectedQ;
         for(const val of validQ) {
@@ -40,19 +40,27 @@ function setQualifier( {str:str})
                 break;
             }
         }
-        log.silly(`etHelper (setQualifier) string contained Qualifier`);
-        str = str.replaceAll(wtconfig.get('ET.TextQualifierCSV'), selectedQ);
-    }
-    if (wtconfig.get('ET.TextQualifierCSV', 'N/A') == '"')
-    {
-        str = `"${str}"`
+        result = str.replaceAll(wtconfig.get('ET.TextQualifierCSV', 'N/A'), selectedQ);
+        // Now remove fancy Return
+        const ChReturn =  wtconfig.get('ET.ChReturn', '');
+        if ( ChReturn != '')
+        {
+            result = result.replaceAll('\r', ChReturn);
+        }
+        // Now remove fancy NewLine
+        const ChNewLine =  wtconfig.get('ET.ChNewLine', '');
+        if ( ChNewLine != '')
+        {
+            result = result.replaceAll('\r', ChNewLine);
+        }
+        result = result.replaceAll('\n', wtconfig.get('ET.ChNewLine', '<NEWLINE>'));
     }
     else
     {
-        str = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
+        result = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
     }
-    log.silly(`etHelper (setQualifier): Returning: ${str}`);
-    return str;
+    log.debug(`etHelper (setQualifier): Got: _WTNG_${str}_WTNG_ and returning ${result}`);
+    return result;
 }
 
 //#endregion
@@ -200,10 +208,11 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title=""} ){
-        log.silly(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
-        log.silly(`ETHelper(postProcess): name is: ${name}`);
-        log.silly(`ETHelper(postProcess): title is: ${title}`);
+        log.debug(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
+        log.debug(`ETHelper(postProcess): name is: ${name}`);
+        log.debug(`ETHelper(postProcess): title is: ${title}`);
         let retArray = [];
+        let guidArr;
         let x, retVal, start, strStart, end, result;
         try {
             const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
@@ -245,9 +254,9 @@ const etHelper = new class ETHELPER {
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
                     {
-                        log.silly(`We need to override Original Titel, if not avail`);
-                        log.silly(`Got Original title as: ${val}`);
-                        log.silly(`Alternative might be title as: ${title}`);
+                        log.debug(`We need to override Original Titel, if not avail`);
+                        log.debug(`Got Original title as: ${val}`);
+                        log.debug(`Alternative might be title as: ${title}`);
                         // Override with title if not found
                         if (val == wtconfig.get('ET.NotAvail'))
                         {
@@ -378,31 +387,14 @@ const etHelper = new class ETHELPER {
                     }
                     break;
                 case "TVDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tvdb://") )
+                        {
+                            retVal = item.substring(7);
+                        }
                     }
-                    start = val.indexOf("tvdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    {
-                        result = strStart.substring(7, end)
-                    }
-                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
-                    {
-                        result = result.slice(0,-1);
-                    }
-                    retVal = setQualifier( {str:result} );
                     break;
                 case "TVDB ID (Legacy)":
                         if (val == wtconfig.get('ET.NotAvail'))
@@ -439,55 +431,24 @@ const etHelper = new class ETHELPER {
                         }
                         break;
                 case "TMDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tmdb://") )
+                        {
+                            retVal = item.substring(7);
+                        }
                     }
-                    start = val.indexOf("tmdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    {
-                        result = strStart.substring(7);
-                    }
-                    else
-                    {
-                        result = strStart.substring(7, end)
-                    }
-                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
-                    {
-                        result = result.slice(0,-1);
-                    }
-                    retVal = setQualifier( {str:result} );
                     break;
                 case "TMDB Link":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tmdb://") )
+                        {
+                            retVal = result = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                        }
                     }
-                    start = val.indexOf("tmdb://");
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    { result = strStart.substring(7, end) }
-
-                    result = 'https://www.themoviedb.org/movie/' + result;
-                    if (result.endsWith(wtconfig.get('ET.TextQualifierCSV')))
-                    {
-                        result = result.slice(0,-1);
-                    }
-                    retVal = setQualifier( {str:result} );
                     break;
                 default:
                     log.error(`postProcess no hit for: ${name}`)
@@ -504,7 +465,7 @@ const etHelper = new class ETHELPER {
         this.Settings.currentItem +=1;
         this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
-        log.silly(`Data is: ${JSON.stringify(data)}`)
+        log.debug(`Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
         let val, array, i, valArray, valArrayVal
@@ -630,7 +591,7 @@ const etHelper = new class ETHELPER {
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
-                    log.silly(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+                    log.debug(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
                     val = await this.postProcess( {name: name, val: val, title: title} );
                 }
                 // Here we add qualifier, if not a number
@@ -649,24 +610,20 @@ const etHelper = new class ETHELPER {
         // Remove last internal separator
         str = str.substring(0,str.length-etHelper.intSep.length);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
-
-
-
-
         this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
-        log.silly(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
+        log.debug(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
         return str;
     }
 
     async getItemDetails( { key })
     {
-        const url = this.Settings.baseURL + key + this.#_defpostURI;
+        const url = this.Settings.baseURL + key + '?' + this.getIncludeInfo();
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`Calling url in getItemDetails: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         resp = JSONPath({path: '$.MediaContainer.Metadata.*', json: resp})[0];
-        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`);
+        log.debug(`Response in getItemDetails: ${JSON.stringify(resp)}`);
         return resp
     }
 
@@ -732,15 +689,14 @@ const etHelper = new class ETHELPER {
         let chunck; // placeholder for items fetched
         let chunckItems; // Array of items in the chunck
         this.Settings.element = this.getElement();
-        let postURI = this.getPostURI();
+//        let postURI = this.getPostURI();
         // Get the fields for this level
-
         do  // Walk section in steps
         {
-            chunck = await this.getItemData({
-                postURI: postURI + idx});
+            //chunck = await this.getItemData({postURI: postURI + idx});
+            chunck = await this.getSectionData();
             size = JSONPath({path: '$.MediaContainer.size', json: chunck});
-            log.silly(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
+            log.debug(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
             if ( this.Settings.libType == this.ETmediaType.Libraries)
             {
                 chunckItems = JSONPath({path: '$.MediaContainer.Directory.*', json: chunck});
@@ -753,6 +709,7 @@ const etHelper = new class ETHELPER {
             // Walk each item retrieved
             for (var item in chunckItems)
             {
+                //ProcessItem
                 if (parseInt(this.Settings.call, 10) === 1)
                 {
                     // Let's get the needed row
@@ -797,8 +754,8 @@ const etHelper = new class ETHELPER {
 
     async getSectionSize()
     {
-        log.silly(`etHelper (getItemData): selType: ${this.Settings.selType}`)
-        log.silly(`etHelper (getItemData): libTypeSec: ${this.Settings.libTypeSec}`)
+        log.debug(`etHelper (getSectionSize): selType: ${this.Settings.selType}`)
+        log.debug(`etHelper (getSectionSize): libTypeSec: ${this.Settings.libTypeSec}`)
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
@@ -838,19 +795,32 @@ const etHelper = new class ETHELPER {
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         var totalSize = JSONPath({path: '$..totalSize', json: resp})[0];
-        log.silly(`Response in getSectionSize: ${totalSize}`);
+        log.debug(`Response in getSectionSize: ${totalSize}`);
         return totalSize;
     }
 
-    async getItemData({ postURI=this.#_defpostURI })
+    async getSectionData()
     {
-        log.silly(`etHelper (getItemData): Element is: ${this.Settings.element}`)
+        log.debug(`etHelper (getSectionData): Element is: ${this.Settings.element}`)
+        //const url = this.Settings.baseURL + this.Settings.element + '?' + this.getPostURI() + this.Settings.count;
+        const url = this.Settings.baseURL + this.Settings.element + this.getPostURI() + this.Settings.count;
+        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+        log.verbose(`etHelper (getSectionData): Calling url in getSectionData: ${url}`)
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        log.debug(`etHelper (getSectionData): Response in getSectionData: ${JSON.stringify(resp)}`)
+        return resp
+    }
+
+    async OLDDELGed_getItemData({ postURI=this.#_defpostURI })
+    {
+        log.debug(`etHelper (getItemData): Element is: ${this.Settings.element}`)
         const url = this.Settings.baseURL + this.Settings.element + postURI;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.silly(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
+        log.debug(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
         return resp
     }
 
@@ -1171,11 +1141,34 @@ const etHelper = new class ETHELPER {
         return element;
     }
 
+    getIncludeInfo(){
+        console.log('Ged 33-0: ' + this.Settings.libTypeSec + ' -*- ' + this.Settings.levelName)
+        let includeInfo;
+        try {
+            includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
+        }
+        catch (error) {
+            includeInfo = ''
+        }
+        if (includeInfo == 'undefined')
+        {
+            includeInfo = ''
+        }
+        if (includeInfo == null)
+        {
+            includeInfo = ''
+        }
+        log.debug(`etHelper (getInclude): returning: ${includeInfo}`);
+        return includeInfo;
+    }
+
     getPostURI(){
-        let postURI;
+        let postURI, includeInfo;
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
-        log.debug(`Got Step size as: ${step}`);
+        log.debug(`etHelper (getPostURI): Got Step size as: ${step}`);
+        log.debug(`etHelper (getPostURI): libType is: ${this.Settings.libType}`);
+        log.debug(`etHelper (getPostURI): libTypeSec is: ${this.Settings.libTypeSec}`);
         switch (this.Settings.libType) {
             case this.ETmediaType.Photo:
                 postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
@@ -1199,9 +1192,18 @@ const etHelper = new class ETHELPER {
                 postURI = `?X-Plex-Container-Size=${step}&X-Plex-Container-Start=`
                 break;
             default:
-                postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
+                includeInfo = this.getIncludeInfo();
+                log.debug(`etHelper (getPostURI): includeInfo is: ${includeInfo}`);
+                if (includeInfo != '')
+                {
+                    postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${includeInfo}&X-Plex-Container-Start=`;
+                }
+                else
+                {
+                    postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&X-Plex-Container-Start=`;
+                }
         }
-        log.debug(`Got postURI as ${postURI}`);
+        log.debug(`etHelper (getPostURI): Got postURI as ${postURI}`);
         return postURI;
     }
 
@@ -1214,17 +1216,15 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.libType = etHelper.Settings.libTypeSec;
             }
-            log.silly(`etHelper (getLevelFields) libType is: ${this.Settings.libType}`);
+            log.debug(`etHelper (getLevelFields) libTypeSec is: ${this.Settings.libTypeSec}`);
             // We need to load fields and defs into def var
-            switch(this.Settings.libType) {
+            switch(this.Settings.libTypeSec) {
                 case etHelper.ETmediaType.Movie:
-                // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
-                break;
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Movie.json')));
+                    break;
                 case etHelper.ETmediaType.Episode:
-                // code block
-                def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
-                break;
+                    def = JSON.parse(JSON.stringify(require('./../defs/def-Episode.json')));
+                    break;
                 case etHelper.ETmediaType.Show:
                     // code block
                     def = JSON.parse(JSON.stringify(require('./../defs/def-Show.json')));
@@ -1275,18 +1275,19 @@ const etHelper = new class ETHELPER {
             {
                 this.Settings.Level = 'all';
             }
-            let levels = def[this.Settings.libType.toString()]['level'][this.Settings.Level];
-            //let levels = def[this.Settings.libType.toString()]['level'][this.Settings.levelName];
+            let levels = def[this.Settings.libTypeSec.toString()]['level'][this.Settings.Level];
             if (levels == undefined)
             {
                 // We are dealing with a custom level
                 levels = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.level.${this.Settings.levelName}`);
-                log.silly(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
+                log.debug(`etHelper (getLevelFields) Custom level detected as: ${JSON.stringify(levels)}`);
             }
             Object.keys(levels).forEach(function(key) {
-
-                //out.push(wtconfig.get(`ET.TextQualifierCSV`, "\"") + levels[key] + wtconfig.get(`ET.TextQualifierCSV`, "\""))
-                out.push(levels[key])
+                // Skip picture export fields
+                if ( !["Export Art", "Export Posters"].includes(levels[key]) )
+                {
+                    out.push(levels[key])
+                }
             });
             resolve(out);
         });
@@ -1322,7 +1323,7 @@ const etHelper = new class ETHELPER {
 
     // Public methode to get the Header
     async getFieldHeader() {
-        log.info('FieldHeader requested');
+        log.info('etHelper (getFieldHeader): FieldHeader requested');
         try{
             if (isEmptyObj(this.#_FieldHeader))
             {
