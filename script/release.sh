@@ -14,9 +14,13 @@ git merge master
 # Get current version
 CURVER=$(cat package.json|grep -oP '(?<="version": ")[^"]*')
 echo $CURVER
+# Get git root directory
+root=$(git rev-parse --show-toplevel 2>&1)
+# get commit hash for version file 
+rev='{"rev":"'$(git rev-parse --short HEAD 2>&1)'"}'
 # Commit to Release Branch
-git commit -am v$CURVER
+git commit -am v$CURVER.rev
 # Tag Release Branch
-git tag v$CURVER
+git tag v$CURVER.rev
 # Upload and trigger a release
 git push && git push --tags
