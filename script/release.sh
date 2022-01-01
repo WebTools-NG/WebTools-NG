@@ -18,10 +18,11 @@ echo $CURVER
 root=$(git rev-parse --show-toplevel 2>&1)
 # get commit hash for version file 
 rev='{"rev":"'$(git rev-parse --short HEAD 2>&1)'"}'
+echo Committing v$CURVER.$rev
 # Commit to Release Branch
 git commit -am v$CURVER.$rev
 # Tag Release Branch
 git tag v$CURVER.$rev
 # Upload and trigger a release
 git push && git push --tags
-git checkout $CURVER
+git checkout $CURBRANCH
