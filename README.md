@@ -7,7 +7,7 @@
 [![master](https://img.shields.io/badge/master-stable-green.svg?maxAge=2592000)]('')
 ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg)
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
-[![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/build.yml/badge.svg?branch=release)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/build.yml)
+[![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml)
 
 NOTE: This is currently in **BETA**
 
