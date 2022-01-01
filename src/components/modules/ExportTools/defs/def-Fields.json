@@ -70,7 +70,8 @@
             {
                 "key": "audienceRating",
                 "call": 1,
-                "type": "string"
+                "type": "string",
+                "postProcess": true
             },
         "Audio Stream Album Gain":
             {
@@ -262,7 +263,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.requiredBandwidths"
+                "subkey": "$.requiredBandwidths",
+                "include": "includeBandwidths=1"
             },
         "Audio Stream Sampling Rate":
             {
@@ -318,13 +320,15 @@
             {
                 "key": "$..Chapter[*]",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeChapters=1"
             },
         "Chapter Source":
             {
                 "key": "$.chapterSource",
                 "call": 2,
-                "type": "string"
+                "type": "string",
+                "include": "includeChapters=1"
             },
         "Chapter Title":
             {
@@ -332,7 +336,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.tag"
+                "subkey": "$.tag",
+                "include": "includeChapters=1"
             },
         "Collections":
             {
@@ -434,61 +439,71 @@
             {
                 "key": "$.Extras.size",
                 "call": 2,
-                "type": "int"
+                "type": "int",
+                "include": "includeExtras=1"
             },
         "Extras-behindthescenes":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='behindTheScenes')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-deleted":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='deleted')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-featurette":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='featurette')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-interview":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='interview')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-music video":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='musicVideo')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-scene":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-sceneOrSample":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='sceneOrSample')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-short":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='short')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Extras-trailer":
             {
                 "key": "$..Extras.Metadata[?(@.subtype=='trailer')].ratingKey",
                 "call": 2,
-                "type": "array-count"
+                "type": "array-count",
+                "include": "includeExtras=1"
             },
         "Filters":
         {
@@ -818,7 +833,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.accessible"
+                "subkey": "$.accessible",
+                "include": "checkFiles=1"
             },
         "Part Container":
             {
@@ -851,7 +867,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.exists"
+                "subkey": "$.exists",
+                "include": "checkFiles=1"
             },
         "Part File":
             {
@@ -925,7 +942,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "$.requiredBandwidths"
+                "subkey": "$.requiredBandwidths",
+                "include": "includeBandwidths=1"
             },
         "Part Size":
             {
@@ -998,7 +1016,8 @@
             {
                 "key": "$.rating",
                 "call": 1,
-                "type": "string"
+                "type": "string",
+                "postProcess": true
             },
         "Refreshing":
             {
@@ -1157,7 +1176,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "requiredBandwidths"
+                "subkey": "requiredBandwidths",
+                "include": "includeBandwidths=1"
             },
         "Subtitle Stream Selected":
             {
@@ -1231,7 +1251,7 @@
         "TMDB ID":
             {
                 "key": "$.Guid[*]",
-                "call": 1,
+                "call": 2,
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.id",
@@ -1240,7 +1260,7 @@
         "TMDB Link":
             {
                 "key": "$.Guid[*]",
-                "call": 1,
+                "call": 2,
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.id",
@@ -1464,7 +1484,8 @@
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "subkey": "requiredBandwidths"
+                "subkey": "requiredBandwidths",
+                "include": "includeBandwidths=1"
             },
         "Video Stream Scan Type":
             {

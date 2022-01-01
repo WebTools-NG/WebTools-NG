@@ -4,22 +4,25 @@ var defFields = JSON.parse(JSON.stringify(require('./../defs/def-Fields.json')))
 
 const log = require('electron-log');
 console.log = log.log;
-const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
+//const defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1'
 
 import {wtconfig, wtutils} from '../../General/wtutils';
-import i18n from '../../../../i18n';
+
+//import {etHelper} from './ethelper';
+//import i18n from '../../../../i18n';
+
+import i18n from '../../../../i18n'
 
 import {ipcRenderer} from 'electron';
 //const fs = require('fs');
 
-import filesize from 'filesize';
 var path = require("path");
 
 const fetch = require('node-fetch');
 
 const {JSONPath} = require('jsonpath-plus');
 import axios from 'axios'
-import store from '../../../../store';
+//import store from '../../../../store';
 
 const et = new class ET {
     constructor() {
@@ -73,6 +76,10 @@ const et = new class ET {
             2003: 'Photo',
             3001: 'Playlists'
         },
+        this.selSecOption2 = {
+            1: ['Modules.ET.optExpType.SecMovies'],
+            2: ['Modules.ET.optExpType.SecTVEpisodes']
+        }
         this.selSecOption = {
             1: [
                 {
@@ -150,18 +157,7 @@ const et = new class ET {
         this.StartTime = null,
         this.EndTime = null,
         this.OutFile = null,
-        this.rawMsgType = {
-            'Status': 1,
-            'Info': 2,
-            'Chuncks': 3,
-            'Items': 4,
-            'OutFile': 5,
-            'StartTime': 6,
-            'EndTime': 7,
-            'TimeElapsed': 8,
-            'RunningTime': 9
-        },
-        this.revRawMsgType = {
+        this.revRawMsgTypeOLDDELGED = {
             1: 'Status',
             2: 'Info',
             3: 'Chuncks',
@@ -169,10 +165,10 @@ const et = new class ET {
             5: 'OutFile',
             6: 'StartTime',
             7: 'EndTime',
-            8: 'TimeElapsed',
+            8: '1TimeElapsed',
             9: 'RunningTime'
         },
-        this.msgType = {
+        this.msgTypeOLDDELGED = {
             1: i18n.t("Modules.ET.Status.Names.Status"),
             2: i18n.t("Modules.ET.Status.Names.Info"),
             3: i18n.t("Modules.ET.Status.Names.Chuncks"),
@@ -185,115 +181,13 @@ const et = new class ET {
         }
     }
 
-    async getStartEndTime(StartEnd){
-        let now;
-        if (StartEnd == 'start')
-        {
-            now = et.StartTime;
-        }
-        else
-        {
-            now = et.EndTime;
-        }
-        return now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    }
 
-    async clearStatus()
-    {
-        this.statusmsg = {};
-        store.commit("UPDATE_SELECTEDETStatus", '');
-    }
-
-    async updateStatusMsg(msgType, msg)
-    {
-        // Update relevant key
-        this.statusmsg[msgType] = msg;
-        // Tmp store of new msg
-        let newMsg = '';
-        // Walk each current msg keys
-        Object.entries(this.statusmsg).forEach(([key, value]) => {
-            if ( value != '')
-            {
-                newMsg += this.msgType[key] + ': ' + value + '\n';
-            }
-        })
-        store.commit("UPDATE_SELECTEDETStatus", newMsg);
-    }
-
-    async getTimeElapsed(){
-        let elapsedSeconds = Math.floor((et.EndTime.getTime() - et.StartTime.getTime()) / 1000);
-        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
-        const hours = Math.floor(parseFloat(elapsedStr) / 3600);
-        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
-        const minutes = Math.floor(elapsedSeconds / 60);
-        const seconds = elapsedSeconds - minutes * 60;
-        return hours + ':' + minutes + ':' + seconds
-    }
-
-    async getRunningTimeElapsed(){
-        const now = new Date();
-        let elapsedSeconds = Math.floor((now.getTime() - et.StartTime.getTime()) / 1000);
-        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
-        const hours = Math.floor(parseFloat(elapsedStr) / 3600);
-        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
-        const minutes = Math.floor(elapsedSeconds / 60);
-        const seconds = elapsedSeconds - minutes * 60;
-        return hours + ':' + minutes + ':' + seconds
-    }
-
-    async getNowTime(StartEnd){
-        let now = new Date();
-        if (StartEnd == 'start')
-        {
-            et.StartTime = now;
-        }
-        else
-        {
-            et.EndTime = now;
-        }
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        return hours + ':' + minutes + ':' + seconds;
-    }
-
-    async exportMedias() {
-        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getNowTime('start'));
-        this.expSettings.libName = et.getLibDisplayName(this.expSettings.selLibKey, store.getters.getPmsSections);
-        if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.expSettings.libType) > -1)
-        {
-            this.expSettings.levelName = 'All'
-        }
-        else
-        {
-            this.expSettings.levelName = et.getLevelDisplayName(this.expSettings.exportLevel, this.expSettings.libType);
-        }
-        await excel2.createOutFile( {
-          libName: this.expSettings.libName,
-          level: this.expSettings.levelName,
-          libType: this.expSettings.libType,
-          baseURL: this.expSettings.baseURL,
-          accessToken: this.expSettings.accessToken,
-          exType: this.expSettings.libType,
-          pListType: this.expSettings.libTypeSec,
-          libTypeSec: this.expSettings.libTypeSec
-        });
-        // Update status window
-        et.clearStatus();
-        et.updateStatusMsg( et.rawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
-        et.updateStatusMsg( et.rawMsgType.StartTime, await this.getStartEndTime('start'));
-        this.getNowTime('end');
-        et.updateStatusMsg( et.rawMsgType.EndTime, await this.getStartEndTime('end'));
-        et.updateStatusMsg( et.rawMsgType.TimeElapsed, await this.getTimeElapsed());
-        et.updateStatusMsg( et.rawMsgType.OutFile, et.OutFile.split('.').slice(0, -1).join('.'));
-    }
-
-    async getSectionData()
+    async GEDDELETE_getSectionData()
     {
         const sectionData = []
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20)
-        log.debug(`Got Step size as: ${step}`)
+        log.debug(`!!!! et (getSectionData): Got Step size as: ${step}`)
         let element
         // Now read the fields and level defs
         // Current item
@@ -302,33 +196,29 @@ const et = new class ET {
         let chuncks, postURI
         let size
         do {
-            if (this.expSettings.libType == et.ETmediaType.Photo)
-            {
-                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
+            switch (this.expSettings.libType) {
+                case et.ETmediaType.Photo:
+                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                    postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
+                    break;
+                case et.ETmediaType.Playlist:
+                    element = '/playlists/' + this.expSettings.selLibKey;
+                    postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                    break;
+                case et.ETmediaType.Libraries:
+                    element = '/library/sections/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                    break;
+                case et.ETmediaType.Playlists:
+                    element = '/playlists/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
+                    break;
+                default:
+                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
+                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
             }
-            else if (this.expSettings.libType == et.ETmediaType.Playlist)
-            {
-                element = '/playlists/' + this.expSettings.selLibKey;
-                postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            }
-            else if (this.expSettings.libType == et.ETmediaType.Libraries)
-            {
-                element = '/library/sections/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            }
-            else if (this.expSettings.libType == et.ETmediaType.Playlists)
-            {
-                element = '/playlists/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-            }
-            else
-            {
-                element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
-            }
-
             log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI}`);
+ 
             chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
             size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
             const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
@@ -339,20 +229,9 @@ const et = new class ET {
             log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
             idx = idx + step;
         } while (size > 1);
-        log.silly(`SectionData to return is:`);
-        log.silly(JSON.stringify(sectionData));
+        log.debug(`SectionData to return is:`);
+        log.debug(JSON.stringify(sectionData));
         return sectionData;
-    }
-
-    async getItemData({baseURL, accessToken, element, postURI=defpostURI})
-    {
-        const url = baseURL + element + postURI;
-        this.PMSHeader["X-Plex-Token"] = accessToken;
-        log.verbose(`Calling url in getItemData: ${url}`)
-        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        let resp = await response.json();
-        log.silly(`Response in getItemData: ${JSON.stringify(resp)}`)
-        return resp
     }
 
     getRealLevelName(level, libType) {
@@ -543,16 +422,6 @@ const et = new class ET {
             out.push(levels[key])
           });
         return out;
-    }
-
-    async getLevelCall (libType, level) {
-        if (libType == et.ETmediaType.Playlist)
-        {
-            libType = et.expSettings.libTypeSec;
-        }
-        const count = await defLevels[libType]['LevelCount'][level]
-        log.debug('Count needed is: ' + count)
-        return count
     }
 
     getLevels(libType) {
@@ -815,25 +684,13 @@ const excel2 = new class Excel {
         return sheet
     }
 
-    GetHeader(Level, libType) {
-        const columns = []
-        log.verbose(`GetHeader level: ${Level} - libType: ${libType}`)
-        // Get level fields
-        const fields = et.getLevelFields(Level, libType)
-        for (var i=0; i<fields.length; i++) {
-            log.verbose(`Column: ${fields[i]}`)
-            columns.push(fields[i])
-        }
-        return columns
-    }
-
     async AddHeader(Sheet, Level, libType) {
         const columns = []
         log.verbose(`AddHeader level: ${Level} - libType: ${libType}`)
         // Get level fields
         const fields = et.getLevelFields(Level, libType)
         for (var i=0; i<fields.length; i++) {
-            log.verbose('Column: ' + fields[i] + ' - ' + fields[i])
+            log.verbose('Column12: ' + fields[i] + ' - ' + fields[i])
             let column = { header: fields[i], key: fields[i], width: 5 }
             columns.push(column)
         }
@@ -854,30 +711,6 @@ const excel2 = new class Excel {
         return true;
     }
 
-    async getFileName({ Library, Level, Type, Module, exType }){
-        const dateFormat = require('dateformat');
-        const OutDir = wtconfig.get('General.ExportPath');
-        const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
-        const path = require('path');
-        let outFile = store.getters.getSelectedServer.name + '_';
-        outFile += Library + '_';
-        outFile += et.RevETmediaType[exType.toString()] + '_';
-        outFile += Level + '_';
-        outFile += timeStamp + '.' + Type;
-        et.OutFile = outFile;
-        const targetDir = path.join(
-            OutDir, wtutils.AppName, Module);
-        const outFileWithPath = path.join(
-            targetDir, outFile);
-        // Make sure target dir exists
-        const fs = require('fs')
-        if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir);
-        }
-        log.info(`OutFile is ${outFileWithPath}`);
-        return outFileWithPath;
-    }
-
     async SaveWorkbook({ Workbook, Library, Level, Type, exType } ) {
         const fs = require('fs');
         const name = await this.getFileName( { Library: Library, Level: Level, Type: Type, Module: i18n.t('Modules.ET.Name'), exType: exType });
@@ -886,277 +719,6 @@ const excel2 = new class Excel {
         Workbook.xlsx.writeBuffer()
             .then(buffer => fs.writeFileSync(name, buffer))
         return true;
-    }
-
-    async postProcess( {name, val, title=""} ){
-        const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
-        let retArray = [];
-        let x, retVal, start, strStart, end, result;
-        try {
-            switch ( String(name) ){
-                case "Part File":
-                    for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.basename(valArray[x]))
-                    }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                    break;
-                case "Part File Path":
-                    for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.dirname(valArray[x]));
-                    }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
-                    break;
-                case "Part Size":
-                    for (x=0; x<valArray.length; x++) {
-                        let theSize = valArray[x].replaceAll('"', '').replaceAll(wtconfig.get('ET.TextQualifierCSV'),'');
-                        if (theSize.startsWith('"')){
-                            theSize = theSize.slice(1,-1);
-                        }
-                        try{
-                            retArray.push(filesize(theSize));
-                        }
-                        catch (error)
-                        {
-                            log.error(`Error getting Part Size was ${error} for ${theSize}`);
-                        }
-                    }
-                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                    break;
-                case "Original Title":
-                    if (wtconfig.get('ET.OrgTitleNull'))
-                    {
-                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
-                        // Override with title if not found
-                        if (val == compNA)
-                        {
-                            retVal = title;
-                        }
-                        else { retVal = val; }
-                    }
-                    else
-                    {
-                        retVal = val;
-                    }
-                    break;
-                case "Sort title":
-                    if (wtconfig.get('ET.SortTitleNull'))
-                    {
-                        // Override with title if not found
-                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + wtconfig.get('ET.NotAvail') + wtconfig.get('ET.TextQualifierCSV')).trim();
-                        if (val == compNA)
-                        {
-                            retVal = title;
-                        }
-                        else {
-                            retVal = val;
-                        }
-                    }
-                    else
-                    {
-                        let compNA = (wtconfig.get('ET.TextQualifierCSV') + 'undefined' + wtconfig.get('ET.TextQualifierCSV')).trim();
-                        if (val == compNA)
-                        {
-                            retVal = wtconfig.get('ET.NotAvail');
-                        }
-                        else {
-                            retVal = val;
-                        }
-                    }
-                    break;
-                case "IMDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
-                    }
-                    start = val.indexOf("imdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    { result = strStart.substring(7, end) }
-                    retVal = result;
-                    break;
-                case "IMDB ID (Legacy)":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
-                    }
-                    // Cut off start of string
-                    start = val.indexOf("tt");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    result = strStart.split('?')[0]
-                    retVal = result;
-                    break;
-                case "IMDB Language (Legacy)":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
-                    }
-                    if (val.indexOf("imdb://") == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    retVal = val.split('=')[1];
-                    if (retVal == 'undefined')
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                    }
-                    break;
-                case "IMDB Link":
-                        if (val == wtconfig.get('ET.NotAvail'))
-                        {
-                            retVal = val;
-                            break;
-                        }
-                        start = val.indexOf("imdb://");
-                        if (start == -1)
-                        {
-                            retVal = wtconfig.get('ET.NotAvail');
-                            break;
-                        }
-                        strStart = val.substring(start);
-                        end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                        result = ''
-                        if (end == -1)
-                        { result = strStart.substring(7) }
-                        else
-                        { result = strStart.substring(7, end) }
-                        result = 'https://www.imdb.com/title/' + result;
-                        retVal = result;
-                        break;
-                case "IMDB Link (Legacy)":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                        {
-                            retVal = val;
-                            break;
-                        }
-                    if (val.indexOf("imdb://") == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                    }
-                    else
-                    {
-                        retVal = 'https://imdb.com/' + val.split('//')[1];
-                        retVal = retVal.split('?')[0];
-                    }
-                    break;
-                case "TVDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
-                    }
-                    start = val.indexOf("tvdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    { result = strStart.substring(7, end) }
-                    retVal = result;
-                    break;
-                case "TVDB ID (Legacy)":
-                        if (val == wtconfig.get('ET.NotAvail'))
-                        {
-                            retVal = val;
-                            break;
-                        }
-                        // Cut off start of string
-                        start = val.indexOf("thetvdb://");
-                        if (start == -1)
-                        {
-                            retVal = wtconfig.get('ET.NotAvail');
-                            break;
-                        }
-                        strStart = val.substring(start);
-                        result = strStart.split('?')[0]
-                        retVal = result;
-                        break;
-                case "TVDB Language (Legacy)":
-                        if (val == wtconfig.get('ET.NotAvail'))
-                        {
-                            retVal = val;
-                            break;
-                        }
-                        if (val.indexOf("tvdb://") == -1)
-                        {
-                            retVal = wtconfig.get('ET.NotAvail');
-                            break;
-                        }
-                        retVal = val.split('=')[1];
-                        if (retVal == 'undefined')
-                        {
-                            retVal = wtconfig.get('ET.NotAvail');
-                        }
-                        break;
-                case "TMDB ID":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
-                    }
-                    start = val.indexOf("tmdb://");
-                    if (start == -1)
-                    {
-                        retVal = wtconfig.get('ET.NotAvail');
-                        break;
-                    }
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    { result = strStart.substring(7, end) }
-                    retVal = result;
-                    break;
-                case "TMDB Link":
-                    if (val == wtconfig.get('ET.NotAvail'))
-                    {
-                        retVal = val;
-                        break;
-                    }
-                    start = val.indexOf("tmdb://");
-                    strStart = val.substring(start);
-                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
-                    result = ''
-                    if (end == -1)
-                    { result = strStart.substring(7) }
-                    else
-                    { result = strStart.substring(7, end) }
-                    result = 'https://www.themoviedb.org/movie/' + result;
-                    retVal = result;
-                    break;
-                default:
-                    log.error(`postProcess no hit for: ${name}`)
-                    break;
-            }
-        } catch (error) {
-            retVal = 'ERROR'
-        }
-        return await retVal;
     }
 
     isEmpty( { val })
@@ -1171,7 +733,7 @@ const excel2 = new class Excel {
         }
     }
 
-    async forceDownload(url, target) {
+    async OLDDELforceDownload(url, target) {
         const _this = this;
         return new Promise((resolve, reject) => {
             try
@@ -1208,7 +770,7 @@ const excel2 = new class Excel {
         })
     }
 
-    async exportPics( { type: extype, data, baseURL, accessToken} ) {
+    async OLD_DELexportPics( { type: extype, data, baseURL, accessToken} ) {
         let ExpDir, picUrl, resolutions;
         log.verbose(`Going to export ${extype}`);
         try
@@ -1265,144 +827,6 @@ const excel2 = new class Excel {
             URL += '&X-Plex-Token=' + accessToken;
             await this.forceDownload(URL, outFile);
         }
-    }
-
-    async addRowToTmp( { libType, level, data, stream, fields }) {
-        et.updateStatusMsg( et.rawMsgType.RunningTime, await et.getRunningTimeElapsed());
-        log.debug(`Start addRowToTmp. libType: ${libType} - level: ${level}`)
-        log.silly(`Data is: ${JSON.stringify(data)}`)
-        let date, year, month, day, hours, minutes, seconds
-        let lookup, val, array, i, valArray, valArrayVal, subType, subKey
-        let str = ''
-        let result = ''
-        let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
-        if ( textSep === ' ')
-        {
-            textSep = '';
-        }
-        for (var x=0; x<fields.length; x++) {
-            var name = Object.keys(fields[x]);
-            lookup = JSONPath({path: '$..key', json: fields[x]})[0];
-            switch(String(JSONPath({path: '$..type', json: fields[x]}))) {
-                case "string":
-                    val = String(JSONPath({path: String(lookup), json: data})[0]);
-                    // Make N/A if not found
-                    val = this.isEmpty( { val: val });
-                    // Remove CR, LineFeed ' and " from the
-                    // string if present, and replace with a space
-                    val = val.replace(/'|"|\r|\n/g, ' ');
-                    val = textSep + val + textSep;
-                    break;
-                case "array":
-                    array = JSONPath({path: lookup, json: data});
-                    if (array === undefined || array.length == 0) {
-                        val = wtconfig.get('ET.NotAvail', 'N/A');
-                    }
-                    else
-                    {
-                        valArray = []
-                        for (i=0; i<array.length; i++) {
-                            subType = JSONPath({path: '$..subtype', json: fields[x]});
-                            subKey = JSONPath({path: '$..subkey', json: fields[x]});
-                            switch(String(subType)) {
-                                case "string":
-                                    valArrayVal = String(JSONPath({path: String(subKey), json: array[i]})[0]);
-                                    // Make N/A if not found
-                                    valArrayVal = this.isEmpty( { val: valArrayVal });
-                                    // Remove CR, LineFeed ' and " from the string if present
-                                    valArrayVal = valArrayVal.replace(/'|"|\r|\n/g, ' ');
-                                    break;
-                                case "time":
-                                    valArrayVal = JSONPath({path: String(subKey), json: array[i]});
-                                    // Make N/A if not found
-                                    if (valArrayVal == null || valArrayVal == "")
-                                    {
-                                        valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
-                                    }
-                                    else
-                                    {
-                                        const total = valArrayVal.length
-                                        for (let i=0; i<total; i++) {
-                                            seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();
-                                            minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();
-                                            hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();
-                                            // Will display time in 10:30:23 format
-                                            valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    log.error('NO ARRAY HIT (addRowToSheet-array)')
-                            }
-                            valArray.push(valArrayVal)
-                        }
-                        val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
-                        if ( String(subType) == 'string')
-                        {
-                            val = textSep + val + textSep;
-                        }
-                    }
-                    break;
-                case "array-count":
-                    val = JSONPath({path: String(lookup), json: data}).length;
-                    break;
-                case "int":
-                    val = JSONPath({path: String(lookup), json: data})[0];
-                    break;
-                case "time":
-                    val = JSONPath({path: String(lookup), json: data});
-                    if ( typeof val !== 'undefined' && val  && val != '')
-                    {
-                        seconds = '0' + (Math.round(val/1000)%60).toString();
-                        minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();
-                        hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();
-                        // Will display time in 10:30:23 format
-                        val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                    }
-                    else
-                    {
-                        val = wtconfig.get('ET.NotAvail', 'N/A')
-                    }
-                    break;
-                case "datetime":
-                    val = JSONPath({path: String(lookup), json: data});
-                    if ( typeof val !== 'undefined' && val && val != '')
-                    {
-                        // Create a new JavaScript Date object based on the timestamp
-                        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                        date = new Date(val * 1000);
-                        year = date.getFullYear().toString();
-                        month = ('0' + date.getMonth().toString()).substr(-2);
-                        day = ('0' +  date.getDate().toString()).substr(-2);
-                        hours = date.getHours();
-                        minutes = "0" + date.getMinutes();
-                        seconds = "0" + date.getSeconds();
-                        // Will display time in 10:30:23 format
-                        val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                    }
-                    else
-                    {
-                        val = wtconfig.get('ET.NotAvail', 'N/A')
-                    }
-                    break;
-            }
-            let doPostProc = JSONPath({path: '$..postProcess', json: fields[x]})
-            if ( doPostProc == 'true')
-            {
-                if (!["Original Title","Sort title"].includes(name)){
-                    const title = JSONPath({path: String('$.title'), json: data})[0];
-                    val = await this.postProcess( {name: name, val: val, title: title} );
-                }
-                else {
-                    val = await this.postProcess( {name: name, val: val} );
-                }
-            }
-            str += wtconfig.get('ET.ColumnSep') + val;
-        }
-        // Remove first character
-        result = str.substr(1);
-        //await stream.write( result + "\n");
-        stream.write( result + "\n");
     }
 
     async sleep(ms) {
@@ -1478,103 +902,8 @@ const excel2 = new class Excel {
         });
     }
 
-    async createOutFile( {libName, level, libType, baseURL, accessToken, exType, pListType} )
-    {
-        const header = excel2.GetHeader(level, libType, pListType);
-        log.debug(`header: ${header}`);
-        const strHeader = header.join(wtconfig.get('ET.ColumnSep', ','));
-        // Now we need to find out how many calls to make
-        const call = await et.getLevelCall(libType, level);
-        // Open a file stream
-        const tmpFile = await excel2.getFileName({ Library: libName, Level: level, Type: 'tmp', Module: i18n.t('Modules.ET.Name'), exType: exType });
-        var fs = require('fs');
-        var stream = fs.createWriteStream(tmpFile, {flags:'a'});
-        // Add the header
-        stream.write( strHeader + "\n");
-        var sectionData, x;
-        {
-            // Get all the items in small chuncks
-            sectionData = await et.getSectionData();
-            log.verbose(`Amount of chunks in sectionData are: ${sectionData.length}`);
-            let item;
-            let counter = 1;
-            const totalSize = JSONPath({path: '$..totalSize', json: sectionData[0]});
-            let jPath, sectionChunk;
-            if (libType == et.ETmediaType.Libraries)
-            {
-                jPath = "$.MediaContainer.Directory[*]";
-            }
-            else if (libType == et.ETmediaType.Playlists)
-            {
-                jPath = "$.MediaContainer.Metadata[*]";
-            }
-            else
-            {
-                jPath = "$.MediaContainer.Metadata[*]";
-            }
-            const bExportPosters = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Posters.${et.expSettings.levelName}`, false);
-            const bExportArt = wtconfig.get(`ET.CustomLevels.${et.expSettings.libTypeSec}.Art.${et.expSettings.levelName}`, false);
-            for (x=0; x<sectionData.length; x++)
-            {
-                et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
-                sectionChunk = await JSONPath({path: jPath, json: sectionData[x]});
-                const fields = et.getFields( libType, level);
-                if ( call == 1 )
-                {
-                    for (item of sectionChunk){
-                        et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
-                        if (bExportPosters)
-                        {
-                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        if (bExportArt)
-                        {
-                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        counter += 1;
-                        await new Promise(resolve => setTimeout(resolve, 1));
-                    }
-                }
-                else
-                {
-                    // Get ratingKeys in the chunk
-                    const urls = await JSONPath({path: '$..ratingKey', json: sectionChunk});
-                    let urlStr = urls.join(',');
-                    log.verbose(`Items to lookup are: ${urlStr}`);
-                    et.updateStatusMsg(et.rawMsgType.Chuncks, i18n.t('Modules.ET.Status.Processing-Chunk', {current: x, total: sectionData.length -1}));
-                    const urlWIthPath = '/library/metadata/' + urlStr + '?' + this.uriParams;
-                    log.verbose(`Items retrieved`);
-                    const contents = await et.getItemData({baseURL: baseURL, accessToken: accessToken, element: urlWIthPath});
-                    const contentsItems = await JSONPath({path: '$.MediaContainer.Metadata[*]', json: contents});
-                    for (item of contentsItems){
-                        et.updateStatusMsg(et.rawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: counter, total: totalSize}));
-                        if (bExportPosters)
-                        {
-                            await this.exportPics( { type: 'posters', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        if (bExportArt)
-                        {
-                            await this.exportPics( { type: 'arts', data: item, baseURL: baseURL, accessToken: accessToken } )
-                        }
-                        await excel2.addRowToTmp( { libType: libType, level: level, data: item, stream: stream, fields: fields } );
-                        counter += 1;
-                        await new Promise(resolve => setTimeout(resolve, 1));
-                    }
-                }
-            }
-        }
-        stream.end();
-        // Rename to real file name
-        var newFile = tmpFile.replace('.tmp', '.csv')
-        fs.renameSync(tmpFile, newFile);
-        // Need to export to xlsx as well?
-        if (wtconfig.get('ET.ExpExcel')){
-            log.info('We need to create an xlsx file as well');
-            et.updateStatusMsg( et.rawMsgType.Info, i18n.t('Modules.ET.Status.CreateExlsFile'));
-            await excel2.createXLSXFile( {csvFile: newFile, level: level, libType: libType, libName: libName, exType: exType, pListType: pListType});
-        }
-    }
+
+
 }
 
 export { et, excel2 };

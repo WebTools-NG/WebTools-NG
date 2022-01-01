@@ -27,6 +27,18 @@
         </b-tooltip>
         <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=false @change="setArt_Dimensions()"></b-form-input>
     </b-input-group>
+    <b-input-group id="ChReturn" :prepend="$t('Modules.ET.Settings.ChReturn')" class="mt-3">
+        <b-tooltip target="ChReturn" triggers="hover">
+              {{ $t('Modules.ET.Settings.ChReturn_TT') }}
+        </b-tooltip>
+        <b-form-input id="ChReturn" name="ChReturn" type="text" class="form-control" v-model="ChReturn" :disabled=false @change="setChReturn()"></b-form-input>
+    </b-input-group>
+    <b-input-group id="ChNewLine" :prepend="$t('Modules.ET.Settings.ChNewLine')" class="mt-3">
+        <b-tooltip target="ChNewLine" triggers="hover">
+              {{ $t('Modules.ET.Settings.ChNewLine_TT') }}
+        </b-tooltip>
+        <b-form-input id="ChNewLine" name="ChNewLine" type="text" class="form-control" v-model="ChNewLine" :disabled=false @change="setChNewLine()"></b-form-input>
+    </b-input-group>
     <b-form-group id="b-form-group">
       <b-form-checkbox-group
         stacked
@@ -56,6 +68,7 @@
             {
                 this.ColumnSep = wtconfig.get('ET.ColumnSep');
             }
+            alert('For this version, export to XLSX is currently disabled');
         },
         data() {
             return {
@@ -67,15 +80,18 @@
                 ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
                 cbSelected: [],
                 cbOptions: [
-                    { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpExcel' },
+                    { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
+                    { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpXLSX', disabled: true },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
                     { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' }
-                ]
+                ],
+                ChReturn: wtconfig.get('ET.ChReturn', '<RETURN>'),
+                ChNewLine: wtconfig.get('ET.ChNewLine', '<NEWLINE>')
             };
         },
         methods: {
             getcbDefaults(){
-                const cbItems = ["ExpExcel", "OrgTitleNull", "SortTitleNull"];
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
@@ -84,7 +100,7 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpExcel","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
             },
@@ -114,6 +130,12 @@
             },
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
+            },
+            setChReturn: function(){
+                wtconfig.set('ET.ChReturn', this.ChReturn)
+            },
+            setChNewLine: function(){
+                wtconfig.set('ET.ChNewLine', this.ChNewLine)
             },
             setTextQualifierCSV: function(){
                 wtconfig.set('ET.TextQualifierCSV', this.TextQualifierCSV)

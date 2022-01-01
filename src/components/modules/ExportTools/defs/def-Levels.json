@@ -8,7 +8,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "8": {
@@ -20,7 +21,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "4": {
@@ -32,23 +34,35 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
+        },
+        "Include": {
+            "Level 1": "",
+            "Level 2": "",
+            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1"
         }
     },
     "1" : {
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
-            "All": "all",
-            "dev tommy": "devTommy"
-
+            "All": "all"
         },
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
             "All": 2,
-            "devTommy": 2
+            "all": 2
+        },
+        "Include": {
+            "Level 11": "",
+            "Level 21": "",
+            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1",
+            "Missing1": "includeAllConcerts=1&includeChildren=1&includeConcerts=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1",
+            "Everything1": "checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1"
         }
+
     },
     "2": {
         "levels": {
@@ -59,7 +73,14 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
+        },
+        "Include": {
+            "Level 1": "",
+            "Level 2": "",
+            "1all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1,includeAllConcerts=1&includeChildren=1&includeConcerts=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1",
+            "all": ""
         }
     },
     "10": {
@@ -71,7 +92,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "13": {
@@ -83,7 +105,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "2001": {
@@ -95,7 +118,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "2003": {
@@ -107,7 +131,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "2002": {
@@ -119,7 +144,8 @@
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
-            "All": 2
+            "All": 2,
+            "all": 2
         }
     },
     "1002": {
@@ -127,7 +153,8 @@
             "All": "all"
         },
         "LevelCount": {
-            "All": 1
+            "All": 1,
+            "all": 1
         }
     },
     "3001": {
@@ -135,7 +162,8 @@
             "All": "all"
         },
         "LevelCount": {
-            "All": 1
+            "All": 1,
+            "all": 1
         }
     }
 }

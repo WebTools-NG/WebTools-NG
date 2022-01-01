@@ -1,0 +1,33 @@
+name: Build/release
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+#        os: [macos-latest]
+#        os: [ubuntu-latest, windows-latest]
+#        os: [windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.16
+      - name: Install dependencies
+        run: npm install
+      - name: see directory with dependencies
+        run: ls
+      - name: Deploy Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run deploy

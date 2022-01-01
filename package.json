@@ -1,7 +1,7 @@
 {
   "name": "webtools-ng",
   "productName": "WebTools-NG",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "description": "WebTools Next Generation 4 Plex",
   "author": "dane22 & CPSO",
   "license": "MPL-2.0",
@@ -14,6 +14,9 @@
     "build": "run-script-os",
     "build:darwin:linux": "chmod +x script/getGitVer.sh && . script/getGitVer.sh && vue-cli-service electron:build && unset AppRev",
     "build:win32": "script\\getGitVer.cmd && vue-cli-service electron:build",
+    "deploy": "run-script-os",
+    "deploy:win32": "script\\getGitVer.cmd && vue-cli-service electron:build --publish always",
+    "deploy:darwin:linux": "chmod +x script/getGitVer.sh && . script/getGitVer.sh && vue-cli-service electron:build --publish always && unset AppRev",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "postinstall": "electron-builder install-app-deps",
