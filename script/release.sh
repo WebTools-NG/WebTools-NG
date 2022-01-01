@@ -24,3 +24,4 @@ git commit -am v$CURVER.$rev
 git tag v$CURVER.$rev
 # Upload and trigger a release
 git push && git push --tags
+git checkout $CURVER
