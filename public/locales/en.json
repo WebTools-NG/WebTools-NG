@@ -157,7 +157,6 @@
                 "ChReturn_TT": "Leave blank to not replace",
                 "ChNewLine": "Replace NewLine character with",
                 "ChNewLine_TT": "Leave blank to not replace"
-
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "SelectLevel": "Select level",
