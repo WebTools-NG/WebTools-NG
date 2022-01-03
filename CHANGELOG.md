@@ -1,5 +1,13 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V0.3.14
+
+**Note**:   This version is an Beta version
+
+**Changes**:
+
+* [#429 Allow setting the LogNumFiles from Settings](https://github.com/WebTools-NG/WebTools-NG/issues/429)
+
 ## V0.3.13
 
 **Note**:   This version is an Beta version
