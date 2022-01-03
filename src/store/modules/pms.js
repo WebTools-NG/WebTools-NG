@@ -101,13 +101,28 @@ const actions = {
                 jNode['default'] = JSONPath({path: '$.default', json: element})[0];
                 jNode['value'] = JSONPath({path: '$.value', json: element})[0];
                 PMSSettingsItem[id] = jNode;
-                PMSSettings[itemGroup].push(PMSSettingsItem)
+                PMSSettings[itemGroup].push(PMSSettingsItem);
               });
               // Remove undefined category, if empty
               if (Object.keys(PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')]).length === 0){
                 delete PMSSettings[i18n.t('Modules.PMS.Settings.Undefined')];
               }
-              log.verbose(`PMS Settings are: ${JSON.stringify(PMSSettings)}`)
+              log.verbose(`PMS Settings are: ${JSON.stringify(PMSSettings)}`);
+              // Workaround for issue #429
+              if ( !JSON.stringify(PMSSettings).includes('LogNumFiles') )
+              {
+                // Put into undefined, since the only one we know the name of
+                var itemGroup = i18n.t('Modules.PMS.Settings.Undefined');
+                var PMSSettingsItem = {}
+                var jNode = {};
+                jNode['label'] = 'Amount of log files';
+                jNode['summary'] = 'Amount of log files to keep before rolling over. Server must be restarted for changes to take effect';
+                jNode['type'] = 'int';
+                jNode['default'] = 5;
+                jNode['value'] = 5;
+                PMSSettingsItem['LogNumFiles'] = jNode;
+                PMSSettings[itemGroup].push(PMSSettingsItem);
+              }
               commit('UPDATE_PMS_SETTINGS', PMSSettings);
             })
             .catch(function (error) {
