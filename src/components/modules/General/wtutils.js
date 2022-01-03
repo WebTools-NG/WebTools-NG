@@ -25,8 +25,6 @@ const wtutils = new class WTUtils {
     }
 
     get ExportDirPresent(){
-
-
         log.info('Checking ExportPath')
         const ExportPath = wtconfig.get('General.ExportPath', 'N/A');
         if ( ExportPath == 'N/A' ){
@@ -147,6 +145,10 @@ const wtutils = new class WTUtils {
 
     get AppVersion() {
         return (electron.app || electron.remote.app).getVersion() + '.' + this.Rev;
+    }
+
+    get ShortAppVersion() {
+        return (electron.app || electron.remote.app).getVersion();
     }
 
     get LangFiles() {
@@ -446,11 +448,6 @@ const wtutils = new class WTUtils {
             wtconfig.set('ET.CustomLevels.2002', wtconfig.get('ET.CustomLevels.playlist-video', 'N/A'));
             wtconfig.delete('ET.CustomLevels.playlist-video');
         }
-
-
-
-
-        
         // All done, so stamp version number
         wtconfig.set('General.version', wtutils.AppVersion)
     }
@@ -545,10 +542,16 @@ const github = new class GitHub {
         await axios(this.changeLogUrl)
             .then(response => {
                 this.data = response.data;
-                resp = this.data.split("## ")[1];
-                resp = resp.split('## ')[0];
+//                resp = this.data.split("## ")[1];
+//                resp = resp.split('## ')[0];
+                resp = this.data;
             })
             .catch(console.error);
+            // Cut so we only show this version
+            //var ShortAppVersion = '0.3.11';
+            var ShortAppVersion = wtutils.ShortAppVersion;
+            resp = resp.substring(resp.indexOf("## V" + ShortAppVersion));
+            resp = resp.substring(0, resp.indexOf("## V", 2));
             // Remove link from lines
             const regex = /\([^)]*\)/ig;
             resp = resp.replaceAll(regex, '');
@@ -556,8 +559,6 @@ const github = new class GitHub {
             resp = resp.replaceAll('* [', '').replaceAll(']','');
             // Split into an array
             resp = resp.split("\n");
-            // Remove empty items
-            resp = resp.filter(item => item);
             return resp;
         }
 

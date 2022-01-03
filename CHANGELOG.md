@@ -4,11 +4,17 @@
 
 **Note**:   This version is an Beta version
 
+**Note 2**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
 **Changes**:
 
 * [#429 Allow setting the LogNumFiles from Settings](https://github.com/WebTools-NG/WebTools-NG/issues/429)
+* [#435 Showing Rel Notes should only show current version](https://github.com/WebTools-NG/WebTools-NG/issues/435)
 
-## V0.3.13
+## V0.3.13 (20220102)
 
 **Note**:   This version is an Beta version
 
