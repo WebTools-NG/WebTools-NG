@@ -1142,7 +1142,6 @@ const etHelper = new class ETHELPER {
     }
 
     getIncludeInfo(){
-        console.log('Ged 33-0: ' + this.Settings.libTypeSec + ' -*- ' + this.Settings.levelName)
         let includeInfo;
         try {
             includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
