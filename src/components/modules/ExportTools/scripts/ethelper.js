@@ -813,18 +813,6 @@ const etHelper = new class ETHELPER {
         return resp
     }
 
-    async OLDDELGed_getItemData({ postURI=this.#_defpostURI })
-    {
-        log.debug(`etHelper (getItemData): Element is: ${this.Settings.element}`)
-        const url = this.Settings.baseURL + this.Settings.element + postURI;
-        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
-        log.verbose(`etHelper (getItemData): Calling url in getItemData: ${url}`)
-        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        let resp = await response.json();
-        log.debug(`etHelper (getItemData): Response in getItemData: ${JSON.stringify(resp)}`)
-        return resp
-    }
-
     async getLevelCall () {
         if (this.Settings.libType == this.ETmediaType.Playlist)
         {
@@ -1087,6 +1075,10 @@ const etHelper = new class ETHELPER {
 
     // Generate the filename for an export
     async getFileName({ Type }){
+        if (this.Settings.libTypeSec == this.ETmediaType.Playlists)
+        {
+            this.Settings.LibName = 'All Playlists';
+        }
         const dateFormat = require('dateformat');
         const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
@@ -1114,8 +1106,71 @@ const etHelper = new class ETHELPER {
         return outFileWithPath;
     }
 
+    async getSections(address, accessToken)
+    {
+        // Returns an array of json, as:
+        // [{"title":"DVR Movies","key":31,"type":"movie"}]
+        const result = [];
+        let url = address + '/library/sections/all'
+
+        console.log('Ged 5-4 Type: ' + this.Settings.selType)
+
+/*         
+        if ([this.ETmediaType.Playlist_Audio, this.ETmediaType.Playlist_Video].includes(this.Settings.selType))
+        {
+            url = address + '/library/sections/all?type=15&sort=lastViewedAt:desc&playlistType=video,audio'
+        }
+        else
+        {
+            url = address + '/library/sections/all'
+        }
+ */
+
+        this.PMSHeader["X-Plex-Token"] = accessToken;
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        let respJSON = await Promise.resolve(resp);
+        let sections = await JSONPath({path: '$..Directory', json: respJSON})[0];
+        let section;
+        for (section of sections){
+            const subItem = {}
+            subItem['title'] = JSONPath({path: '$..title', json: section})[0];
+            subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);
+            subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+            subItem['scanner'] = JSONPath({path: '$..scanner', json: section})[0];
+            subItem['agent'] = JSONPath({path: '$..agent', json: section})[0];
+            result.push(subItem)
+        }
+        await Promise.resolve(result);
+        if ([this.ETmediaType.Playlist_Audio, this.ETmediaType.Playlist_Video].includes(this.Settings.selType))
+        {
+            url = address + '/playlists/all?type=15&sort=lastViewedAt:desc&playlistType=video,audio'
+        }
+        else
+        {
+            url = address + '/playlists'
+        }
+        response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        resp = await response.json();
+        respJSON = await Promise.resolve(resp);
+        if (JSONPath({path: '$..size', json: respJSON})[0] > 0)
+        {
+            sections = await JSONPath({path: '$..Metadata', json: respJSON})[0];
+            for (section of sections){
+                const subItem = {}
+                subItem['title'] = JSONPath({path: '$..title', json: section})[0];
+                subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
+                subItem['type'] = JSONPath({path: '$..type', json: section})[0];
+                subItem['playlistType'] = JSONPath({path: '$..playlistType', json: section})[0];
+                result.push(subItem)
+            }
+        }
+        return  result
+    }
+
     getElement(){
         let element
+        console.log('Ged 11 SecType: ' + this.Settings.libTypeSec)
         switch (this.Settings.libTypeSec) {
             case this.ETmediaType.Playlist_Photo:
                 element = `/playlists/${this.Settings.selLibKey}/items`;

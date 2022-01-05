@@ -366,6 +366,9 @@
         case et.ETmediaType.Track:
           reqType = et.ETmediaType.Artist;
           break;
+        case et.ETmediaType.Playlist:
+          reqType = et.ETmediaType.Playlist;
+          break;
         default:
           reqType = this.selMediaType
       }
@@ -373,10 +376,8 @@
       this.selLibrary = "";
       await this.$store.dispatch('fetchSections')
       const sections = await this.$store.getters.getPmsSections;
-      //const pListType = this.$store.getters.getSelectedPListType;
       if (Array.isArray(sections) && sections.length) {
         sections.forEach(req => {
-          //if (req.type == this.selMediaType) {
           if (req.type == reqType) {
             if (reqType == 'playlist')
             {
