@@ -9,6 +9,7 @@ import filesize from 'filesize';
 import Excel from 'exceljs';
 
 var path = require("path");
+var sanitize = require("sanitize-filename");
 
 const log = require('electron-log');
 console.log = log.log;
@@ -1090,26 +1091,26 @@ const etHelper = new class ETHELPER {
         const OutDir = wtconfig.get('General.ExportPath');
         const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
         const path = require('path');
-        let outFile = store.getters.getSelectedServer.name + '_';
-        outFile += this.Settings.LibName + '_';
-        outFile += this.Settings.fileMajor + '_';
-        outFile += this.Settings.fileMinor + '_';
-        outFile += this.Settings.levelName + '_';
-        outFile += 'Item ' + this.Settings.startItem + '-' + this.Settings.endItem + '_';
-        outFile += timeStamp + '.' + Type + '.tmp';
+        let arrFile = [];
+        arrFile.push(sanitize(store.getters.getSelectedServer.name));
+        arrFile.push(sanitize(this.Settings.LibName));
+        arrFile.push(this.Settings.fileMajor);
+        arrFile.push(this.Settings.fileMinor);
+        arrFile.push(this.Settings.levelName);
+        arrFile.push('Item ' + this.Settings.startItem + '-' + this.Settings.endItem);
+        arrFile.push(timeStamp + '.' + Type + '.tmp');
+        this.Settings.outFile = arrFile.join('_');
         // Remove unwanted chars from outfile name
-        outFile = outFile.replaceAll('/', '_');
-        this.Settings.outFile = outFile;
         const targetDir = path.join(
             OutDir, wtutils.AppName, i18n.t('Modules.ET.Name'));
         const outFileWithPath = path.join(
-            targetDir, outFile);
+            targetDir, this.Settings.outFile);
         // Make sure target dir exists
         const fs = require('fs')
         if (!fs.existsSync(targetDir)) {
             fs.mkdirSync(targetDir);
         }
-        log.info(`OutFile ET is ${outFileWithPath}`);
+        log.info(`etHelper (getFileName) OutFile ET is ${outFileWithPath}`);
         return outFileWithPath;
     }
 
