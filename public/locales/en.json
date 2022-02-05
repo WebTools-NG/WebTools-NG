@@ -375,6 +375,11 @@
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
             "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
+        },
+        "DVR": {
+            "Name": "DVR",
+            "Description": "@:Modules.DVR.Name module allows you to export and import your DVR settings"
+
         }
     }
 }

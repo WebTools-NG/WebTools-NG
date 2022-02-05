@@ -13,6 +13,8 @@
     import etIcon from '@/assets/ET-256.png'; 
     import pmsIcon from '@/assets/plex-pms-icon.png';  
     import plextvIcon from '@/assets/plex-app-icon.png';   
+    import plexDVRIcon from '@/assets/device-generic-560.png';   
+
 
     export default {
         data() {
@@ -32,6 +34,23 @@
                         header: true,
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
+                    },
+                    {
+                        href: { path: '/dvr' },
+                        title: this.$t("Modules.DVR.Name"),
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: plexDVRIcon },
+                            },
+                        child: [
+                            {                                
+                                href: '/dvr/export',
+                                title: "DVR EXPORT DO TRANSLATE",                                
+                                icon: 'fa fa-cog'
+                            }
+                        ]                        
                     },
                     {
                         href: { path: '/plextv' },
