@@ -378,7 +378,10 @@
         },
         "DVR": {
             "Name": "DVR",
-            "Description": "@:Modules.DVR.Name module allows you to export and import your DVR settings"
+            "Description": "@:Modules.DVR.Name module allows you to backup and restore your DVR settings",
+            "selDVR": "Select DVR to backup",
+            "ttselDVR": "Here you select the DVR you want to make a backup of",
+            "lblBtnBackup": "Backup"
 
         }
     }
