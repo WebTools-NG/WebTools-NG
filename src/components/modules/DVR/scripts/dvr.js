@@ -11,3 +11,5 @@ i18n, wtconfig, wtutils, store
 
 const dvr = new class DVR {
 }
+
+dvr

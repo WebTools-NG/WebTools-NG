@@ -69,7 +69,19 @@
   created() {
     log.info("DVR Created");
     this.serverSelected();
-  },  
+  },
+  watch: {
+    // Watch for when selected server address is updated
+    selectedServerAddress: async function(){
+      log.info("DVR Selected server changed");
+    }
+  },
+  computed: {
+    // We need this computed, for watching for changes to selected server
+    selectedServerAddress: function(){
+      return this.$store.getters.getSelectedServerAddress
+    }
+  },
   methods: {
     async dvrBackup() {      
       log.info("DVR Backup started");

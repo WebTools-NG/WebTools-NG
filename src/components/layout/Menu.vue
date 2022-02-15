@@ -43,14 +43,7 @@
                             //adjust element
                                 element: 'img',
                                 attributes: { src: plexDVRIcon },
-                            },
-                        child: [
-                            {                                
-                                href: '/dvr/export',
-                                title: "DVR EXPORT DO TRANSLATE",                                
-                                icon: 'fa fa-cog'
-                            }
-                        ]                        
+                            }                     
                     },
                     {
                         href: { path: '/plextv' },
