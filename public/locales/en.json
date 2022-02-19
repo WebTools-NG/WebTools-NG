@@ -143,6 +143,7 @@
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
                 "OrgTitleNull": "Default \"Original Title\" to \"Title\", if empty",
                 "SortTitleNull": "Default \"Sort Title\" to \"Title\", if empty",
+                "suggestedFileNoExtra": "For suggested filename strip extra info from filenames so only essential info is kept",
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
                 "ExportToExcel": "Export to xlsx",

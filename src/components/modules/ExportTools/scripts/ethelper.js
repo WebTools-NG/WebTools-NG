@@ -109,7 +109,7 @@ function getSuggestedId( data )
 // Returns a string stripped for Year
 function stripYearFromFileName( tmpFileName, year ){
     const re = new RegExp(`\\b${year}\\b`, 'gi');
-    return tmpFileName.replace(re, "");
+    return tmpFileName.replace(re, "").trim();    
 }
 
 // Returns a string stripped for ID's
@@ -119,15 +119,6 @@ function stripIdFromFileName( param ){
     const imdb = param.imdb.slice(7);
     const tmdb = param.tmdb.slice(7);
     const tvdb = param.tvdb.slice(7);
-    let selId;
-    if ( etHelper.Settings.libType === 1)
-    {
-        selId = wtconfig.get("ET.SelectedMoviesID", "imdb");
-    }
-    else
-    {
-        selId = wtconfig.get("ET.SelectedShowsID", "tmdb");
-    }
     // Remove IMDB id    
     re = new RegExp(`\\b${imdb}\\b`, 'gi');
     tmpFileName = tmpFileName.replace(re, "");
@@ -142,8 +133,7 @@ function stripIdFromFileName( param ){
         re = new RegExp(`\\b${element}\\b`, 'gi');
         tmpFileName = tmpFileName.replace(re, "");        
     });
-    tmpFileName = tmpFileName.replace(`{-}`, "");
-    return tmpFileName
+    return tmpFileName.replace(`{-}`, "").trim();
 }
 
 // Returns a filename without the title
@@ -182,23 +172,42 @@ function stripTitleFromFileName( tmpFileName, title )
             }
         }
     }
-    return tmpFileName
+    tmpFileName = tmpFileName.trim();
+    return tmpFileName;
 }
 
 // Strip parts from a filename, and return multiple values
-function stripPartsFromFileName( tmpFileName ) {
+function stripPartsFromFileName( tmpFileName, title ) {
     log.debug(`etHelper (stripPartsFromFileName): looking at ${tmpFileName}`);
     let partName = '';
-   // Find stacked item if present
+    // Find stacked item if present
     etHelper.StackedFilesName.forEach(element => {
+        console.log('Ged 76 Element: ' + element)
+        // Got a hit?    
         if (tmpFileName.toLowerCase().indexOf(element) > -1) {
             // Get index again
             const idx = tmpFileName.toLowerCase().indexOf(element);
-            // Extract element part, but add one char more for the counter
-            partName = tmpFileName.substring(idx, idx + element.length + 1).toLowerCase();
-        }
+            // Got a stacked identifier, so make sure next character is a number in [1-8] range
+            const numStacked =  tmpFileName.charAt(idx + element.length);
+            if (isNaN(numStacked)) {
+                log.warn(`etHelper (stripPartsFromFileName): for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found next character not a number so ignorring`)
+            }
+            else
+            {
+                if (parseInt(numStacked, 10) < 9 && parseInt(numStacked, 10) > 0)
+                {
+                    // Extract element part, but add one char more for the counter
+                    partName = tmpFileName.substring(idx, idx + element.length + 1).toLowerCase();
+                }
+                else
+                {
+                    log.warn(`etHelper (stripPartsFromFileName): for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found entry not in range [1-8] so ignorring`)
+                    log.warn(`etHelper (stripPartsFromFileName): See: https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/`)
+                }
+            }                        
+        }        
     });
-
+    
     // Remove partName from tmpFile
     tmpFileName = tmpFileName.replace(partName, '');
     // Remove white spaces
@@ -408,7 +417,8 @@ const etHelper = new class ETHELPER {
         tmpFileName = stripYearFromFileName( tmpFileName, year );
         // Strip ID from fileName
         tmpFileName = stripIdFromFileName( {tmpFileName: tmpFileName, imdb: imdb, tmdb: tmdb, tvdb: tvdb} );
-        const parts = stripPartsFromFileName( tmpFileName );
+        // Get parts, if a stacked media
+        const parts = stripPartsFromFileName( tmpFileName, title );
         tmpFileName = parts.fileName;
         const partName = parts.partName;
         // Remove empty brackets if present
@@ -420,11 +430,17 @@ const etHelper = new class ETHELPER {
         tmpFileName = tmpFileName.replaceAll("]", ".");        
         // Remove double dots if present
         tmpFileName = tmpFileName.replaceAll("..", ".");
-        // Remove leading dot if present
+        tmpFileName = tmpFileName.trim();
+        // Remove leading dots if present
         while(tmpFileName.charAt(0) === '.')
         {
             tmpFileName = tmpFileName.substring(1);
         }        
+        // Remove trailing dots if present        
+        while(tmpFileName.slice(-1) === '.')
+        {
+            tmpFileName = tmpFileName.substring(0, tmpFileName.length - 1);
+        }     
         // Remove double square brackets if present
         tmpFileName = tmpFileName.replaceAll("[]", "");
         // Remove double square brackets with a space if present
@@ -440,8 +456,15 @@ const etHelper = new class ETHELPER {
         {
             tmpFileName = `[${tmpFileName}]`
         }
-
-        let suggestedFileName = `${title} (${year}) ${Id} ${tmpFileName} ${partName}`.trim();
+        let suggestedFileName;
+        if (wtconfig.get("ET.suggestedFileNoExtra", false))
+        {
+            suggestedFileName = `${title} (${year}) ${Id} ${partName}`.trim();
+        }
+        else
+        {            
+            suggestedFileName = `${title} (${year}) ${Id} ${tmpFileName} ${partName}`.trim();
+        }
         // Remove double space if present
         suggestedFileName = suggestedFileName.replaceAll("  ", " ");                
         const fileNameExt = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).ext;        

@@ -95,7 +95,8 @@
                     { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpXLSX', disabled: true },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
-                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' }
+                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
+                    { text: i18n.t('Modules.ET.Settings.suggestedFileNoExtra'), value: 'suggestedFileNoExtra' }
                 ],
                 ChReturn: wtconfig.get('ET.ChReturn', '<RETURN>'),
                 ChNewLine: wtconfig.get('ET.ChNewLine', '<NEWLINE>'),
@@ -121,7 +122,7 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
             },
