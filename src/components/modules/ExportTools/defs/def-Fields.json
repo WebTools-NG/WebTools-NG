@@ -1195,6 +1195,20 @@
                 "subtype": "string",
                 "subkey": "$.title"
             },
+        "Suggested File Name":
+            {
+                "key": "$.title",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
+        "Suggested Folder Name":
+            {
+                "key": "$.title",
+                "call": 2,
+                "type": "string",
+                "postProcess": true
+            },
         "Summary":
             {
                 "key": "$.summary",

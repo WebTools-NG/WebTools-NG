@@ -64,6 +64,161 @@ function setQualifier( {str:str})
     return result;
 }
 
+// Returns a suggested title for a media
+function getSuggestedTitle( data )
+{
+    return String(JSONPath({path: '$.data.title', json: data})).replace(/[/\\?%*:|"<>]/g, ' ').replace('  ', ' ');
+}
+
+// Returns a suggested year for a media
+function getSuggestedYear( data )
+{
+    return String(JSONPath({path: '$.data.year', json: data}));
+}
+
+// Returns a suggested id for a media
+function getSuggestedId( data )
+{
+    const imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
+    const tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
+    const tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));
+    let selId;        
+    if ( etHelper.Settings.libType === 1)
+    {
+        selId = wtconfig.get("ET.SelectedMoviesID", "imdb");
+    }
+    else
+    {
+        selId = wtconfig.get("ET.SelectedShowsID", "tmdb");
+    }
+    let Id;
+    switch(selId) {
+        case 'imdb':
+            Id = `{imdb-${imdb.slice(7)}}`;
+            break;
+        case 'tmdb':
+            Id = `{tmdb-${tmdb.slice(7)}}`;
+            break;
+        case 'tvdb':
+            Id = `{tvdb-${tvdb.slice(7)}}`;
+            break;    
+    }
+    return Id;
+}
+
+// Returns a string stripped for Year
+function stripYearFromFileName( tmpFileName, year ){
+    const re = new RegExp(`\\b${year}\\b`, 'gi');
+    return tmpFileName.replace(re, "");
+}
+
+// Returns a string stripped for ID's
+function stripIdFromFileName( param ){    
+    let tmpFileName = param.tmpFileName;
+    let re;
+    const imdb = param.imdb.slice(7);
+    const tmdb = param.tmdb.slice(7);
+    const tvdb = param.tvdb.slice(7);
+    let selId;
+    if ( etHelper.Settings.libType === 1)
+    {
+        selId = wtconfig.get("ET.SelectedMoviesID", "imdb");
+    }
+    else
+    {
+        selId = wtconfig.get("ET.SelectedShowsID", "tmdb");
+    }
+    // Remove IMDB id    
+    re = new RegExp(`\\b${imdb}\\b`, 'gi');
+    tmpFileName = tmpFileName.replace(re, "");
+    // Remove TMDB id    
+    re = new RegExp(`\\b${tmdb}\\b`, 'gi');
+    tmpFileName = tmpFileName.replace(re, "");
+    // Remove TVDB id    
+    re = new RegExp(`\\b${tvdb}\\b`, 'gi');
+    tmpFileName = tmpFileName.replace(re, "");
+    const idProviders = ['imdb', 'tmdb', 'tvdb'];    
+    idProviders.forEach(element => {
+        re = new RegExp(`\\b${element}\\b`, 'gi');
+        tmpFileName = tmpFileName.replace(re, "");        
+    });
+    tmpFileName = tmpFileName.replace(`{-}`, "");
+    return tmpFileName
+}
+
+// Returns a filename without the title
+function stripTitleFromFileName( tmpFileName, title )
+{
+    let re;        
+    // Title in filename separated with dots
+    let titleArray = tmpFileName.split(".");
+    for (let titleElement of titleArray) { 
+        if (title.toUpperCase().indexOf(titleElement.toUpperCase()) > -1) {
+            re = new RegExp(`\\b${titleElement}\\b`, 'gi');
+            tmpFileName = tmpFileName.replace(re, "");
+        }            
+        if (titleElement.toUpperCase() === 'AND')
+        {
+            titleElement = '&'                
+            if (title.toUpperCase().indexOf(titleElement.toUpperCase()) > -1) {
+                re = new RegExp(`\\band\\b`, 'gi');
+                tmpFileName = tmpFileName.replace(re, "");
+            }
+        }             
+    }
+    // Title in filename separated with spaces
+    titleArray = tmpFileName.split(" ");
+    for (let titleElement of titleArray) {           
+        if (title.toUpperCase().indexOf(titleElement.toUpperCase()) > -1) {
+            re = new RegExp(`\\b${titleElement}\\b`, 'gi');
+            tmpFileName = tmpFileName.replace(re, "");
+        }
+        if (titleElement == '&')
+        {
+            titleElement = 'AND'                
+            if (title.toUpperCase().indexOf(titleElement.toUpperCase()) > -1) {
+                re = new RegExp(`\\b${titleElement}\\b`, 'gi');
+                tmpFileName = tmpFileName.replace(re, "");
+            }
+        }
+    }
+    return tmpFileName
+}
+
+// Strip parts from a filename, and return multiple values
+function stripPartsFromFileName( tmpFileName ) {
+    log.debug(`etHelper (stripPartsFromFileName): looking at ${tmpFileName}`);
+    let partName = '';
+   // Find stacked item if present
+    etHelper.StackedFilesName.forEach(element => {
+        if (tmpFileName.toLowerCase().indexOf(element) > -1) {
+            // Get index again
+            const idx = tmpFileName.toLowerCase().indexOf(element);
+            // Extract element part, but add one char more for the counter
+            partName = tmpFileName.substring(idx, idx + element.length + 1).toLowerCase();
+        }
+    });
+
+    // Remove partName from tmpFile
+    tmpFileName = tmpFileName.replace(partName, '');
+    // Remove white spaces
+    tmpFileName = tmpFileName.trim();
+    if (tmpFileName.length === 1)
+    {
+        if (tmpFileName === '.'){
+            tmpFileName = '';
+        }
+        if (tmpFileName === '-'){
+            tmpFileName = '';
+        }
+    }
+    log.debug(`etHelper (stripPartsFromFileName): Returning tmpFileName as: ${tmpFileName} *** Returning partName as: ${partName}`);
+    return {        
+        fileName: tmpFileName,
+        partName: partName
+    };
+}
+
 //#endregion
 
 const etHelper = new class ETHELPER {
@@ -110,7 +265,9 @@ const etHelper = new class ETHELPER {
             selType: null,
             fileMajor: null,
             fileMinor: null,
-            element: null
+            element: null,
+            SelectedMoviesID: null,
+            SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb")
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -175,6 +332,7 @@ const etHelper = new class ETHELPER {
             'TimeElapsed': 8,
             'RunningTime': 9
         };
+        this.StackedFilesName = ['cd', 'disc', 'dvd', 'part', 'pt'];
     }
 
     resetETHelper() {
@@ -208,7 +366,96 @@ const etHelper = new class ETHELPER {
         }
     }
 
-    async postProcess( {name, val, title=""} ){
+    /// This will return a suggested foldername, following Plex naming std
+    async getSuggestedFolderName( data )
+    {
+        const title = getSuggestedTitle( data );
+        const year = getSuggestedYear( data );  
+        const Id = getSuggestedId( data );     
+        // Get current folder name
+        const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[*].Part[*].file", json: data}))))   
+        // Compute suggested foldername
+        let foldername = `${title} (${year}) ${Id}`;
+        if (curFolderName === foldername) {
+            return i18n.t("Modules.ET.FolderNameOK")            
+          }
+        else {            
+            return foldername
+        }        
+    }
+
+    /// This will return a suggested filename, following Plex naming std
+    async getSuggestedFileName( data )
+    {       
+        const title = getSuggestedTitle( data );
+        //const year = String(JSONPath({path: '$.data.year', json: data}));
+        const year = getSuggestedYear( data );
+        const Id = getSuggestedId( data );
+
+        // Sadly need below for stripping later
+        const imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
+        const tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
+        const tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));  
+                
+        // Get current filename        
+        const curFileName = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).name;
+
+        // Compute suggested filename, and start by stripping known info from existing name
+
+        // Start with the title
+        let tmpFileName = stripTitleFromFileName( curFileName, title );
+        // Strip Year from fileName
+        tmpFileName = stripYearFromFileName( tmpFileName, year );
+        // Strip ID from fileName
+        tmpFileName = stripIdFromFileName( {tmpFileName: tmpFileName, imdb: imdb, tmdb: tmdb, tvdb: tvdb} );
+        const parts = stripPartsFromFileName( tmpFileName );
+        tmpFileName = parts.fileName;
+        const partName = parts.partName;
+        // Remove empty brackets if present
+        tmpFileName = tmpFileName.replaceAll("()", "");
+        // Remove empty curly brackets if present
+        tmpFileName = tmpFileName.replaceAll("{}", "");
+        // Now replace square brackets if present with a dot
+        tmpFileName = tmpFileName.replaceAll("[", ".");
+        tmpFileName = tmpFileName.replaceAll("]", ".");        
+        // Remove double dots if present
+        tmpFileName = tmpFileName.replaceAll("..", ".");
+        // Remove leading dot if present
+        while(tmpFileName.charAt(0) === '.')
+        {
+            tmpFileName = tmpFileName.substring(1);
+        }        
+        // Remove double square brackets if present
+        tmpFileName = tmpFileName.replaceAll("[]", "");
+        // Remove double square brackets with a space if present
+        tmpFileName = tmpFileName.replaceAll("[ ]", "");
+        // Remove double space if present
+        tmpFileName = tmpFileName.replaceAll("  ", " ");
+        // Remove space dot if present, and replace with dot
+        tmpFileName = tmpFileName.replaceAll(" .", ".");
+        
+        // Get filename part of remaining filename, and trim it        
+        tmpFileName = tmpFileName.trim();             
+        if (tmpFileName.length >= 1)
+        {
+            tmpFileName = `[${tmpFileName}]`
+        }
+
+        let suggestedFileName = `${title} (${year}) ${Id} ${tmpFileName} ${partName}`.trim();
+        // Remove double space if present
+        suggestedFileName = suggestedFileName.replaceAll("  ", " ");                
+        const fileNameExt = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).ext;        
+        suggestedFileName = `${suggestedFileName}${fileNameExt}`;
+        log.debug(`etHelper (getSuggestedFileName): returning ${suggestedFileName}`);
+        if (curFileName === path.parse(suggestedFileName).name) {
+            return i18n.t("Modules.ET.FileNameOK")            
+          }
+        else {            
+            return suggestedFileName
+        }        
+    }
+
+    async postProcess( {name, val, title="", data} ){
         log.debug(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
         log.debug(`ETHelper(postProcess): name is: ${name}`);
         log.debug(`ETHelper(postProcess): title is: ${title}`);
@@ -228,6 +475,12 @@ const etHelper = new class ETHELPER {
                         retVal = val.substring(0, 3);
                         break;
                     }
+                case "Suggested File Name":
+                    retVal = await this.getSuggestedFileName( {data: data} );                        
+                    break;
+                case "Suggested Folder Name":
+                    retVal = await this.getSuggestedFolderName( {data: data} );                        
+                    break;                    
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
                         retArray.push(path.basename(valArray[x]).slice(0, -1));
@@ -593,7 +846,7 @@ const etHelper = new class ETHELPER {
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
                     log.debug(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
-                    val = await this.postProcess( {name: name, val: val, title: title} );
+                    val = await this.postProcess( {name: name, val: val, title: title, data: data} );
                 }
                 // Here we add qualifier, if not a number
                 if (!['array-count', 'int'].includes(type))
@@ -1112,20 +1365,6 @@ const etHelper = new class ETHELPER {
         // [{"title":"DVR Movies","key":31,"type":"movie"}]
         const result = [];
         let url = address + '/library/sections/all'
-
-        console.log('Ged 5-4 Type: ' + this.Settings.selType)
-
-/*         
-        if ([this.ETmediaType.Playlist_Audio, this.ETmediaType.Playlist_Video].includes(this.Settings.selType))
-        {
-            url = address + '/library/sections/all?type=15&sort=lastViewedAt:desc&playlistType=video,audio'
-        }
-        else
-        {
-            url = address + '/library/sections/all'
-        }
- */
-
         this.PMSHeader["X-Plex-Token"] = accessToken;
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
@@ -1170,7 +1409,6 @@ const etHelper = new class ETHELPER {
 
     getElement(){
         let element
-        console.log('Ged 11 SecType: ' + this.Settings.libTypeSec)
         switch (this.Settings.libTypeSec) {
             case this.ETmediaType.Playlist_Photo:
                 element = `/playlists/${this.Settings.selLibKey}/items`;
