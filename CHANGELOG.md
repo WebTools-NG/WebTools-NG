@@ -14,6 +14,7 @@
 * [#429 Allow setting the LogNumFiles from Settings](https://github.com/WebTools-NG/WebTools-NG/issues/429)
 * [#435 Showing Rel Notes should only show current version](https://github.com/WebTools-NG/WebTools-NG/issues/435)
 * [#424 Export for severs with special charters in server name](https://github.com/WebTools-NG/WebTools-NG/issues/424)
+* [#444 ET: Suggest better naming for movies only](https://github.com/WebTools-NG/WebTools-NG/issues/444)
 
 ## V0.3.13 (20220102)
 
