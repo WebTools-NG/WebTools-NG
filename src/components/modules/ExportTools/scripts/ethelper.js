@@ -67,7 +67,21 @@ function setQualifier( {str:str})
 // Returns a suggested title for a media
 function getSuggestedTitle( data )
 {
-    return String(JSONPath({path: '$.data.title', json: data})).replace(/[/\\?%*:|"<>]/g, ' ').replace('  ', ' ');
+    let title;
+    if (wtconfig.get('ET.suggestedUseOrigenTitle', false))
+    {
+        title = String(JSONPath({path: '$.data.originalTitle', json: data})).replace(/[/\\?%*:|"<>]/g, '').replace('  ', ' ');
+    }
+    else
+    {
+        title = String(JSONPath({path: '$.data.title', json: data})).replace(/[/\\?%*:|"<>]/g, '').replace('  ', ' ');
+    }
+    // Original selected, but none exist, we default to named title
+    if ( title === '')
+    {
+        title = String(JSONPath({path: '$.data.title', json: data})).replace(/[/\\?%*:|"<>]/g, '').replace('  ', ' ');
+    }
+    return title;
 }
 
 // Returns a suggested year for a media
@@ -234,8 +248,10 @@ function stripPartsFromFileName( tmpFileName, title ) {
         }        
     });
     
-    // Remove partName from tmpFile
-    tmpFileName = tmpFileName.replace(partName, '');
+    // Remove partName from tmpFile    
+    // Get index of partName
+    const idx = tmpFileName.toUpperCase().indexOf(partName.toUpperCase());
+    tmpFileName = tmpFileName.slice(0, idx) + tmpFileName.slice(idx + partName.length);    
     // Remove white spaces
     tmpFileName = tmpFileName.trim();
     if (tmpFileName.length === 1)
@@ -408,7 +424,8 @@ const etHelper = new class ETHELPER {
         const year = getSuggestedYear( data );  
         const Id = getSuggestedId( data ).selId;     
         // Get current folder name
-        const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[*].Part[*].file", json: data}))))   
+        //const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[*].Part[*].file", json: data}))))   
+        const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[0].Part[0].file", json: data}))))   
         // Compute suggested foldername
         let foldername = `${title} (${year}) ${Id}`;
         if (curFolderName === foldername) {
@@ -423,46 +440,12 @@ const etHelper = new class ETHELPER {
     async getSuggestedFileName( data )
     {       
         const title = getSuggestedTitle( data );
-        //const year = String(JSONPath({path: '$.data.year', json: data}));
         const year = getSuggestedYear( data );
-        //const Id = getSuggestedId( data );
         const Ids = getSuggestedId( data );
         const Id = Ids.selId;
         const imdb = Ids.imdb;
         const tmdb = Ids.tmdb;
         const tvdb = Ids.tvdb;
-
-
-        console.log('Ged 88-0 Suggested ID: ' + Id)
-        console.log('Ged 88-1 Suggested imdb: ' + imdb)
-        console.log('Ged 88-2 Suggested tmdb: ' + tmdb)
-        console.log('Ged 88-3 Suggested tvdb: ' + tvdb)
-
-
-/* 
-        // Sadly need below for stripping later
-        let imdb;
-        imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
-        const tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
-        const tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));  
-
-
-        console.log('Ged 55 IMDB: ' + imdb)
-        if (imdb === ''){
-            console.log('Ged 55-5 Maybe Legacy IMDB?')
-            console.log(JSON.stringify(data))
-            imdb = String(JSONPath({path: "$.data.guid", json: data}));
-            console.log('Ged 55-6 imdb: ' + imdb)
-            imdb = imdb.substring(26,);
-            //imdb = imdb.slice(26);
-            console.log('Ged 55-6-2 imdb: ' + imdb)
-            imdb = imdb.split('?')[0];
-            console.log('Ged 55-7 Legacy IMDB: ' + imdb)
-
-        }
-                
-
- */
 
         // Get current filename        
         const curFileName = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).name;
