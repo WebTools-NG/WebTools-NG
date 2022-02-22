@@ -78,10 +78,23 @@ function getSuggestedYear( data )
 
 // Returns a suggested id for a media
 function getSuggestedId( data )
-{
-    const imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
-    const tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
-    const tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));
+{    
+    let imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
+    let tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
+    let tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));
+    if (imdb === ''){
+        imdb = "imdb://" + String(JSONPath({path: "$.data.guid", json: data})).substring(26,).split('?')[0];
+    }
+    // Fallback to imdb, if tmdb is not present
+    if (tmdb === '')
+    {
+        tmdb = imdb;
+    }
+    // Fallback to imdb, if tvdb is not present
+    if (tvdb === '')
+    {
+        tvdb = imdb;
+    }
     let selId;        
     if ( etHelper.Settings.libType === 1)
     {
@@ -97,13 +110,27 @@ function getSuggestedId( data )
             Id = `{imdb-${imdb.slice(7)}}`;
             break;
         case 'tmdb':
-            Id = `{tmdb-${tmdb.slice(7)}}`;
+            if (tmdb === '')
+            {
+                Id = `{imdb-${imdb.slice(7)}}`;
+            }
+            else
+            {
+                Id = `{tmdb-${tmdb.slice(7)}}`;
+            }
             break;
         case 'tvdb':
-            Id = `{tvdb-${tvdb.slice(7)}}`;
+            if (tvdb === '')
+            {
+                Id = `{imdb-${imdb.slice(7)}}`;
+            }
+            else
+            {
+                Id = `{tvdb-${tvdb.slice(7)}}`;
+            }
             break;    
     }
-    return Id;
+    return {"imdb": imdb, "tmdb": tmdb, "tvdb": tvdb, "selId": Id};
 }
 
 // Returns a string stripped for Year
@@ -182,7 +209,6 @@ function stripPartsFromFileName( tmpFileName, title ) {
     let partName = '';
     // Find stacked item if present
     etHelper.StackedFilesName.forEach(element => {
-        console.log('Ged 76 Element: ' + element)
         // Got a hit?    
         if (tmpFileName.toLowerCase().indexOf(element) > -1) {
             // Get index again
@@ -380,7 +406,7 @@ const etHelper = new class ETHELPER {
     {
         const title = getSuggestedTitle( data );
         const year = getSuggestedYear( data );  
-        const Id = getSuggestedId( data );     
+        const Id = getSuggestedId( data ).selId;     
         // Get current folder name
         const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[*].Part[*].file", json: data}))))   
         // Compute suggested foldername
@@ -399,13 +425,45 @@ const etHelper = new class ETHELPER {
         const title = getSuggestedTitle( data );
         //const year = String(JSONPath({path: '$.data.year', json: data}));
         const year = getSuggestedYear( data );
-        const Id = getSuggestedId( data );
+        //const Id = getSuggestedId( data );
+        const Ids = getSuggestedId( data );
+        const Id = Ids.selId;
+        const imdb = Ids.imdb;
+        const tmdb = Ids.tmdb;
+        const tvdb = Ids.tvdb;
 
+
+        console.log('Ged 88-0 Suggested ID: ' + Id)
+        console.log('Ged 88-1 Suggested imdb: ' + imdb)
+        console.log('Ged 88-2 Suggested tmdb: ' + tmdb)
+        console.log('Ged 88-3 Suggested tvdb: ' + tvdb)
+
+
+/* 
         // Sadly need below for stripping later
-        const imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
+        let imdb;
+        imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
         const tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
         const tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));  
+
+
+        console.log('Ged 55 IMDB: ' + imdb)
+        if (imdb === ''){
+            console.log('Ged 55-5 Maybe Legacy IMDB?')
+            console.log(JSON.stringify(data))
+            imdb = String(JSONPath({path: "$.data.guid", json: data}));
+            console.log('Ged 55-6 imdb: ' + imdb)
+            imdb = imdb.substring(26,);
+            //imdb = imdb.slice(26);
+            console.log('Ged 55-6-2 imdb: ' + imdb)
+            imdb = imdb.split('?')[0];
+            console.log('Ged 55-7 Legacy IMDB: ' + imdb)
+
+        }
                 
+
+ */
+
         // Get current filename        
         const curFileName = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).name;
 

@@ -104,12 +104,11 @@
                 SelectedMoviesID: '',
                 SelectedShowsIDOptions: ['tmdb', 'tvdb'],
                 SelectedShowsID: ''
-
             };
         },
         methods: {
             getDefaults(){
-                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull"];
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
