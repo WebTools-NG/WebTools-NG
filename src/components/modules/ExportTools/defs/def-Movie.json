@@ -35,6 +35,13 @@
                 "Audience Rating",
                 "User Rating"
             ],
+            "suggestnaming": [
+                "Title",
+                "Year",
+                "File Path",
+                "Suggested Folder Name",
+                "Suggested File Name"
+            ],
             "all": [
                 "Added",
                 "Art url",
@@ -135,8 +142,6 @@
                 "Subtitle Stream Required Bandwidths",
                 "Subtitle Stream Selected",
                 "Subtitle Stream Title",
-                "Suggested File Name",
-                "Suggested Folder Name",
                 "Summary",
                 "Tagline",
                 "Title",

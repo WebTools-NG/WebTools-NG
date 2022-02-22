@@ -60,7 +60,7 @@ function setQualifier( {str:str})
     {
         result = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
     }
-    log.debug(`etHelper (setQualifier): Got: _WTNG_${str}_WTNG_ and returning ${result}`);
+    log.debug(`etHelper (setQualifier) - Got: _WTNG_${str}_WTNG_ and returning ${result}`);
     return result;
 }
 
@@ -92,7 +92,9 @@ function getSuggestedYear( data )
 
 // Returns a suggested id for a media
 function getSuggestedId( data )
-{    
+{
+    log.verbose(`etHelper (getSuggestedId) - Started. To see Param, switch to Silly logging`);    
+    log.silly(`etHelper (getSuggestedId) - Starting with param: ${JSON.stringify(data)}`);   
     let imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
     let tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
     let tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));
@@ -118,6 +120,10 @@ function getSuggestedId( data )
     {
         selId = wtconfig.get("ET.SelectedShowsID", "tmdb");
     }
+    log.silly(`etHelper (getSuggestedId) - imdb ID: ${imdb}`);   
+    log.silly(`etHelper (getSuggestedId) - tmdb ID: ${tmdb}`);   
+    log.silly(`etHelper (getSuggestedId) - tvdb ID: ${tvdb}`);   
+
     let Id;
     switch(selId) {
         case 'imdb':
@@ -144,6 +150,7 @@ function getSuggestedId( data )
             }
             break;    
     }
+    log.debug(`etHelper (getSuggestedId) - Returning: "imdb": ${imdb}, "tmdb": ${tmdb}, "tvdb": ${tvdb}, "selId": ${Id}`);   
     return {"imdb": imdb, "tmdb": tmdb, "tvdb": tvdb, "selId": Id};
 }
 
@@ -155,14 +162,19 @@ function stripYearFromFileName( tmpFileName, year ){
 
 // Returns a string stripped for ID's
 function stripIdFromFileName( param ){    
+    log.debug(`etHelper (stripIdFromFileName) - starting function with param as: ${JSON.stringify(param)}`);
     let tmpFileName = param.tmpFileName;
     let re;
     const imdb = param.imdb.slice(7);
     const tmdb = param.tmdb.slice(7);
     const tvdb = param.tvdb.slice(7);
     // Remove IMDB id    
+    log.debug(`etHelper (stripIdFromFileName) - Imdb string is : ${imdb}`);
     re = new RegExp(`\\b${imdb}\\b`, 'gi');
     tmpFileName = tmpFileName.replace(re, "");
+    log.debug(`etHelper (stripIdFromFileName) - After imdb id is removed: ${tmpFileName}`);
+    tmpFileName = tmpFileName.replace(/imdb-/i, '');
+    log.debug(`etHelper (stripIdFromFileName) - After imdb string is removed: ${tmpFileName}`);
     // Remove TMDB id    
     re = new RegExp(`\\b${tmdb}\\b`, 'gi');
     tmpFileName = tmpFileName.replace(re, "");
@@ -219,7 +231,7 @@ function stripTitleFromFileName( tmpFileName, title )
 
 // Strip parts from a filename, and return multiple values
 function stripPartsFromFileName( tmpFileName, title ) {
-    log.debug(`etHelper (stripPartsFromFileName): looking at ${tmpFileName}`);
+    log.verbose(`etHelper (stripPartsFromFileName) - looking at ${tmpFileName}`);
     let partName = '';
     // Find stacked item if present
     etHelper.StackedFilesName.forEach(element => {
@@ -230,7 +242,7 @@ function stripPartsFromFileName( tmpFileName, title ) {
             // Got a stacked identifier, so make sure next character is a number in [1-8] range
             const numStacked =  tmpFileName.charAt(idx + element.length);
             if (isNaN(numStacked)) {
-                log.warn(`etHelper (stripPartsFromFileName): for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found next character not a number so ignorring`)
+                log.info(`etHelper (stripPartsFromFileName) - for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found next character not a number so ignorring`)
             }
             else
             {
@@ -241,8 +253,8 @@ function stripPartsFromFileName( tmpFileName, title ) {
                 }
                 else
                 {
-                    log.warn(`etHelper (stripPartsFromFileName): for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found entry not in range [1-8] so ignorring`)
-                    log.warn(`etHelper (stripPartsFromFileName): See: https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/`)
+                    log.warn(`etHelper (stripPartsFromFileName) - for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found entry not in range [1-8] so ignorring`)
+                    log.warn(`etHelper (stripPartsFromFileName) - See: https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/`)
                 }
             }                        
         }        
@@ -263,7 +275,7 @@ function stripPartsFromFileName( tmpFileName, title ) {
             tmpFileName = '';
         }
     }
-    log.debug(`etHelper (stripPartsFromFileName): Returning tmpFileName as: ${tmpFileName} *** Returning partName as: ${partName}`);
+    log.verbose(`etHelper (stripPartsFromFileName) - Returning tmpFileName as: ${tmpFileName} *** Returning partName as: ${partName}`);
     return {        
         fileName: tmpFileName,
         partName: partName
@@ -420,14 +432,16 @@ const etHelper = new class ETHELPER {
     /// This will return a suggested foldername, following Plex naming std
     async getSuggestedFolderName( data )
     {
+        log.verbose(`etHelper (getSuggestedFolderName) - Starting function. To see param, use Silly log level`);
+        log.silly(`etHelper (getSuggestedFolderName) - Data pased over as: ${JSON.stringify(data)}`);
         const title = getSuggestedTitle( data );
         const year = getSuggestedYear( data );  
         const Id = getSuggestedId( data ).selId;     
-        // Get current folder name
-        //const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[*].Part[*].file", json: data}))))   
+        // Get current folder name  
         const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[0].Part[0].file", json: data}))))   
         // Compute suggested foldername
         let foldername = `${title} (${year}) ${Id}`;
+        log.debug(`etHelper (getSuggestedFolderName) - Suggested folderName is: ${foldername}`);
         if (curFolderName === foldername) {
             return i18n.t("Modules.ET.FolderNameOK")            
           }
@@ -510,7 +524,7 @@ const etHelper = new class ETHELPER {
         suggestedFileName = suggestedFileName.replaceAll("  ", " ");                
         const fileNameExt = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).ext;        
         suggestedFileName = `${suggestedFileName}${fileNameExt}`;
-        log.debug(`etHelper (getSuggestedFileName): returning ${suggestedFileName}`);
+        log.debug(`etHelper (getSuggestedFileName) - returning ${suggestedFileName}`);
         if (curFileName === path.parse(suggestedFileName).name) {
             return i18n.t("Modules.ET.FileNameOK")            
           }
@@ -520,9 +534,9 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title="", data} ){
-        log.debug(`ETHelper(postProcess): Val is: ${JSON.stringify(val)}`);
-        log.debug(`ETHelper(postProcess): name is: ${name}`);
-        log.debug(`ETHelper(postProcess): title is: ${title}`);
+        log.debug(`ETHelper(postProcess) - Val is: ${JSON.stringify(val)}`);
+        log.debug(`ETHelper(postProcess) - name is: ${name}`);
+        log.debug(`ETHelper(postProcess) - title is: ${title}`);
         let retArray = [];
         let guidArr;
         let x, retVal, start, strStart, end, result;
@@ -774,7 +788,7 @@ const etHelper = new class ETHELPER {
             }
         } catch (error) {
             retVal = 'ERROR'
-            log.error(`ETHelper(postProcess): We had an error as: ${error} . So postProcess retVal set to ERROR`);
+            log.error(`ETHelper(postProcess) - We had an error as: ${error} . So postProcess retVal set to ERROR`);
         }
         return await retVal;
     }
@@ -909,7 +923,7 @@ const etHelper = new class ETHELPER {
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
-                    log.debug(`ETHelper(addRowToTmp doPostProc): Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+                    log.debug(`ETHelper(addRowToTmp doPostProc) - Name is: ${name} - Title is: ${title} - Val is: ${val}`)
                     val = await this.postProcess( {name: name, val: val, title: title, data: data} );
                 }
                 // Here we add qualifier, if not a number
@@ -993,7 +1007,7 @@ const etHelper = new class ETHELPER {
     }
 
     async populateExpFiles(){
-        log.info('etHelper(populateExpFiles): Populating export files');
+        log.info('etHelper(populateExpFiles) - Populating export files');
         // Current item counter in the chunck
         //let idx = 0;
         let idx = this.Settings.startItem;
@@ -1014,7 +1028,7 @@ const etHelper = new class ETHELPER {
             //chunck = await this.getItemData({postURI: postURI + idx});
             chunck = await this.getSectionData();
             size = JSONPath({path: '$.MediaContainer.size', json: chunck});
-            log.debug(`etHelper(populateExpFiles): Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
+            log.debug(`etHelper(populateExpFiles) - Fetched a chunck with number of items as ${size} and contained: ${JSON.stringify(chunck)}`);
             if ( this.Settings.libType == this.ETmediaType.Libraries)
             {
                 chunckItems = JSONPath({path: '$.MediaContainer.Directory.*', json: chunck});
@@ -1067,13 +1081,13 @@ const etHelper = new class ETHELPER {
             }
             idx = Number(idx) + Number(step);
         } while (this.Settings.count < this.Settings.endItem);
-        log.info('etHelper(populateExpFiles): Populating export files ended');
+        log.info('etHelper(populateExpFiles) - Populating export files ended');
     }
 
     async getSectionSize()
     {
-        log.debug(`etHelper (getSectionSize): selType: ${this.Settings.selType}`)
-        log.debug(`etHelper (getSectionSize): libTypeSec: ${this.Settings.libTypeSec}`)
+        log.debug(`etHelper (getSectionSize) - selType: ${this.Settings.selType}`)
+        log.debug(`etHelper (getSectionSize) - libTypeSec: ${this.Settings.libTypeSec}`)
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
@@ -1119,14 +1133,14 @@ const etHelper = new class ETHELPER {
 
     async getSectionData()
     {
-        log.debug(`etHelper (getSectionData): Element is: ${this.Settings.element}`)
+        log.debug(`etHelper (getSectionData) - Element is: ${this.Settings.element}`)
         //const url = this.Settings.baseURL + this.Settings.element + '?' + this.getPostURI() + this.Settings.count;
         const url = this.Settings.baseURL + this.Settings.element + this.getPostURI() + this.Settings.count;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
-        log.verbose(`etHelper (getSectionData): Calling url in getSectionData: ${url}`)
+        log.verbose(`etHelper (getSectionData) - Calling url in getSectionData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.debug(`etHelper (getSectionData): Response in getSectionData: ${JSON.stringify(resp)}`)
+        log.debug(`etHelper (getSectionData) - Response in getSectionData: ${JSON.stringify(resp)}`)
         return resp
     }
 
@@ -1135,7 +1149,7 @@ const etHelper = new class ETHELPER {
         {
             this.Settings.libType = this.Settings.libTypeSec;
         }
-        log.debug(`etHelper (getLevelCall): LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
+        log.debug(`etHelper (getLevelCall) - LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
         let count = await defLevels[this.Settings.libTypeSec]['LevelCount'][this.Settings.levelName]
         if (count == undefined)
         {
@@ -1501,6 +1515,7 @@ const etHelper = new class ETHELPER {
 
     getIncludeInfo(){
         let includeInfo;
+        log.debug(`etHelper (getIncludeInfo) - Started. libTypeSec is: ${this.Settings.libTypeSec} and levelName is: ${this.Settings.levelName}`);  
         try {
             includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
         }
@@ -1515,7 +1530,7 @@ const etHelper = new class ETHELPER {
         {
             includeInfo = ''
         }
-        log.debug(`etHelper (getInclude): returning: ${includeInfo}`);
+        log.debug(`etHelper (getInclude) - returning: ${includeInfo}`);
         return includeInfo;
     }
 
@@ -1523,9 +1538,9 @@ const etHelper = new class ETHELPER {
         let postURI, includeInfo;
         // Find LibType steps
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
-        log.debug(`etHelper (getPostURI): Got Step size as: ${step}`);
-        log.debug(`etHelper (getPostURI): libType is: ${this.Settings.libType}`);
-        log.debug(`etHelper (getPostURI): libTypeSec is: ${this.Settings.libTypeSec}`);
+        log.debug(`etHelper (getPostURI) - Got Step size as: ${step}`);
+        log.debug(`etHelper (getPostURI) - libType is: ${this.Settings.libType}`);
+        log.debug(`etHelper (getPostURI) - libTypeSec is: ${this.Settings.libTypeSec}`);
         switch (this.Settings.libType) {
             case this.ETmediaType.Photo:
                 postURI = `?addedAt>>=-2208992400&X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${this.uriParams}&X-Plex-Container-Start=`;
@@ -1550,7 +1565,7 @@ const etHelper = new class ETHELPER {
                 break;
             default:
                 includeInfo = this.getIncludeInfo();
-                log.debug(`etHelper (getPostURI): includeInfo is: ${includeInfo}`);
+                log.debug(`etHelper (getPostURI) - includeInfo is: ${includeInfo}`);
                 if (includeInfo != '')
                 {
                     postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&${includeInfo}&X-Plex-Container-Start=`;
@@ -1560,7 +1575,7 @@ const etHelper = new class ETHELPER {
                     postURI = `?X-Plex-Container-Size=${step}&type=${this.Settings.libTypeSec}&X-Plex-Container-Start=`;
                 }
         }
-        log.debug(`etHelper (getPostURI): Got postURI as ${postURI}`);
+        log.debug(`etHelper (getPostURI) - Returning postURI as ${postURI}`);
         return postURI;
     }
 
@@ -1680,29 +1695,29 @@ const etHelper = new class ETHELPER {
 
     // Public methode to get the Header
     async getFieldHeader() {
-        log.info('etHelper (getFieldHeader): FieldHeader requested');
+        log.info('etHelper (getFieldHeader) - FieldHeader requested');
         try{
             if (isEmptyObj(this.#_FieldHeader))
             {
-                log.verbose(`etHelper(getFieldHeader): Need to generate the header`);
+                log.verbose(`etHelper(getFieldHeader) - Need to generate the header`);
                 this.#_FieldHeader = await etHelper.#SetFieldHeader()
             }
             else
             {
-                log.verbose(`etHelper(getFieldHeader): Returning cached headers`);
+                log.verbose(`etHelper(getFieldHeader) - Returning cached headers`);
             }
         }
         catch (error)
         {
-            log.error(`etHelper(getFieldHeader): ${error}`);
+            log.error(`etHelper(getFieldHeader) - ${error}`);
         }
-        log.verbose(`etHelper(getFieldHeader): Field header is: ${JSON.stringify(this.#_FieldHeader)}`);
+        log.verbose(`etHelper(getFieldHeader) - Field header is: ${JSON.stringify(this.#_FieldHeader)}`);
         return this.#_FieldHeader;
     }
 
     // Private methode to set the header
     async #SetFieldHeader(){
-        log.verbose(`etHelper (SetFieldHeader): GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
+        log.verbose(`etHelper (SetFieldHeader) - GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
         return await this.getLevelFields();
     }
     //#endregion
