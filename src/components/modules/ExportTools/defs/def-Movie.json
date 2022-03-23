@@ -35,6 +35,13 @@
                 "Audience Rating",
                 "User Rating"
             ],
+            "suggestnaming": [
+                "Title",
+                "Year",
+                "File Path",
+                "Suggested Folder Name",
+                "Suggested File Name"
+            ],
             "all": [
                 "Added",
                 "Art url",

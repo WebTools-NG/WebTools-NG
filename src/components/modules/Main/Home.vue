@@ -136,7 +136,8 @@ export default {
           this.ver = releases['relver'];
           this.beta = false;
         }
-        if (wtutils.AppVersion != this.ver && this.ver)
+        const compVer = wtutils.AppVersion.substr(0, wtutils.AppVersion.lastIndexOf("."));
+        if (compVer != this.ver && this.ver)
         {
           // Show an update is present
           if (this.ver == wtconfig.get('Update.SkipVer', ''))
