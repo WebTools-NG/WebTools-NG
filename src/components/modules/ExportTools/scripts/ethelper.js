@@ -64,6 +64,37 @@ function setQualifier( {str:str})
     return result;
 }
 
+// Clean up tmpFileName for suggested files/folders
+// Remove leading and trailing spaces, as well as special characters
+function cleanupSuggestedFile( tmpFileName )
+{
+    const unWantedChars = '.-*_[](){}';
+    log.verbose(`etHelper (cleanupSuggestedFile) - starting Param: ${tmpFileName}`);   
+    // Now replace square brackets if present with a dot
+    tmpFileName = tmpFileName.replaceAll("[", ".");
+    tmpFileName = tmpFileName.replaceAll("]", ".");  
+    // Start by trimming the string
+    tmpFileName = tmpFileName.trim();    
+    while ( unWantedChars.indexOf(tmpFileName.charAt(0)) > -1)
+    {
+        tmpFileName = tmpFileName.slice(1).trim(); 
+        if ( tmpFileName.length === 0 ) break;        
+    }
+    // Remove from end of the string
+    while ( unWantedChars.indexOf(tmpFileName.charAt(tmpFileName.length-1)) > -1)
+    {
+        tmpFileName = tmpFileName.slice(0,-1).trim();
+        if ( tmpFileName.length === 0 ) break;
+    }
+    // Now replace double dots if present with a single dot
+    tmpFileName = tmpFileName.replaceAll("..", ".");
+    // Now delete empty brackets
+    tmpFileName = tmpFileName.replaceAll("()", "");
+    tmpFileName = tmpFileName.replaceAll("{}", "");
+    log.verbose(`etHelper (cleanupSuggestedFile) - Returning: ${tmpFileName}`); 
+    return tmpFileName;    
+}
+
 // Returns a suggested title for a media
 function getSuggestedTitle( data )
 {
@@ -472,10 +503,16 @@ const etHelper = new class ETHELPER {
         tmpFileName = stripYearFromFileName( tmpFileName, year );
         // Strip ID from fileName
         tmpFileName = stripIdFromFileName( {tmpFileName: tmpFileName, imdb: imdb, tmdb: tmdb, tvdb: tvdb} );
+        tmpFileName = cleanupSuggestedFile(tmpFileName);        
         // Get parts, if a stacked media
         const parts = stripPartsFromFileName( tmpFileName, title );
         tmpFileName = parts.fileName;
         const partName = parts.partName;
+        tmpFileName = cleanupSuggestedFile(tmpFileName);
+
+        //cleanupSuggestedFile(tmpFileName);
+
+        /*
         // Remove empty brackets if present
         tmpFileName = tmpFileName.replaceAll("()", "");
         // Remove empty curly brackets if present
@@ -505,8 +542,13 @@ const etHelper = new class ETHELPER {
         // Remove space dot if present, and replace with dot
         tmpFileName = tmpFileName.replaceAll(" .", ".");
         
-        // Get filename part of remaining filename, and trim it        
-        tmpFileName = tmpFileName.trim();             
+
+
+               
+        tmpFileName = tmpFileName.trim();   
+        
+         */
+        // Get filename part of remaining filename
         if (tmpFileName.length >= 1)
         {
             tmpFileName = `[${tmpFileName}]`
