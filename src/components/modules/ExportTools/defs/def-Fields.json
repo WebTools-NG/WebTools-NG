@@ -505,6 +505,12 @@
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
+        "File Path":
+            {
+                "key": "$.Media[0].Part[0].file",
+                "call": 1,
+                "type": "string"
+            },
         "Filters":
         {
             "key": "$.filters",
@@ -1194,6 +1200,20 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.title"
+            },
+        "Suggested File Name":
+            {
+                "key": "$.title",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
+        "Suggested Folder Name":
+            {
+                "key": "$.title",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
             },
         "Summary":
             {

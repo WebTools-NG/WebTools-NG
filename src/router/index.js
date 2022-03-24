@@ -8,6 +8,7 @@ import ExportCustom from '../components/modules/ExportTools/Custom/custom';
 import PlexTV from '../components/modules/PlexTV/PlexTV';
 import PMS from '../components/modules/PMS/PMS';
 import PMSSettings from '../components/modules/PMS/Settings/settings';
+import Butler from '../components/modules/PMS/Butler/butler';
 import Language from '../components/modules/Main/Language.vue';
 import GlobalSettings from '../components/modules/Main/GlobalSettings';
 import DVR from '../components/modules/DVR/DVR';
@@ -67,6 +68,12 @@ Vue.use(VueRouter)
     path: '/pms/settings',
     name: "pmssettings",
     component: PMSSettings,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/pms/butler',
+    name: "butler",
+    component: Butler,
     meta: {requiresAuth: true}
   },
   {

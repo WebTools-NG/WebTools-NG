@@ -45,7 +45,20 @@
         :options="cbOptions"
         v-model="cbSelected"
         @change.native="filterTable">
-      </b-form-checkbox-group>
+      </b-form-checkbox-group>      
+    </b-form-group>
+    <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-tooltip target="etSugMovieID" triggers="hover">
+            {{ $t('Modules.ET.Settings.ttMoviesUseId') }}
+        </b-tooltip>
+            <b-form-select
+            class="form-control"
+            v-model="SelectedMoviesID"
+            id="SelectedMoviesID"
+            :options="SelectedMoviesIDOptions"
+            @change="SelectedMoviesIDChanged"
+            name="SugMovieID">
+            </b-form-select>
     </b-form-group>
           </div>
   </b-container>
@@ -54,12 +67,11 @@
 <script>
     const log = require("electron-log");
     import {wtutils, wtconfig, dialog} from '../../General/wtutils'
-
     log, wtutils, wtconfig, dialog
     import i18n from '../../../../i18n'
     export default {
         created() {
-            this.getcbDefaults();
+            this.getDefaults();
             if (wtconfig.get('ET.ColumnSep') == '\t')
             {
                 this.ColumnSep = '{TAB}';
@@ -83,24 +95,34 @@
                     { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpXLSX', disabled: true },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
-                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' }
+                    { text: i18n.t('Modules.ET.Settings.SortTitleNull'), value: 'SortTitleNull' },
+                    { text: i18n.t('Modules.ET.Settings.suggestedFileNoExtra'), value: 'suggestedFileNoExtra' },
+                    { text: i18n.t('Modules.ET.Settings.suggestedUseOrigenTitle'), value: 'suggestedUseOrigenTitle' }
                 ],
                 ChReturn: wtconfig.get('ET.ChReturn', '<RETURN>'),
-                ChNewLine: wtconfig.get('ET.ChNewLine', '<NEWLINE>')
+                ChNewLine: wtconfig.get('ET.ChNewLine', '<NEWLINE>'),
+                SelectedMoviesIDOptions: ['imdb', 'tmdb'],
+                SelectedMoviesID: '',
+                SelectedShowsIDOptions: ['tmdb', 'tvdb'],
+                SelectedShowsID: ''
             };
         },
         methods: {
-            getcbDefaults(){
-                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull"];
+            getDefaults(){
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
                     }
                 }
+                this.SelectedMoviesID = wtconfig.get("ET.SelectedMoviesID", "imdb");
+            },
+            SelectedMoviesIDChanged(){
+                wtconfig.set("ET.SelectedMoviesID", this.SelectedMoviesID);
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
             },
@@ -127,7 +149,7 @@
                         wtconfig.set('ET.ColumnSep', this.ColumnSep)
                     }
                 }
-            },
+            },            
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
             },

@@ -149,8 +149,7 @@
             log.info("PMS Settings Created");
             this.serverSelected();
             this.getFilterSettings();
-            this.getServerSettings();
-            this.getcbDefaults();
+            this.getServerSettings();            
         },
         computed: {
             selectedServerAddress: function(){

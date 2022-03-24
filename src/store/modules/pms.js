@@ -20,6 +20,35 @@ const getters = {
 }
 
 const actions = {
+  async startButlerTask({ commit }, payload) {
+
+    commit
+
+    let header = wtutils.PMSHeader;
+    header['X-Plex-Token'] = payload.Token;
+    const url = `${payload.Address}/butler/${payload.Job}`;
+    log.debug(`Setting new setting with url ${url}`);
+    await axios({
+      method: 'post',
+      url: url,
+      headers: header
+    })
+    .then((response) => {
+      log.debug('Response from startButlerTask recieved')
+      response
+    })
+    .catch(function (error) {
+      if (error.response) {
+          log.error('startButlerTask: ' + error.response.data)
+          alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message)
+      } else if (error.request) {
+          log.error('startButlerTask: ' + error.request)
+      } else {
+          log.error('startButlerTask: ' + error.message)
+      }
+    });
+
+  },
   async setPMSSetting({ commit }, payload) {
 
     commit

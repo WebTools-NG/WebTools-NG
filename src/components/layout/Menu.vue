@@ -69,8 +69,13 @@
                                 href: '/pms/settings',
                                 title: this.$t("Common.Menu.Sidebar.PMS.Settings"),                                
                                 icon: 'fa fa-cog'
+                            },
+                            {                                
+                                href: '/pms/butler',
+                                title: this.$t("Common.Menu.Sidebar.PMS.Butler"),                                
+                                icon: 'fa fa-tasks'
                             }
-                        ]                        
+                        ]
                     },
                     {
                         href: { path: '/export' },
