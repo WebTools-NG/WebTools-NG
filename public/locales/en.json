@@ -345,7 +345,7 @@
                 "RefreshLibraries": "Refresh Libraries",
                 "RefreshLocalMedia": "Refresh Local Media",
                 "RefreshPeriodicMetadata": "Refresh Periodic Metadata",
-                "UpgradeMediaAnalysis": "UpgradeMediaAnalysis",
+                "UpgradeMediaAnalysis": "Upgrade Media Analysis",
                 "RunTask": "Run selected task",
                 "TaskStarted": "The selected task has been started",
                 "TaskDetails": "To follow progress, see Plex WebClient Dashboard"
