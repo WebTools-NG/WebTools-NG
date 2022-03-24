@@ -111,7 +111,8 @@
                     "NavTitle": "Global Settings"
                 },
                 "PMS": {
-                    "Settings": "Settings"
+                    "Settings": "Settings",
+                    "Butler": "Butler scheduled tasks"
                 }
             }
         },
@@ -326,6 +327,29 @@
             "Description": "@:Modules.PMS.Name module allows you to manage your server",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
+            "Butler": {
+                "Title": "Butler Scheduled Tasks",
+                "Description": "Here you can kickstart a scheduled task",
+                "SelectTask": "Select the scheduled task to run now",
+                "TTSelectTask": "Here you select among the scheduled tasks that kan be started now",
+                "BackupDatabase": "Backup your database",
+                "BuildGracenoteCollections": "Build Gracenote Collections",
+                "CheckForUpdates": "Check for updates",
+                "CleanOldBundles": "Clean old bundles",
+                "CleanOldCacheFiles": "Clean old Cache Files",
+                "DeepMediaAnalysis": "Deep Media Analysis",
+                "GenerateAutoTags": "Generate Auto Tags",
+                "GenerateChapterThumbs": "Generate Chapter Thumbs",
+                "GenerateMediaIndexFiles": "Generate Media Index Files",
+                "OptimizeDatabase": "Optimize Database",
+                "RefreshLibraries": "Refresh Libraries",
+                "RefreshLocalMedia": "Refresh Local Media",
+                "RefreshPeriodicMetadata": "Refresh Periodic Metadata",
+                "UpgradeMediaAnalysis": "UpgradeMediaAnalysis",
+                "RunTask": "Run selected task",
+                "TaskStarted": "The selected task has been started",
+                "TaskDetails": "To follow progress, see Plex WebClient Dashboard"
+            },
             "Settings": {
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for the selected server",
