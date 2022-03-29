@@ -327,6 +327,8 @@
             "Description": "@:Modules.PMS.Name module allows you to manage your server",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
+            "ExportDoneBody": "Check {0}",
+            "ExportDoneTitle": "Export finished",
             "Butler": {
                 "Title": "Butler Scheduled Tasks",
                 "Description": "Here you can kickstart a scheduled task",
@@ -388,8 +390,14 @@
                     "Value": "Value"
                 }
             },
-            "ExportDoneBody": "Check {0}",
-            "ExportDoneTitle": "Export finished"
+            "DVR": {
+                "Name": "DVR",
+                "Description": "@:Modules.PMS.DVR.Name module allows you to backup and restore your DVR settings",
+                "selDVR": "Select DVR to backup",
+                "ttselDVR": "Here you select the DVR you want to make a backup of",
+                "lblBtnBackup": "Backup",
+                "BackupDone": "DVR has been saved"    
+            }            
         },
         "PlexTV": {
             "Name": "Plex.TV",
@@ -407,14 +415,6 @@
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
             "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
-        },
-        "DVR": {
-            "Name": "DVR",
-            "Description": "@:Modules.DVR.Name module allows you to backup and restore your DVR settings",
-            "selDVR": "Select DVR to backup",
-            "ttselDVR": "Here you select the DVR you want to make a backup of",
-            "lblBtnBackup": "Backup"
-
-        }
+        }        
     }
 }

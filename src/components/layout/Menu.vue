@@ -12,8 +12,7 @@
     import '@fortawesome/fontawesome-free/css/all.css';
     import etIcon from '@/assets/ET-256.png'; 
     import pmsIcon from '@/assets/plex-pms-icon.png';  
-    import plextvIcon from '@/assets/plex-app-icon.png';   
-    import plexDVRIcon from '@/assets/dvr-256.png';   
+    import plextvIcon from '@/assets/plex-app-icon.png';
 
 
     export default {
@@ -66,14 +65,9 @@
                                 icon: 'fa fa-tasks'
                             },
                             {
-                                href: { path: '/dvr' },
-                                title: this.$t("Modules.DVR.Name"),
-                                // icon: 'fas fa-file-export',
-                                icon: {
-                                    //adjust element
-                                        element: 'img',
-                                        attributes: { src: plexDVRIcon },
-                                    }                     
+                                href: { path: '/pms/dvr' },
+                                title: this.$t("Modules.PMS.DVR.Name"),
+                                icon: 'fas fa-tv',              
                             }
                         ]
                     },
@@ -84,7 +78,7 @@
                         icon: {
                             //adjust element
                                 element: 'img',
-                                attributes: { src: etIcon },
+                                attributes: { src: etIcon },                                
                             },
                         child: [
                             {                                
