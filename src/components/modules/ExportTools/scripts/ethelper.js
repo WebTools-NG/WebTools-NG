@@ -1570,7 +1570,7 @@ const etHelper = new class ETHELPER {
         }
         if (includeInfo == null)
         {
-            includeInfo = ''
+            includeInfo = wtconfig.get('ET.CustomLevels.' + this.Settings.libTypeSec + '.Include.' + this.Settings.levelName);
         }
         log.debug(`etHelper (getInclude) - returning: ${includeInfo}`);
         return includeInfo;
