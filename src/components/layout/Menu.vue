@@ -12,7 +12,8 @@
     import '@fortawesome/fontawesome-free/css/all.css';
     import etIcon from '@/assets/ET-256.png'; 
     import pmsIcon from '@/assets/plex-pms-icon.png';  
-    import plextvIcon from '@/assets/plex-app-icon.png';   
+    import plextvIcon from '@/assets/plex-app-icon.png';
+
 
     export default {
         data() {
@@ -32,7 +33,7 @@
                         header: true,
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
-                    },
+                    },                    
                     {
                         href: { path: '/plextv' },
                         title: this.$t("Modules.PlexTV.Name"),
@@ -62,6 +63,11 @@
                                 href: '/pms/butler',
                                 title: this.$t("Common.Menu.Sidebar.PMS.Butler"),                                
                                 icon: 'fa fa-tasks'
+                            },
+                            {
+                                href: { path: '/pms/dvr' },
+                                title: this.$t("Modules.PMS.DVR.Name"),
+                                icon: 'fas fa-tv',              
                             }
                         ]
                     },
@@ -72,7 +78,7 @@
                         icon: {
                             //adjust element
                                 element: 'img',
-                                attributes: { src: etIcon },
+                                attributes: { src: etIcon },                                
                             },
                         child: [
                             {                                

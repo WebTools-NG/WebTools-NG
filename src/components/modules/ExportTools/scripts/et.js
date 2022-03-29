@@ -151,59 +151,6 @@ const et = new class ET {
         this.OutFile = null
     }
 
-
-    async GEDDELETE_getSectionData()
-    {
-        const sectionData = []
-        // Find LibType steps
-        const step = wtconfig.get("PMS.ContainerSize." + this.expSettings.libType, 20)
-        log.debug(`!!!! et (getSectionData): Got Step size as: ${step}`)
-        let element
-        // Now read the fields and level defs
-        // Current item
-        let idx = 0
-        // Now let's walk the section
-        let chuncks, postURI
-        let size
-        do {
-            switch (this.expSettings.libType) {
-                case et.ETmediaType.Photo:
-                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                    postURI = `?addedAt>>=-2208992400&X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
-                    break;
-                case et.ETmediaType.Playlist:
-                    element = '/playlists/' + this.expSettings.selLibKey;
-                    postURI = `/items?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-                    break;
-                case et.ETmediaType.Libraries:
-                    element = '/library/sections/all';
-                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-                    break;
-                case et.ETmediaType.Playlists:
-                    element = '/playlists/all';
-                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}`;
-                    break;
-                default:
-                    element = '/library/sections/' + this.expSettings.selLibKey + '/all';
-                    postURI = `?X-Plex-Container-Start=${idx}&X-Plex-Container-Size=${step}&type=${this.expSettings.libTypeSec}&${this.uriParams}`;
-            }
-            log.info(`Calling getSectionData url ${this.expSettings.baseURL + element + postURI}`);
- 
-            chuncks = await et.getItemData({baseURL: this.expSettings.baseURL, accessToken: this.expSettings.accessToken, element: element, postURI: postURI});
-            size = JSONPath({path: '$.MediaContainer.size', json: chuncks});
-            const totalSize = JSONPath({path: '$.MediaContainer.totalSize', json: chuncks});
-            log.info(`getSectionData chunck size is ${size} and idx is ${idx} and totalsize is ${totalSize}`)
-            // et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {idx: idx, chunck: size, totalSize: totalSize}))
-            et.updateStatusMsg(et.rawMsgType.Info, i18n.t('Modules.ET.Status.GetSectionItems', {chunck: step, totalSize: totalSize}))
-            sectionData.push(chuncks)
-            log.debug(`Pushed chunk as ${JSON.stringify(chuncks)}`)
-            idx = idx + step;
-        } while (size > 1);
-        log.debug(`SectionData to return is:`);
-        log.debug(JSON.stringify(sectionData));
-        return sectionData;
-    }
-
     getRealLevelName(level, libType) {
         // First get the real name of the level, and not just the display name
         let levelName
@@ -226,47 +173,6 @@ const et = new class ET {
         }
         et.expSettings.levelName = levelName;
         return levelName;
-    }
-
-    async DELOLD_getSections(address, accessToken)
-    {
-        // Returns an array of json, as:
-        // [{"title":"DVR Movies","key":31,"type":"movie"}]
-        const result = [];
-        let url = address + '/library/sections/all'
-        this.PMSHeader["X-Plex-Token"] = accessToken;
-        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        let resp = await response.json();
-        let respJSON = await Promise.resolve(resp);
-        let sections = await JSONPath({path: '$..Directory', json: respJSON})[0];
-        let section;
-        for (section of sections){
-            const subItem = {}
-            subItem['title'] = JSONPath({path: '$..title', json: section})[0];
-            subItem['key'] = parseInt(JSONPath({path: '$..key', json: section})[0]);
-            subItem['type'] = JSONPath({path: '$..type', json: section})[0];
-            subItem['scanner'] = JSONPath({path: '$..scanner', json: section})[0];
-            subItem['agent'] = JSONPath({path: '$..agent', json: section})[0];
-            result.push(subItem)
-        }
-        await Promise.resolve(result);
-        url = address + '/playlists';
-        response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
-        resp = await response.json();
-        respJSON = await Promise.resolve(resp);
-        if (JSONPath({path: '$..size', json: respJSON})[0] > 0)
-        {
-            sections = await JSONPath({path: '$..Metadata', json: respJSON})[0];
-            for (section of sections){
-                const subItem = {}
-                subItem['title'] = JSONPath({path: '$..title', json: section})[0];
-                subItem['key'] = parseInt(JSONPath({path: '$..ratingKey', json: section})[0]);
-                subItem['type'] = JSONPath({path: '$..type', json: section})[0];
-                subItem['playlistType'] = JSONPath({path: '$..playlistType', json: section})[0];
-                result.push(subItem)
-            }
-        }
-        return  result
     }
 
     getLevelDisplayName(level, libType){
