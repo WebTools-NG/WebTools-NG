@@ -4,6 +4,7 @@ import { wtutils } from '../src/components/modules/General/wtutils';
 
 const log = require('electron-log');
 console.log = log.log;
+const { ipcMain, dialog } = require('electron');
 
 // Sadly needs below, since part of main process, so not inherited
 log.transports.file.fileName = wtutils.logFileName;
@@ -28,11 +29,13 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 
 function createWindow () {
   // Create the browser window.
+  console.log('Ged 33: ' + __dirname)
+  console.log('Ged 34: ' + __static)
   win = new BrowserWindow({ width: 1024, height: 768, icon: __dirname + "/../src/assets/WebTools-512.png", webPreferences: {
     nodeIntegration: true,
     contextIsolation: false,
     webSecurity: false,
-    enableRemoteModule: true
+    enableRemoteModule: true   
   } })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -87,6 +90,11 @@ app.on('ready', async () => {
     }
 
   }
+  // Open system Dialog
+  ipcMain.handle('dialog', (event, method, params) => {       
+    dialog[method](params);
+  });
+  
   Menu.setApplicationMenu(null)
   createWindow()
 })
@@ -106,7 +114,7 @@ if (isDevelopment) {
   }
 }
 
-const ipcMain = require('electron').ipcMain;
+//const ipcMain = require('electron').ipcMain;
 const axios = require('axios')
 const fs = require('fs')
 

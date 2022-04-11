@@ -10,6 +10,7 @@ module.exports = {
     },
     electronBuilder: {
       builderOptions: {
+        
         appId: "com.webtools.webtools-ng",
         artifactName: "${productName}-${version}.${env.AppRev}.${ext}",
         directories: {
@@ -46,4 +47,15 @@ module.exports = {
       }
     }
   }
+}
+
+chainWebpack: config => {
+  config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+          options.compilerOptions.preserveWhitespace = true
+          return options
+      })
 }
