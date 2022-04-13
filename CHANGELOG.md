@@ -13,6 +13,7 @@
 
 * [#453 Kickstart Butler Scheduled tasks](https://github.com/WebTools-NG/WebTools-NG/issues/453)
 * [#456 ET Custom levels doesn't use include params](https://github.com/WebTools-NG/WebTools-NG/issues/456)
+* Internal: More easy way to hide stuff in progress
 
 ## V0.3.14 (20220323)
 
