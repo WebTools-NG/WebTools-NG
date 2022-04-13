@@ -262,6 +262,9 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('Menu.pmsSettings', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.pmsSettings', false)
         }
+        if ( wtconfig.get('Menu.pmsButler', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.pmsButler', false)
+        }        
         if ( wtconfig.get('Menu.et', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.et', false)
         }
