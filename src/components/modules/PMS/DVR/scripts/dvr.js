@@ -8,6 +8,7 @@ import {wtconfig, wtutils} from '../../../General/wtutils';
 import i18n from '../../../../../i18n';
 import store from '../../../../../store';
 import axios from 'axios';
+import { electron } from 'process';
 
 i18n, wtconfig 
 
@@ -50,6 +51,20 @@ const dvr = new class DVR {
                 })
         });
         return arrDVR;       
+    }
+
+    async restoreDVR (){
+        console.log('Ged 70 restore start')
+
+        const dialogConfig = {
+            title: 'Select a file',
+            buttonLabel: 'This one will do',
+            properties: ['openFile']
+            };
+        //const electron = require('electron');
+        
+        electron.openDialog('showOpenDialog', dialogConfig)
+        .then(result => console.log(result));
     }
 
     async backupDVR( { dvrName } ){

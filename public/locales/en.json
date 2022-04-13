@@ -396,6 +396,7 @@
                 "selDVR": "Select DVR to backup",
                 "ttselDVR": "Here you select the DVR you want to make a backup of",
                 "lblBtnBackup": "Backup",
+                "lblBtnRestore": "Restore",
                 "BackupDone": "DVR has been saved"    
             }            
         },

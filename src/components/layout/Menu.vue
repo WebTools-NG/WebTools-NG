@@ -13,7 +13,10 @@
     import etIcon from '@/assets/ET-256.png'; 
     import pmsIcon from '@/assets/plex-pms-icon.png';  
     import plextvIcon from '@/assets/plex-app-icon.png';
+    import {wtconfig, wtutils} from '../../components/modules/General/wtutils';
 
+
+    wtconfig, wtutils
 
     export default {
         data() {
@@ -37,6 +40,7 @@
                     {
                         href: { path: '/plextv' },
                         title: this.$t("Modules.PlexTV.Name"),
+                        hidden: wtutils.hideMenu('plextv'),
                         // icon: 'fas fa-file-export',
                         icon: {
                             //adjust element
@@ -47,6 +51,7 @@
                     {
                         href: { path: '/pms' },
                         title: this.$t("Modules.PMS.Name"),
+                        hidden: wtutils.hideMenu('pms'),
                         // icon: 'fas fa-file-export',
                         icon: {
                             //adjust element
@@ -56,17 +61,20 @@
                         child: [
                             {                                
                                 href: '/pms/settings',
+                                hidden: wtutils.hideMenu('pmsSettings'),
                                 title: this.$t("Common.Menu.Sidebar.PMS.Settings"),                                
                                 icon: 'fa fa-cog'
                             },
                             {                                
                                 href: '/pms/butler',
                                 title: this.$t("Common.Menu.Sidebar.PMS.Butler"),                                
+                                hidden: wtutils.hideMenu('pmsButler'),
                                 icon: 'fa fa-tasks'
                             },
                             {
                                 href: { path: '/pms/dvr' },
                                 title: this.$t("Modules.PMS.DVR.Name"),
+                                hidden: wtutils.hideMenu('pmsDVR'),
                                 icon: 'fas fa-tv',              
                             }
                         ]
@@ -74,6 +82,7 @@
                     {
                         href: { path: '/export' },
                         title: this.$t("Modules.ET.Name"),
+                        hidden: wtutils.hideMenu('et'),
                         // icon: 'fas fa-file-export',
                         icon: {
                             //adjust element
@@ -83,12 +92,14 @@
                         child: [
                             {                                
                                 href: '/export/settings',
-                                title: this.$t("Common.Menu.Sidebar.ET.Settings"),                                
+                                title: this.$t("Common.Menu.Sidebar.ET.Settings"),
+                                hidden: wtutils.hideMenu('etSettings'),                                
                                 icon: 'fa fa-cog'
                             },
                             {                                
                                 href: '/export/custom',
-                                title: this.$t("Common.Menu.Sidebar.ET.Custom"),                                
+                                title: this.$t("Common.Menu.Sidebar.ET.Custom"),
+                                hidden: wtutils.hideMenu('etCustom'),                                
                                 icon: 'fa fa-cog'
                             }
                         ]
@@ -102,30 +113,27 @@
                     {
                         href: { path: '/language' },
                         title: this.$t("Common.Menu.Sidebar.Language.NavTitle"),
+                        hidden: wtutils.hideMenu('Language'),
                         //icon: 'fas fa-language'
                         icon: 'fa fa-globe'
                     },
                     {
                         href: '/settings',
-                        title: this.$t("Common.Menu.Sidebar.Settings.NavTitle"),                                
+                        title: this.$t("Common.Menu.Sidebar.Settings.NavTitle"),  
+                        hidden: wtutils.hideMenu('Settings'),                              
                         icon: 'fa fa-cog'
                     },
                     {
                         href: { path: '/about' },
                         title: this.$t("Common.Menu.Sidebar.About.NavTitle"),
+                        hidden: wtutils.hideMenu('About'),
                         icon: 'fas fa-question-circle'
                     },
                     {
                         href: { path: '/' },
                         title: this.$t("Common.Menu.Sidebar.Theme.NavTitle"),
-                        icon: 'fas fa-palette',
-                        hidden: true
-                    },
-                    {
-                        href: { path: '/' },
-                        title: this.$t("Common.Menu.Sidebar.Reset.NavTitle"),
-                        icon: 'fas fa-power-off',
-                        hidden: true
+                        hidden: wtutils.hideMenu('Theme'),
+                        icon: 'fas fa-palette'
                     }
                 ]
             }

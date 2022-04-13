@@ -232,9 +232,62 @@ const wtutils = new class WTUtils {
             }
     }
 
+    hideMenu(menu)
+    {
+        let retVal = false;        
+        log.debug(`Start menu check for ${menu}`);
+        // If indeveloper mode, always return false
+        if (this.isDev){
+            log.debug('We are running in dev mode, so turn on all menues');
+            retVal = false;
+        }
+        else
+        {
+            retVal = wtconfig.get('Menu.' + menu, true);
+        }
+        log.debug(`Menu returning ${retVal}`);
+        return retVal
+    }
+
     UpdateConfigFile() {
         // Update config file with defaults if missing
         log.verbose('Updating config file');
+        // Hide/Show Menu
+        if ( wtconfig.get('Menu.plextv', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.plextv', false)
+        }
+        if ( wtconfig.get('Menu.pms', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.pms', false)
+        }
+        if ( wtconfig.get('Menu.pmsSettings', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.pmsSettings', false)
+        }
+        if ( wtconfig.get('Menu.pmsButler', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.pmsButler', false)
+        }        
+        if ( wtconfig.get('Menu.et', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.et', false)
+        }
+        if ( wtconfig.get('Menu.etSettings', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.etSettings', false)
+        }
+        if ( wtconfig.get('Menu.etCustom', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.etCustom', false)
+        }
+        if ( wtconfig.get('Menu.Language', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.Language', false)
+        }
+        if ( wtconfig.get('Menu.Settings', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.Settings', false)
+        }
+        if ( wtconfig.get('Menu.About', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.About', false)
+        }
+
+
+        
+
+
         // General section
         if ( wtconfig.get('General.username', 'N/A') == 'N/A' ){
             wtconfig.set('General.username', '')

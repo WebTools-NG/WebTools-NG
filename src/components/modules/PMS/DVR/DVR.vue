@@ -25,6 +25,7 @@
         <div id="buttons" class="text-center">
             <b-button-group >
                 <b-button
+                  class="mr-2"
                   type="is-primary"
                   @click="dvrBackup"
                   icon-left="fas fa-file-download"
@@ -33,10 +34,20 @@
                   variant="success"
                   > 
                   {{ $t("Modules.PMS.DVR.lblBtnBackup") }}
-                </b-button>                
+                </b-button>        
+                <b-button
+                  class="mr-2"
+                  type="is-primary"
+                  @click="dvrRestore"
+                  icon-left="fas fa-file-download"
+                  icon-pack="fas"
+                  variant="success"
+                  > 
+                  {{ $t("Modules.PMS.DVR.lblBtnRestore") }}
+                </b-button>        
             </b-button-group>
         </div>
-    </div>        
+    </div>     
 
     
   </b-container>
@@ -93,6 +104,11 @@
 
   },
   methods: {
+    async dvrRestore() {      
+      log.info("DVR Restore started");
+      //dvr.backupDVR( {'dvrName': this.selDVR} );  
+      dvr.restoreDVR();    
+    },
     async dvrBackup() {      
       log.info("DVR Backup started");
       dvr.backupDVR( {'dvrName': this.selDVR} );
