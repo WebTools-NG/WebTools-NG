@@ -548,11 +548,27 @@ const dialog = new class Dialog {
             buttonLabel : OKLabel,
             title: Title
         }
-
         let dirName = dialog.showOpenDialogSync(WIN, options)
         log.debug('Returned directoryname is: ' + dirName)
         return dirName
+    }
 
+    SelectFile(Title, OKLabel, filter, defaultPath)
+    {
+        log.debug('Start SelectFile Dialog');        
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
+        let options = {
+            properties:["openFile"],
+            buttonLabel : OKLabel,
+            title: Title,
+            filters: filter,
+            defaultPath: defaultPath
+        }
+        let fileName = dialog.showOpenDialogSync(WIN, options);        
+        log.debug('Returned filename is: ' + fileName)
+        return fileName
     }
 
     SaveFile(title, defaultPath, OKLabel) {
@@ -576,6 +592,20 @@ const dialog = new class Dialog {
         let filename = dialog.showSaveDialogSync(WIN, options)
         log.debug('Returned filename is: ' + filename)
         return filename
+    }
+
+    ShowMsgBox(message, type, title, buttons){
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+
+        WIN = remote.getCurrentWindow();
+        let options = {
+            message: message,
+            type: type,
+            title: title,
+            buttons: buttons
+        }
+        return dialog.showMessageBoxSync(WIN, options);
     }
 }
 

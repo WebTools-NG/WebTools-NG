@@ -4,15 +4,17 @@ const {JSONPath} = require('jsonpath-plus');
 console.log = log.log;
 
 
-import {wtconfig, wtutils} from '../../../General/wtutils';
+import {wtconfig, wtutils, dialog} from '../../../General/wtutils';
 import i18n from '../../../../../i18n';
 import store from '../../../../../store';
-import axios from 'axios';
-import { electron } from 'process';
-
-i18n, wtconfig 
+import axios from 'axios'; 
 
 const dvr = new class DVR {
+
+    constructor() {
+        this.fileDVRRestore = '';
+    }    
+
     async getDVRList(){
         log.info(`Getting list of DVRs`);
         // Placeholder for return value
@@ -44,27 +46,51 @@ const dvr = new class DVR {
                   log.error('getDVRList: ' + error.message);
             }
           });
-        DVRs.forEach(dvr => {
-            arrDVR.push({
-                "value": JSONPath({path: '$.uuid', json: dvr}),
-                "text": JSONPath({path: '$.lineupTitle', json: dvr})
-                })
+            DVRs.forEach(dvr => {
+                arrDVR.push({
+                    "value": JSONPath({path: '$.uuid', json: dvr}),
+                    "text": JSONPath({path: '$.lineupTitle', json: dvr})
+                    })
         });
         return arrDVR;       
+        
     }
 
     async restoreDVR (){
-        console.log('Ged 70 restore start')
+        log.info(`DVR Restore started`);
+        const filters = [{name: 'DVR Backups', extensions: ['json']}];
+        const path = require('path');
+        const defaultPath = path.join(wtconfig.get('General.ExportPath'), 'Plex Media Server', 'DVR', '\\');                
+        const selectFile = dialog.SelectFile( i18n.t("Modules.PMS.DVR.selRestoreFile"), i18n.t("Common.Ok"), filters, defaultPath);
+        if (selectFile)
+        {
+            log.info(`Selected restore file is: ${selectFile}`);
+            var fs = require('fs');                      
+            this.fileDVRRestore = JSON.parse(fs.readFileSync(selectFile[0], 'utf8'));    
+            const dvrTitle = String(JSONPath({path: '$.lineupTitle', json: this.fileDVRRestore}));
+            const msgBody = i18n.t("Modules.PMS.DVR.restoreMsg", [dvrTitle]);
+            if ( dialog.ShowMsgBox(msgBody, 'question', i18n.t("Modules.PMS.DVR.confirmRestore"), [i18n.t("Common.Ok"), i18n.t("Common.Cancel")]) == 0 )
+            {
+                console.log('Ged 40 fortsæt')
 
-        const dialogConfig = {
-            title: 'Select a file',
-            buttonLabel: 'This one will do',
-            properties: ['openFile']
-            };
-        //const electron = require('electron');
-        
-        electron.openDialog('showOpenDialog', dialogConfig)
-        .then(result => console.log(result));
+                if ( await this.getDVRList().includes(dvrTitle) )
+                {
+                    console.log('Ged 45 already present')
+                }
+
+                
+
+            }
+        }
+        else
+        {
+            log.info(`No files selected`);
+        }
+
+        console.log('Ged 70')
+
+
+
     }
 
     async backupDVR( { dvrName } ){

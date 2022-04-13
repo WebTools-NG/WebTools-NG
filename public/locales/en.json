@@ -117,6 +117,7 @@
             }
         },
         "Ok": "OK",
+        "Cancel": "Cancel",
         "Reload": "Reload",
         "Update": {
             "Title": "Update detected",
@@ -397,7 +398,10 @@
                 "ttselDVR": "Here you select the DVR you want to make a backup of",
                 "lblBtnBackup": "Backup",
                 "lblBtnRestore": "Restore",
-                "BackupDone": "DVR has been saved"    
+                "BackupDone": "DVR has been saved",
+                "selRestoreFile": "Select DVR file to restore",
+                "confirmRestore": "Confirm restore",
+                "restoreMsg": "Are you sure you want to restore the DVR named: '{0}'"
             }            
         },
         "PlexTV": {
