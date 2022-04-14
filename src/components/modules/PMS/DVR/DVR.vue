@@ -73,7 +73,6 @@
   },
   created() {
     log.info("DVR Created");
-    console.log('Ged 41: ' + JSON.stringify(this.$store.getters.getSelectedServer))
     this.serverSelected();
     this.optSelDVR = this.getDVRList();    
   },
@@ -82,12 +81,7 @@
     selectedServerAddress: async function(){
       log.info("DVR Selected server changed");
       this.optSelDVR = this.getDVRList();
-      console.log('Ged 51: ' + JSON.stringify(this.$store.getters.getSelectedServer))
-      console.log('Ged 52')
-      console.log('Ged 55: ' + this.$store.getters.getSelectedServer != null)
-      console.log('Ged 56: ' + this.$store.getters.getSelectedServer != "none" )
-      this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
-      console.log('Ged 61: ' + this.serverIsSelected)
+      this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );      
     },
     doneDVRBackup: async function(){
       if (this.$store.getters.doneDVRBackup!='')
