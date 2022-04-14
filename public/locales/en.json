@@ -401,7 +401,9 @@
                 "BackupDone": "DVR has been saved",
                 "selRestoreFile": "Select DVR file to restore",
                 "confirmRestore": "Confirm restore",
-                "restoreMsg": "Are you sure you want to restore the DVR named: '{0}'"
+                "restoreMsg": "Are you sure you want to restore the DVR named: '{0}'",
+                "selAlredyPresentMsg": "The selected DVR: '{0}' already exist on your PMS. So we will abort",
+                "selAlredyPresentTitle": "Aborting"
             }            
         },
         "PlexTV": {

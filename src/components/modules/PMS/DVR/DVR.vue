@@ -41,6 +41,7 @@
                   @click="dvrRestore"
                   icon-left="fas fa-file-download"
                   icon-pack="fas"
+                  :disabled=!this.serverIsSelected
                   variant="success"
                   > 
                   {{ $t("Modules.PMS.DVR.lblBtnRestore") }}
@@ -66,11 +67,13 @@
       data() {
         return {
           optSelDVR: [],
-          selDVR: ""
+          selDVR: "",
+          serverIsSelected: false
         };
   },
   created() {
     log.info("DVR Created");
+    console.log('Ged 41: ' + JSON.stringify(this.$store.getters.getSelectedServer))
     this.serverSelected();
     this.optSelDVR = this.getDVRList();    
   },
@@ -79,6 +82,12 @@
     selectedServerAddress: async function(){
       log.info("DVR Selected server changed");
       this.optSelDVR = this.getDVRList();
+      console.log('Ged 51: ' + JSON.stringify(this.$store.getters.getSelectedServer))
+      console.log('Ged 52')
+      console.log('Ged 55: ' + this.$store.getters.getSelectedServer != null)
+      console.log('Ged 56: ' + this.$store.getters.getSelectedServer != "none" )
+      this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
+      console.log('Ged 61: ' + this.serverIsSelected)
     },
     doneDVRBackup: async function(){
       if (this.$store.getters.doneDVRBackup!='')
@@ -121,6 +130,7 @@
     tell user, and disable backup */
     async serverSelected() {
       let serverCheck = this.$store.getters.getSelectedServer;
+      this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       if (serverCheck == "none") {
         log.debug("serverCheck is none");
         this.selDVR = "";

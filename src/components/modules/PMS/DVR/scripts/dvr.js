@@ -13,6 +13,7 @@ const dvr = new class DVR {
 
     constructor() {
         this.fileDVRRestore = '';
+        this.dvrList = [];
     }    
 
     async getDVRList(){
@@ -52,8 +53,8 @@ const dvr = new class DVR {
                     "text": JSONPath({path: '$.lineupTitle', json: dvr})
                     })
         });
-        return arrDVR;       
-        
+        this.dvrList = arrDVR;
+        return arrDVR;               
     }
 
     async restoreDVR (){
@@ -68,14 +69,19 @@ const dvr = new class DVR {
             var fs = require('fs');                      
             this.fileDVRRestore = JSON.parse(fs.readFileSync(selectFile[0], 'utf8'));    
             const dvrTitle = String(JSONPath({path: '$.lineupTitle', json: this.fileDVRRestore}));
-            const msgBody = i18n.t("Modules.PMS.DVR.restoreMsg", [dvrTitle]);
-            if ( dialog.ShowMsgBox(msgBody, 'question', i18n.t("Modules.PMS.DVR.confirmRestore"), [i18n.t("Common.Ok"), i18n.t("Common.Cancel")]) == 0 )
+            //const msgBody = i18n.t("Modules.PMS.DVR.restoreMsg", [dvrTitle]);
+            if ( dialog.ShowMsgBox(i18n.t("Modules.PMS.DVR.restoreMsg", [dvrTitle]), 'question', i18n.t("Modules.PMS.DVR.confirmRestore"), [i18n.t("Common.Ok"), i18n.t("Common.Cancel")]) == 0 )
             {
-                console.log('Ged 40 fortsæt')
-
-                if ( await this.getDVRList().includes(dvrTitle) )
+                // Check if DVR to restore is already present               
+                if ( JSON.stringify(this.dvrList).indexOf(dvrTitle) > -1 )
                 {
-                    console.log('Ged 45 already present')
+                    log.error(`Selected dvr was "${dvrTitle}" but is was already present on the PMS`)                
+                    dialog.ShowMsgBox(i18n.t("Modules.PMS.DVR.selAlredyPresentMsg", [dvrTitle]), 'error', i18n.t("Modules.PMS.DVR.selAlredyPresentTitle"), [i18n.t("Common.Ok")]);
+                }
+                else
+                {
+                    console.log('Ged 50 starting restore')
+
                 }
 
                 
@@ -86,11 +92,6 @@ const dvr = new class DVR {
         {
             log.info(`No files selected`);
         }
-
-        console.log('Ged 70')
-
-
-
     }
 
     async backupDVR( { dvrName } ){
