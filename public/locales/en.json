@@ -403,8 +403,10 @@
                 "confirmRestore": "Confirm restore",
                 "restoreMsg": "Are you sure you want to restore the DVR named: '{0}'",
                 "selAlredyPresentMsg": "The selected DVR: '{0}' already exist on your PMS. So we will abort",
-                "selAlredyPresentTitle": "Aborting"
-            }            
+                "selAlredyPresentTitle": "Aborting",
+                "selMissingDevice": "The selected backup file is missing devices",
+                "selDeviceAlreadyUsed": "The device is in use with an existing DVR"
+            }
         },
         "PlexTV": {
             "Name": "Plex.TV",
@@ -422,6 +424,6 @@
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
             "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
-        }        
+        }
     }
 }
