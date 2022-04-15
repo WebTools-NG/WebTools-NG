@@ -1,6 +1,6 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V0.3.15 (Not released yet)
+## V0.3.16 ( Not Released Yet)
 
 **Note**:   This version is an Beta version
 
@@ -8,6 +8,20 @@
 
 * Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
 * Photo export
+
+**Changes**:
+
+* [#440 Dvr Backup and Restore](https://github.com/WebTools-NG/WebTools-NG/issues/440)
+
+
+## V0.3.15 (20220413)
+
+**Note**:   This version is an Beta version
+
+**Note 2**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo Library export
 
 **Changes**:
 
