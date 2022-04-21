@@ -12,7 +12,7 @@ import Butler from '../components/modules/PMS/Butler/butler';
 import Language from '../components/modules/Main/Language.vue';
 import GlobalSettings from '../components/modules/Main/GlobalSettings';
 import DVR from '../components/modules/PMS/DVR/DVR';
-import WiewState from '../components/modules/PMS/WiewState/WiewState';
+import ViewState from '../components/modules/PMS/ViewState/ViewState';
 import About from '../components/modules/Main/About';
 import Store from '../store/index.js';
 
@@ -78,9 +78,9 @@ Vue.use(VueRouter)
     meta: {requiresAuth: true}
   },
   {
-    path: '/pms/wiewstate',
-    name: "wiewstate",
-    component: WiewState,
+    path: '/pms/viewstate',
+    name: "viewstate",
+    component: ViewState,
     meta: {requiresAuth: true}
   },
   {

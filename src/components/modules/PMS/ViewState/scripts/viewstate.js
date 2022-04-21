@@ -9,19 +9,25 @@ import i18n from '../../../../../i18n';
 import store from '../../../../../store';
 import axios from 'axios';
 
-const wiewstate = new class WiewState {
+const viewstate = new class ViewState {
     // Private Fields
     #_FieldHeader = [];
     #_StartTime = null;
     #_EndTime = null;
     #_statusmsg = {};
     #_msgType = {
-        1: i18n.t("Modules.PMS.WiewState.Status.Names.Status")
+        1: i18n.t("Modules.PMS.ViewState.Status.Names.Status")
     }
 
     constructor() {
         this.selServerServerToken = '',
         this.viewStateUsers = []
+    }
+
+    async copyViewState(){
+        log.info('[viewstate.js] Starting copyViewState');
+
+        this.updateStatusMsg(1, "Hello and starting")
     }
 
     // Update status msg
@@ -40,7 +46,6 @@ const wiewstate = new class WiewState {
         })
         store.commit("UPDATE_viewStateStatus", newMsg);
     }
-
 
     // Here we get the server token for the selected server
     async getServerToken(){
@@ -90,7 +95,7 @@ const wiewstate = new class WiewState {
           })
             .then((response) => {
               log.debug('[viewState.js] Response from getShareList recieved');
-              log.silly(`getShareList returned as: ${JSON.stringify(response.data)}`);
+              log.silly(`[viewState.js] getShareList returned as: ${JSON.stringify(response.data)}`);
               retVal = JSON.stringify(response.data)
             })
             .catch(function (error) {
@@ -127,16 +132,16 @@ const wiewstate = new class WiewState {
             }
             if (!Users[sharedUsr['id']]["email"])
             {
-                name = `${name} ***( ${i18n.t("Modules.PMS.WiewState.Managed")} )***`
+                name = `${name} ***( ${i18n.t("Modules.PMS.ViewState.Managed")} )***`
             }
             let usr = { value: { "id": sharedUsr['id'], "libs": sharedUsr['librarySections']}, text: name };
             this.viewStateUsers.push(usr);
         }
         // Now we need to add Server Owner
-        let usr = { value: { "id": store.getters.getMeId, "libs": "PMSOwner"}, text: `${store.getters.getPlexName} ***( ${i18n.t("Modules.PMS.WiewState.Owner")} )***` };
+        let usr = { value: { "id": store.getters.getMeId, "libs": "PMSOwner"}, text: `${store.getters.getPlexName} ***( ${i18n.t("Modules.PMS.ViewState.Owner")} )***` };
         this.viewStateUsers.push(usr);
     }
 }
 
 
-export { wiewstate };
+export { viewstate };

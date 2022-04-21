@@ -79,9 +79,9 @@
                             }
                             ,
                             {
-                                href: { path: '/pms/wiewstate' },
-                                title: this.$t("Modules.PMS.WiewState.Name"),
-                                hidden: wtutils.hideMenu('pmsWiewState'),
+                                href: { path: '/pms/viewstate' },
+                                title: this.$t("Modules.PMS.ViewState.Name"),
+                                hidden: wtutils.hideMenu('pmsViewState'),
                                 icon: 'fas fa-tv',
                             }
                         ]

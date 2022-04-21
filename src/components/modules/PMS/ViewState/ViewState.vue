@@ -1,14 +1,14 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.WiewState.Name") }}</h1>
-        <p>{{ $t("Modules.PMS.WiewState.Description") }}</p>
+        <h1>{{ $t("Modules.PMS.ViewState.Name") }}</h1>
+        <p>{{ $t("Modules.PMS.ViewState.Description") }}</p>
     </div>
 
     <div class="d-flex align-items-center">
-      <b-form-group id="WiewStateSelSourceUsrGroup" v-bind:label="$t('Modules.PMS.WiewState.selSourceUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="WiewStateSelSourceUsrGroup">
-        <b-tooltip target="WiewStateSelSourceUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.WiewState.ttSelSourceUsr') }}
+      <b-form-group id="ViewStateSelSourceUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selSourceUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelSourceUsrGroup">
+        <b-tooltip target="ViewStateSelSourceUsrGroup" triggers="hover">
+          {{ $t('Modules.PMS.ViewState.ttSelSourceUsr') }}
         </b-tooltip>
         <b-form-select
           v-model="selSrcUsr"
@@ -23,9 +23,9 @@
     </div>
 
     <div class="d-flex align-items-center">
-      <b-form-group id="WiewStateSelTargetUsrGroup" v-bind:label="$t('Modules.PMS.WiewState.selTargetUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="WiewStateSelTargetUsrGroup">
-        <b-tooltip target="WiewStateSelTargetUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.WiewState.ttSelTargetUsr') }}
+      <b-form-group id="ViewStateSelTargetUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selTargetUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelTargetUsrGroup">
+        <b-tooltip target="ViewStateSelTargetUsrGroup" triggers="hover">
+          {{ $t('Modules.PMS.ViewState.ttSelTargetUsr') }}
         </b-tooltip>
         <b-form-select
           v-model="selTargetUsr"
@@ -50,7 +50,7 @@
                   :disabled="this.DisableCopy"
                   variant="success"
                   >
-                  {{ $t("Modules.PMS.DVR.lblBtnBackup") }}
+                  {{ $t("Modules.PMS.ViewState.lblBtnCopy") }}
                 </b-button>
             </b-button-group>
         </div>
@@ -59,12 +59,12 @@
     <b-container fluid> <!-- Status -->
       <b-row>
         <b-col sm="2">
-          <label for="status">{{ $t('Modules.PMS.WiewState.Status.Names.Status') }}:</label>
+          <label for="status">{{ $t('Modules.PMS.ViewState.Status.Names.Status') }}:</label>
         </b-col>
         <b-col sm="10">
           <b-form-textarea
             id="status"
-            v-bind:placeholder="$t('Modules.PMS.WiewState.Status.Names.Status')"
+            v-bind:placeholder="$t('Modules.PMS.ViewState.Status.Names.Status')"
             v-model="statusMsg"
             :disabled=true
             rows="1"
@@ -83,9 +83,7 @@
   import i18n from '../../../../i18n';
   import store from '../../../../store';
   //import { wtconfig } from '../General/wtutils';
-  import { wiewstate } from "./scripts/wiewstate";
-
-  i18n, wiewstate
+  import { viewstate } from "./scripts/viewstate";
 
   const log = require("electron-log");
   export default {
@@ -101,13 +99,13 @@
         };
   },
   async created() {
-    log.info("[WiesState.vue] WiewState Created");
+    log.info("[ViewState.vue] viewState Created");
     this.serverSelected();
     if (store.getters.getSelectedServer != 'none'){
       this.WaitForUsers = false;
-      await wiewstate.getUsers();
-      this.optselSrcUsr = wiewstate.viewStateUsers;
-      this.optSelTargetUsr = wiewstate.viewStateUsers;
+      await viewstate.getUsers();
+      this.optselSrcUsr = viewstate.viewStateUsers;
+      this.optSelTargetUsr = viewstate.viewStateUsers;
       this.WaitForUsers = true;
     }
   },
@@ -115,17 +113,17 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("DVR Selected server changed");
-      wiewstate.updateStatusMsg(1, i18n.t("Modules.PMS.WiewState.Status.Msg.CollectUserInfo"));
+      viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;
-      await wiewstate.getServerToken();
-      await wiewstate.getUsers();
-      this.optselSrcUsr = wiewstate.viewStateUsers;
-      this.optSelTargetUsr = wiewstate.viewStateUsers;
+      await viewstate.getServerToken();
+      await viewstate.getUsers();
+      this.optselSrcUsr = viewstate.viewStateUsers;
+      this.optSelTargetUsr = viewstate.viewStateUsers;
       this.selSrcUsr = '';
       this.selTargetUsr = '',
       this.WaitForUsers = true;
-      wiewstate.updateStatusMsg(1, "idle");
+      viewstate.updateStatusMsg(1, "idle");
     },
     // Watch for status update
     viewStateStatus: function() {
@@ -164,18 +162,8 @@
       }
     },
     async copyViewState(){
+      viewstate.copyViewState();
       console.log('Ged 1 copyViewState')
-
-      wiewstate.updateStatusMsg(1, "Hello and starting")
-
-
-
-    },
-    async getServerToken() {
-
-      await wiewstate.getServerToken();
-
-
     }
   }
 };
