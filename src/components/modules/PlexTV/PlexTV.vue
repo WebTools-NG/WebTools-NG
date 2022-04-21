@@ -33,7 +33,7 @@
             <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
       </b-input-group>
       <b-input-group id="UserRestrictedGrp" :prepend="$t('Modules.PlexTV.UsrRestricted')" class="mt-3">
-            <b-form-input id="usrRestricted" name="usrRestricted"  class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>            
+            <b-form-input id="usrRestricted" name="usrRestricted"  class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>
       </b-input-group>
       <b-input-group id="UserThumbGrp" :prepend="$t('Modules.PlexTV.UsrThumb')" class="mt-3">
             <b-form-input id="usrThumb" name="usrThumb" type="text" class="form-control" v-model="usrThumb" :disabled=true></b-form-input>

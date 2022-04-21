@@ -1,5 +1,3 @@
-//import {et, excel2} from '../../components/modules/ExportTools/scripts/et'
-//import {et} from '../../components/modules/ExportTools/scripts/et'
 import { etHelper } from '../../components/modules/ExportTools/scripts/ethelper'
 
 const log = require('electron-log');

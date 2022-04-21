@@ -6,6 +6,7 @@ import poeditor from './modules/poeditor';
 import et from './modules/et';
 import language from './modules/language';
 import pms from './modules/pms';
+import viewstate from './modules/viewstate';
 
 Vue.use(Vuex);
 
@@ -18,7 +19,7 @@ export default new Vuex.Store({
   state: {
   },
   mutations: {},
-  getters: {    
+  getters: {
   },
   actions: {},
   modules: {
@@ -26,7 +27,8 @@ export default new Vuex.Store({
     poeditor,
     et,
     language,
-    pms
+    pms,
+    viewstate
   },
   plugins: [vuexLocal.plugin]
 })

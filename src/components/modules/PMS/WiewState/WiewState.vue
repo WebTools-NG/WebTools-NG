@@ -44,31 +44,39 @@
                 <b-button
                   class="mr-2"
                   type="is-primary"
-                  @click="dvrBackup"
+                  @click="copyViewState"
                   icon-left="fas fa-file-download"
                   icon-pack="fas"
-                  :disabled="this.selDVR == ''"
+                  :disabled="this.DisableCopy"
                   variant="success"
                   >
                   {{ $t("Modules.PMS.DVR.lblBtnBackup") }}
                 </b-button>
-                <b-button
-                  class="mr-2"
-                  type="is-primary"
-                  @click="dvrRestore"
-                  icon-left="fas fa-file-download"
-                  icon-pack="fas"
-                  :disabled=!this.serverIsSelected
-                  variant="success"
-                  >
-                  {{ $t("Modules.PMS.DVR.lblBtnRestore") }}
-                </b-button>
             </b-button-group>
         </div>
     </div>
+    <br>
+    <b-container fluid> <!-- Status -->
+      <b-row>
+        <b-col sm="2">
+          <label for="status">{{ $t('Modules.PMS.WiewState.Status.Names.Status') }}:</label>
+        </b-col>
+        <b-col sm="10">
+          <b-form-textarea
+            id="status"
+            v-bind:placeholder="$t('Modules.PMS.WiewState.Status.Names.Status')"
+            v-model="statusMsg"
+            :disabled=true
+            rows="1"
+            max-rows="8">
+          </b-form-textarea>
+        </b-col>
+      </b-row>
+    </b-container>
 
 
   </b-container>
+
 </template>
 
 <script>
@@ -85,9 +93,11 @@
         return {
           optselSrcUsr: [],
           optSelTargetUsr: [],
+          selTargetUsr: "",
           selSrcUsr: "",
           serverIsSelected: false,
-          WaitForUsers: false
+          WaitForUsers: false,
+          statusMsg: 'Idle'
         };
   },
   async created() {
@@ -105,19 +115,34 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("DVR Selected server changed");
+      wiewstate.updateStatusMsg(1, i18n.t("Modules.PMS.WiewState.Status.Msg.CollectUserInfo"));
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;
       await wiewstate.getServerToken();
       await wiewstate.getUsers();
       this.optselSrcUsr = wiewstate.viewStateUsers;
       this.optSelTargetUsr = wiewstate.viewStateUsers;
+      this.selSrcUsr = '';
+      this.selTargetUsr = '',
       this.WaitForUsers = true;
+      wiewstate.updateStatusMsg(1, "idle");
+    },
+    // Watch for status update
+    viewStateStatus: function() {
+      this.statusMsg = this.$store.getters.getViewStateStatus;
     }
   },
   computed: {
       // We need this computed, for watching for changes to selected server
       selectedServerAddress: function(){
       return this.$store.getters.getSelectedServerAddress
+    },
+    DisableCopy : function(){
+      // Only enable copy btn. if we have a server, users are selected and not identical
+      return !(this.WaitForUsers&&(this.selTargetUsr)&&(this.selSrcUsr)&&(this.selTargetUsr!=this.selSrcUsr))
+    },
+    viewStateStatus: function(){
+      return this.$store.getters.getViewStateStatus;
     }
   },
   methods: {
@@ -137,6 +162,14 @@
           toaster: 'b-toaster-bottom-right'
         });
       }
+    },
+    async copyViewState(){
+      console.log('Ged 1 copyViewState')
+
+      wiewstate.updateStatusMsg(1, "Hello and starting")
+
+
+
     },
     async getServerToken() {
 

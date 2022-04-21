@@ -10,10 +10,35 @@ import store from '../../../../../store';
 import axios from 'axios';
 
 const wiewstate = new class WiewState {
+    // Private Fields
+    #_FieldHeader = [];
+    #_StartTime = null;
+    #_EndTime = null;
+    #_statusmsg = {};
+    #_msgType = {
+        1: i18n.t("Modules.PMS.WiewState.Status.Names.Status")
+    }
 
     constructor() {
         this.selServerServerToken = '',
         this.viewStateUsers = []
+    }
+
+    // Update status msg
+    async updateStatusMsg(msgType, msg)
+    {
+        // Update relevant key
+        this.#_statusmsg[msgType] = msg;
+        // Tmp store of new msg
+        let newMsg = '';
+        // Walk each current msg keys
+        Object.entries(this.#_statusmsg).forEach(([key, value]) => {
+            if ( value != '')
+            {
+                newMsg += this.#_msgType[key] + ': ' + value + '\n';
+            }
+        })
+        store.commit("UPDATE_viewStateStatus", newMsg);
     }
 
 

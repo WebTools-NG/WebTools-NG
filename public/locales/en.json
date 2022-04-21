@@ -415,7 +415,15 @@
                 "selTargetUsr": "Select User to copy to",
                 "ttSelTargetUsr": "Here you select the user you wants to copy view states to",
                 "Owner": "Server owner",
-                "Managed": "Managed User"
+                "Managed": "Managed User",
+                "Status": {
+                    "Msg": {
+                        "CollectUserInfo": "Collecting user info...Please wait"
+                    },
+                    "Names": {
+                        "Status": "Status"
+                    }
+                }
             }
         },
         "PlexTV": {
