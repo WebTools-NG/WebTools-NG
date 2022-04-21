@@ -1,5 +1,5 @@
 <template>
-  <sidebar-menu 
+  <sidebar-menu
   :menu="menu"
   :collapsed="collapsed"
   @toggle-collapse="onToggleCollapse"
@@ -10,8 +10,8 @@
     const log = require('electron-log');
     console.log = log.log;
     import '@fortawesome/fontawesome-free/css/all.css';
-    import etIcon from '@/assets/ET-256.png'; 
-    import pmsIcon from '@/assets/plex-pms-icon.png';  
+    import etIcon from '@/assets/ET-256.png';
+    import pmsIcon from '@/assets/plex-pms-icon.png';
     import plextvIcon from '@/assets/plex-app-icon.png';
     import {wtconfig, wtutils} from '../../components/modules/General/wtutils';
 
@@ -20,15 +20,15 @@
 
     export default {
         data() {
-            return { 
-                collapsed: false                
+            return {
+                collapsed: false
             }
         },
         computed: {
             menu(){
                 return [
                     {
-                        href: { path: '/home' },                        
+                        href: { path: '/home' },
                         title: this.$t("Common.Menu.Sidebar.Home.NavTitle"),
                         icon: 'fa fa-home'
                     },
@@ -36,7 +36,7 @@
                         header: true,
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
-                    },                    
+                    },
                     {
                         href: { path: '/plextv' },
                         title: this.$t("Modules.PlexTV.Name"),
@@ -46,7 +46,7 @@
                             //adjust element
                                 element: 'img',
                                 attributes: { src: plextvIcon },
-                            }                                               
+                            }
                     },
                     {
                         href: { path: '/pms' },
@@ -59,15 +59,15 @@
                                 attributes: { src: pmsIcon },
                             },
                         child: [
-                            {                                
+                            {
                                 href: '/pms/settings',
                                 hidden: wtutils.hideMenu('pmsSettings'),
-                                title: this.$t("Common.Menu.Sidebar.PMS.Settings"),                                
+                                title: this.$t("Common.Menu.Sidebar.PMS.Settings"),
                                 icon: 'fa fa-cog'
                             },
-                            {                                
+                            {
                                 href: '/pms/butler',
-                                title: this.$t("Common.Menu.Sidebar.PMS.Butler"),                                
+                                title: this.$t("Common.Menu.Sidebar.PMS.Butler"),
                                 hidden: wtutils.hideMenu('pmsButler'),
                                 icon: 'fa fa-tasks'
                             },
@@ -75,7 +75,14 @@
                                 href: { path: '/pms/dvr' },
                                 title: this.$t("Modules.PMS.DVR.Name"),
                                 hidden: wtutils.hideMenu('pmsDVR'),
-                                icon: 'fas fa-tv',              
+                                icon: 'fas fa-tv',
+                            }
+                            ,
+                            {
+                                href: { path: '/pms/wiewstate' },
+                                title: this.$t("Modules.PMS.WiewState.Name"),
+                                hidden: wtutils.hideMenu('pmsWiewState'),
+                                icon: 'fas fa-tv',
                             }
                         ]
                     },
@@ -87,23 +94,23 @@
                         icon: {
                             //adjust element
                                 element: 'img',
-                                attributes: { src: etIcon },                                
+                                attributes: { src: etIcon },
                             },
                         child: [
-                            {                                
+                            {
                                 href: '/export/settings',
                                 title: this.$t("Common.Menu.Sidebar.ET.Settings"),
-                                hidden: wtutils.hideMenu('etSettings'),                                
+                                hidden: wtutils.hideMenu('etSettings'),
                                 icon: 'fa fa-cog'
                             },
-                            {                                
+                            {
                                 href: '/export/custom',
                                 title: this.$t("Common.Menu.Sidebar.ET.Custom"),
-                                hidden: wtutils.hideMenu('etCustom'),                                
+                                hidden: wtutils.hideMenu('etCustom'),
                                 icon: 'fa fa-cog'
                             }
                         ]
-                        
+
                     },
                     {
                         header: true,
@@ -119,8 +126,8 @@
                     },
                     {
                         href: '/settings',
-                        title: this.$t("Common.Menu.Sidebar.Settings.NavTitle"),  
-                        hidden: wtutils.hideMenu('Settings'),                              
+                        title: this.$t("Common.Menu.Sidebar.Settings.NavTitle"),
+                        hidden: wtutils.hideMenu('Settings'),
                         icon: 'fa fa-cog'
                     },
                     {
@@ -142,7 +149,7 @@
             onToggleCollapse(collapsed) {
                 this.$emit("e-iscollapsed", collapsed);
                 log.info(collapsed)
-            }  
+            }
         }
     }
 </script>

@@ -406,6 +406,12 @@
                 "selAlredyPresentTitle": "Aborting",
                 "selMissingDevice": "The selected backup file is missing devices",
                 "selDeviceAlreadyUsed": "The device is in use with an existing DVR"
+            },
+            "WiewState": {
+                "Name": "Wiew State Copy",
+                "Description": "@:Modules.PMS.WiewState.Name module allows you to copy a users list of seen medias to another user on the same server. Note: It's important, that both users has access to the medias",
+                "selSourceUsr": "Select User to copy from",
+                "ttSelSourceUsr": "Here you select the user you wants to copy view states from"
             }
         },
         "PlexTV": {

@@ -56,7 +56,7 @@ const actions = {
     header['X-Plex-Token'] = getters.getAuthToken;
     await axios({
       method: 'get',
-      url: 'https://plex.tv/api/v2/friends',
+      url: `${wtutils.plexTVApi}v2/friends`,
       headers: header
     })
       .then((response) => {
@@ -84,7 +84,7 @@ const actions = {
     header['X-Plex-Token'] = getters.getAuthToken;
       axios({
           method: 'get',
-          url: 'https://plex.tv/api/v2/resources',
+          url: `${wtutils.plexTVApi}v2/resources`,
           headers: header,
           params: {
             'includeHttps' : '1',
@@ -134,7 +134,7 @@ const actions = {
   },
   loginToPlex({ commit }, payload){
     log.info("loginToPlex called")
-    var url = 'https://plex.tv/api/v2/users/signin';
+    var url = `${wtutils.plexTVApi}v2/users/signin`;
     url = url + '?login=' + require('querystring').escape(payload.username);
     url = url + '&password=' + require('querystring').escape(payload.password);
     if ( payload.twoFA ){
@@ -183,11 +183,13 @@ const actions = {
   },
   loginToPlexWithToken({ commit }, payload){
     log.info("loginToPlex called, using a Token")
-    const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;
+    let header = wtutils.PMSHeader;
+    header['X-Plex-Token'] = payload.token;
+    const url = `${wtutils.plexTVApi}v2/users/signin`;
     axios({
       method: 'POST',
       url: url,
-      headers: wtutils.PMSHeader
+      headers: header
     })
       .then(function (response) {
         log.debug('loginToPlex: Response from fetchPlexServers recieved')

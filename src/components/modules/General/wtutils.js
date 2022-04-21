@@ -16,6 +16,7 @@ const wtutils = new class WTUtils {
 
     constructor() {
         this.logFileName = this.AppName + '.log';
+        this.plexTVApi = 'https://plex.tv/api/';
     }
 
     get ConfigFileName(){
