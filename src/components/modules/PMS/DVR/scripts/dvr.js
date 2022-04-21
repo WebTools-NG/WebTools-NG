@@ -92,8 +92,7 @@ const dvr = new class DVR {
     }
 
     async setDevicePrefs(){
-        console.log('Ged 0 ************ SET Device Settings *********')
-        log.debug('Start Device Settings');
+        log.debug('[dvr.js] Start Device Settings');
         let url = '';
         let arrSettings = []
         const Settings = JSONPath({path: '$..Device[0].Setting', json: this.fileDVRRestore});

@@ -18,18 +18,20 @@
         </b-form-select>
       </b-form-group>
     </div>
-    
-    
+    <div ref="libSpinner" id="libSpinner" :hidden="WaitForUsers">
+      <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+    </div>
+
     <div class="d-flex align-items-center">
-      <b-form-group id="WiewStateSelSourceUsrGroup" v-bind:label="$t('Modules.PMS.WiewState.selSourceUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="WiewStateSelSourceUsrGroup">
-        <b-tooltip target="WiewStateSelSourceUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.WiewState.ttSelSourceUsr') }}
+      <b-form-group id="WiewStateSelTargetUsrGroup" v-bind:label="$t('Modules.PMS.WiewState.selTargetUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="WiewStateSelTargetUsrGroup">
+        <b-tooltip target="WiewStateSelTargetUsrGroup" triggers="hover">
+          {{ $t('Modules.PMS.WiewState.ttSelTargetUsr') }}
         </b-tooltip>
         <b-form-select
-          v-model="selSrcUsr"
-          id="selSrcUsr"
-          :options="optselSrcUsr"
-          name="selSrcUsr">
+          v-model="selTargetUsr"
+          id="selTargetUsr"
+          :options="optSelTargetUsr"
+          name="selTargetUsr">
         </b-form-select>
       </b-form-group>
     </div>
@@ -71,7 +73,7 @@
 
 <script>
   import i18n from '../../../../i18n';
-  //import store from '../../../store';
+  import store from '../../../../store';
   //import { wtconfig } from '../General/wtutils';
   import { wiewstate } from "./scripts/wiewstate";
 
@@ -82,32 +84,43 @@
       data() {
         return {
           optselSrcUsr: [],
+          optSelTargetUsr: [],
           selSrcUsr: "",
-          serverIsSelected: false
+          serverIsSelected: false,
+          WaitForUsers: false
         };
   },
-  created() {
-    log.info("WiewState Created");
+  async created() {
+    log.info("[WiesState.vue] WiewState Created");
     this.serverSelected();
+    if (store.getters.getSelectedServer != 'none'){
+      this.WaitForUsers = false;
+      await wiewstate.getUsers();
+      this.optselSrcUsr = wiewstate.viewStateUsers;
+      this.optSelTargetUsr = wiewstate.viewStateUsers;
+      this.WaitForUsers = true;
+    }
   },
   watch: {
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("DVR Selected server changed");
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
-    }    
-  },
-  computed: {
-    // We need this computed, for watching for changes to selected server
-    selectedServerAddress: function(){
-      // We need to get the server token as well
-      this.getServerToken();
-
-      return this.$store.getters.getSelectedServerAddress
-      
+      this.WaitForUsers = false;
+      await wiewstate.getServerToken();
+      await wiewstate.getUsers();
+      this.optselSrcUsr = wiewstate.viewStateUsers;
+      this.optSelTargetUsr = wiewstate.viewStateUsers;
+      this.WaitForUsers = true;
     }
   },
-  methods: {    
+  computed: {
+      // We need this computed, for watching for changes to selected server
+      selectedServerAddress: function(){
+      return this.$store.getters.getSelectedServerAddress
+    }
+  },
+  methods: {
     /* Check if a server is selected, and if not
     tell user, and disable backup */
     async serverSelected() {
@@ -126,9 +139,9 @@
       }
     },
     async getServerToken() {
-      console.log('Ged 44 get server token')
+
       await wiewstate.getServerToken();
-      console.log('Ged 45 got server token')
+
 
     }
   }

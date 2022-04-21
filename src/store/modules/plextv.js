@@ -15,7 +15,8 @@ const state = {
   authToken: '',
   avatar: '',
   plexname: '',
-  users: {}
+  users: {},
+  MeId: ''
 };
 
 const mutations = {
@@ -43,6 +44,9 @@ const mutations = {
   },
   UPDATE_PLEXNAME(state, value){
     state.plexname = value;
+  },
+  UPDATE_MeId(state, value){
+    state.MeId = value;
   },
   UPDATE_USERS(state, value){
     state.users = value;
@@ -151,6 +155,7 @@ const actions = {
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.thumb)
         commit('UPDATE_PLEXNAME', response.data.username)
+        commit('UPDATE_MeId', response.data.id)
         router.replace({name: "home"});
     })
       .catch(function (error) {
@@ -184,8 +189,9 @@ const actions = {
   loginToPlexWithToken({ commit }, payload){
     log.info("loginToPlex called, using a Token")
     let header = wtutils.PMSHeader;
-    header['X-Plex-Token'] = payload.token;
-    const url = `${wtutils.plexTVApi}v2/users/signin`;
+    //header['X-Plex-Token'] =  payload.token;
+    //const url = `${wtutils.plexTVApi}v2/users/signin.json?X-Plex-Token=${payload.token}`;
+    const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;
     axios({
       method: 'POST',
       url: url,
@@ -193,10 +199,13 @@ const actions = {
     })
       .then(function (response) {
         log.debug('loginToPlex: Response from fetchPlexServers recieved')
+
+        console.log('Gedd 66 Me: ' + JSON.stringify(response.data.user))
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)
         commit('UPDATE_PLEXNAME', response.data.user.username)
+        commit('UPDATE_MeId', response.data.id)
         router.replace({name: "home"});
     })
       .catch(function (error) {
@@ -229,6 +238,7 @@ const getters = {
     getAuthToken: state => state.authToken,
     getAvatar: state => state.avatar,
     getPlexName: state => state.plexname,
+    getMeId: state => state.MeId,
     getSelectedServer: state => state.selectedServer,
     getSelectedServerAddress: state => state.selectedServerAddress,
     getSelectedServerAddressUpdateInProgress: state => state.selectedServerAddressUpdateInProgress,

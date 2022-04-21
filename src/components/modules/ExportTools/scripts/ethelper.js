@@ -602,13 +602,7 @@ const etHelper = new class ETHELPER {
                     retVal = await this.getSuggestedFolderName( {data: data} );
                     break;
                 case "Part File":
-                    console.log('Ged 76-0 Part File in: ' + valArray)
-                    console.log('Ged 76-1 Part File in: ' + JSON.stringify(valArray))
-                    console.log('Ged 76-2 Part File Basename: ' + path.basename(valArray[0]))
-
                     for (x=0; x<valArray.length; x++) {
-                        console.log('Ged 77-1 Part File in: ' + valArray[x])
-                        console.log('Ged 77-2 Part File basename : ' + path.basename(valArray[x]))
                         retArray.push(path.basename(valArray[x]).slice(0, -1));
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
