@@ -16,18 +16,25 @@ const viewstate = new class ViewState {
     #_EndTime = null;
     #_statusmsg = {};
     #_msgType = {
-        1: i18n.t("Modules.PMS.ViewState.Status.Names.Status")
+        1: i18n.t("Modules.PMS.ViewState.Status.Names.Status"),
+        2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess")
     }
 
     constructor() {
         this.selServerServerToken = '',
-        this.viewStateUsers = []
+        this.viewStateUsers = [],
+        this.libs = {}
     }
 
-    async copyViewState(){
+    async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
 
-        this.updateStatusMsg(1, "Hello and starting")
+        console.log('Ged 1 SrcUsr: ' + JSON.stringify(SrcUsr))
+        console.log('Ged 2 TargetUsr: ' + JSON.stringify(TargetUsr))
+
+        this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
+        await this.getLibs( SrcUsr, TargetUsr );
+        this.updateStatusMsg(1, "Ged")
     }
 
     // Update status msg
@@ -45,6 +52,54 @@ const viewstate = new class ViewState {
             }
         })
         store.commit("UPDATE_viewStateStatus", newMsg);
+    }
+
+    // Clear Status Window
+    async clearStatus()
+    {
+        this.#_statusmsg = {};
+        store.commit("UPDATE_viewStateStatus", '');
+        return;
+    }
+
+    async getLibs( SrcUsr, TargetUsr ){
+        log.info('[viewstate.js] Starting getLibs');
+        this.clearStatus();
+        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.GatheringLibs"));
+        this.libs = {};
+        console.log('Ged 7-1: *' + SrcUsr["id"] + '*')
+        if (SrcUsr["id"] == "")
+        {
+            // We need to add all libs from target usr
+            log.debug(`[viewstate.js] SrcUsr is owner`);
+            for(let i of TargetUsr["libs"]) {
+                this.libs[i.key] = i.title;
+            }
+
+        }
+        else
+        {
+            if (TargetUsr["id"] == ""){
+                // We need to add all libs from Source usr
+                log.debug(`[viewstate.js] TargetUsr is owner`);
+                for(let i of SrcUsr["libs"]) {
+                    this.libs[i.key] = i.title;
+                }
+            }
+            else {
+                for(let i of SrcUsr["libs"]) {
+                    if ( JSON.stringify(TargetUsr["libs"]).indexOf(JSON.stringify(i)) > -1)
+                    {
+                        this.libs[i.key] = i.title;
+                    }
+                }
+            }
+        }
+        let libstatus = []
+        for (let lib in this.libs){
+            libstatus.push(this.libs[lib])
+        }
+        this.updateStatusMsg(2, libstatus.join(', '))
     }
 
     // Here we get the server token for the selected server
@@ -138,7 +193,7 @@ const viewstate = new class ViewState {
             this.viewStateUsers.push(usr);
         }
         // Now we need to add Server Owner
-        let usr = { value: { "id": store.getters.getMeId, "libs": "PMSOwner"}, text: `${store.getters.getPlexName} ***( ${i18n.t("Modules.PMS.ViewState.Owner")} )***` };
+        let usr = { value: { "id": `${store.getters.getMeId}`, "libs": [{"id":null,"key":0,"title":"*","type":"*"}]}, text: `${store.getters.getPlexName} ***( ${i18n.t("Modules.PMS.ViewState.Owner")} )***` };
         this.viewStateUsers.push(usr);
     }
 }

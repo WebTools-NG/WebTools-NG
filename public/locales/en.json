@@ -419,10 +419,14 @@
                 "lblBtnCopy": "Copy",
                 "Status": {
                     "Msg": {
-                        "CollectUserInfo": "Collecting user info...Please wait"
+                        "CollectUserInfo": "Collecting user info...Please wait",
+                        "Processing": "Processing",
+                        "Idle": "Idle",
+                        "GatheringLibs": "Gathering libraries to process"
                     },
                     "Names": {
-                        "Status": "Status"
+                        "Status": "Status",
+                        "LibsToProcess": "Libraries to process"
                     }
                 }
             }

@@ -113,6 +113,7 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("DVR Selected server changed");
+      viewstate.clearStatus();
       viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;
@@ -162,8 +163,7 @@
       }
     },
     async copyViewState(){
-      viewstate.copyViewState();
-      console.log('Ged 1 copyViewState')
+      viewstate.copyViewState( this.selSrcUsr, this.selTargetUsr );
     }
   }
 };
