@@ -117,6 +117,7 @@
             }
         },
         "Ok": "OK",
+        "Cancel": "Cancel",
         "Reload": "Reload",
         "Update": {
             "Title": "Update detected",
@@ -397,8 +398,39 @@
                 "ttselDVR": "Here you select the DVR you want to make a backup of",
                 "lblBtnBackup": "Backup",
                 "lblBtnRestore": "Restore",
-                "BackupDone": "DVR has been saved"    
-            }            
+                "BackupDone": "DVR has been saved",
+                "selRestoreFile": "Select DVR file to restore",
+                "confirmRestore": "Confirm restore",
+                "restoreMsg": "Are you sure you want to restore the DVR named: '{0}'",
+                "selAlredyPresentMsg": "The selected DVR: '{0}' already exist on your PMS. So we will abort",
+                "selAlredyPresentTitle": "Aborting",
+                "selMissingDevice": "The selected backup file is missing devices",
+                "selDeviceAlreadyUsed": "The device is in use with an existing DVR"
+            },
+            "ViewState": {
+                "Name": "View State Copy",
+                "Description": "@:Modules.PMS.ViewState.Name module allows you to copy a users list of seen medias to another user on the same server. Note: It's important, that both users has access to the medias",
+                "selSourceUsr": "Select User to copy from",
+                "ttSelSourceUsr": "Here you select the user you wants to copy view states from",
+                "selTargetUsr": "Select User to copy to",
+                "ttSelTargetUsr": "Here you select the user you wants to copy view states to",
+                "Owner": "Server owner",
+                "Managed": "Managed User",
+                "lblBtnCopy": "Copy",
+                "Status": {
+                    "Msg": {
+                        "CollectUserInfo": "Collecting user info...Please wait",
+                        "Processing": "Processing",
+                        "Idle": "Idle",
+                        "GatheringLibs": "Gathering libraries to process"
+                    },
+                    "Names": {
+                        "Status": "Status",
+                        "LibsToProcess": "Libraries to process",
+                        "StartTime": "Start time"
+                    }
+                }
+            }
         },
         "PlexTV": {
             "Name": "Plex.TV",
@@ -416,6 +448,6 @@
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
             "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings"
-        }        
+        }
     }
 }
