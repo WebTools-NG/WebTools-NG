@@ -14,6 +14,7 @@
           v-model="selSrcUsr"
           id="selSrcUsr"
           :options="optselSrcUsr"
+          @change="selSrcUsrChanged"
           name="selSrcUsr">
         </b-form-select>
       </b-form-group>
@@ -21,7 +22,6 @@
     <div ref="libSpinner" id="libSpinner" :hidden="WaitForUsers">
       <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
     </div>
-
     <div class="d-flex align-items-center">
       <b-form-group id="ViewStateSelTargetUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selTargetUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelTargetUsrGroup">
         <b-tooltip target="ViewStateSelTargetUsrGroup" triggers="hover">
@@ -29,6 +29,7 @@
         </b-tooltip>
         <b-form-select
           v-model="selTargetUsr"
+          @change="selTargetUsrChanged"
           id="selTargetUsr"
           :options="optSelTargetUsr"
           name="selTargetUsr">
@@ -112,19 +113,27 @@
   watch: {
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
-      log.info("DVR Selected server changed");
+      log.info("ViewState selected server changed");
+      console.log('Ged 1-1: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.clearStatus();
+      console.log('Ged 1-2: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
+      viewstate.SrcUsrKey = -1;
+      viewstate.TargetUsrKey = -1;
+      console.log('Ged 1-3: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;
       await viewstate.getServerToken();
+      console.log('Ged 1-4: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       await viewstate.getUsers();
+      console.log('Ged 1-5: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       this.optselSrcUsr = viewstate.viewStateUsers;
       this.optSelTargetUsr = viewstate.viewStateUsers;
       this.selSrcUsr = '';
       this.selTargetUsr = '',
       this.WaitForUsers = true;
-      viewstate.updateStatusMsg(1, "idle");
+      viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
+      console.log('Ged 1-6: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
     },
     // Watch for status update
     viewStateStatus: function() {
@@ -145,8 +154,18 @@
     }
   },
   methods: {
+    // SrcUsr changed
+    async selSrcUsrChanged() {
+      await viewstate.setKey( 'selSrcUsr', this.selSrcUsr);
+      await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
+    },
+    // SrcUsr changed
+    async selTargetUsrChanged() {
+      await viewstate.setKey( 'selTargetUsr', this.selTargetUsr );
+      await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
+    },
     /* Check if a server is selected, and if not
-    tell user, and disable backup */
+    tell user, and disable copy */
     async serverSelected() {
       let serverCheck = this.$store.getters.getSelectedServer;
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );

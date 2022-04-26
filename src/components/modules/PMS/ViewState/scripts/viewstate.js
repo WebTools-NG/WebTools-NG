@@ -17,17 +17,59 @@ const viewstate = new class ViewState {
     #_statusmsg = {};
     #_msgType = {
         1: i18n.t("Modules.PMS.ViewState.Status.Names.Status"),
-        2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess")
+        2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess"),
+        3: i18n.t("Modules.PMS.ViewState.Status.Names.StartTime")
+
     }
 
     constructor() {
         this.selServerServerToken = '',
         this.viewStateUsers = [],
-        this.libs = {}
+        this.libs = {},
+        this.SrcUsrKey = -1,
+        this.TargetUsrKey = -1
+    }
+
+    async setKey( Usr, data ){
+        if ( Usr == 'selSrcUsr' ){
+            this.SrcUsrKey = JSONPath({path: `$..libs[0].key`, json: data})
+            if ( isNaN(this.SrcUsrKey) ){
+                this.SrcUsrKey = -1;
+            }
+        }
+        else {
+            this.TargetUsrKey = JSONPath({path: `$..libs[0].key`, json: data})
+            if ( isNaN(this.TargetUsrKey) ){
+                this.TargetUsrKey = -1;
+            }
+        }
+    }
+
+    async getNowTime(StartEnd){
+        let now = new Date();
+        if (StartEnd == 'start')
+        {
+            this.#_StartTime = now;
+        }
+        else
+        {
+            this.#_EndTime = now;
+        }
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        if ( hours.toString().length < 2) { hours = '0' + hours}
+        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
+        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
+        return hours + ':' + minutes + ':' + seconds;
     }
 
     async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
+        const startTime = await this.getNowTime('start');
+        console.log('Ged 4 start time: ' + startTime)
+        this.updateStatusMsg(3,  startTime);
+
 
         console.log('Ged 1 SrcUsr: ' + JSON.stringify(SrcUsr))
         console.log('Ged 2 TargetUsr: ' + JSON.stringify(TargetUsr))
@@ -52,6 +94,7 @@ const viewstate = new class ViewState {
             }
         })
         store.commit("UPDATE_viewStateStatus", newMsg);
+        console.log('Ged 7 Msg: ' + JSON.stringify(newMsg))
     }
 
     // Clear Status Window
@@ -64,22 +107,32 @@ const viewstate = new class ViewState {
 
     async getLibs( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting getLibs');
+        // Are both users selected ?
+        if ( this.TargetUsrKey < 0 || this.SrcUsrKey < 0 ){
+            return;
+        }
+        if ( JSON.stringify(SrcUsr) === JSON.stringify(TargetUsr) ){
+            this.clearStatus();
+            this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
+            log.info('[viewstate.js] Same user selected, so aborting');
+            return;
+        }
         this.clearStatus();
         this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.GatheringLibs"));
+        log.silly(`[viewstate.js] Source usr: ${JSON.stringify(SrcUsr)}`);
+        log.silly(`[viewstate.js] Target usr: ${JSON.stringify(TargetUsr)}`);
         this.libs = {};
-        console.log('Ged 7-1: *' + SrcUsr["id"] + '*')
-        if (SrcUsr["id"] == "")
+        if ( JSONPath({path: `$..libs[0].key`, json: SrcUsr}) == 0 )
         {
             // We need to add all libs from target usr
             log.debug(`[viewstate.js] SrcUsr is owner`);
             for(let i of TargetUsr["libs"]) {
                 this.libs[i.key] = i.title;
             }
-
         }
         else
         {
-            if (TargetUsr["id"] == ""){
+            if ( JSONPath({path: `$..libs[0].key`, json: TargetUsr}) == 0 ){
                 // We need to add all libs from Source usr
                 log.debug(`[viewstate.js] TargetUsr is owner`);
                 for(let i of SrcUsr["libs"]) {
@@ -99,6 +152,7 @@ const viewstate = new class ViewState {
         for (let lib in this.libs){
             libstatus.push(this.libs[lib])
         }
+        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
         this.updateStatusMsg(2, libstatus.join(', '))
     }
 
