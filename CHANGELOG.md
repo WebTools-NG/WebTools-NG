@@ -12,7 +12,7 @@
 **Changes**:
 
 * [#440 Dvr Backup and Restore](https://github.com/WebTools-NG/WebTools-NG/issues/440)
-
+* [#469 Default ExportTools Levels do NOT produce any output](https://github.com/WebTools-NG/WebTools-NG/issues/469)
 
 ## V0.3.15 (20220413)
 
