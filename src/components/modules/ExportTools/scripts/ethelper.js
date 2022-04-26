@@ -1557,7 +1557,7 @@ const etHelper = new class ETHELPER {
 
     getIncludeInfo(){
         let includeInfo;
-        log.debug(`etHelper (getIncludeInfo) - Started. libTypeSec is: ${this.Settings.libTypeSec} and levelName is: ${this.Settings.levelName}`);
+        log.debug(`[ethelper.js] (getIncludeInfo) - Started. libTypeSec is: ${this.Settings.libTypeSec} and levelName is: ${this.Settings.levelName}`);
         try {
             includeInfo = defLevels[this.Settings.libTypeSec]['Include'][this.Settings.levelName];
         }
@@ -1568,11 +1568,15 @@ const etHelper = new class ETHELPER {
         {
             includeInfo = ''
         }
+        if (includeInfo == undefined)
+        {
+            includeInfo = ''
+        }
         if (includeInfo == null)
         {
             includeInfo = wtconfig.get('ET.CustomLevels.' + this.Settings.libTypeSec + '.Include.' + this.Settings.levelName);
         }
-        log.debug(`etHelper (getInclude) - returning: ${includeInfo}`);
+        log.debug(`[ethelper.js] (getIncludeInfo) - returning: ${includeInfo}`);
         return includeInfo;
     }
 
