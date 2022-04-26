@@ -32,9 +32,9 @@ log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
 log.info('*********************************')
-log.info(`Starting ${wtutils.AppName} Version: ${wtutils.AppVersion}`);
-log.info(`Running on ${wtutils.RunningOS}`);
-log.info(`Log level set to ${log.transports.file.level}`);
+log.info(`[main.js] Starting ${wtutils.AppName} Version: ${wtutils.AppVersion}`);
+log.info(`[main.js] Running on ${wtutils.RunningOS}`);
+log.info(`[main.js] Log level set to ${log.transports.file.level}`);
 // Logging ended
 
 // Log Commandline Params
@@ -53,7 +53,7 @@ params.forEach(param => {
 // Handles dev stuff from Json
 const token = wtconfig.get('Developer.X-Plex-Token', '');
 if ( token != ''){
-  log.verbose(`Logging in with Dev Token`);
+  log.verbose(`[main.js] Logging in with Dev Token`);
   store.commit("UPDATE_AUTHTOKEN", token);
 }
 
@@ -67,19 +67,19 @@ if (wtconfig.get("general.version", "") != wtutils.AppVersion){
 var fs = require('fs');
 var prefs = JSON.parse(fs.readFileSync(wtutils.ConfigFileName, 'utf8'));
 delete prefs ['Developer'];
-log.verbose('***** Prefs *****');
+log.verbose('[main.js] ***** Prefs *****');
 log.verbose(prefs);
-log.verbose('***** Prefs Ended *****');
+log.verbose('[main.js] ***** Prefs Ended *****');
 
 // Get saved language to use, and default to en
 i18n.locale = wtconfig.get('General.language', 'en');
 
 // App Menu Bar
-log.verbose('Starting to build App Menu');
+log.verbose('[main.js] Starting to build App Menu');
 const menuTemplate = require('./components/layout/script/menubar');
 const menu = require('electron').remote.Menu.buildFromTemplate(menuTemplate.default);
 require('electron').remote.Menu.setApplicationMenu(menu);
-log.verbose('App Menu builded');
+log.verbose('[main.js] App Menu builded');
 
 Vue.config.productionTip = false;
 

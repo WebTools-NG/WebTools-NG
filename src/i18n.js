@@ -15,14 +15,14 @@ function loadLocaleMessages () {
   // Force read en lang, since it's the fallback
   const langCode = 'en'
   var langFile = wtutils.Home + '/locales/' + langCode + '.json'
-  log.debug(`Loading language: ${langCode}`)
+  log.debug(`[i18n.js] (loadLocaleMessages) Loading language: ${langCode}`)
   messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8'));
-  log.debug(`Defined language: ${wtconfig.get('General.language')}`)
+  log.debug(`[i18n.js] (loadLocaleMessages) Defined language: ${wtconfig.get('General.language')}`)
   if (wtconfig.get('General.language', 'en') != 'en'){
     // We need to preload an additional language
     const langCode = wtconfig.get('General.language')
     langFile = wtutils.Home + '/locales/' + langCode + '.json'
-    log.debug(`Loading language: ${langCode}`)
+    log.debug(`[i18n.js] (loadLocaleMessages) Loading language: ${langCode}`)
     messages[langCode] = JSON.parse(fs.readFileSync(langFile, 'utf8'));
   }
   return messages
