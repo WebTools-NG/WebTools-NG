@@ -118,8 +118,8 @@
       viewstate.clearStatus();
       console.log('Ged 1-2: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
-      viewstate.SrcUsrKey = -1;
-      viewstate.TargetUsrKey = -1;
+      viewstate.SrcUsr = null;
+      viewstate.TargetUsr = null;
       console.log('Ged 1-3: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;

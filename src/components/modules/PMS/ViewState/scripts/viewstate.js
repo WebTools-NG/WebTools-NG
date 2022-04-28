@@ -26,8 +26,6 @@ const viewstate = new class ViewState {
         this.selServerServerToken = '',
         this.viewStateUsers = [],
         this.libs = {},
-        this.SrcUsrKey = -1,
-        this.TargetUsrKey = -1
         this.SrcUsrToken = '',
         this.TargetUsrToken = '',
         this.SrcUsr,
@@ -37,23 +35,10 @@ const viewstate = new class ViewState {
     async setKey( Usr, data ){
         console.log('Ged 88-0: ' + JSON.stringify(data))
         if ( Usr == 'selSrcUsr' ){
-            this.SrcUsrKey = JSONPath({path: `$..libs[0].key`, json: data});
             this.SrcUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
-
-            /* if ( isNaN(this.SrcUsrKey) ){
-                this.SrcUsrKey = -1;
-                this.SrcUsr['key'] = -1;
-            }
-             */
         }
         else {
-            this.TargetUsrKey = JSONPath({path: `$..libs[0].key`, json: data});
             this.TargetUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
-            /* 
-            if ( isNaN(this.TargetUsrKey) ){
-                this.TargetUsrKey = -1;
-                this.TargetUsrKey = -1;
-            } */
         }
     }
 
@@ -203,6 +188,7 @@ const viewstate = new class ViewState {
         log.silly(`[viewstate.js] (getLibs) TargetUsr: ${JSON.stringify(TargetUsr)}`);
         // Are both users selected ?
         if ( !(this.TargetUsr && this.SrcUsr) ){
+            log.info('[viewstate.js] (getLibs) Both users not yet selected, so exit');
             return;
         }
         if ( JSON.stringify(SrcUsr) === JSON.stringify(TargetUsr) ){
