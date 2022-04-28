@@ -28,20 +28,32 @@ const viewstate = new class ViewState {
         this.libs = {},
         this.SrcUsrKey = -1,
         this.TargetUsrKey = -1
+        this.SrcUsrToken = '',
+        this.TargetUsrToken = '',
+        this.SrcUsr,
+        this.TargetUsr
     }
 
     async setKey( Usr, data ){
+        console.log('Ged 88-0: ' + JSON.stringify(data))
         if ( Usr == 'selSrcUsr' ){
-            this.SrcUsrKey = JSONPath({path: `$..libs[0].key`, json: data})
-            if ( isNaN(this.SrcUsrKey) ){
+            this.SrcUsrKey = JSONPath({path: `$..libs[0].key`, json: data});
+            this.SrcUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
+
+            /* if ( isNaN(this.SrcUsrKey) ){
                 this.SrcUsrKey = -1;
+                this.SrcUsr['key'] = -1;
             }
+             */
         }
         else {
-            this.TargetUsrKey = JSONPath({path: `$..libs[0].key`, json: data})
+            this.TargetUsrKey = JSONPath({path: `$..libs[0].key`, json: data});
+            this.TargetUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
+            /* 
             if ( isNaN(this.TargetUsrKey) ){
                 this.TargetUsrKey = -1;
-            }
+                this.TargetUsrKey = -1;
+            } */
         }
     }
 
@@ -64,11 +76,89 @@ const viewstate = new class ViewState {
         return hours + ':' + minutes + ':' + seconds;
     }
 
+    async walkSourceUsr(){
+        log.info('[viewstate.js] Walking SourceUsr');
+        console.log('Ged 40 Libs: ' + JSON.stringify(this.libs))
+        for (var libKey in this.libs){
+            console.log('Ged 40-3 libKey: ' + libKey)
+        }
+
+    }
+
+    async getUsrTokens(){
+        log.info('[viewstate.js] Starting getUsrTokens');
+        // Ask for a list of devices
+        let header = wtutils.PMSHeader;
+        // Add server token
+        header['X-Plex-Token'] = this.selServerServerToken[0];
+        // Remove unwanted headers
+        delete header['X-Plex-Client-Identifier']
+        delete header['X-Plex-Device']
+        delete header['X-Plex-Product']
+        delete header['X-Plex-Version']
+        const url = `${wtutils.plexTVApi}v2/server/access_tokens`;
+        console.log('Ged 10-1 Header: ' + JSON.stringify(header))
+
+        console.log('Ged 10-2 SrcUsr: ' + JSON.stringify(this.SrcUsr))
+        console.log('Ged 10-3 TargetUsr: ' + JSON.stringify(this.TargetUsr))
+        //console.log('Ged 10-4 Usrs: ' + JSON.stringify(this.viewStateUsers))
+
+
+        
+
+
+        await axios({
+            method: 'get',
+            url: url,
+            headers: header
+          })
+            .then((response) => {
+              log.debug('[viewState.js] Response from getUsrTokens recieved');
+              //log.silly(`getUsrTokens returned as: ${JSON.stringify(response.data)}`);
+
+              //console.log('Ged 50-3: SrcUsrId: ' + this.SrcUsr['id'])
+              var users = JSONPath({path: `$..[?(@.type == 'server')]`, json: response.data});
+              //console.log('Ged 50-4: SrcUsrId: ' + JSON.stringify(users))
+              for (var user in users){
+                  var userInfo = users[user]
+                  console.log('Ged 50-6: ' + JSON.stringify(userInfo))
+                  console.log('Ged 50-8: ' + userInfo['invited']['id'])
+                  if ( userInfo['invited']['id'] == this.SrcUsr['id']){
+                      console.log('Ged 50-10 Found Source Usr: ' + userInfo['invited']['title'])
+                      this.SrcUsr['title'] = userInfo['invited']['title'];
+                      this.SrcUsr['token'] = userInfo['token'];
+                  }
+                  else if ( userInfo['invited']['id'] == this.TargetUsr['id']){
+                    console.log('Ged 50-11 Found Target Usr: ' + userInfo['invited']['title'])
+                    this.TargetUsr['title'] = userInfo['invited']['title'];
+                    this.TargetUsr['token'] = userInfo['token'];
+                  }
+              }
+              console.log('Ged 51-2 SrcUsr: ' + JSON.stringify(this.SrcUsr))
+              console.log('Ged 51-3 TargetUsr: ' + JSON.stringify(this.TargetUsr))
+              //this.selServerServerToken = JSONPath({path: `$[?(@.clientIdentifier== '${clientIdentifier}')].token`, json: response.data});
+              //log.silly(`[viewState.js] selServerServerToken returned as: ${this.selServerServerToken}`);
+            })
+            .catch(function (error) {
+              if (error.response) {
+                  log.error('[viewState.js] getUsrTokens: ' + JSON.stringify(error.response.data));
+                  alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+              } else if (error.request) {
+                  log.error('[viewState.js] getUsrTokens: ' + error.request);
+              } else {
+                  log.error('[viewState.js] getUsrTokens: ' + error.message);
+            }
+        });
+
+    }
+
     async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
         const startTime = await this.getNowTime('start');
         console.log('Ged 4 start time: ' + startTime)
         this.updateStatusMsg(3,  startTime);
+        //this.SrcUsr = SrcUsr;
+        //this.TargetUsr = TargetUsr;
 
 
         console.log('Ged 1 SrcUsr: ' + JSON.stringify(SrcUsr))
@@ -76,6 +166,8 @@ const viewstate = new class ViewState {
 
         this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
         await this.getLibs( SrcUsr, TargetUsr );
+        await this.getUsrTokens();
+        await this.walkSourceUsr();
         this.updateStatusMsg(1, "Ged")
     }
 
@@ -106,9 +198,11 @@ const viewstate = new class ViewState {
     }
 
     async getLibs( SrcUsr, TargetUsr ){
-        log.info('[viewstate.js] Starting getLibs');
+        log.info('[viewstate.js] (getLibs) Starting getLibs');
+        log.silly(`[viewstate.js] (getLibs) SrcUsr: ${JSON.stringify(SrcUsr)}`);
+        log.silly(`[viewstate.js] (getLibs) TargetUsr: ${JSON.stringify(TargetUsr)}`);
         // Are both users selected ?
-        if ( this.TargetUsrKey < 0 || this.SrcUsrKey < 0 ){
+        if ( !(this.TargetUsr && this.SrcUsr) ){
             return;
         }
         if ( JSON.stringify(SrcUsr) === JSON.stringify(TargetUsr) ){

@@ -156,11 +156,13 @@
   methods: {
     // SrcUsr changed
     async selSrcUsrChanged() {
+      viewstate.SrcUsr = this.selSrcUsr;
       await viewstate.setKey( 'selSrcUsr', this.selSrcUsr);
       await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
     },
     // SrcUsr changed
     async selTargetUsrChanged() {
+      viewstate.TargetUsr = this.selTargetUsr;
       await viewstate.setKey( 'selTargetUsr', this.selTargetUsr );
       await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
     },
