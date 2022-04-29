@@ -5,11 +5,11 @@
     <h2>
       {{ $t("Common.Language.Name") }}<br>
       <small>{{ $t("Common.Language.Description") }}</small>
-    </h2>    
+    </h2>
     <br>
 
     <div class="control has-icons-left">
-      <div class="locale-changer select is-dark is-medium" >  
+      <div class="locale-changer select is-dark is-medium" >
         <b-input-group>
         <b-input-group-prepend is-text>
         <b-icon icon="globe2"></b-icon>
@@ -55,8 +55,8 @@
         </li>
       </ul>
     </div>
-    <div>      
-      <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>      
+    <div>
+      <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>
     </div>
     </div>
   </b-container>
@@ -73,46 +73,46 @@ console.log = log.log;
 export default {
   name: 'locale-changer',
   data () {
-    return {      
-      olLangs: []      
+    return {
+      olLangs: []
     }
-  },  
+  },
   mounted() {
-    log.info("Language Created");    
-    this.getOnlineLangs();    
+    log.info("Language Created");
+    this.getOnlineLangs();
   },
   methods: {
     async forcedownload() {
-      this.olLangs = [];       
-      await this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});      
+      this.olLangs = [];
+      await this.$store.dispatch("updateAndSetLang",  { "langCode": i18n.locale, "forceDownload": true});
       this.getOnlineLangs();
       // Get timeStamp
       let timeStamp = ''
-      var onlineLangs = await this.$store.getters.getLanguages      
+      var onlineLangs = await this.$store.getters.getLanguages
       for (var i=0; i<onlineLangs.length; i++) {
         if (onlineLangs[i]['code'] == i18n.locale)
         {
           timeStamp = onlineLangs[i]['updated']
         }
-      }      
+      }
       // Update settings with timestamp
       wtconfig.set(`Languages.${i18n.locale}`, timeStamp)
     },
     joinPOE() {
       shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki/Translator")
     },
-    async getOnlineLangs() {      
-      var onlineLangs = await this.$store.getters.getLanguages      
-      for (var i=0; i<onlineLangs.length; i++) {       
+    async getOnlineLangs() {
+      var onlineLangs = await this.$store.getters.getLanguages
+      for (var i=0; i<onlineLangs.length; i++) {
         var langName = onlineLangs[i]['name'] + ' (' + onlineLangs[i]['percentage'] + '%)';
         const entry = {}
-        entry['text'] = langName        
+        entry['text'] = langName
         entry['value'] = onlineLangs[i]['code']
         this.olLangs.push(entry)
-      }      
-    },    
-    onChange(event) {          
-      this.$store.dispatch('updateAndSetLang', { "langCode": event.target.value, "forceDownload": false});      
+      }
+    },
+    onChange(event) {
+      this.$store.dispatch('updateAndSetLang', { "langCode": event.target.value, "forceDownload": false});
     }
   }
 }

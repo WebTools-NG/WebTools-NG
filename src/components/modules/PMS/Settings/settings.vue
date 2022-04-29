@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.Settings.Settings") }}</h1>
+        <h1>{{ $t("Modules.PMS.Settings.Name") }}</h1>
         <p>{{ $t("Modules.PMS.Settings.Description") }}</p>
         <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>
     </div>

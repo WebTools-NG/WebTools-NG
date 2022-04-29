@@ -31,7 +31,7 @@ export default {
   },
   created() {
     // Prefetch languages
-    this.$store.dispatch('fetchPOELang');    
+    this.$store.dispatch('fetchPOELang');
   },
   components:{
     Menu,
@@ -41,7 +41,7 @@ export default {
 
       this.isCollapsed = value
     },
-    
+
   }, props: {
      width: {
       type: String,

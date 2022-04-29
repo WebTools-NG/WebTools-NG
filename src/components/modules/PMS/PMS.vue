@@ -1,14 +1,28 @@
 <template>
-
-    <div class="col-lg-10 col-md-12 col-xs-12">
-    <h3>{{ $t("Modules.PMS.Name") }} <br>
-    </h3>
-    {{ $t("Modules.PMS.Description") }}
-
-    <br />
+  <b-container fluid>
+    <div class="col-lg-9 col-md-12 col-xs-12">
+      <h2>
+        {{ $t("Modules.PMS.Name") }}
+        <br />
+        <h5>{{ $t("Modules.PMS.Description") }}</h5>
+      </h2>
+      <br />
+      {{ $t("Modules.PMS.Select") }}
+      <br />
+      <br />
+      <h3>{{ $t("Common.Home.Modules") }}</h3>
+      <dl>
+        <dt>{{ $t("Modules.PMS.Butler.Name") }}</dt>
+          <dd>* {{ $t("Modules.PMS.Butler.Description") }} </dd>
+        <!-- <dt>{{ $t("Modules.PMS.DVR.Name") }}</dt>
+          <dd>* {{ $t("Modules.PMS.DVR.Description") }} </dd> -->
+        <dt>{{ $t("Modules.PMS.Settings.Name") }}</dt>
+          <dd>* {{ $t("Modules.PMS.Settings.Description") }} </dd>
+        <!-- <dt>{{ $t("Modules.PMS.ViewState.Name") }}</dt>
+          <dd>* {{ $t("Modules.PMS.ViewState.Description") }} </dd> -->
+      </dl>
     </div>
-
-
+  </b-container>
 </template>
 
 <script>
@@ -27,7 +41,7 @@
           selMediaType: "movie",
           selLibrary: "",
           selLibraryOptions: [],
-          selLevel: "",
+          selLevel: ""
         };
   },
   created() {
