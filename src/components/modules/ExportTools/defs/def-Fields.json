@@ -607,7 +607,7 @@
         "Last Viewed at":
             {
                 "key": "$..lastViewedAt",
-                "call": 1,
+                "call": 2,
                 "type": "datetime"
             },
         "Labels":

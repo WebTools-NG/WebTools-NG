@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-    <h1>{{ $t("Modules.ET.Settings.Settings") }}</h1>
+    <h1>{{ $t("Modules.ET.Settings.Name") }}</h1>
     <p>{{ $t("Modules.ET.Settings.Description") }}</p>
     <b-input-group id="ArraySepGrp" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
         <b-form-input id="ArraySep" name="ArraySep" type="text" class="form-control" v-model="ArraySep" :disabled=false :maxlength=1 @change="setArraySep()"></b-form-input>

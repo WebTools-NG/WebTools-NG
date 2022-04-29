@@ -13,6 +13,8 @@
 
 * [#440 Dvr Backup and Restore](https://github.com/WebTools-NG/WebTools-NG/issues/440)
 * [#469 Default ExportTools Levels do NOT produce any output](https://github.com/WebTools-NG/WebTools-NG/issues/469)
+* [#468 Add "Last Viewed at" as an available field for TV Show Episode exporting](https://github.com/WebTools-NG/WebTools-NG/issues/468)
+* [#473 PMS Root page](https://github.com/WebTools-NG/WebTools-NG/issues/473)
 
 ## V0.3.15 (20220413)
 
