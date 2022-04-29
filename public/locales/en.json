@@ -421,13 +421,15 @@
                     "Msg": {
                         "CollectUserInfo": "Collecting user info...Please wait",
                         "Processing": "Processing",
+                        "Processing2": "Processing library {0} of {1} - {2}",
                         "Idle": "Idle",
                         "GatheringLibs": "Gathering libraries to process"
                     },
                     "Names": {
                         "Status": "Status",
                         "LibsToProcess": "Libraries to process",
-                        "StartTime": "Start time"
+                        "StartTime": "Start time",
+                        "CurrentLib": "Current Library"
                     }
                 }
             }

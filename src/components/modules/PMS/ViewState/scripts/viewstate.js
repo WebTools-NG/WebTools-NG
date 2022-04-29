@@ -4,7 +4,7 @@ const {JSONPath} = require('jsonpath-plus');
 console.log = log.log;
 
 
-import {wtutils} from '../../../General/wtutils';
+import {wtutils, wtconfig} from '../../../General/wtutils';
 import i18n from '../../../../../i18n';
 import store from '../../../../../store';
 import axios from 'axios';
@@ -18,22 +18,22 @@ const viewstate = new class ViewState {
     #_msgType = {
         1: i18n.t("Modules.PMS.ViewState.Status.Names.Status"),
         2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess"),
-        3: i18n.t("Modules.PMS.ViewState.Status.Names.StartTime")
-
+        3: i18n.t("Modules.PMS.ViewState.Status.Names.StartTime"),
+        4: i18n.t("Modules.PMS.ViewState.Status.Names.CurrentLib")
     }
 
     constructor() {
         this.selServerServerToken = '',
         this.viewStateUsers = [],
         this.libs = {},
-        this.SrcUsrToken = '',
-        this.TargetUsrToken = '',
+        this.SrcUsrToken1 = '',
+        this.TargetUsrToken1 = '',
         this.SrcUsr,
-        this.TargetUsr
+        this.TargetUsr,
+        this.libType
     }
 
-    async setKey( Usr, data ){
-        console.log('Ged 88-0: ' + JSON.stringify(data))
+    async setOwnerStatus( Usr, data ){
         if ( Usr == 'selSrcUsr' ){
             this.SrcUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
         }
@@ -61,13 +61,132 @@ const viewstate = new class ViewState {
         return hours + ':' + minutes + ':' + seconds;
     }
 
-    async walkSourceUsr(){
-        log.info('[viewstate.js] Walking SourceUsr');
-        console.log('Ged 40 Libs: ' + JSON.stringify(this.libs))
-        for (var libKey in this.libs){
-            console.log('Ged 40-3 libKey: ' + libKey)
-        }
+    async setLibType( libKey ){
+        switch(this.libs[libKey]['type']) {
+            case 'movie':
+                this.libType = 1;
+                break;
+            case 'show':
+                this.libType = 4;
+                break;
+            default:
+                this.libType = 1;
+          }
+    }
 
+    async getAmountOfWatched( libKey ){
+        log.info(`Getting amount of watched items`);
+        await this.setLibType( libKey );
+        let url = `${store.getters.getSelectedServerAddress}/library/sections/${libKey}/all?type=${this.libType}&lastViewedAt%3E%3E=1970-01-01&X-Plex-Container-Start=0&X-Plex-Container-Size=0`;
+        let header = wtutils.PMSHeader;
+        let totalSize;
+        header['X-Plex-Token'] = this.SrcUsr.token;
+        await axios({
+            method: 'get',
+            url: url,
+            headers: header
+          })
+            .then((response) => {
+                log.debug('[viewState.js] (getAmountOfWatched) Response from getAmountOfWatched recieved');
+                //log.silly(`getAmountOfWatched returned as: ${JSON.stringify(response.data)}`);
+                totalSize = JSONPath({path: `$..totalSize`, json: response.data});
+                log.debug(`[viewState.js] (getAmountOfWatched) Total Size: ${totalSize}`);
+            })
+            .catch(function (error) {
+              if (error.response) {
+                  log.error('[viewState.js] (getAmountOfWatched) getAmountOfWatched: ' + JSON.stringify(error.response.data));
+                  alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+              } else if (error.request) {
+                  log.error('[viewState.js] (getAmountOfWatched) error: ' + error.request);
+              } else {
+                  log.error('[viewState.js] (getAmountOfWatched) last error: ' + error.message);
+            }
+        });
+        return totalSize;
+    }
+
+    async processWatchedList( libKey ){
+        log.info('[viewstate.js] (processWatchedList) Process Watched list');
+        let totalSize //, size;
+        let start = 0;
+        totalSize = await this.getAmountOfWatched( libKey );
+        const step = wtconfig.get("PMS.ContainerSize." + this.libs[libKey]['type'], 20);
+        console.log('Ged 41-3 Steps: ' + step)
+
+        totalSize, start
+        let url, gotSize;
+        do  // Walk section in steps
+        {
+            url = `${store.getters.getSelectedServerAddress}/library/sections/${libKey}/all?type=${this.libType}&lastViewedAt%3E%3E=1970-01-01&X-Plex-Container-Start=${start}&X-Plex-Container-Size=${step}`;
+            // Now go grab the medias
+            let header = wtutils.PMSHeader;
+            header['X-Plex-Token'] = this.SrcUsr.token;
+            await axios({
+                method: 'get',
+                url: url,
+                headers: header
+            })
+                .then((response) => {
+                    log.debug('[viewState.js] (processWatchedList) Response from processWatchedList recieved');
+                    log.silly(`processWatchedList returned as: ${JSON.stringify(response.data)}`);
+                    gotSize = JSONPath({path: `$.MediaContainer.size`, json: response.data})[0];
+
+                    console.log('Ged 44-0 gotSize: ' + gotSize)
+                    const medias = JSONPath({path: `$..Metadata`, json: response.data})[0];
+                    for (var media in medias){
+                        console.log('Ged 44-4 Media: ' + JSON.stringify(medias[media]))
+                        const title = JSONPath({path: `$..title`, json: response.data})[0];
+                        console.log('Ged 44-5 title: ' + title)
+                        const viewOffset = JSONPath({path: `$..viewOffset`, json: response.data})[0];
+                        console.log('Ged 44-6 viewOffset: ' + viewOffset)
+                        const lastViewedAt = JSONPath({path: `$..lastViewedAt`, json: response.data})[0];
+                        console.log('Ged 44-7 lastViewedAt: ' + lastViewedAt)
+
+                        
+
+                    }
+
+                    
+                    //totalSize = JSONPath({path: `$..totalSize`, json: response.data});
+                    
+                })
+                .catch(function (error) {
+                if (error.response) {
+                    log.error('[viewState.js] (processWatchedList) processWatchedList: ' + JSON.stringify(error.response.data));
+                    alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                } else if (error.request) {
+                    log.error('[viewState.js] (processWatchedList) error: ' + error.request);
+                } else {
+                    log.error('[viewState.js] (processWatchedList) last error: ' + error.message);
+                }
+            });
+
+
+
+
+            console.log('Ged 55-0: ' + url)
+
+
+            start += step;
+
+
+        } while ( gotSize > 0);
+
+    }
+
+    async walkSourceUsr(){
+        log.info('[viewstate.js] (walkSourceUsr) Walking SourceUsr');
+        console.log('Ged 39 DANGER: ' + JSON.stringify(this.SrcUsr))
+        console.log('Ged 40 Libs: ' + JSON.stringify(this.libs))
+        var keyCount  = Object.keys(this.libs).length;
+        console.log('Ged 40-2 Libs count 2: ' + keyCount)
+
+        for (var libKey in this.libs){
+            this.updateStatusMsg(4,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing2", [libKey, keyCount, this.libs[libKey]['title']]));
+            await this.processWatchedList( libKey );
+
+
+        }
     }
 
     async getUsrTokens(){
@@ -82,47 +201,46 @@ const viewstate = new class ViewState {
         delete header['X-Plex-Product']
         delete header['X-Plex-Version']
         const url = `${wtutils.plexTVApi}v2/server/access_tokens`;
-        console.log('Ged 10-1 Header: ' + JSON.stringify(header))
-
-        console.log('Ged 10-2 SrcUsr: ' + JSON.stringify(this.SrcUsr))
-        console.log('Ged 10-3 TargetUsr: ' + JSON.stringify(this.TargetUsr))
-        //console.log('Ged 10-4 Usrs: ' + JSON.stringify(this.viewStateUsers))
-
-
-        
-
-
         await axios({
             method: 'get',
             url: url,
             headers: header
           })
             .then((response) => {
-              log.debug('[viewState.js] Response from getUsrTokens recieved');
-              //log.silly(`getUsrTokens returned as: ${JSON.stringify(response.data)}`);
-
-              //console.log('Ged 50-3: SrcUsrId: ' + this.SrcUsr['id'])
-              var users = JSONPath({path: `$..[?(@.type == 'server')]`, json: response.data});
-              //console.log('Ged 50-4: SrcUsrId: ' + JSON.stringify(users))
-              for (var user in users){
-                  var userInfo = users[user]
-                  console.log('Ged 50-6: ' + JSON.stringify(userInfo))
-                  console.log('Ged 50-8: ' + userInfo['invited']['id'])
-                  if ( userInfo['invited']['id'] == this.SrcUsr['id']){
-                      console.log('Ged 50-10 Found Source Usr: ' + userInfo['invited']['title'])
-                      this.SrcUsr['title'] = userInfo['invited']['title'];
-                      this.SrcUsr['token'] = userInfo['token'];
-                  }
-                  else if ( userInfo['invited']['id'] == this.TargetUsr['id']){
-                    console.log('Ged 50-11 Found Target Usr: ' + userInfo['invited']['title'])
-                    this.TargetUsr['title'] = userInfo['invited']['title'];
-                    this.TargetUsr['token'] = userInfo['token'];
-                  }
-              }
-              console.log('Ged 51-2 SrcUsr: ' + JSON.stringify(this.SrcUsr))
-              console.log('Ged 51-3 TargetUsr: ' + JSON.stringify(this.TargetUsr))
-              //this.selServerServerToken = JSONPath({path: `$[?(@.clientIdentifier== '${clientIdentifier}')].token`, json: response.data});
-              //log.silly(`[viewState.js] selServerServerToken returned as: ${this.selServerServerToken}`);
+                log.debug('[viewState.js] Response from getUsrTokens recieved');
+                //log.silly(`getUsrTokens returned as: ${JSON.stringify(response.data)}`);
+                var users = JSONPath({path: `$..[?(@.type == 'server')]`, json: response.data});
+                for (var user in users){
+                    var userInfo = users[user]
+                    if ( userInfo['invited']['id'] == this.SrcUsr['id']){
+                        if ( store.getters.getUsers[userInfo['invited']['id']]['friendlyName'] ){
+                            this.SrcUsr['title'] = store.getters.getUsers[userInfo['invited']['id']]['friendlyName'];
+                        }
+                        else {
+                            this.SrcUsr['title'] = userInfo['invited']['title'];
+                        }
+                        this.SrcUsr['token'] = userInfo['token'];
+                    }
+                    else if ( userInfo['invited']['id'] == this.TargetUsr['id']){
+                        if ( store.getters.getUsers[userInfo['invited']['id']]['friendlyName'] ){
+                            this.TargetUsr['title'] = store.getters.getUsers[userInfo['invited']['id']]['friendlyName'];
+                        }
+                        else {
+                        this.TargetUsr['title'] = userInfo['invited']['title'];
+                        }
+                        this.TargetUsr['token'] = userInfo['token'];
+                    }
+                }
+                if (this.SrcUsr.isOwner){
+                    this.SrcUsr['token'] = store.getters.getAuthToken;
+                    this.SrcUsr['title'] = store.getters.getPlexName;
+                    this.SrcUsr['id'] = store.getters.getMeId;
+                }
+                if (this.TargetUsr.isOwner){
+                    this.TargetUsr['token'] = store.getters.getAuthToken;
+                    this.TargetUsr['title'] = store.getters.getPlexName;
+                    this.TargetUsr['id'] = store.getters.getMeId;
+                }
             })
             .catch(function (error) {
               if (error.response) {
@@ -140,20 +258,14 @@ const viewstate = new class ViewState {
     async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
         const startTime = await this.getNowTime('start');
-        console.log('Ged 4 start time: ' + startTime)
         this.updateStatusMsg(3,  startTime);
-        //this.SrcUsr = SrcUsr;
-        //this.TargetUsr = TargetUsr;
 
-
-        console.log('Ged 1 SrcUsr: ' + JSON.stringify(SrcUsr))
-        console.log('Ged 2 TargetUsr: ' + JSON.stringify(TargetUsr))
 
         this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
         await this.getLibs( SrcUsr, TargetUsr );
         await this.getUsrTokens();
         await this.walkSourceUsr();
-        this.updateStatusMsg(1, "Ged")
+        //this.updateStatusMsg(1, "Ged")
     }
 
     // Update status msg
@@ -171,7 +283,6 @@ const viewstate = new class ViewState {
             }
         })
         store.commit("UPDATE_viewStateStatus", newMsg);
-        console.log('Ged 7 Msg: ' + JSON.stringify(newMsg))
     }
 
     // Clear Status Window
@@ -199,15 +310,18 @@ const viewstate = new class ViewState {
         }
         this.clearStatus();
         this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.GatheringLibs"));
-        log.silly(`[viewstate.js] Source usr: ${JSON.stringify(SrcUsr)}`);
-        log.silly(`[viewstate.js] Target usr: ${JSON.stringify(TargetUsr)}`);
+        log.silly(`[viewstate.js] (getLibs) Source usr: ${JSON.stringify(SrcUsr)}`);
+        log.silly(`[viewstate.js] (getLibs) Target usr: ${JSON.stringify(TargetUsr)}`);
         this.libs = {};
         if ( JSONPath({path: `$..libs[0].key`, json: SrcUsr}) == 0 )
         {
             // We need to add all libs from target usr
             log.debug(`[viewstate.js] SrcUsr is owner`);
             for(let i of TargetUsr["libs"]) {
-                this.libs[i.key] = i.title;
+                let entry = {};
+                entry['title'] = i.title;
+                entry['type'] = i.type;
+                this.libs[i.key] = entry;
             }
         }
         else
@@ -216,21 +330,27 @@ const viewstate = new class ViewState {
                 // We need to add all libs from Source usr
                 log.debug(`[viewstate.js] TargetUsr is owner`);
                 for(let i of SrcUsr["libs"]) {
-                    this.libs[i.key] = i.title;
+                    let entry = {};
+                    entry['title'] = i.title;
+                    entry['type'] = i.type;
+                    this.libs[i.key] = entry;
                 }
             }
             else {
                 for(let i of SrcUsr["libs"]) {
                     if ( JSON.stringify(TargetUsr["libs"]).indexOf(JSON.stringify(i)) > -1)
                     {
-                        this.libs[i.key] = i.title;
+                        let entry = {};
+                        entry['title'] = i.title;
+                        entry['type'] = i.type;
+                        this.libs[i.key] = entry;
                     }
                 }
             }
         }
         let libstatus = []
         for (let lib in this.libs){
-            libstatus.push(this.libs[lib])
+            libstatus.push(this.libs[lib]['title'])
         }
         this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
         this.updateStatusMsg(2, libstatus.join(', '))
