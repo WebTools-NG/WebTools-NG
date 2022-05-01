@@ -8,17 +8,29 @@
       </h2>
       <br />
       {{ $t("Modules.PMS.Select") }}
+      <br />
+      <br />
       <h3>{{ $t("Common.Home.Modules") }}</h3>
-      <dl>
-        <dt>{{ $t("Modules.PMS.Butler.Name") }}</dt>
-          <dd>* {{ $t("Modules.PMS.Butler.Description") }} </dd>
-        <!-- <dt>{{ $t("Modules.PMS.DVR.Name") }}</dt>
-          <dd>* {{ $t("Modules.PMS.DVR.Description") }} </dd> -->
-        <dt>{{ $t("Modules.PMS.Settings.Name") }}</dt>
-          <dd>* {{ $t("Modules.PMS.Settings.Description") }} </dd>
-        <!-- <dt>{{ $t("Modules.PMS.ViewState.Name") }}</dt>
-          <dd>* {{ $t("Modules.PMS.ViewState.Description") }} </dd> -->
-      </dl>
+      <div v-if="showButler">
+        <p><b>{{ $t("Modules.PMS.Butler.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.Butler.Description") }}</p>
+      </div>
+      <div v-if="showDVR">
+        <p><b>{{ $t("Modules.PMS.DVR.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.DVR.Description") }}</p>
+      </div>
+      <div v-if="showSettings">
+        <p><b>{{ $t("Modules.PMS.Settings.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.Settings.Description") }}</p>
+      </div>
+      <div v-if="showViewState">
+        <p><b>{{ $t("Modules.PMS.ViewState.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.ViewState.Description") }}</p>
+      </div>
     </div>
   </b-container>
 </template>
@@ -26,7 +38,7 @@
 <script>
   import i18n from '../../../i18n';
   import store from '../../../store';
-  import { wtconfig } from '../General/wtutils';
+  import { wtconfig, wtutils } from '../General/wtutils';
 
   i18n, store, wtconfig
 
