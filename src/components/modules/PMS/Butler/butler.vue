@@ -1,9 +1,9 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.Butler.Title") }}</h1>
+        <h1>{{ $t("Modules.PMS.Butler.Name") }}</h1>
         <p>{{ $t("Modules.PMS.Butler.Description") }}</p>
-    </div>    
+    </div>
 
     <div class="d-flex align-items-center">
       <b-form-group id="ButlerGroup" v-bind:label="$t('Modules.PMS.Butler.SelectTask')" label-size="lg" label-class="font-weight-bold pt-0">
@@ -12,32 +12,32 @@
         </b-tooltip>
         <b-form-select
           v-model="selTask"
-          id="selTask"          
+          id="selTask"
           :options="selTaskOptions"
           name="selTask">
         </b-form-select>
       </b-form-group>
-    </div>    
-    <br>  
+    </div>
+    <br>
     <br>
     <div class="buttons">
         <!-- Buttons -->
         <div id="buttons" class="text-center">
             <b-button-group >
-                <b-button variant="success" class="mr-1" :disabled="this.selTask == ''" @click="executeButlerTask"> {{ $t('Modules.PMS.Butler.RunTask') }} </b-button>                
+                <b-button variant="success" class="mr-1" :disabled="this.selTask == ''" @click="executeButlerTask"> {{ $t('Modules.PMS.Butler.RunTask') }} </b-button>
             </b-button-group>
         </div>
-    </div>      
+    </div>
   </b-container>
 </template>
 
 <script>
     const log = require("electron-log");
-    import i18n from '../../../../i18n';    
+    import i18n from '../../../../i18n';
     import store from '../../../../store';
     export default {
         data() {
-            return {                
+            return {
                 selTaskOptions: [
                     {
                     "text": i18n.t('Modules.PMS.Butler.BackupDatabase'),
@@ -95,13 +95,13 @@
                     "text": i18n.t('Modules.PMS.Butler.UpgradeMediaAnalysis'),
                     "value": "UpgradeMediaAnalysis"
                     }
-                ],                
-                selTask : "",                
+                ],
+                selTask : "",
             };
         },
         created() {
             log.info("PMS Butler Created");
-            this.serverSelected();            
+            this.serverSelected();
         },
         computed: {
             selectedServerAddress: function(){
@@ -110,7 +110,7 @@
         },
         methods: {
             async executeButlerTask() {
-                log.debug(`Starting Butler Task: ${this.selTask}`);                
+                log.debug(`Starting Butler Task: ${this.selTask}`);
                 await store.dispatch('startButlerTask', {
                     Token: this.$store.getters.getAuthToken,
                     Address: this.$store.getters.getSelectedServerAddress,
@@ -122,7 +122,7 @@
                     variant: 'primary',
                     toaster: 'b-toaster-bottom-right'
                     });
-            },                                   
+            },
             async serverSelected() {
                 let serverCheck = this.$store.getters.getSelectedServer;
                 if (serverCheck == "none") {
@@ -136,7 +136,7 @@
                         }
                     );
                 }
-            }                           
+            }
         }
     };
 

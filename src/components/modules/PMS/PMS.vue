@@ -1,20 +1,44 @@
 <template>
-
-    <div class="col-lg-10 col-md-12 col-xs-12">
-    <h3>{{ $t("Modules.PMS.Name") }} <br>
-    </h3>
-    {{ $t("Modules.PMS.Description") }}
-
-    <br />
+  <b-container fluid>
+    <div class="col-lg-9 col-md-12 col-xs-12">
+      <h2>
+        {{ $t("Modules.PMS.Name") }}
+        <br />
+        <h5>{{ $t("Modules.PMS.Description") }}</h5>
+      </h2>
+      <br />
+      {{ $t("Modules.PMS.Select") }}
+      <br />
+      <br />
+      <h3>{{ $t("Common.Home.Modules") }}</h3>
+      <div v-if="showButler">
+        <p><b>{{ $t("Modules.PMS.Butler.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.Butler.Description") }}</p>
+      </div>
+      <div v-if="showDVR">
+        <p><b>{{ $t("Modules.PMS.DVR.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.DVR.Description") }}</p>
+      </div>
+      <div v-if="showSettings">
+        <p><b>{{ $t("Modules.PMS.Settings.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.Settings.Description") }}</p>
+      </div>
+      <div v-if="showViewState">
+        <p><b>{{ $t("Modules.PMS.ViewState.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.ViewState.Description") }}</p>
+      </div>
     </div>
-
-
+  </b-container>
 </template>
 
 <script>
   import i18n from '../../../i18n';
   import store from '../../../store';
-  import { wtconfig } from '../General/wtutils';
+  import { wtconfig, wtutils } from '../General/wtutils';
 
   i18n, store, wtconfig
 
@@ -28,6 +52,10 @@
           selLibrary: "",
           selLibraryOptions: [],
           selLevel: "",
+          showButler: !(wtutils.hideMenu('pmsButler')),
+          showDVR: !(wtutils.hideMenu('pmsDVR')),
+          showSettings: !(wtutils.hideMenu('pmsSettings')),
+          showViewState: !(wtutils.hideMenu('pmsViewState'))
         };
   },
   created() {

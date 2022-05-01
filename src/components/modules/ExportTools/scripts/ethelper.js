@@ -839,7 +839,7 @@ const etHelper = new class ETHELPER {
         this.Settings.currentItem +=1;
         this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
-        log.debug(`Data is: ${JSON.stringify(data)}`)
+        log.silly(`Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
         let val, array, i, valArray, valArrayVal

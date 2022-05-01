@@ -325,13 +325,14 @@
         },
         "PMS": {
             "Name": "Plex Media Server",
-            "Description": "@:Modules.PMS.Name module allows you to manage your server",
+            "Description": "@:Modules.PMS.Name modules allows you to manage your server",
+            "Select": "To use a module select it in the side menu",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
             "ExportDoneBody": "Check {0}",
             "ExportDoneTitle": "Export finished",
             "Butler": {
-                "Title": "Butler Scheduled Tasks",
+                "Name": "Butler Scheduled Tasks",
                 "Description": "Here you can kickstart a scheduled task",
                 "SelectTask": "Select the scheduled task to run now",
                 "TTSelectTask": "Here you select among the scheduled tasks that kan be started now",
@@ -354,7 +355,7 @@
                 "TaskDetails": "To follow progress, see Plex WebClient Dashboard"
             },
             "Settings": {
-                "Settings": "Settings",
+                "Name": "Settings",
                 "Description": "Here you can define the settings for the selected server",
                 "SelectSettingsSelection": "Select Settings Group",
                 "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",

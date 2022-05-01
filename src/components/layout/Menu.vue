@@ -37,55 +37,7 @@
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
                     },
-                    {
-                        href: { path: '/plextv' },
-                        title: this.$t("Modules.PlexTV.Name"),
-                        hidden: wtutils.hideMenu('plextv'),
-                        // icon: 'fas fa-file-export',
-                        icon: {
-                            //adjust element
-                                element: 'img',
-                                attributes: { src: plextvIcon },
-                            }
-                    },
-                    {
-                        href: { path: '/pms' },
-                        title: this.$t("Modules.PMS.Name"),
-                        hidden: wtutils.hideMenu('pms'),
-                        // icon: 'fas fa-file-export',
-                        icon: {
-                            //adjust element
-                                element: 'img',
-                                attributes: { src: pmsIcon },
-                            },
-                        child: [
-                            {
-                                href: '/pms/settings',
-                                hidden: wtutils.hideMenu('pmsSettings'),
-                                title: this.$t("Common.Menu.Sidebar.PMS.Settings"),
-                                icon: 'fa fa-cog'
-                            },
-                            {
-                                href: '/pms/butler',
-                                title: this.$t("Common.Menu.Sidebar.PMS.Butler"),
-                                hidden: wtutils.hideMenu('pmsButler'),
-                                icon: 'fa fa-tasks'
-                            },
-                            {
-                                href: { path: '/pms/dvr' },
-                                title: this.$t("Modules.PMS.DVR.Name"),
-                                hidden: wtutils.hideMenu('pmsDVR'),
-                                icon: 'fas fa-tv',
-                            }
-                            ,
-                            {
-                                href: { path: '/pms/viewstate' },
-                                title: this.$t("Modules.PMS.ViewState.Name"),
-                                hidden: wtutils.hideMenu('pmsViewState'),
-                                icon: 'fas fa-tv',
-                            }
-                        ]
-                    },
+                    // Export Tools
                     {
                         href: { path: '/export' },
                         title: this.$t("Modules.ET.Name"),
@@ -98,19 +50,69 @@
                             },
                         child: [
                             {
-                                href: '/export/settings',
-                                title: this.$t("Common.Menu.Sidebar.ET.Settings"),
-                                hidden: wtutils.hideMenu('etSettings'),
-                                icon: 'fa fa-cog'
-                            },
-                            {
                                 href: '/export/custom',
                                 title: this.$t("Common.Menu.Sidebar.ET.Custom"),
                                 hidden: wtutils.hideMenu('etCustom'),
                                 icon: 'fa fa-cog'
+                            },
+                            {
+                                href: '/export/settings',
+                                title: this.$t("Common.Menu.Sidebar.ET.Settings"),
+                                hidden: wtutils.hideMenu('etSettings'),
+                                icon: 'fa fa-cog'
                             }
                         ]
 
+                    },
+                    // Plex.TV
+                    {
+                        href: { path: '/plextv' },
+                        title: this.$t("Modules.PlexTV.Name"),
+                        hidden: wtutils.hideMenu('plextv'),
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: plextvIcon },
+                            }
+                    },
+                    // PMS
+                    {
+                        href: { path: '/pms' },
+                        title: this.$t("Modules.PMS.Name"),
+                        hidden: wtutils.hideMenu('pms'),
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: pmsIcon },
+                            },
+                        child: [
+                            {
+                                href: '/pms/butler',
+                                title: this.$t("Common.Menu.Sidebar.PMS.Butler"),
+                                hidden: wtutils.hideMenu('pmsButler'),
+                                icon: 'fa fa-tasks'
+                            },
+                            {
+                                href: { path: '/pms/dvr' },
+                                title: this.$t("Modules.PMS.DVR.Name"),
+                                hidden: wtutils.hideMenu('pmsDVR'),
+                                icon: 'fas fa-tv',
+                            },
+                            {
+                                href: '/pms/settings',
+                                hidden: wtutils.hideMenu('pmsSettings'),
+                                title: this.$t("Common.Menu.Sidebar.PMS.Settings"),
+                                icon: 'fa fa-cog'
+                            },
+                            {
+                                href: { path: '/pms/viewstate' },
+                                title: this.$t("Modules.PMS.ViewState.Name"),
+                                hidden: wtutils.hideMenu('pmsViewState'),
+                                icon: 'fas fa-tv',
+                            }
+                        ]
                     },
                     {
                         header: true,
