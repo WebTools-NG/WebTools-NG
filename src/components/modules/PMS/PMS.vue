@@ -8,8 +8,6 @@
       </h2>
       <br />
       {{ $t("Modules.PMS.Select") }}
-      <br />
-      <br />
       <h3>{{ $t("Common.Home.Modules") }}</h3>
       <dl>
         <dt>{{ $t("Modules.PMS.Butler.Name") }}</dt>
@@ -41,7 +39,11 @@
           selMediaType: "movie",
           selLibrary: "",
           selLibraryOptions: [],
-          selLevel: ""
+          selLevel: "",
+          showButler: !(wtutils.hideMenu('pmsButler')),
+          showDVR: !(wtutils.hideMenu('pmsDVR')),
+          showSettings: !(wtutils.hideMenu('pmsSettings')),
+          showViewState: !(wtutils.hideMenu('pmsViewState'))
         };
   },
   created() {
