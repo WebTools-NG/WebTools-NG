@@ -19,7 +19,12 @@ const viewstate = new class ViewState {
         1: i18n.t("Modules.PMS.ViewState.Status.Names.Status"),
         2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess"),
         3: i18n.t("Modules.PMS.ViewState.Status.Names.StartTime"),
-        4: i18n.t("Modules.PMS.ViewState.Status.Names.CurrentLib")
+        4: i18n.t("Modules.PMS.ViewState.Status.Names.CurrentLib"),
+        5: i18n.t("Modules.PMS.ViewState.Status.Names.Item"),
+        6: i18n.t("Modules.ET.Status.Names.StartTime"),
+        7: i18n.t("Modules.ET.Status.Names.EndTime"),
+        8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
+        9: i18n.t("Modules.ET.Status.Names.RunningTime")
     }
 
     constructor() {
@@ -33,12 +38,26 @@ const viewstate = new class ViewState {
         this.libType
     }
 
+    async getRunningTimeElapsed(){
+        const now = new Date();
+        let elapsedSeconds = Math.floor((now.getTime() - this.#_StartTime.getTime()) / 1000);
+        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
+        let hours = Math.floor(parseFloat(elapsedStr) / 3600);
+        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
+        let minutes = Math.floor(elapsedSeconds / 60);
+        let seconds = elapsedSeconds - minutes * 60;
+        if ( hours.toString().length < 2) { hours = '0' + hours}
+        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
+        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
+        return hours + ':' + minutes + ':' + seconds
+    }
+
     async setOwnerStatus( Usr, data ){
         if ( Usr == 'selSrcUsr' ){
-            this.SrcUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
+            this.SrcUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] == 0);
         }
         else {
-            this.TargetUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] != 1);
+            this.TargetUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] == 0);
         }
     }
 
@@ -105,19 +124,68 @@ const viewstate = new class ViewState {
         return totalSize;
     }
 
+    async bumpViewCount( media ){
+        const ratingKey = JSONPath({path: `$..ratingKey`, json: media});
+        const viewCount = JSONPath({path: `$..viewCount`, json: media});
+        const viewOffset = JSONPath({path: `$..viewOffset`, json: media});
+        const duration = JSONPath({path: `$..duration`, json: media});
+        log.info(`Bumbing viewcount to ${viewCount} for media ${ratingKey}`);
+        let url = `${store.getters.getSelectedServerAddress}/:/scrobble?identifier=com.plexapp.plugins.library&key=${ratingKey}`;
+        // We need to bump viewcount for target user same amount as for SrcUsr
+        let header = wtutils.PMSHeader;
+        header['X-Plex-Token'] = this.TargetUsr.token;
+        for (var i = 0; i < viewCount; i++)
+        {
+            await axios({
+                method: 'get',
+                url: url,
+                headers: header
+            })
+                .catch(function (error) {
+                if (error.response) {
+                    log.error('[viewState.js] (bumpViewCount) bumpViewCount: ' + JSON.stringify(error.response.data));
+                    alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                } else if (error.request) {
+                    log.error('[viewState.js] (bumpViewCount) error: ' + error.request);
+                } else {
+                    log.error('[viewState.js] (bumpViewCount) last error: ' + error.message);
+                }
+            });
+        }
+        // Do we need to also set an offset value?
+        if ( viewOffset > 0)
+        {
+            url = `${store.getters.getSelectedServerAddress}/:/timeline?ratingKey=${ratingKey}&key=%2Flibrary%2Fmetadata%2F${ratingKey}&state=stopped&time=${viewOffset}&duration=${duration}`;
+            await axios({
+                method: 'get',
+                url: url,
+                headers: header
+            })
+                .catch(function (error) {
+                if (error.response) {
+                    log.error('[viewState.js] (bumpViewCount) viewOffset: ' + JSON.stringify(error.response.data));
+                    alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                } else if (error.request) {
+                    log.error('[viewState.js] (bumpViewCount) viewOffset error: ' + error.request);
+                } else {
+                    log.error('[viewState.js] (bumpViewCount) viewOffset last error: ' + error.message);
+                }
+            });
+        }
+    }
+
     async processWatchedList( libKey ){
         log.info('[viewstate.js] (processWatchedList) Process Watched list');
         let totalSize //, size;
         let start = 0;
+        let index = 0;
         totalSize = await this.getAmountOfWatched( libKey );
         const step = wtconfig.get("PMS.ContainerSize." + this.libs[libKey]['type'], 20);
-        console.log('Ged 41-3 Steps: ' + step)
-
-        totalSize, start
         let url, gotSize;
         do  // Walk section in steps
         {
-            url = `${store.getters.getSelectedServerAddress}/library/sections/${libKey}/all?type=${this.libType}&lastViewedAt%3E%3E=1970-01-01&X-Plex-Container-Start=${start}&X-Plex-Container-Size=${step}`;
+            let listProcess = {};
+            url = `${store.getters.getSelectedServerAddress}/library/sections/${libKey}/all?type=${this.libType}&lastViewedAt%3E%3E=1970-01-01&X-Plex-Container-Start=${start}&X-Plex-Container-Size=${step}&excludeElements=Genre,Director,Writer,Country,Role,Producer,Collections,Media&excludeFields=summary,tagline,rating,contentRating,audienceRatingImage,file`;
             // Now go grab the medias
             let header = wtutils.PMSHeader;
             header['X-Plex-Token'] = this.SrcUsr.token;
@@ -130,25 +198,20 @@ const viewstate = new class ViewState {
                     log.debug('[viewState.js] (processWatchedList) Response from processWatchedList recieved');
                     log.silly(`processWatchedList returned as: ${JSON.stringify(response.data)}`);
                     gotSize = JSONPath({path: `$.MediaContainer.size`, json: response.data})[0];
-
-                    console.log('Ged 44-0 gotSize: ' + gotSize)
                     const medias = JSONPath({path: `$..Metadata`, json: response.data})[0];
                     for (var media in medias){
-                        console.log('Ged 44-4 Media: ' + JSON.stringify(medias[media]))
-                        const title = JSONPath({path: `$..title`, json: response.data})[0];
-                        console.log('Ged 44-5 title: ' + title)
-                        const viewOffset = JSONPath({path: `$..viewOffset`, json: response.data})[0];
-                        console.log('Ged 44-6 viewOffset: ' + viewOffset)
-                        const lastViewedAt = JSONPath({path: `$..lastViewedAt`, json: response.data})[0];
-                        console.log('Ged 44-7 lastViewedAt: ' + lastViewedAt)
-
-                        
-
+                        let listProcessDetails = {};
+                        listProcessDetails['title'] = JSONPath({path: `$..title`, json: medias[media]})[0];
+                        listProcessDetails['viewOffset'] = JSONPath({path: `$..viewOffset`, json: medias[media]})[0];
+                        listProcessDetails['lastViewedAt'] = JSONPath({path: `$..lastViewedAt`, json: medias[media]})[0];
+                        listProcessDetails['viewCount'] = JSONPath({path: `$..viewCount`, json: medias[media]})[0];
+                        listProcessDetails['duration'] = JSONPath({path: `$..duration`, json: medias[media]})[0];
+                        listProcessDetails['ratingKey'] = JSONPath({path: `$..ratingKey`, json: medias[media]})[0];
+                        listProcess[JSONPath({path: `$..ratingKey`, json: medias[media]})[0]] = listProcessDetails;
+                        index += 1;
+                        this.bumpViewCount( listProcessDetails );
+                        this.updateStatusMsg(5,  i18n.t("Modules.PMS.ViewState.Status.Msg.ProcessItem1", [listProcessDetails['title'], index, totalSize]));
                     }
-
-                    
-                    //totalSize = JSONPath({path: `$..totalSize`, json: response.data});
-                    
                 })
                 .catch(function (error) {
                 if (error.response) {
@@ -160,32 +223,18 @@ const viewstate = new class ViewState {
                     log.error('[viewState.js] (processWatchedList) last error: ' + error.message);
                 }
             });
-
-
-
-
-            console.log('Ged 55-0: ' + url)
-
-
             start += step;
-
-
-        } while ( gotSize > 0);
-
+        } while ( gotSize == step );
     }
 
     async walkSourceUsr(){
         log.info('[viewstate.js] (walkSourceUsr) Walking SourceUsr');
-        console.log('Ged 39 DANGER: ' + JSON.stringify(this.SrcUsr))
-        console.log('Ged 40 Libs: ' + JSON.stringify(this.libs))
         var keyCount  = Object.keys(this.libs).length;
-        console.log('Ged 40-2 Libs count 2: ' + keyCount)
-
+        let index = 1;
         for (var libKey in this.libs){
-            this.updateStatusMsg(4,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing2", [libKey, keyCount, this.libs[libKey]['title']]));
+            this.updateStatusMsg(4,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing2", [index, keyCount, this.libs[libKey]['title']]));
             await this.processWatchedList( libKey );
-
-
+            index += 1;
         }
     }
 
@@ -258,14 +307,14 @@ const viewstate = new class ViewState {
     async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
         const startTime = await this.getNowTime('start');
-        this.updateStatusMsg(3,  startTime);
-
-
-        this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
+        //this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
         await this.getLibs( SrcUsr, TargetUsr );
+        //this.updateStatusMsg(3,  startTime);
+        startTime
+        this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
         await this.getUsrTokens();
         await this.walkSourceUsr();
-        //this.updateStatusMsg(1, "Ged")
+        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
     }
 
     // Update status msg
@@ -371,9 +420,8 @@ const viewstate = new class ViewState {
           })
             .then((response) => {
               log.debug('[viewState.js] Response from getServerToken recieved');
-              //log.silly(`getServerToken returned as: ${JSON.stringify(response.data)}`);
               this.selServerServerToken = JSONPath({path: `$[?(@.clientIdentifier== '${clientIdentifier}')].token`, json: response.data});
-              log.silly(`[viewState.js] selServerServerToken returned as: ${this.selServerServerToken}`);
+              log.silly(`[viewState.js] selServerServerToken returned ok`);
             })
             .catch(function (error) {
               if (error.response) {

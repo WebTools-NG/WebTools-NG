@@ -114,7 +114,6 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("ViewState selected server changed");
-      console.log('Ged 1-1: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.clearStatus();
       console.log('Ged 1-2: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
@@ -159,6 +158,8 @@
       viewstate.SrcUsr = this.selSrcUsr;
       await viewstate.setOwnerStatus( 'selSrcUsr', this.selSrcUsr);
       await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
+
+      console.log('Ged 14-1 Src: ' + JSON.stringify(viewstate.SrcUsr))
     },
     // SrcUsr changed
     async selTargetUsrChanged() {

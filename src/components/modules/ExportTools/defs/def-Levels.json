@@ -59,9 +59,7 @@
         },
         "Include": {
             "Suggest Naming": "includeGuids=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline",
-            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1",
-            "GED SLET Missing1": "includeAllConcerts=1&includeChildren=1&includeConcerts=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1",
-            "GED SLET Everything1": "checkFiles=1&includeAllConcerts=1&includeBandwidths=1&includeChapters=1&includeChildren=1&includeConcerts=1&includeExtras=1&includeFields=1&includeGeolocation=1&includeLoudnessRamps=1&includeMarkers=1&includeOnDeck=1&includePopularLeaves=1&includePreferences=1&includeRelated=1&includeRelatedCount=1&includeReviews=1&includeStations=1"
+            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1"
         }
 
     },

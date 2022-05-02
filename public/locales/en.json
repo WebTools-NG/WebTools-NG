@@ -130,7 +130,28 @@
         "Browse": "Browse",
         "ErrorNoOutDirMsg": "You need to define an output directory in the global settings page first",
         "ErrorNoOutDirTitle": "No output directory defined",
-        "ReleaseNoteTitle": "Release Note"
+        "ReleaseNoteTitle": "Release Note",
+        "Status": {
+            "Name": {
+                "Global": {
+                    "Status": "Status",
+                    "Chuncks": "Chunks",
+                    "Items": "Items",
+                    "Info": "Info",
+                    "OutFile": "Output File",
+                    "StartTime": "Start time",
+                    "EndTime": "End Time",
+                    "TimeElapsed": "Time Elapsed",
+                    "RunningTime": "Running time"
+                },
+                "Modules": {}
+            },
+            "Msg": {
+                "Global": {
+                },
+                "Modules": {}
+            }
+        }
     },
     "Modules": {
         "ET": {
@@ -424,13 +445,15 @@
                         "Processing": "Processing",
                         "Processing2": "Processing library {0} of {1} - {2}",
                         "Idle": "Idle",
-                        "GatheringLibs": "Gathering libraries to process"
+                        "GatheringLibs": "Gathering libraries to process",
+                        "ProcessItem1": "Processing: ({1} - {2}) - {0}"
                     },
                     "Names": {
                         "Status": "Status",
                         "LibsToProcess": "Libraries to process",
                         "StartTime": "Start time",
-                        "CurrentLib": "Current Library"
+                        "CurrentLib": "Current Library",
+                        "Item": "Item"
                     }
                 }
             }
