@@ -155,7 +155,7 @@ const actions = {
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.thumb)
         commit('UPDATE_PLEXNAME', response.data.username)
-        commit('UPDATE_MeId', response.data.id)
+        commit('UPDATE_MeId', response.data.user.id)
         router.replace({name: "home"});
     })
       .catch(function (error) {
@@ -199,13 +199,11 @@ const actions = {
     })
       .then(function (response) {
         log.debug('loginToPlex: Response from fetchPlexServers recieved')
-
-        console.log('Gedd 66 Me: ' + JSON.stringify(response.data.user))
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)
         commit('UPDATE_PLEXNAME', response.data.user.username)
-        commit('UPDATE_MeId', response.data.id)
+        commit('UPDATE_MeId', response.data.user.id)
         router.replace({name: "home"});
     })
       .catch(function (error) {

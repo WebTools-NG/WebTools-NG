@@ -114,12 +114,11 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("ViewState selected server changed");
-      console.log('Ged 1-1: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.clearStatus();
       console.log('Ged 1-2: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
-      viewstate.SrcUsrKey = -1;
-      viewstate.TargetUsrKey = -1;
+      viewstate.SrcUsr = null;
+      viewstate.TargetUsr = null;
       console.log('Ged 1-3: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;
@@ -156,12 +155,16 @@
   methods: {
     // SrcUsr changed
     async selSrcUsrChanged() {
-      await viewstate.setKey( 'selSrcUsr', this.selSrcUsr);
+      viewstate.SrcUsr = this.selSrcUsr;
+      await viewstate.setOwnerStatus( 'selSrcUsr', this.selSrcUsr);
       await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
+
+      console.log('Ged 14-1 Src: ' + JSON.stringify(viewstate.SrcUsr))
     },
     // SrcUsr changed
     async selTargetUsrChanged() {
-      await viewstate.setKey( 'selTargetUsr', this.selTargetUsr );
+      viewstate.TargetUsr = this.selTargetUsr;
+      await viewstate.setOwnerStatus( 'selTargetUsr', this.selTargetUsr );
       await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
     },
     /* Check if a server is selected, and if not
