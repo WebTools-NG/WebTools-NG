@@ -5,6 +5,10 @@ that we use in our solution.
 
 //import i18n from '../../../i18n';
 
+//import storeStatus from '../../store';
+
+//storeStatus
+
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -712,6 +716,5 @@ const github = new class GitHub {
         return rels;
     }
 }
-
 
 export {wtutils, wtconfig, dialog, github};

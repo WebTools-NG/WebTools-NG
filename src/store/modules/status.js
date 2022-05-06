@@ -4,24 +4,24 @@ const log = require('electron-log');
 console.log = log.log;
 
 const state = {
-    viewStateStatus: ''
+    Status: ''
 };
 
 const mutations = {
-    UPDATE_viewStateStatus(state, payload) {
-      state.viewStateStatus = payload
+    UPDATE_Status(state, payload) {
+      state.Status = payload
     }
   };
 
 
 const getters = {
-    getViewStateStatus: state => state.viewStateStatus
+    getStatus: state => state.Status
 };
 
-const viewstateModule = {
+const statusModule = {
   state,
   mutations,
   getters
 }
 
-export default viewstateModule;
+export default statusModule;

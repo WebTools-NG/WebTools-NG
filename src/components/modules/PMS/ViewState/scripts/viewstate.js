@@ -5,6 +5,7 @@ console.log = log.log;
 
 
 import {wtutils, wtconfig} from '../../../General/wtutils';
+import { status } from '../../../General/status';
 import i18n from '../../../../../i18n';
 import store from '../../../../../store';
 import axios from 'axios';
@@ -15,17 +16,6 @@ const viewstate = new class ViewState {
     #_StartTime = null;
     #_EndTime = null;
     #_statusmsg = {};
-    #_msgType = {
-        1: i18n.t("Modules.PMS.ViewState.Status.Names.Status"),
-        2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess"),
-        3: i18n.t("Modules.PMS.ViewState.Status.Names.StartTime"),
-        4: i18n.t("Modules.PMS.ViewState.Status.Names.CurrentLib"),
-        5: i18n.t("Modules.PMS.ViewState.Status.Names.Item"),
-        6: i18n.t("Modules.ET.Status.Names.StartTime"),
-        7: i18n.t("Modules.ET.Status.Names.EndTime"),
-        8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
-        9: i18n.t("Modules.ET.Status.Names.RunningTime")
-    }
 
     constructor() {
         this.selServerServerToken = '',
@@ -210,7 +200,7 @@ const viewstate = new class ViewState {
                         listProcess[JSONPath({path: `$..ratingKey`, json: medias[media]})[0]] = listProcessDetails;
                         index += 1;
                         this.bumpViewCount( listProcessDetails );
-                        this.updateStatusMsg(5,  i18n.t("Modules.PMS.ViewState.Status.Msg.ProcessItem1", [listProcessDetails['title'], index, totalSize]));
+                        status.updateStatusMsg(5,  i18n.t("Modules.PMS.ViewState.Status.Msg.ProcessItem1", [listProcessDetails['title'], index, totalSize]));
                     }
                 })
                 .catch(function (error) {
@@ -232,7 +222,7 @@ const viewstate = new class ViewState {
         var keyCount  = Object.keys(this.libs).length;
         let index = 1;
         for (var libKey in this.libs){
-            this.updateStatusMsg(4,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing2", [index, keyCount, this.libs[libKey]['title']]));
+            status.updateStatusMsg( status.RevMsgType.LibsToProcess,  i18n.t("Common.Status.Msg.Processing_Lib_1_2", [index, keyCount, this.libs[libKey]['title']]));
             await this.processWatchedList( libKey );
             index += 1;
         }
@@ -307,39 +297,14 @@ const viewstate = new class ViewState {
     async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
         const startTime = await this.getNowTime('start');
-        //this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
+        //status.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
         await this.getLibs( SrcUsr, TargetUsr );
-        //this.updateStatusMsg(3,  startTime);
+        //status.updateStatusMsg(3,  startTime);
         startTime
-        this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
+        status.updateStatusMsg(status.RevMsgType.Status,  i18n.t("Common.Status.Msg.Global.Processing"));
         await this.getUsrTokens();
         await this.walkSourceUsr();
-        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
-    }
-
-    // Update status msg
-    async updateStatusMsg(msgType, msg)
-    {
-        // Update relevant key
-        this.#_statusmsg[msgType] = msg;
-        // Tmp store of new msg
-        let newMsg = '';
-        // Walk each current msg keys
-        Object.entries(this.#_statusmsg).forEach(([key, value]) => {
-            if ( value != '')
-            {
-                newMsg += this.#_msgType[key] + ': ' + value + '\n';
-            }
-        })
-        store.commit("UPDATE_viewStateStatus", newMsg);
-    }
-
-    // Clear Status Window
-    async clearStatus()
-    {
-        this.#_statusmsg = {};
-        store.commit("UPDATE_viewStateStatus", '');
-        return;
+        status.updateStatusMsg(status.RevMsgType.Status, i18n.t("Common.Status.Msg.Global.Idle"));
     }
 
     async getLibs( SrcUsr, TargetUsr ){
@@ -352,13 +317,13 @@ const viewstate = new class ViewState {
             return;
         }
         if ( JSON.stringify(SrcUsr) === JSON.stringify(TargetUsr) ){
-            this.clearStatus();
-            this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
+            status.clearStatus();
+            status.updateStatusMsg(status.MsgType.Status, i18n.t("Common.Status.Msg.Global.Idle"));
             log.info('[viewstate.js] Same user selected, so aborting');
             return;
         }
-        this.clearStatus();
-        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.GatheringLibs"));
+        status.clearStatus();
+        status.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.GatheringLibs"));
         log.silly(`[viewstate.js] (getLibs) Source usr: ${JSON.stringify(SrcUsr)}`);
         log.silly(`[viewstate.js] (getLibs) Target usr: ${JSON.stringify(TargetUsr)}`);
         this.libs = {};
@@ -401,8 +366,8 @@ const viewstate = new class ViewState {
         for (let lib in this.libs){
             libstatus.push(this.libs[lib]['title'])
         }
-        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
-        this.updateStatusMsg(2, libstatus.join(', '))
+        status.updateStatusMsg(status.RevMsgType.Status, i18n.t("Common.Status.Msg.Global.Idle"));
+        status.updateStatusMsg(2, libstatus.join(', '))
     }
 
     // Here we get the server token for the selected server

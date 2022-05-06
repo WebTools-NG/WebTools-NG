@@ -57,25 +57,7 @@
         </div>
     </div>
     <br>
-    <b-container fluid> <!-- Status -->
-      <b-row>
-        <b-col sm="2">
-          <label for="status">{{ $t('Modules.PMS.ViewState.Status.Names.Status') }}:</label>
-        </b-col>
-        <b-col sm="10">
-          <b-form-textarea
-            id="status"
-            v-bind:placeholder="$t('Modules.PMS.ViewState.Status.Names.Status')"
-            v-model="statusMsg"
-            :disabled=true
-            rows="1"
-            max-rows="8">
-          </b-form-textarea>
-        </b-col>
-      </b-row>
-    </b-container>
-
-
+    <statusDiv /> <!-- Status Div -->
   </b-container>
 
 </template>
@@ -83,11 +65,15 @@
 <script>
   import i18n from '../../../../i18n';
   import store from '../../../../store';
-  //import { wtconfig } from '../General/wtutils';
+  //import { status } from '../../../own/status/status';
+  import { status } from '../../General/status';
   import { viewstate } from "./scripts/viewstate";
-
+  import statusDiv from '../../General/status.vue'
   const log = require("electron-log");
   export default {
+    components: {
+      statusDiv
+    },
       data() {
         return {
           optselSrcUsr: [],
@@ -114,9 +100,9 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("ViewState selected server changed");
-      viewstate.clearStatus();
+      status.clearStatus();
       console.log('Ged 1-2: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
-      viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
+      status.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
       viewstate.SrcUsr = null;
       viewstate.TargetUsr = null;
       console.log('Ged 1-3: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
@@ -131,7 +117,7 @@
       this.selSrcUsr = '';
       this.selTargetUsr = '',
       this.WaitForUsers = true;
-      viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
+      status.updateStatusMsg(1, i18n.t("Common.Status.Msg.Global.Idle"));
       console.log('Ged 1-6: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
     },
     // Watch for status update

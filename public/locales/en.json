@@ -136,20 +136,30 @@
                 "Global": {
                     "Status": "Status",
                     "Chuncks": "Chunks",
+                    "Item": "Item",
                     "Items": "Items",
                     "Info": "Info",
                     "OutFile": "Output File",
                     "StartTime": "Start time",
                     "EndTime": "End Time",
                     "TimeElapsed": "Time Elapsed",
-                    "RunningTime": "Running time"
+                    "RunningTime": "Running time",
+                    "LibsToProcess": "Libraries to process",
+                    "CurrentLib": "Current Library"
                 },
                 "Modules": {}
             },
             "Msg": {
+                "Processing_Lib_1_2": "Processing library {0} of {1} - {2}",
                 "Global": {
+                    "Idle": "Idle",
+                    "Processing": "Processing"
+                    
                 },
-                "Modules": {}
+                "Modules": {
+                    "viewState": {
+                    }
+                }
             }
         }
     },
@@ -442,18 +452,15 @@
                 "Status": {
                     "Msg": {
                         "CollectUserInfo": "Collecting user info...Please wait",
-                        "Processing": "Processing",
-                        "Processing2": "Processing library {0} of {1} - {2}",
-                        "Idle": "Idle",
+                        
+                        "GEDDELProcessing2": "Processing library {0} of {1} - {2}",
+                        
                         "GatheringLibs": "Gathering libraries to process",
                         "ProcessItem1": "Processing: ({1} - {2}) - {0}"
                     },
                     "Names": {
-                        "Status": "Status",
-                        "LibsToProcess": "Libraries to process",
-                        "StartTime": "Start time",
-                        "CurrentLib": "Current Library",
-                        "Item": "Item"
+                        
+                        
                     }
                 }
             }
