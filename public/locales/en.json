@@ -136,20 +136,29 @@
                 "Global": {
                     "Status": "Status",
                     "Chuncks": "Chunks",
+                    "Item": "Item",
                     "Items": "Items",
                     "Info": "Info",
                     "OutFile": "Output File",
                     "StartTime": "Start time",
                     "EndTime": "End Time",
                     "TimeElapsed": "Time Elapsed",
-                    "RunningTime": "Running time"
+                    "RunningTime": "Running time",
+                    "LibsToProcess": "Libraries to process",
+                    "CurrentLib": "Current Library"
                 },
                 "Modules": {}
             },
             "Msg": {
-                "Global": {
-                },
-                "Modules": {}
+                "Processing_Lib_1_2": "Processing library ({0} of {1}) - {2}",
+                "CollectUserInfo": "Collecting user info...Please wait",
+                "ProcessItem_1_2": "Processing: ({1} - {2}) - {0}",
+                "Idle": "Idle",
+                "Processing": "Processing",
+                "GatheringLibs": "Gathering libraries to process",
+                "Modules": {
+                    "viewState": {}
+                }
             }
         }
     },
@@ -439,23 +448,7 @@
                 "Owner": "Server owner",
                 "Managed": "Managed User",
                 "lblBtnCopy": "Copy",
-                "Status": {
-                    "Msg": {
-                        "CollectUserInfo": "Collecting user info...Please wait",
-                        "Processing": "Processing",
-                        "Processing2": "Processing library {0} of {1} - {2}",
-                        "Idle": "Idle",
-                        "GatheringLibs": "Gathering libraries to process",
-                        "ProcessItem1": "Processing: ({1} - {2}) - {0}"
-                    },
-                    "Names": {
-                        "Status": "Status",
-                        "LibsToProcess": "Libraries to process",
-                        "StartTime": "Start time",
-                        "CurrentLib": "Current Library",
-                        "Item": "Item"
-                    }
-                }
+                "genRep": "Generate a report"
             }
         },
         "PlexTV": {

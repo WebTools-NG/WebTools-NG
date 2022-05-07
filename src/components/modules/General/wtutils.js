@@ -5,6 +5,10 @@ that we use in our solution.
 
 //import i18n from '../../../i18n';
 
+//import storeStatus from '../../store';
+
+//storeStatus
+
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -253,7 +257,7 @@ const wtutils = new class WTUtils {
     UpdateConfigFile() {
         // Update config file with defaults if missing
         log.verbose('Updating config file');
-        // Hide/Show Menu
+        // Hide/Show Menu Set to false if enabled for all
         if ( wtconfig.get('Menu.plextv', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.plextv', false)
         }
@@ -265,7 +269,10 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('Menu.pmsButler', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.pmsButler', false)
-        }        
+        }
+        if ( wtconfig.get('Menu.pmsViewState', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.pmsViewState', false)
+        }
         if ( wtconfig.get('Menu.et', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.et', false)
         }
@@ -712,6 +719,5 @@ const github = new class GitHub {
         return rels;
     }
 }
-
 
 export {wtutils, wtconfig, dialog, github};

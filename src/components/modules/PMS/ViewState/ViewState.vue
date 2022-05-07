@@ -38,6 +38,14 @@
     </div>
     <br>
     <br>
+    <b-form-group id="b-form-group">
+      <b-form-checkbox-group
+        stacked
+        :options="cbOptions"
+        v-model="cbSelected"
+        @change.native="cbChanged">
+      </b-form-checkbox-group>
+    </b-form-group>
     <div class="buttons">
         <!-- Buttons -->
         <div id="buttons" class="text-center">
@@ -57,25 +65,7 @@
         </div>
     </div>
     <br>
-    <b-container fluid> <!-- Status -->
-      <b-row>
-        <b-col sm="2">
-          <label for="status">{{ $t('Modules.PMS.ViewState.Status.Names.Status') }}:</label>
-        </b-col>
-        <b-col sm="10">
-          <b-form-textarea
-            id="status"
-            v-bind:placeholder="$t('Modules.PMS.ViewState.Status.Names.Status')"
-            v-model="statusMsg"
-            :disabled=true
-            rows="1"
-            max-rows="8">
-          </b-form-textarea>
-        </b-col>
-      </b-row>
-    </b-container>
-
-
+    <statusDiv /> <!-- Status Div -->
   </b-container>
 
 </template>
@@ -83,11 +73,15 @@
 <script>
   import i18n from '../../../../i18n';
   import store from '../../../../store';
-  //import { wtconfig } from '../General/wtutils';
+  import { wtconfig } from '../../General/wtutils'
+  import { status } from '../../General/status';
   import { viewstate } from "./scripts/viewstate";
-
+  import statusDiv from '../../General/status.vue'
   const log = require("electron-log");
   export default {
+    components: {
+      statusDiv
+    },
       data() {
         return {
           optselSrcUsr: [],
@@ -96,12 +90,17 @@
           selSrcUsr: "",
           serverIsSelected: false,
           WaitForUsers: false,
-          statusMsg: 'Idle'
+          statusMsg: 'Idle',
+          cbSelected: [],
+          cbOptions: [
+              { text: i18n.t('Modules.PMS.ViewState.genRep'), value: 'ExpReport' }
+          ]
         };
   },
   async created() {
     log.info("[ViewState.vue] viewState Created");
     this.serverSelected();
+    this.getDefaults();
     if (store.getters.getSelectedServer != 'none'){
       this.WaitForUsers = false;
       await viewstate.getUsers();
@@ -114,25 +113,20 @@
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       log.info("ViewState selected server changed");
-      viewstate.clearStatus();
-      console.log('Ged 1-2: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
-      viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.CollectUserInfo"));
+      status.clearStatus();
+      status.updateStatusMsg(1, i18n.t("Common.Status.Msg.CollectUserInfo"));
       viewstate.SrcUsr = null;
       viewstate.TargetUsr = null;
-      console.log('Ged 1-3: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
       this.WaitForUsers = false;
       await viewstate.getServerToken();
-      console.log('Ged 1-4: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       await viewstate.getUsers();
-      console.log('Ged 1-5: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
       this.optselSrcUsr = viewstate.viewStateUsers;
       this.optSelTargetUsr = viewstate.viewStateUsers;
       this.selSrcUsr = '';
       this.selTargetUsr = '',
       this.WaitForUsers = true;
-      viewstate.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
-      console.log('Ged 1-6: ' + JSON.stringify(this.$store.getters.getViewStateStatus))
+      status.updateStatusMsg(1, i18n.t("Common.Status.Msg.Idle"));
     },
     // Watch for status update
     viewStateStatus: function() {
@@ -153,13 +147,26 @@
     }
   },
   methods: {
+    // Get defaults
+    getDefaults(){
+      const cbItems = ["ExpReport"];
+      for(let i = 0; i < cbItems.length; i++){
+        if (wtconfig.get("PMS.ViewState." + cbItems[i], false)){
+            this.cbSelected.push(cbItems[i]);
+        }
+      }
+    },
+    // Toggle generation of report
+    async cbChanged(){
+      for( var cbItem of ["ExpReport"]){
+        wtconfig.set("PMS.ViewState." + cbItem, (this.cbSelected.includes(cbItem)))
+      }
+    },
     // SrcUsr changed
     async selSrcUsrChanged() {
       viewstate.SrcUsr = this.selSrcUsr;
       await viewstate.setOwnerStatus( 'selSrcUsr', this.selSrcUsr);
       await viewstate.getLibs( this.selSrcUsr, this.selTargetUsr );
-
-      console.log('Ged 14-1 Src: ' + JSON.stringify(viewstate.SrcUsr))
     },
     // SrcUsr changed
     async selTargetUsrChanged() {

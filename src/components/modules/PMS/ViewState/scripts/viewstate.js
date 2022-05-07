@@ -5,27 +5,15 @@ console.log = log.log;
 
 
 import {wtutils, wtconfig} from '../../../General/wtutils';
+import { time } from '../../../General/time';
+import { status } from '../../../General/status';
 import i18n from '../../../../../i18n';
 import store from '../../../../../store';
 import axios from 'axios';
 
+var sanitize = require("sanitize-filename");
+
 const viewstate = new class ViewState {
-    // Private Fields
-    #_FieldHeader = [];
-    #_StartTime = null;
-    #_EndTime = null;
-    #_statusmsg = {};
-    #_msgType = {
-        1: i18n.t("Modules.PMS.ViewState.Status.Names.Status"),
-        2: i18n.t("Modules.PMS.ViewState.Status.Names.LibsToProcess"),
-        3: i18n.t("Modules.PMS.ViewState.Status.Names.StartTime"),
-        4: i18n.t("Modules.PMS.ViewState.Status.Names.CurrentLib"),
-        5: i18n.t("Modules.PMS.ViewState.Status.Names.Item"),
-        6: i18n.t("Modules.ET.Status.Names.StartTime"),
-        7: i18n.t("Modules.ET.Status.Names.EndTime"),
-        8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
-        9: i18n.t("Modules.ET.Status.Names.RunningTime")
-    }
 
     constructor() {
         this.selServerServerToken = '',
@@ -35,21 +23,12 @@ const viewstate = new class ViewState {
         this.TargetUsrToken1 = '',
         this.SrcUsr,
         this.TargetUsr,
-        this.libType
-    }
-
-    async getRunningTimeElapsed(){
-        const now = new Date();
-        let elapsedSeconds = Math.floor((now.getTime() - this.#_StartTime.getTime()) / 1000);
-        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
-        let hours = Math.floor(parseFloat(elapsedStr) / 3600);
-        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
-        let minutes = Math.floor(elapsedSeconds / 60);
-        let seconds = elapsedSeconds - minutes * 60;
-        if ( hours.toString().length < 2) { hours = '0' + hours}
-        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
-        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
-        return hours + ':' + minutes + ':' + seconds
+        this.libType,
+        this.currentLib,
+        this.genRep = false;
+        this.outFile = '',
+        this.csvStream,
+        this.headers = '"library","ratingKey","title","viewCount","viewOffset"'
     }
 
     async setOwnerStatus( Usr, data ){
@@ -59,25 +38,6 @@ const viewstate = new class ViewState {
         else {
             this.TargetUsr['isOwner'] = (JSONPath({path: `$..libs[0].key`, json: data})[0] == 0);
         }
-    }
-
-    async getNowTime(StartEnd){
-        let now = new Date();
-        if (StartEnd == 'start')
-        {
-            this.#_StartTime = now;
-        }
-        else
-        {
-            this.#_EndTime = now;
-        }
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        if ( hours.toString().length < 2) { hours = '0' + hours}
-        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
-        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
-        return hours + ':' + minutes + ':' + seconds;
     }
 
     async setLibType( libKey ){
@@ -126,9 +86,21 @@ const viewstate = new class ViewState {
 
     async bumpViewCount( media ){
         const ratingKey = JSONPath({path: `$..ratingKey`, json: media});
+        const title = JSONPath({path: `$..title`, json: media});
         const viewCount = JSONPath({path: `$..viewCount`, json: media});
         const viewOffset = JSONPath({path: `$..viewOffset`, json: media});
         const duration = JSONPath({path: `$..duration`, json: media});
+        if ( this.genRep ){
+            let watchTime = await time.convertMsToTime(viewOffset);
+            if ( watchTime === "00:00:00"){
+                watchTime = "";
+            }
+            else {
+                watchTime = `"${watchTime}"`
+            }
+            const row = `"${this.currentLib}",${ratingKey},"${title}",${viewCount},${watchTime}\n`;
+            this.csvStream.write( row );
+        }
         log.info(`Bumbing viewcount to ${viewCount} for media ${ratingKey}`);
         let url = `${store.getters.getSelectedServerAddress}/:/scrobble?identifier=com.plexapp.plugins.library&key=${ratingKey}`;
         // We need to bump viewcount for target user same amount as for SrcUsr
@@ -172,6 +144,7 @@ const viewstate = new class ViewState {
                 }
             });
         }
+        status.updateStatusMsg(status.RevMsgType.TimeElapsed, await time.getTimeElapsed());
     }
 
     async processWatchedList( libKey ){
@@ -210,7 +183,7 @@ const viewstate = new class ViewState {
                         listProcess[JSONPath({path: `$..ratingKey`, json: medias[media]})[0]] = listProcessDetails;
                         index += 1;
                         this.bumpViewCount( listProcessDetails );
-                        this.updateStatusMsg(5,  i18n.t("Modules.PMS.ViewState.Status.Msg.ProcessItem1", [listProcessDetails['title'], index, totalSize]));
+                        status.updateStatusMsg(status.RevMsgType.Item, i18n.t("Common.Status.Msg.ProcessItem_1_2", [listProcessDetails['title'], index, totalSize]));
                     }
                 })
                 .catch(function (error) {
@@ -232,7 +205,8 @@ const viewstate = new class ViewState {
         var keyCount  = Object.keys(this.libs).length;
         let index = 1;
         for (var libKey in this.libs){
-            this.updateStatusMsg(4,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing2", [index, keyCount, this.libs[libKey]['title']]));
+            this.currentLib = this.libs[libKey]['title'];
+            status.updateStatusMsg( status.RevMsgType.LibsToProcess, i18n.t("Common.Status.Msg.Processing_Lib_1_2", [index, keyCount, this.libs[libKey]['title']]));
             await this.processWatchedList( libKey );
             index += 1;
         }
@@ -301,45 +275,90 @@ const viewstate = new class ViewState {
                   log.error('[viewState.js] getUsrTokens: ' + error.message);
             }
         });
+    }
 
+    // Generate the filename for an export
+    async getFileName( Type ){
+        const dateFormat = require('dateformat');
+        const OutDir = wtconfig.get('General.ExportPath');
+        const timeStamp=dateFormat(new Date(), "yyyy.mm.dd_h.MM.ss");
+        const path = require('path');
+        let arrFile = [];
+        arrFile.push(sanitize(store.getters.getSelectedServer.name));
+        const names = `${JSONPath({path: "$.title", json: this.SrcUsr})[0]}-${JSONPath({path: "$.title", json: this.TargetUsr})[0]}`;
+        arrFile.push(sanitize(names));
+        arrFile.push(timeStamp + '.' + Type + '.tmp');
+        this.outFile = arrFile.join('_');
+        // Remove unwanted chars from outfile name
+        const targetDir = path.join(
+            OutDir, wtutils.AppName, i18n.t('Modules.PMS.Name'), i18n.t('Modules.PMS.ViewState.Name'));
+        const outFileWithPath = path.join(
+            targetDir, this.outFile);
+        // Make sure target dir exists
+        const fs = require('fs')
+        if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir);
+        }
+        log.info(`etHelper (getFileName) OutFile ET is ${outFileWithPath}`);
+        this.outFile = outFileWithPath;
+    }
+
+    async addHeaderToTmp({ stream: stream })
+    {
+        // Add the header
+        await stream.write( this.headers + "\n");
+        log.info(`Added CSV Header as: ${this.header}`);
+    }
+
+    async createOutFile()
+    {
+        var fs = require('fs');
+        // Create CSV Stream
+        if ( this.genRep ){
+            // Open a file stream
+            await this.getFileName( 'csv' );
+            this.csvStream = fs.createWriteStream(this.outFile, {flags:'a'});
+            await this.addHeaderToTmp({ stream: this.csvStream });
+        }
+    }
+
+    async closeOutFile()
+    {
+        // Close if used
+        if ( this.genRep ){
+            var fs = require('fs');
+            let newFile;
+            // Close Stream
+            this.csvStream.end();
+            // Rename to real file name
+            newFile = this.outFile.replace('.tmp', '')
+            fs.renameSync(this.outFile, newFile);
+            this.outFile = newFile;
+        }
     }
 
     async copyViewState( SrcUsr, TargetUsr ){
         log.info('[viewstate.js] Starting copyViewState');
-        const startTime = await this.getNowTime('start');
-        //this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
+        time.setStartTime();
         await this.getLibs( SrcUsr, TargetUsr );
-        //this.updateStatusMsg(3,  startTime);
-        startTime
-        this.updateStatusMsg(1,  i18n.t("Modules.PMS.ViewState.Status.Msg.Processing"));
+        status.updateStatusMsg(status.RevMsgType.StartTime,  await time.getStartTime());
+        status.updateStatusMsg(status.RevMsgType.Status,  i18n.t("Common.Status.Msg.Processing"));
         await this.getUsrTokens();
+        // Generate report?
+        this.genRep = wtconfig.get("PMS.ViewState.ExpReport", false);
+        if ( this.genRep ){
+            await this.createOutFile();
+        }
         await this.walkSourceUsr();
-        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
-    }
-
-    // Update status msg
-    async updateStatusMsg(msgType, msg)
-    {
-        // Update relevant key
-        this.#_statusmsg[msgType] = msg;
-        // Tmp store of new msg
-        let newMsg = '';
-        // Walk each current msg keys
-        Object.entries(this.#_statusmsg).forEach(([key, value]) => {
-            if ( value != '')
-            {
-                newMsg += this.#_msgType[key] + ': ' + value + '\n';
-            }
-        })
-        store.commit("UPDATE_viewStateStatus", newMsg);
-    }
-
-    // Clear Status Window
-    async clearStatus()
-    {
-        this.#_statusmsg = {};
-        store.commit("UPDATE_viewStateStatus", '');
-        return;
+        await this.closeOutFile();
+        time.setEndTime();
+        // Update status window
+        status.clearStatus();
+        status.updateStatusMsg(status.RevMsgType.OutFile,  this.outFile);
+        status.updateStatusMsg(status.RevMsgType.Status, i18n.t("Common.Status.Msg.Idle"));
+        status.updateStatusMsg(status.RevMsgType.TimeElapsed, await time.getTimeDifStartEnd());
+        status.updateStatusMsg(status.RevMsgType.StartTime, await time.getStartTime());
+        status.updateStatusMsg(status.RevMsgType.EndTime, await time.getEndTime());
     }
 
     async getLibs( SrcUsr, TargetUsr ){
@@ -352,13 +371,13 @@ const viewstate = new class ViewState {
             return;
         }
         if ( JSON.stringify(SrcUsr) === JSON.stringify(TargetUsr) ){
-            this.clearStatus();
-            this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
+            status.clearStatus();
+            status.updateStatusMsg(status.RevMsgType.Status, i18n.t("Common.Status.Msg.Idle"));
             log.info('[viewstate.js] Same user selected, so aborting');
             return;
         }
-        this.clearStatus();
-        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.GatheringLibs"));
+        status.clearStatus();
+        status.updateStatusMsg(status.RevMsgType.Status, i18n.t("Common.Status.Msg.GatheringLibs"));
         log.silly(`[viewstate.js] (getLibs) Source usr: ${JSON.stringify(SrcUsr)}`);
         log.silly(`[viewstate.js] (getLibs) Target usr: ${JSON.stringify(TargetUsr)}`);
         this.libs = {};
@@ -401,8 +420,8 @@ const viewstate = new class ViewState {
         for (let lib in this.libs){
             libstatus.push(this.libs[lib]['title'])
         }
-        this.updateStatusMsg(1, i18n.t("Modules.PMS.ViewState.Status.Msg.Idle"));
-        this.updateStatusMsg(2, libstatus.join(', '))
+        status.updateStatusMsg(status.RevMsgType.Status, i18n.t("Common.Status.Msg.Idle"));
+        status.updateStatusMsg(status.RevMsgType.Info, libstatus.join(', '))
     }
 
     // Here we get the server token for the selected server

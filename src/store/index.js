@@ -6,14 +6,15 @@ import poeditor from './modules/poeditor';
 import et from './modules/et';
 import language from './modules/language';
 import pms from './modules/pms';
-import viewstate from './modules/viewstate';
+import status from './modules/status';
+import time from './modules/time';
+
 
 Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence({
   storage: window.sessionStorage,
 });
-
 
 export default new Vuex.Store({
   state: {
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     et,
     language,
     pms,
-    viewstate
+    status,
+    time
   },
   plugins: [vuexLocal.plugin]
 })
