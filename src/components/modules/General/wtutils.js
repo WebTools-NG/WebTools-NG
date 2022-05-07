@@ -257,7 +257,7 @@ const wtutils = new class WTUtils {
     UpdateConfigFile() {
         // Update config file with defaults if missing
         log.verbose('Updating config file');
-        // Hide/Show Menu
+        // Hide/Show Menu Set to false if enabled for all
         if ( wtconfig.get('Menu.plextv', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.plextv', false)
         }
@@ -269,7 +269,10 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('Menu.pmsButler', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.pmsButler', false)
-        }        
+        }
+        if ( wtconfig.get('Menu.pmsViewState', 'N/A') == 'N/A' ){
+            wtconfig.set('Menu.pmsViewState', false)
+        }
         if ( wtconfig.get('Menu.et', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.et', false)
         }
