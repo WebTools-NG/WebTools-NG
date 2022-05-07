@@ -1,5 +1,3 @@
-//import { etHelper } from '../../components/modules/ExportTools/scripts/ethelper'
-
 const log = require('electron-log');
 console.log = log.log;
 

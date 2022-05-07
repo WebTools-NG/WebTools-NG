@@ -7,6 +7,8 @@ import et from './modules/et';
 import language from './modules/language';
 import pms from './modules/pms';
 import status from './modules/status';
+import time from './modules/time';
+
 
 Vue.use(Vuex);
 
@@ -27,7 +29,8 @@ export default new Vuex.Store({
     et,
     language,
     pms,
-    status
+    status,
+    time
   },
   plugins: [vuexLocal.plugin]
 })

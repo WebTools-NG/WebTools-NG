@@ -10,6 +10,7 @@ const status = new class Status {
             1: i18n.t("Common.Status.Name.Global.Status"),
             2: i18n.t("Common.Status.Name.Global.Info"),
             3: i18n.t("Common.Status.Name.Global.LibsToProcess"),
+            5: i18n.t("Common.Status.Name.Global.OutFile"),
             8: i18n.t("Common.Status.Name.Global.CurrentLib"),
             9: i18n.t("Common.Status.Name.Global.Item"),
             10: i18n.t("Common.Status.Name.Global.Items"),
@@ -20,14 +21,13 @@ const status = new class Status {
             204: i18n.t("Common.Status.Name.Global.RunningTime")
             // Module ViewState range is 1000 => 1200
             // Module ET range is 1201 => 2400
-
-
         };
         this.RevMsgType = {
             // Global stuff
             "Status": 1,
             "Info": 2,
             "LibsToProcess" : 3,
+            "OutFile": 5,
             "StartTime": 201,
             "EndTime":202,
             "TimeElapsed": 203,
@@ -49,10 +49,7 @@ const status = new class Status {
     // Update status msg
     async updateStatusMsg(msgType, msg)
     {
-        console.log('Ged 55-0 msgType: ' +  msgType)
-        console.log('Ged 55-1 msg: ' +  msg)
         // Update relevant key
-        //const translatedMsgType = 
         this.statusmsg[msgType] = msg;
         // Tmp store of new msg
         let newMsg = '';
@@ -65,7 +62,6 @@ const status = new class Status {
         })
         store.commit("UPDATE_Status", newMsg);
     }
-
 }
 
 export { status };

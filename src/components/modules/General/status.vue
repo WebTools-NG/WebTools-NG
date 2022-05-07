@@ -1,21 +1,21 @@
 <script>
     export default {
-    data() {
-        return {
-        statusMsg: this.$t("Common.Status.Msg.Global.Idle")
-        }
-    },
-    watch: {
-        // Watch for status update
-        viewStateStatus: function() {
-        this.statusMsg = this.$store.getters.getStatus;
-        }
-    },
-    computed: {
-        viewStateStatus: function(){
-        return this.$store.getters.getStatus;
-        }
-    }
+      data() {
+          return {
+          statusMsg: this.$t("Common.Status.Msg.Idle")
+          }
+      },
+      watch: {
+          // Watch for status update
+          viewStateStatus: function() {
+          this.statusMsg = this.$store.getters.getStatus;
+          }
+      },
+      computed: {
+          viewStateStatus: function(){
+          return this.$store.getters.getStatus;
+          }
+      }
     };
 </script>
 

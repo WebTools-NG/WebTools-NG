@@ -150,15 +150,14 @@
                 "Modules": {}
             },
             "Msg": {
-                "Processing_Lib_1_2": "Processing library {0} of {1} - {2}",
-                "Global": {
-                    "Idle": "Idle",
-                    "Processing": "Processing"
-                    
-                },
+                "Processing_Lib_1_2": "Processing library ({0} of {1}) - {2}",
+                "CollectUserInfo": "Collecting user info...Please wait",
+                "ProcessItem_1_2": "Processing: ({1} - {2}) - {0}",
+                "Idle": "Idle",
+                "Processing": "Processing",
+                "GatheringLibs": "Gathering libraries to process",
                 "Modules": {
-                    "viewState": {
-                    }
+                    "viewState": {}
                 }
             }
         }
@@ -449,20 +448,7 @@
                 "Owner": "Server owner",
                 "Managed": "Managed User",
                 "lblBtnCopy": "Copy",
-                "Status": {
-                    "Msg": {
-                        "CollectUserInfo": "Collecting user info...Please wait",
-                        
-                        "GEDDELProcessing2": "Processing library {0} of {1} - {2}",
-                        
-                        "GatheringLibs": "Gathering libraries to process",
-                        "ProcessItem1": "Processing: ({1} - {2}) - {0}"
-                    },
-                    "Names": {
-                        
-                        
-                    }
-                }
+                "genRep": "Generate a report"
             }
         },
         "PlexTV": {

@@ -29,8 +29,6 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 
 function createWindow () {
   // Create the browser window.
-  console.log('Ged 33: ' + __dirname)
-  console.log('Ged 34: ' + __static)
   win = new BrowserWindow({ width: 1024, height: 768, icon: __dirname + "/../src/assets/WebTools-512.png", webPreferences: {
     nodeIntegration: true,
     contextIsolation: false,
