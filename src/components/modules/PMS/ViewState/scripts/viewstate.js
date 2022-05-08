@@ -297,7 +297,7 @@ const viewstate = new class ViewState {
         // Make sure target dir exists
         const fs = require('fs')
         if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir);
+            fs.mkdirSync(targetDir, { recursive: true });
         }
         log.info(`etHelper (getFileName) OutFile ET is ${outFileWithPath}`);
         this.outFile = outFileWithPath;

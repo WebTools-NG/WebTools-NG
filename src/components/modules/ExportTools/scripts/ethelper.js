@@ -1280,7 +1280,7 @@ const etHelper = new class ETHELPER {
         // Create export dir
         var fs = require('fs');
         if (!fs.existsSync(ExpDir)){
-            fs.mkdirSync(ExpDir);
+            fs.mkdirSync(ExpDir, { recursive: true });
         }
         let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
         let title = String(JSONPath({path: '$.title', json: data})[0]);
@@ -1473,7 +1473,7 @@ const etHelper = new class ETHELPER {
         // Make sure target dir exists
         const fs = require('fs')
         if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir);
+            fs.mkdirSync(targetDir, { recursive: true });
         }
         log.info(`etHelper (getFileName) OutFile ET is ${outFileWithPath}`);
         return outFileWithPath;

@@ -43,7 +43,7 @@ const wtutils = new class WTUtils {
             if (!fs.existsSync(appExportDir))
             {
                 log.debug('Export dir existed, but AppDir didnt')
-                fs.mkdirSync(appExportDir)
+                fs.mkdirSync(appExportDir, { recursive: true })
                 if (fs.existsSync(appExportDir))
                 {
                     return true;
@@ -222,7 +222,7 @@ const wtutils = new class WTUtils {
             var TargetDir = wtutils.Home + '/locales';
             if (!fs.existsSync(TargetDir)){
                 log.debug('locales directory needs to be created');
-                fs.mkdirSync(TargetDir);
+                fs.mkdirSync(TargetDir, { recursive: true });
             }
             const items = fs.readdirSync(localHome)
             for (var i=0; i<items.length; i++) {
