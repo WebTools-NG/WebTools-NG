@@ -17,6 +17,7 @@
 * [#473 PMS Root page](https://github.com/WebTools-NG/WebTools-NG/issues/473)
 * [#459 Viewstate copy](https://github.com/WebTools-NG/WebTools-NG/issues/459)
 * [#476 Refactor status dialog](https://github.com/WebTools-NG/WebTools-NG/issues/476)
+* [#460 Custom Export Tools incorrectly parses part file and part file path](https://github.com/WebTools-NG/WebTools-NG/issues/460)
 
 ## V0.3.15 (20220413)
 
