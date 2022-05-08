@@ -603,13 +603,13 @@ const etHelper = new class ETHELPER {
                     break;
                 case "Part File":
                     for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.basename(valArray[x]).slice(0, -1));
+                        retArray.push(path.basename(valArray[x]));
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
                     break;
                 case "Part File Path":
                     for (x=0; x<valArray.length; x++) {
-                        retArray.push(path.dirname(valArray[x]).substring(1));
+                        retArray.push(path.dirname(valArray[x]));
                     }
                     retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
                     break;
