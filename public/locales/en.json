@@ -439,6 +439,7 @@
             "UsrID": "User ID",
             "UsrEMail": "User email address",
             "UsrName": "User name",
+            "UsrFriendlyName": "User friendly name",
             "UsrRestricted": "User Restricted",
             "UsrThumb": "Link to User thumb",
             "UsrHome": "Is user part of your Home",

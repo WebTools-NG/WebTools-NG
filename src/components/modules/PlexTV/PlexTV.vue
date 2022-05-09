@@ -29,6 +29,9 @@
       <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrName')" class="mt-3">
             <b-form-input id="usrName" name="usrName" type="text" class="form-control" v-model="usrName" :disabled=true></b-form-input>
       </b-input-group>
+      <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrFriendlyName')" class="mt-3">
+            <b-form-input id="usrFriendlyName" name="usrFriendlyName" type="text" class="form-control" v-model="usrFriendlyName" :disabled=true></b-form-input>
+      </b-input-group>
       <b-input-group id="UserEmailGrp" :prepend="$t('Modules.PlexTV.UsrEMail')" class="mt-3">
             <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
       </b-input-group>
@@ -77,6 +80,7 @@
           usrID: "",
           usrEmail: "",
           usrName: "",
+          usrFriendlyName: "",
           usrRestricted: "",
           usrThumb: "",
           usrHome: "",
@@ -99,6 +103,7 @@
       this.usrEmail = userLst[this.selUser]['email'];
       this.usrID = userLst[this.selUser]['id'];
       this.usrName = userLst[this.selUser]['title'];
+      this.usrFriendlyName = userLst[this.selUser]['friendlyName'];
       this.usrRestricted = userLst[this.selUser]['restricted'].toString();
       this.usrThumb = userLst[this.selUser]['thumb'];
       this.usrHome = userLst[this.selUser]['home'].toString();
