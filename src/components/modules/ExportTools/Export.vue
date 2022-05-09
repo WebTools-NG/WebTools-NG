@@ -91,23 +91,7 @@
         {{ $t("Modules.ET.optExpType.lblBtnExportMedia") }}</b-button>
       </div>
       <br>
-      <b-container fluid> <!-- Status -->
-        <b-row>
-          <b-col sm="2">
-            <label for="status">{{ $t('Modules.ET.Status.Status') }}:</label>
-          </b-col>
-          <b-col sm="10">
-            <b-form-textarea
-              id="status"
-              v-bind:placeholder="$t('Modules.ET.Status.Status')"
-              v-model="statusMsg"
-              :disabled=true
-              rows="1"
-              max-rows="8">
-            </b-form-textarea>
-          </b-col>
-        </b-row>
-      </b-container>
+      <statusDiv /> <!-- Status Div -->
       <b-modal ref="startEnd" hide-footer v-bind:title=this.startEnd>
           <div class="d-block">
             {{ this.startEndBody }}
@@ -137,69 +121,75 @@
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
   import { etHelper } from "./scripts/ethelper";
-
-
+  import statusDiv from '../General/status.vue';
+  import { status } from '../General/status';
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          exportLevels: [],
-          optExpTypeMain: [
-            {
-              "text": i18n.t('Modules.ET.optExpType.MainMovie'),
-              "value": et.ETmediaType.Movie
-            },
-            {
-              "text": i18n.t('Modules.ET.optExpType.MainTV'),
-              "value": et.ETmediaType.Show
-            },
-            {
-              "text": i18n.t('Modules.ET.optExpType.MainAudio'),
-              "value": et.ETmediaType.Artist
-            },
-            {
-              "text": i18n.t('Modules.ET.optExpType.MainPhoto'),
-              "value": et.ETmediaType.Photo,
-              "disabled": true
-            },
-            {
-              "text": i18n.t('Modules.ET.optExpType.MainPlaylist'),
-              "value": et.ETmediaType.Playlist
-            },
-            {
-              "text": i18n.t('Modules.ET.optExpType.MainLibrary'),
-              "value": et.ETmediaType.Library
-            }
-          ],
-          optExpTypeSec: [],
-          selExpTypeMain: "",
-          selExpTypeSec: "",
-          selLevel: "",
-          selLibrary: "",
-          selLibraryOptions: [],
-          selLibraryWait: true,
-          selMediaType: "",
-          selPType: "audio",
-          pListGrpDisabled: true,
-          etLibraryGroupDisabled: false,
-          etLevelGroupDisabled: false,
-          statusMsg: 'Idle',
-          startEnd: i18n.t("Modules.ET.optExpType.startStopTitle"),
-          startEndBody: i18n.t("Modules.ET.optExpType.startStopDesc"),
-          startEndBody2: i18n.t("Modules.ET.optExpType.startStopDesc2"),
-          startEndBody3: i18n.t("Modules.ET.optExpType.startStopDesc3"),
-          startEndBody4: i18n.t("Modules.ET.optExpType.startStopDesc4"),
-          startEndBtn: i18n.t("Modules.ET.optExpType.lblBtnExportMedia"),
-          itemStartNo: etHelper.Settings.currentItem,
-          itemEndNo: 0,
-          sectionMaxItems: 0
-        };
+    components: {
+      statusDiv
+    },
+    data() {
+      return {
+        exportLevels: [],
+        optExpTypeMain: [
+          {
+            "text": i18n.t('Modules.ET.optExpType.MainMovie'),
+            "value": et.ETmediaType.Movie
+          },
+          {
+            "text": i18n.t('Modules.ET.optExpType.MainTV'),
+            "value": et.ETmediaType.Show
+          },
+          {
+            "text": i18n.t('Modules.ET.optExpType.MainAudio'),
+            "value": et.ETmediaType.Artist
+          },
+          {
+            "text": i18n.t('Modules.ET.optExpType.MainPhoto'),
+            "value": et.ETmediaType.Photo,
+            "disabled": true
+          },
+          {
+            "text": i18n.t('Modules.ET.optExpType.MainPlaylist'),
+            "value": et.ETmediaType.Playlist
+          },
+          {
+            "text": i18n.t('Modules.ET.optExpType.MainLibrary'),
+            "value": et.ETmediaType.Library
+          }
+        ],
+        optExpTypeSec: [],
+        selExpTypeMain: "",
+        selExpTypeSec: "",
+        selLevel: "",
+        selLibrary: "",
+        selLibraryOptions: [],
+        selLibraryWait: true,
+        selMediaType: "",
+        selPType: "audio",
+        pListGrpDisabled: true,
+        etLibraryGroupDisabled: false,
+        etLevelGroupDisabled: false,
+     //   statusMsg: 'Idle',
+        startEnd: i18n.t("Modules.ET.optExpType.startStopTitle"),
+        startEndBody: i18n.t("Modules.ET.optExpType.startStopDesc"),
+        startEndBody2: i18n.t("Modules.ET.optExpType.startStopDesc2"),
+        startEndBody3: i18n.t("Modules.ET.optExpType.startStopDesc3"),
+        startEndBody4: i18n.t("Modules.ET.optExpType.startStopDesc4"),
+        startEndBtn: i18n.t("Modules.ET.optExpType.lblBtnExportMedia"),
+        itemStartNo: etHelper.Settings.currentItem,
+        itemEndNo: 0,
+        sectionMaxItems: 0
+      };
   },
   watch: {
+    /* 
     // Watch for status update
     ETStatus: function() {
       this.statusMsg = this.$store.getters.getETStatus;
     },
+ */
+
     // Watch for when selected server address is updated
     selectedServerAddress: async function(){
       // Changed, so we need to update the libraries
@@ -224,7 +214,6 @@
   created() {
     log.info("ET Created");
     this.serverSelected();
-    etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Idle"));
   },
   computed: {
     ETStatus: function(){
@@ -559,8 +548,8 @@
           return
         }
       }
-      await etHelper.clearStatus();
-      etHelper.updateStatusMsg( etHelper.RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
+      status.clearStatus();
+      status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.Processing"));
       // Populate et. settings with the selected values
       etHelper.Settings.libType = this.selMediaType;
       etHelper.Settings.Level = this.selLevel;

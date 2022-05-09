@@ -7,6 +7,8 @@ import {et} from './et';
 import i18n from '../../../../i18n';
 import filesize from 'filesize';
 import Excel from 'exceljs';
+import { status } from '../../General/status';
+import { time } from '../../General/time';
 
 var path = require("path");
 var sanitize = require("sanitize-filename");
@@ -318,20 +320,6 @@ function stripPartsFromFileName( tmpFileName, title ) {
 const etHelper = new class ETHELPER {
     // Private Fields
     #_FieldHeader = [];
-    #_StartTime = null;
-    #_EndTime = null;
-    #_statusmsg = {};
-    #_msgType = {
-        1: i18n.t("Modules.ET.Status.Names.Status"),
-        2: i18n.t("Modules.ET.Status.Names.Info"),
-        3: i18n.t("Modules.ET.Status.Names.Chuncks"),
-        4: i18n.t("Modules.ET.Status.Names.Items"),
-        5: i18n.t("Modules.ET.Status.Names.OutFile"),
-        6: i18n.t("Modules.ET.Status.Names.StartTime"),
-        7: i18n.t("Modules.ET.Status.Names.EndTime"),
-        8: i18n.t("Modules.ET.Status.Names.TimeElapsed"),
-        9: i18n.t("Modules.ET.Status.Names.RunningTime")
-    }
     #_defpostURI = '?checkFiles=1&includeRelated=0&includeExtras=1&includeBandwidths=1&includeChapters=1';
 
     constructor() {
@@ -415,17 +403,6 @@ const etHelper = new class ETHELPER {
             3001: 'Playlists'
         };
         this.intSep = '{*WTNG-ET*}';
-        this.RawMsgType = {
-            'Status': 1,
-            'Info': 2,
-            'Chuncks': 3,
-            'Items': 4,
-            'OutFile': 5,
-            'StartTime': 6,
-            'EndTime': 7,
-            'TimeElapsed': 8,
-            'RunningTime': 9
-        };
         this.StackedFilesName = ['cd', 'disc', 'dvd', 'part', 'pt'];
     }
 
@@ -433,7 +410,6 @@ const etHelper = new class ETHELPER {
         this.#_FieldHeader = [];
         this.Settings.Level = null;
         this.Settings.libType = null;
-//        this.Settings.libTypeSec = null;
         this.Settings.outFile = null;
         this.Settings.baseURL = null;
         this.Settings.accessToken = null;
@@ -837,7 +813,7 @@ const etHelper = new class ETHELPER {
 
     async addRowToTmp( { data }) {
         this.Settings.currentItem +=1;
-        this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
+        status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
         log.silly(`Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
@@ -852,7 +828,7 @@ const etHelper = new class ETHELPER {
         try
         {
             for (var x=0; x<this.Settings.fields.length; x++) {
-                this.updateStatusMsg(this.RawMsgType.Items, i18n.t('Modules.ET.Status.ProcessItem', {count: this.Settings.count, total: this.Settings.endItem}));
+                status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
                 var fieldDef = JSONPath({path: '$.fields.' + this.Settings.fields[x], json: defFields})[0];
                 name = this.Settings.fields[x];
                 key = fieldDef["key"];
@@ -984,7 +960,7 @@ const etHelper = new class ETHELPER {
         // Remove last internal separator
         str = str.substring(0,str.length-etHelper.intSep.length);
         str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
-        this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getRunningTimeElapsed());
+        status.updateStatusMsg( status.RevMsgType.TimeElapsed, await time.getTimeElapsed());
         log.debug(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
         return str;
     }
@@ -1049,7 +1025,7 @@ const etHelper = new class ETHELPER {
     }
 
     async populateExpFiles(){
-        log.info('etHelper(populateExpFiles) - Populating export files');
+        log.info('[etHelper] (populateExpFiles) - Populating export files');
         // Current item counter in the chunck
         //let idx = 0;
         let idx = this.Settings.startItem;
@@ -1123,13 +1099,13 @@ const etHelper = new class ETHELPER {
             }
             idx = Number(idx) + Number(step);
         } while (this.Settings.count < this.Settings.endItem);
-        log.info('etHelper(populateExpFiles) - Populating export files ended');
+        log.info('[etHelper] (populateExpFiles) - Populating export files ended');
     }
 
     async getSectionSize()
     {
-        log.debug(`etHelper (getSectionSize) - selType: ${this.Settings.selType}`)
-        log.debug(`etHelper (getSectionSize) - libTypeSec: ${this.Settings.libTypeSec}`)
+        log.debug(`[etHelper] (getSectionSize) - selType: ${this.Settings.selType}`)
+        log.debug(`[etHelper] (getSectionSize) - libTypeSec: ${this.Settings.libTypeSec}`)
         let url = '';
         switch(this.Settings.selType) {
             case this.ETmediaType.Playlist_Video:
@@ -1165,24 +1141,24 @@ const etHelper = new class ETHELPER {
           }
         url += 'X-Plex-Container-Start=0&X-Plex-Container-Size=0';
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
-        log.verbose(`Calling url in getSectionSize: ${url}`)
+        log.verbose(`[etHelper] (getSectionSize) Calling url in getSectionSize: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         var totalSize = JSONPath({path: '$..totalSize', json: resp})[0];
-        log.debug(`Response in getSectionSize: ${totalSize}`);
+        log.debug(`[etHelper] (getSectionSize) Response in getSectionSize: ${totalSize}`);
         return totalSize;
     }
 
     async getSectionData()
     {
-        log.debug(`etHelper (getSectionData) - Element is: ${this.Settings.element}`)
+        log.debug(`[etHelper] (getSectionData) - Element is: ${this.Settings.element}`)
         //const url = this.Settings.baseURL + this.Settings.element + '?' + this.getPostURI() + this.Settings.count;
         const url = this.Settings.baseURL + this.Settings.element + this.getPostURI() + this.Settings.count;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
-        log.verbose(`etHelper (getSectionData) - Calling url in getSectionData: ${url}`)
+        log.verbose(`[etHelper] (getSectionData) - Calling url in getSectionData: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        log.debug(`etHelper (getSectionData) - Response in getSectionData: ${JSON.stringify(resp)}`)
+        log.debug(`[etHelper] (getSectionData) - Response in getSectionData: ${JSON.stringify(resp)}`)
         return resp
     }
 
@@ -1191,21 +1167,22 @@ const etHelper = new class ETHELPER {
         {
             this.Settings.libType = this.Settings.libTypeSec;
         }
-        log.debug(`etHelper (getLevelCall) - LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
+        log.debug(`[etHelper] (getLevelCall) - LibType: ${this.Settings.libTypeSec} * LevelName: ${this.Settings.levelName}`);
         let count = await defLevels[this.Settings.libTypeSec]['LevelCount'][this.Settings.levelName]
         if (count == undefined)
         {
             // We are dealing with a custom level
-            log.debug('Count requested for a custom level')
+            log.debug('[etHelper] (getLevelCall) Count requested for a custom level')
             count = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.LevelCount.${this.Settings.levelName}`);
         }
-        log.info('Count needed is: ' + count)
+        log.info('[etHelper] (getLevelCall) Count needed is: ' + count)
         return count
     }
 
     async exportMedias() {
-        this.updateStatusMsg( this.RawMsgType.Status, i18n.t("Modules.ET.Status.Running"));
-        this.updateStatusMsg( this.RawMsgType.StartTime, await this.getNowTime('start'));
+        time.setStartTime();
+        status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.Processing"));
+        status.updateStatusMsg( status.RevMsgType.StartTime, await time.getStartTime());
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.Settings.libType) > -1)
         {
             this.Settings.levelName = 'All'
@@ -1218,13 +1195,13 @@ const etHelper = new class ETHELPER {
         await this.populateExpFiles();
         await this.closeOutFile();
         // Update status window
-        this.clearStatus();
-        this.updateStatusMsg( this.RawMsgType.Status, i18n.t("Modules.ET.Status.Finished"));
-        this.updateStatusMsg( this.RawMsgType.StartTime, await this.getStartEndTime('start'));
-        this.getNowTime('end');
-        this.updateStatusMsg( this.RawMsgType.EndTime, await this.getStartEndTime('end'));
-        this.updateStatusMsg( this.RawMsgType.TimeElapsed, await this.getTimeElapsed());
-        this.updateStatusMsg( this.RawMsgType.OutFile, this.Settings.outFile);
+        status.clearStatus();
+        time.setEndTime();
+        status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.Finished"));
+        status.updateStatusMsg( status.RevMsgType.StartTime, await time.getStartTime());
+        status.updateStatusMsg( status.RevMsgType.EndTime, await time.getEndTime());
+        status.updateStatusMsg( status.RevMsgType.TimeElapsed, await time.getTimeDifStartEnd());
+        status.updateStatusMsg( status.RevMsgType.OutFile, this.Settings.outFile);
     }
 
     async closeOutFile()
@@ -1248,7 +1225,7 @@ const etHelper = new class ETHELPER {
 
     async exportPics( { type: extype, data: data} ) {
         let ExpDir, picUrl, resolutions;
-        log.verbose(`Going to export ${extype}`);
+        log.verbose(`[etHelper] (exportPics) Going to export ${extype}`);
         try
         {
             if (extype == 'posters')
@@ -1272,11 +1249,11 @@ const etHelper = new class ETHELPER {
         }
         catch (error)
         {
-            log.error(`Exception in exportPics is: ${error}`);
+            log.error(`[etHelper] (exportPics) Exception in exportPics is: ${error}`);
         }
-        log.verbose(`picUrl is: ${picUrl}`);
-        log.verbose(`resolutions is: ${JSON.stringify(resolutions)}`);
-        log.verbose(`ExpDir is: ${ExpDir}`);
+        log.verbose(`[etHelper] (exportPics) picUrl is: ${picUrl}`);
+        log.verbose(`[etHelper] (exportPics) resolutions is: ${JSON.stringify(resolutions)}`);
+        log.verbose(`[etHelper] (exportPics) ExpDir is: ${ExpDir}`);
         // Create export dir
         var fs = require('fs');
         if (!fs.existsSync(ExpDir)){
@@ -1298,8 +1275,8 @@ const etHelper = new class ETHELPER {
             URL += width + '&height=' + hight;
             URL += '&minSize=1&url=';
             URL += picUrl;
-            log.verbose(`Url for ${extype} is ${URL}`);
-            log.verbose(`Outfile is ${outFile}`);
+            log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
+            log.verbose(`[etHelper] (exportPics) Outfile is ${outFile}`);
             URL += '&X-Plex-Token=' + this.Settings.accessToken;
             await this.forceDownload( { url:URL, target:outFile, title:title} );
         }
@@ -1350,7 +1327,7 @@ const etHelper = new class ETHELPER {
             }
         }
         catch (error){
-            log.error(`etHelper: Exception happened when creating xlsx stream as: ${error}`);
+            log.error(`[etHelper] (createOutFile) Exception happened when creating xlsx stream as: ${error}`);
         }
 
 
@@ -1714,32 +1691,6 @@ const etHelper = new class ETHELPER {
         });
     }
 
-    //#region *** StatusMsg ***
-    async clearStatus()
-    {
-        this.#_statusmsg = {};
-        store.commit("UPDATE_SELECTEDETStatus", '');
-        return;
-    }
-
-    async updateStatusMsg(msgType, msg)
-    {
-        // Update relevant key
-        this.#_statusmsg[msgType] = msg;
-        // Tmp store of new msg
-        let newMsg = '';
-        // Walk each current msg keys
-        Object.entries(this.#_statusmsg).forEach(([key, value]) => {
-            if ( value != '')
-            {
-                newMsg += this.#_msgType[key] + ': ' + value + '\n';
-            }
-        })
-        store.commit("UPDATE_SELECTEDETStatus", newMsg);
-    }
-
-    //#endregion
-
     //#region *** Field Header ****
 
     // Public methode to get the Header
@@ -1768,67 +1719,6 @@ const etHelper = new class ETHELPER {
     async #SetFieldHeader(){
         log.verbose(`etHelper (SetFieldHeader) - GetFieldHeader level: ${this.Settings.Level} - libType: ${this.Settings.libType}`);
         return await this.getLevelFields();
-    }
-    //#endregion
-
-    //#region *** Time ***
-    async getTimeElapsed(){
-        let elapsedSeconds = Math.floor((this.#_EndTime.getTime() - this.#_StartTime.getTime()) / 1000);
-        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
-        let hours = Math.floor(parseFloat(elapsedStr) / 3600);
-        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
-        let minutes = Math.floor(elapsedSeconds / 60);
-        let seconds = elapsedSeconds - minutes * 60;
-        if ( hours.toString().length < 2) { hours = '0' + hours}
-        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
-        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
-        return hours + ':' + minutes + ':' + seconds
-    }
-
-    async getNowTime(StartEnd){
-        let now = new Date();
-        if (StartEnd == 'start')
-        {
-            this.#_StartTime = now;
-        }
-        else
-        {
-            this.#_EndTime = now;
-        }
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        if ( hours.toString().length < 2) { hours = '0' + hours}
-        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
-        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
-        return hours + ':' + minutes + ':' + seconds;
-    }
-
-    async getStartEndTime(StartEnd){
-        let now;
-        if (StartEnd == 'start')
-        {
-            now = this.#_StartTime;
-        }
-        else
-        {
-            now = this.#_EndTime;
-        }
-        return now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    }
-
-    async getRunningTimeElapsed(){
-        const now = new Date();
-        let elapsedSeconds = Math.floor((now.getTime() - this.#_StartTime.getTime()) / 1000);
-        let elapsedStr = elapsedSeconds.toString().replaceAll('.', '');
-        let hours = Math.floor(parseFloat(elapsedStr) / 3600);
-        elapsedSeconds = parseFloat(elapsedStr) - hours * 3600;
-        let minutes = Math.floor(elapsedSeconds / 60);
-        let seconds = elapsedSeconds - minutes * 60;
-        if ( hours.toString().length < 2) { hours = '0' + hours}
-        if ( minutes.toString().length < 2) { minutes = '0' + minutes}
-        if ( seconds.toString().length < 2) { seconds = '0' + seconds}
-        return hours + ':' + minutes + ':' + seconds
     }
     //#endregion
 }
