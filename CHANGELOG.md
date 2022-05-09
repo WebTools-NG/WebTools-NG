@@ -2,7 +2,7 @@
 
 ## V0.3.16 ( Not Released Yet)
 
-**Note**:   This version is an Beta version
+**Note**:   This version is a Beta version
 
 **Note 2**: In this version, the following is disabled:
 
