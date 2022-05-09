@@ -1566,15 +1566,18 @@ const etHelper = new class ETHELPER {
         }
         if (includeInfo == 'undefined')
         {
-            includeInfo = ''
+            // Check if we have a custom level
+            includeInfo = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Include.${this.Settings.levelName}`, '');
         }
         if (includeInfo == undefined)
         {
-            includeInfo = ''
+            // Check if we have a custom level
+            includeInfo = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Include.${this.Settings.levelName}`, '');
         }
         if (includeInfo == null)
         {
-            includeInfo = wtconfig.get('ET.CustomLevels.' + this.Settings.libTypeSec + '.Include.' + this.Settings.levelName);
+            // Check if we have a custom level
+            includeInfo = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Include.${this.Settings.levelName}`, '');
         }
         log.debug(`[ethelper.js] (getIncludeInfo) - returning: ${includeInfo}`);
         return includeInfo;

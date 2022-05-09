@@ -18,6 +18,7 @@
 * [#459 Viewstate copy](https://github.com/WebTools-NG/WebTools-NG/issues/459)
 * [#476 Refactor status dialog](https://github.com/WebTools-NG/WebTools-NG/issues/476)
 * [#460 Custom Export Tools incorrectly parses part file and part file path](https://github.com/WebTools-NG/WebTools-NG/issues/460)
+* [#456 ET Custom levels doesn't use include params](https://github.com/WebTools-NG/WebTools-NG/issues/456)
 
 ## V0.3.15 (20220413)
 
