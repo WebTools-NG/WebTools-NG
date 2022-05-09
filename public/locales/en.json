@@ -140,7 +140,7 @@
                     "Items": "Items",
                     "Info": "Info",
                     "OutFile": "Output File",
-                    "StartTime": "Start time",
+                    "StartTime": "Start Time",
                     "EndTime": "End Time",
                     "TimeElapsed": "Time Elapsed",
                     "RunningTime": "Running time",
@@ -153,9 +153,11 @@
                 "Processing_Lib_1_2": "Processing library ({0} of {1}) - {2}",
                 "CollectUserInfo": "Collecting user info...Please wait",
                 "ProcessItem_1_2": "Processing: ({1} - {2}) - {0}",
+                "ProcessItem_0_1": "Processing item {count} of {total}",
                 "Idle": "Idle",
                 "Processing": "Processing",
                 "GatheringLibs": "Gathering libraries to process",
+                "Finished": "Job finished",
                 "Modules": {
                     "viewState": {}
                 }
@@ -202,28 +204,6 @@
             "SelectLevel": "Select level",
             "BuildInLevels": "*** Built-in levels ***",
             "NoLevelFound": "N/A",
-            "Status": {
-                "Idle": "Idle",
-                "Status": "Status",
-                "Processing-Chunk": "Processing chunk {current} of {total}",
-                "StartExport": "Starting to Export",
-                "GetSectionItems": "Fetching {totalSize} items in chunks of {chunck}",
-                "CreateExlsFile": "Creating Excel file",
-                "ProcessItem": "Processing item {count} of {total}",
-                "Names": {
-                    "Status": "Status",
-                    "Chuncks": "Chunks",
-                    "Items": "Items",
-                    "Info": "Info",
-                    "OutFile": "Output File",
-                    "StartTime": "Start time",
-                    "EndTime": "End Time",
-                    "TimeElapsed": "Time Elapsed",
-                    "RunningTime": "Running time"
-                },
-                "Finished": "Export finished",
-                "Running": "Export in progress"
-            },
             "ErrorBadSepTitle": "Column separator issue",
             "ErrorBadSep": "Column separator can only be one character",
             "ErrorNoServerSelectedTitle": "No server selected",

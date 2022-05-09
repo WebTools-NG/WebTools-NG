@@ -90,7 +90,6 @@
           selSrcUsr: "",
           serverIsSelected: false,
           WaitForUsers: false,
-          statusMsg: 'Idle',
           cbSelected: [],
           cbOptions: [
               { text: i18n.t('Modules.PMS.ViewState.genRep'), value: 'ExpReport' }
@@ -114,7 +113,7 @@
     selectedServerAddress: async function(){
       log.info("ViewState selected server changed");
       status.clearStatus();
-      status.updateStatusMsg(1, i18n.t("Common.Status.Msg.CollectUserInfo"));
+      status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.CollectUserInfo"));
       viewstate.SrcUsr = null;
       viewstate.TargetUsr = null;
       this.serverIsSelected = ( this.$store.getters.getSelectedServer != "none" );
@@ -126,11 +125,7 @@
       this.selSrcUsr = '';
       this.selTargetUsr = '',
       this.WaitForUsers = true;
-      status.updateStatusMsg(1, i18n.t("Common.Status.Msg.Idle"));
-    },
-    // Watch for status update
-    viewStateStatus: function() {
-      this.statusMsg = this.$store.getters.getViewStateStatus;
+      status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.Idle"));
     }
   },
   computed: {
