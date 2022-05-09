@@ -1069,6 +1069,12 @@
                 "call": 1,
                 "type": "string"
             },
+        "Show Title":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string"
+            },    
         "Similar":
             {
                 "key": "$.Similar[*]",
