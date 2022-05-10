@@ -106,7 +106,7 @@
                 { text: i18n.t('Modules.ET.Custom.optCustExpType.Movies'), value: et.ETmediaType.Movie, disabled: false },
                 { text: i18n.t('Modules.ET.Custom.optCustExpType.TVSeries'), value: et.ETmediaType.Show, disabled: false },
                 { text: i18n.t('Modules.ET.Custom.optCustExpType.TVEpisodes'), value: et.ETmediaType.Episode, disabled: false },
-                { text: i18n.t('Modules.ET.Custom.optCustExpType.AudioArtist'), value: et.ETmediaType.Album, disabled: false },
+                { text: i18n.t('Modules.ET.Custom.optCustExpType.AudioArtist'), value: et.ETmediaType.Artist, disabled: false },
                 { text: i18n.t('Modules.ET.Custom.optCustExpType.AudioAlbum'), value: et.ETmediaType.Album, disabled: false },
                 { text: i18n.t('Modules.ET.Custom.optCustExpType.AudioTrack'), value: et.ETmediaType.Track, disabled: false },
                 { text: i18n.t('Modules.ET.Custom.optCustExpType.Photos'), value: et.ETmediaType.Photo, disabled: false },
@@ -291,9 +291,9 @@
                     }
                 }
             });
-            log.info(`LevelCount for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${curLevel}`);
+            log.info(`[custom.vue] (updateLevelCount) LevelCount for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${curLevel}`);
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.LevelCount.${this.selCustLevel}`, curLevel);
-            log.info(`includeFields for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${includeFields}`);
+            log.info(`[custom.vue] (updateLevelCount) includeFields for "${this.selCustLevel}" of the type "${this.selMediaType}" was calculated as:${includeFields}`);
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Include.${this.selCustLevel}`, includeFields);
         },
         changeType: function() {
