@@ -552,9 +552,9 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title="", data} ){
-        log.debug(`ETHelper(postProcess) - Val is: ${JSON.stringify(val)}`);
-        log.debug(`ETHelper(postProcess) - name is: ${name}`);
-        log.debug(`ETHelper(postProcess) - title is: ${title}`);
+        log.debug(`[ETHelper] (postProcess) - Val is: ${JSON.stringify(val)}`);
+        log.debug(`[ETHelper] (postProcess) - name is: ${name}`);
+        log.debug(`[ETHelper] (postProcess) - title is: ${title}`);
         let retArray = [];
         let guidArr;
         let x, retVal, start, strStart, end, result;
@@ -796,17 +796,46 @@ const etHelper = new class ETHELPER {
                     for(const item of guidArr) {
                         if ( item.startsWith("tmdb://") )
                         {
-                            retVal = result = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                            retVal = 'https://www.themoviedb.org/movie/' + item.substring(7);
                         }
                     }
                     break;
+                case "PMS Metadata Path":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    var libTypeName;
+                    switch ( String(this.RevETmediaType[this.Settings.libTypeSec]) ){
+                        case "Movie":
+                            libTypeName = 'Movies';
+                            break;
+                        case "Show":
+                            libTypeName = 'TV Shows';
+                            break;
+                        case "Episode":
+                            libTypeName = 'TV Shows';
+                            // We need another guid sadly
+                            val = JSONPath({path: '$..grandparentGuid', json: data})[0];
+                            break;
+                        case "Album":
+                            libTypeName = 'Albums';
+                            break;
+                        case "Artist":
+                            libTypeName = 'Artists';
+                            break;
+                    }
+                    var crypto = require('crypto');
+                    var shasum = crypto.createHash('sha1');
+                    shasum.update(val);
+                    var sha1 = shasum.digest('hex');
+                    var path = require('path');
+                    retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
+                    break;
                 default:
-                    log.error(`postProcess no hit for: ${name}`)
+                    log.error(`[ETHelper] (postProcess) no hit for: ${name}`)
                     break;
             }
         } catch (error) {
             retVal = 'ERROR'
-            log.error(`ETHelper(postProcess) - We had an error as: ${error} . So postProcess retVal set to ERROR`);
+            log.error(`[ETHelper] (postProcess) - We had an error as: ${error} . So postProcess retVal set to ERROR`);
         }
         return await retVal;
     }
@@ -815,7 +844,7 @@ const etHelper = new class ETHELPER {
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
-        log.silly(`Data is: ${JSON.stringify(data)}`)
+        log.silly(`[ethelper.js] (addRowToTmp) Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
         let val, array, i, valArray, valArrayVal
@@ -845,12 +874,10 @@ const etHelper = new class ETHELPER {
                             val = wtconfig.get('ET.NotAvail', 'N/A');
                         }
                         val = etHelper.isEmpty( { "val": val } );
-//                        val = setQualifier( {str: val} );
                         break;
                     case "array":
                         array = JSONPath({path: key, json: data});
                         if (array === undefined || array.length == 0) {
-//                            val = setQualifier( {str: wtconfig.get('ET.NotAvail', 'N/A')} );
                             val = wtconfig.get('ET.NotAvail', 'N/A');
                         }
                         else
@@ -887,8 +914,7 @@ const etHelper = new class ETHELPER {
                                 }
                                 valArray.push(valArrayVal)
                             }
-                            val = valArray.join(wtconfig.get('ET.ArraySep', ' * '))
-//                            val = setQualifier( {str: val} );
+                            val = valArray.join(wtconfig.get('ET.ArraySep', ' * '));
                         }
                         break;
                     case "array-count":
@@ -912,7 +938,6 @@ const etHelper = new class ETHELPER {
                         {
                             val = wtconfig.get('ET.NotAvail', 'N/A')
                         }
-//                        val = setQualifier( {str: val} );
                         break;
                     case "datetime":
                         //val = JSONPath({path: String(lookup), json: data});
@@ -935,13 +960,12 @@ const etHelper = new class ETHELPER {
                         {
                             val = wtconfig.get('ET.NotAvail', 'N/A')
                         }
-//                        val = setQualifier( {str: val} );
                         break;
                 }
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
-                    log.debug(`ETHelper(addRowToTmp doPostProc) - Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+                    log.debug(`[ETHelper] (addRowToTmp doPostProc) - Name is: ${name} - Title is: ${title} - Val is: ${val}`)
                     val = await this.postProcess( {name: name, val: val, title: title, data: data} );
                 }
                 // Here we add qualifier, if not a number

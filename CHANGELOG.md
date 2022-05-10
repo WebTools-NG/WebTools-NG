@@ -22,6 +22,7 @@
 * [#478 Refactor time and status for ET Module](https://github.com/WebTools-NG/WebTools-NG/issues/478)
 * [#463 plex.tv add friendly name](https://github.com/WebTools-NG/WebTools-NG/issues/463)
 * [#398 Playlists imported from music.app doesn't show](https://github.com/WebTools-NG/WebTools-NG/issues/398)
+* [#461 Playlists imported from music.app doesn't show](https://github.com/WebTools-NG/WebTools-NG/issues/461)
 
 ## V0.3.15 (20220413)
 
