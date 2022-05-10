@@ -551,6 +551,18 @@ const etHelper = new class ETHELPER {
         }
     }
 
+    async getHash( data )
+    {
+        var ratingKey = JSONPath({path: '$..ratingKey', json: data})[0];
+        const url = `${this.Settings.baseURL}/library/metadata/${ratingKey}/tree`;
+        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+        log.verbose(`[ethelper.js] (getHash) Calling url in getItemDetails: ${url}`)
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        let hash = JSONPath({path: '$..hash', json: resp})
+        return hash
+    }
+
     async postProcess( {name, val, title="", data} ){
         log.debug(`[ETHelper] (postProcess) - Val is: ${JSON.stringify(val)}`);
         log.debug(`[ETHelper] (postProcess) - name is: ${name}`);
@@ -800,6 +812,15 @@ const etHelper = new class ETHELPER {
                         }
                     }
                     break;
+                case "PMS Media Path":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    var hashes = await this.getHash(data);
+                    var retHash = [];
+                    hashes.forEach(hash => {
+                        retHash.push(path.join('Media', 'localhost', hash[0], hash.slice(1) + '.bundle'));
+                      });
+                    retVal = retHash.join(wtconfig.get('ET.ArraySep', ' * '));
+                    break;
                 case "PMS Metadata Path":
                     retVal = wtconfig.get('ET.NotAvail');
                     var libTypeName;
@@ -826,7 +847,7 @@ const etHelper = new class ETHELPER {
                     var shasum = crypto.createHash('sha1');
                     shasum.update(val);
                     var sha1 = shasum.digest('hex');
-                    var path = require('path');
+                    //var path = require('path');
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
                     break;
                 default:

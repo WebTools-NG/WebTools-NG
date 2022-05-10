@@ -1012,6 +1012,13 @@
                 "call": 1,
                 "type": "string"
             },
+        "PMS Media Path":
+        {
+            "key": "$.guid",
+            "call": 1,
+            "type": "string",
+            "postProcess": true
+        },
         "PMS Metadata Path":
             {
                 "key": "$.guid",
