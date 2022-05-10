@@ -21,7 +21,7 @@
 * [#456 ET Custom levels doesn't use include params](https://github.com/WebTools-NG/WebTools-NG/issues/456)
 * [#478 Refactor time and status for ET Module](https://github.com/WebTools-NG/WebTools-NG/issues/478)
 * [#463 plex.tv add friendly name](https://github.com/WebTools-NG/WebTools-NG/issues/463)
-* [#468 Add "Last Viewed at" as an available field for TV Show Episode exporting](https://github.com/WebTools-NG/WebTools-NG/issues/468)
+* [#398 Playlists imported from music.app doesn't show](https://github.com/WebTools-NG/WebTools-NG/issues/398)
 
 ## V0.3.15 (20220413)
 
