@@ -12,7 +12,8 @@
                 "Summary",
                 "Audience Rating",
                 "Content Rating",
-                "Studio"
+                "Studio",
+                "Year"
             ],
             "all": [
                 "Added",

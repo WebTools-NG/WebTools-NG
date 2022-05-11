@@ -62,7 +62,7 @@ function setQualifier( {str:str})
     {
         result = `${wtconfig.get('ET.TextQualifierCSV', 'N/A')}${str}${wtconfig.get('ET.TextQualifierCSV', 'N/A')}`
     }
-    log.debug(`etHelper (setQualifier) - Got: _WTNG_${str}_WTNG_ and returning ${result}`);
+    log.debug(`[etHelper.js] (setQualifier) - Got: _WTNG_${str}_WTNG_ and returning ${result}`);
     return result;
 }
 
@@ -71,7 +71,7 @@ function setQualifier( {str:str})
 function cleanupSuggestedFile( tmpFileName )
 {
     const unWantedChars = '.-*_[](){}';
-    log.verbose(`etHelper (cleanupSuggestedFile) - starting Param: ${tmpFileName}`);
+    log.verbose(`[ethelper.js] (cleanupSuggestedFile) - starting Param: ${tmpFileName}`);
     // Now replace square brackets if present with a dot
     tmpFileName = tmpFileName.replaceAll("[", ".");
     tmpFileName = tmpFileName.replaceAll("]", ".");
@@ -93,7 +93,7 @@ function cleanupSuggestedFile( tmpFileName )
     // Now delete empty brackets
     tmpFileName = tmpFileName.replaceAll("()", "");
     tmpFileName = tmpFileName.replaceAll("{}", "");
-    log.verbose(`etHelper (cleanupSuggestedFile) - Returning: ${tmpFileName}`);
+    log.verbose(`[ethelper.js] (cleanupSuggestedFile) - Returning: ${tmpFileName}`);
     return tmpFileName;
 }
 
@@ -126,8 +126,8 @@ function getSuggestedYear( data )
 // Returns a suggested id for a media
 function getSuggestedId( data )
 {
-    log.verbose(`etHelper (getSuggestedId) - Started. To see Param, switch to Silly logging`);
-    log.silly(`etHelper (getSuggestedId) - Starting with param: ${JSON.stringify(data)}`);
+    log.verbose(`[ethelper.js] (getSuggestedId) - Started. To see Param, switch to Silly logging`);
+    log.silly(`[ethelper.js] (getSuggestedId) - Starting with param: ${JSON.stringify(data)}`);
     let imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
     let tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
     let tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));
@@ -153,9 +153,9 @@ function getSuggestedId( data )
     {
         selId = wtconfig.get("ET.SelectedShowsID", "tmdb");
     }
-    log.silly(`etHelper (getSuggestedId) - imdb ID: ${imdb}`);
-    log.silly(`etHelper (getSuggestedId) - tmdb ID: ${tmdb}`);
-    log.silly(`etHelper (getSuggestedId) - tvdb ID: ${tvdb}`);
+    log.silly(`[ethelper.js] (getSuggestedId) - imdb ID: ${imdb}`);
+    log.silly(`[ethelper.js] (getSuggestedId) - tmdb ID: ${tmdb}`);
+    log.silly(`[ethelper.js] (getSuggestedId) - tvdb ID: ${tvdb}`);
 
     let Id;
     switch(selId) {
@@ -183,7 +183,7 @@ function getSuggestedId( data )
             }
             break;
     }
-    log.debug(`etHelper (getSuggestedId) - Returning: "imdb": ${imdb}, "tmdb": ${tmdb}, "tvdb": ${tvdb}, "selId": ${Id}`);
+    log.debug(`[ethelper.js] (getSuggestedId) - Returning: "imdb": ${imdb}, "tmdb": ${tmdb}, "tvdb": ${tvdb}, "selId": ${Id}`);
     return {"imdb": imdb, "tmdb": tmdb, "tvdb": tvdb, "selId": Id};
 }
 
@@ -195,19 +195,19 @@ function stripYearFromFileName( tmpFileName, year ){
 
 // Returns a string stripped for ID's
 function stripIdFromFileName( param ){
-    log.debug(`etHelper (stripIdFromFileName) - starting function with param as: ${JSON.stringify(param)}`);
+    log.debug(`[ethelper.js] (stripIdFromFileName) - starting function with param as: ${JSON.stringify(param)}`);
     let tmpFileName = param.tmpFileName;
     let re;
     const imdb = param.imdb.slice(7);
     const tmdb = param.tmdb.slice(7);
     const tvdb = param.tvdb.slice(7);
     // Remove IMDB id
-    log.debug(`etHelper (stripIdFromFileName) - Imdb string is : ${imdb}`);
+    log.debug(`[ethelper.js] (stripIdFromFileName) - Imdb string is : ${imdb}`);
     re = new RegExp(`\\b${imdb}\\b`, 'gi');
     tmpFileName = tmpFileName.replace(re, "");
-    log.debug(`etHelper (stripIdFromFileName) - After imdb id is removed: ${tmpFileName}`);
+    log.debug(`[ethelper.js] (stripIdFromFileName) - After imdb id is removed: ${tmpFileName}`);
     tmpFileName = tmpFileName.replace(/imdb-/i, '');
-    log.debug(`etHelper (stripIdFromFileName) - After imdb string is removed: ${tmpFileName}`);
+    log.debug(`[ethelper.js] (stripIdFromFileName) - After imdb string is removed: ${tmpFileName}`);
     // Remove TMDB id
     re = new RegExp(`\\b${tmdb}\\b`, 'gi');
     tmpFileName = tmpFileName.replace(re, "");
@@ -264,7 +264,7 @@ function stripTitleFromFileName( tmpFileName, title )
 
 // Strip parts from a filename, and return multiple values
 function stripPartsFromFileName( tmpFileName, title ) {
-    log.verbose(`etHelper (stripPartsFromFileName) - looking at ${tmpFileName}`);
+    log.verbose(`[ethelper.js] (stripPartsFromFileName) - looking at ${tmpFileName}`);
     let partName = '';
     // Find stacked item if present
     etHelper.StackedFilesName.forEach(element => {
@@ -275,7 +275,7 @@ function stripPartsFromFileName( tmpFileName, title ) {
             // Got a stacked identifier, so make sure next character is a number in [1-8] range
             const numStacked =  tmpFileName.charAt(idx + element.length);
             if (isNaN(numStacked)) {
-                log.info(`etHelper (stripPartsFromFileName) - for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found next character not a number so ignorring`)
+                log.info(`[ethelper.js] (stripPartsFromFileName) - for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found next character not a number so ignorring`)
             }
             else
             {
@@ -286,8 +286,8 @@ function stripPartsFromFileName( tmpFileName, title ) {
                 }
                 else
                 {
-                    log.warn(`etHelper (stripPartsFromFileName) - for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found entry not in range [1-8] so ignorring`)
-                    log.warn(`etHelper (stripPartsFromFileName) - See: https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/`)
+                    log.warn(`[ethelper.js] (stripPartsFromFileName) - for the media with the title: "${title}" looking at the string: "${tmpFileName}" for stacked element: "${element}" but found entry not in range [1-8] so ignorring`)
+                    log.warn(`[ethelper.js] (stripPartsFromFileName) - See: https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/`)
                 }
             }
         }
@@ -308,7 +308,7 @@ function stripPartsFromFileName( tmpFileName, title ) {
             tmpFileName = '';
         }
     }
-    log.verbose(`etHelper (stripPartsFromFileName) - Returning tmpFileName as: ${tmpFileName} *** Returning partName as: ${partName}`);
+    log.verbose(`[ethelper.js] (stripPartsFromFileName) - Returning tmpFileName as: ${tmpFileName} *** Returning partName as: ${partName}`);
     return {
         fileName: tmpFileName,
         partName: partName
@@ -439,8 +439,8 @@ const etHelper = new class ETHELPER {
     /// This will return a suggested foldername, following Plex naming std
     async getSuggestedFolderName( data )
     {
-        log.verbose(`etHelper (getSuggestedFolderName) - Starting function. To see param, use Silly log level`);
-        log.silly(`etHelper (getSuggestedFolderName) - Data pased over as: ${JSON.stringify(data)}`);
+        log.verbose(`[ethelper.js] (getSuggestedFolderName) - Starting function. To see param, use Silly log level`);
+        log.silly(`[ethelper.js] (getSuggestedFolderName) - Data pased over as: ${JSON.stringify(data)}`);
         const title = getSuggestedTitle( data );
         const year = getSuggestedYear( data );
         const Id = getSuggestedId( data ).selId;
@@ -448,7 +448,7 @@ const etHelper = new class ETHELPER {
         const curFolderName = path.basename(path.dirname(String(JSONPath({path: "$.data.Media[0].Part[0].file", json: data}))))
         // Compute suggested foldername
         let foldername = `${title} (${year}) ${Id}`;
-        log.debug(`etHelper (getSuggestedFolderName) - Suggested folderName is: ${foldername}`);
+        log.debug(`[ethelper.js] (getSuggestedFolderName) - Suggested folderName is: ${foldername}`);
         if (curFolderName === foldername) {
             return i18n.t("Modules.ET.FolderNameOK")
           }
@@ -542,7 +542,7 @@ const etHelper = new class ETHELPER {
         suggestedFileName = suggestedFileName.replaceAll("  ", " ");
         const fileNameExt = path.parse(String(JSONPath({path: '$.data.Media[0].Part[0].file', json: data}))).ext;
         suggestedFileName = `${suggestedFileName}${fileNameExt}`;
-        log.debug(`etHelper (getSuggestedFileName) - returning ${suggestedFileName}`);
+        log.debug(`[ethelper.js] (getSuggestedFileName) - returning ${suggestedFileName}`);
         if (curFileName === path.parse(suggestedFileName).name) {
             return i18n.t("Modules.ET.FileNameOK")
           }
@@ -564,9 +564,9 @@ const etHelper = new class ETHELPER {
     }
 
     async postProcess( {name, val, title="", data} ){
-        log.debug(`[ETHelper] (postProcess) - Val is: ${JSON.stringify(val)}`);
-        log.debug(`[ETHelper] (postProcess) - name is: ${name}`);
-        log.debug(`[ETHelper] (postProcess) - title is: ${title}`);
+        log.debug(`[ethelper.js] (postProcess) - Val is: ${JSON.stringify(val)}`);
+        log.debug(`[ethelper.js] (postProcess) - name is: ${name}`);
+        log.debug(`[ethelper.js] (postProcess) - title is: ${title}`);
         let retArray = [];
         let guidArr;
         let x, retVal, start, strStart, end, result;
@@ -616,9 +616,9 @@ const etHelper = new class ETHELPER {
                 case "Original Title":
                     if (wtconfig.get('ET.OrgTitleNull'))
                     {
-                        log.debug(`We need to override Original Titel, if not avail`);
-                        log.debug(`Got Original title as: ${val}`);
-                        log.debug(`Alternative might be title as: ${title}`);
+                        log.debug(`[ethelper.js] (postProcess) We need to override Original Titel, if not avail`);
+                        log.debug(`[ethelper.js] (postProcess) Got Original title as: ${val}`);
+                        log.debug(`[ethelper.js] (postProcess) Alternative might be title as: ${title}`);
                         // Override with title if not found
                         if (val == wtconfig.get('ET.NotAvail'))
                         {
@@ -630,7 +630,7 @@ const etHelper = new class ETHELPER {
                     {
                         retVal = val;
                     }
-                    log.debug(`Original Title returned as: ${retVal}`)
+                    log.debug(`[ethelper.js] (postProcess) Original Title returned as: ${retVal}`)
                     break;
                 case "Sort title":
                     if (wtconfig.get('ET.SortTitleNull'))
@@ -851,12 +851,12 @@ const etHelper = new class ETHELPER {
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
                     break;
                 default:
-                    log.error(`[ETHelper] (postProcess) no hit for: ${name}`)
+                    log.error(`[ethelper.js] (postProcess) no hit for: ${name}`)
                     break;
             }
         } catch (error) {
             retVal = 'ERROR'
-            log.error(`[ETHelper] (postProcess) - We had an error as: ${error} . So postProcess retVal set to ERROR`);
+            log.error(`[ethelper.js] (postProcess) - We had an error as: ${error} . So postProcess retVal set to ERROR`);
         }
         return await retVal;
     }
@@ -864,7 +864,7 @@ const etHelper = new class ETHELPER {
     async addRowToTmp( { data }) {
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
-        log.debug(`Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
+        log.debug(`[ethelper.js] (addRowToTmp) Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
         log.silly(`[ethelper.js] (addRowToTmp) Data is: ${JSON.stringify(data)}`)
         let name, key, type, subType, subKey, doPostProc;
         let date, year, month, day, hours, minutes, seconds;
@@ -931,7 +931,7 @@ const etHelper = new class ETHELPER {
                                         }
                                         break;
                                     default:
-                                        log.error('NO ARRAY HIT (addRowToSheet-array)')
+                                        log.error('[ethelper.js] (addRowToTmp) NO ARRAY HIT (addRowToSheet-array)')
                                 }
                                 valArray.push(valArrayVal)
                             }
@@ -986,7 +986,7 @@ const etHelper = new class ETHELPER {
                 if ( doPostProc )
                 {
                     const title = JSONPath({path: String('$.title'), json: data})[0];
-                    log.debug(`[ETHelper] (addRowToTmp doPostProc) - Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+                    log.debug(`[ethelper.js] (addRowToTmp doPostProc) - Name is: ${name} - Title is: ${title} - Val is: ${val}`)
                     val = await this.postProcess( {name: name, val: val, title: title, data: data} );
                 }
                 // Here we add qualifier, if not a number
@@ -1012,13 +1012,23 @@ const etHelper = new class ETHELPER {
 
     async getItemDetails( { key })
     {
-        const url = this.Settings.baseURL + key + '?' + this.getIncludeInfo();
+        var include = await this.getIncludeInfo();
+        // Special case for shows export of level all, do not go for /children
+        if ( ( this.Settings.libTypeSec === this.ETmediaType.Show) &&  ( this.Settings.levelName === 'all') ){
+            key = key.toString().slice(0, -9);
+        }
+        let url = `${this.Settings.baseURL}${key}`;
+        if ( include ){
+            url = `${url}?${include}`;
+        }
+
+
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
-        log.verbose(`Calling url in getItemDetails: ${url}`)
+        log.verbose(`[ethelper.js] (getItemDetails) Calling url in getItemDetails: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
         resp = JSONPath({path: '$.MediaContainer.Metadata.*', json: resp})[0];
-        log.debug(`Response in getItemDetails: ${JSON.stringify(resp)}`);
+        log.debug(`[ethelper.js] (getItemDetails) Response in getItemDetails: ${JSON.stringify(resp)}`);
         return resp
     }
 
@@ -1144,7 +1154,7 @@ const etHelper = new class ETHELPER {
             }
             idx = Number(idx) + Number(step);
         } while (this.Settings.count < this.Settings.endItem);
-        log.info('[etHelper] (populateExpFiles) - Populating export files ended');
+        log.info('[ethelper.js] (populateExpFiles) - Populating export files ended');
     }
 
     async getSectionSize()
