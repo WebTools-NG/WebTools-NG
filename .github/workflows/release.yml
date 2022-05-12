@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@master
         with:
-          node-version: 14.16
+          node-version: 16.13
       - name: Install dependencies
         run: npm install
       - name: see directory with dependencies
