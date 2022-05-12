@@ -2,7 +2,7 @@ import i18n from '../../../i18n'
 import { shell, clipboard  } from 'electron'
 import { wtutils, dialog } from '../../modules/General/wtutils';
 
-const aboutInformation = 
+const aboutInformation =
             (i18n.t("Common.Menu.Help.menuAboutText.menuAboutVersion") +": " + wtutils.AppVersion) + '\n' +
             (i18n.t('Common.Menu.Help.menuAboutText.menuAboutPlatform') +": " + wtutils.Platform) +  '\n' +
             (i18n.t('Common.Menu.Help.menuAboutText.menuAboutArchitecture') +": " + process.arch)
@@ -11,31 +11,31 @@ const aboutInformation =
 const menuTemplate = [
     {
        // File menu
-      label: i18n.t("Common.Menu.File.menuFile"),        
+      label: i18n.t("Common.Menu.File.menuFile"),
       submenu:
-      [   
+      [
         wtutils.isMac ?
-          {             
+          {
               label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-              click: () => { shell.openPath(wtutils.LogMac) }  
-          } : 
-          { 
-            ...wtutils.isLinux ? 
-            { 
-              label: i18n.t("Common.Menu.File.menuOpenLogDir"),          
-              click: () => { shell.openPath(wtutils.LogLinux) }           
+              click: () => { shell.openPath(wtutils.LogMac) }
+          } :
+          {
+            ...wtutils.isLinux ?
+            {
+              label: i18n.t("Common.Menu.File.menuOpenLogDir"),
+              click: () => { shell.openPath(wtutils.LogLinux) }
             } : {
-              ...wtutils.isWindows ? 
-              { 
+              ...wtutils.isWindows ?
+              {
                 label: i18n.t("Common.Menu.File.menuOpenLogDir"),
-                click: () => { shell.openPath(wtutils.LogWin) } 
+                click: () => { shell.openPath(wtutils.LogWin) }
               } : {}
           },
         },
         {
           label: i18n.t("Common.Menu.File.menuQuit"),
           role: 'quit'
-        }      
+        }
       ]
     },
     {
@@ -52,7 +52,7 @@ const menuTemplate = [
           role: 'redo'
         },
         {
-          type: 'separator'          
+          type: 'separator'
         },
         {
           label: i18n.t("Common.Menu.Edit.menuCut"),
@@ -90,15 +90,15 @@ const menuTemplate = [
           role: 'forceReload'
         },
         wtutils.isDev ?
-          {             
+          {
             label: i18n.t("Common.Menu.View.menuToggleDeveloperTools"),
             role: 'toggleDevTools'
           }: {
             label: "nothere",
-            visible: false            
+            visible: false
           },
         {
-          type: 'separator'          
+          type: 'separator'
         },
         {
           label: i18n.t("Common.Menu.View.menuActualSize"),
@@ -125,23 +125,23 @@ const menuTemplate = [
       [
         {
           label: i18n.t("Common.Menu.Help.menuForum"),
-          click: () => { shell.openExternal("https://forums.plex.tv/t/598539") }          
+          click: () => { shell.openExternal("https://forums.plex.tv/t/598539") }
         },
         {
-          label: i18n.t("Common.Menu.Help.menuGithub"),   
-          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG") }          
+          label: i18n.t("Common.Menu.Help.menuGithub"),
+          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG") }
         },
         {
           label: i18n.t("Common.Menu.Help.menuManual"),
-          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki") }          
+          click: () => { shell.openExternal("https://github.com/WebTools-NG/WebTools-NG/wiki") }
         },
-        {          
+        {
           label: i18n.t("Common.Menu.Help.menuAbout"),
-          click: () => { 
-            dialog.AboutWindow( 
-              i18n.t("Common.Menu.Help.menuAbout"), 
-              i18n.t("Common.Ok"), 
-              i18n.t("Common.Copy"), 
+          click: () => {
+            dialog.AboutWindow(
+              i18n.t("Common.Menu.Help.menuAbout"),
+              i18n.t("Common.Ok"),
+              i18n.t("Common.Copy"),
               aboutInformation).then(
                 result => {
                   if (result.response === 1) {
@@ -150,7 +150,7 @@ const menuTemplate = [
                   }
                 }
               )
-          } 
+          }
         }
       ]
     }
@@ -158,4 +158,3 @@ const menuTemplate = [
 
 export default menuTemplate;
 
-  

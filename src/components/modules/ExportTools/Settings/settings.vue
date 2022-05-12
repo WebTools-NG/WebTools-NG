@@ -1,6 +1,7 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
+    <p id="demo"></p>
     <h1>{{ $t("Modules.ET.Settings.Name") }}</h1>
     <p>{{ $t("Modules.ET.Settings.Description") }}</p>
     <b-input-group id="ArraySepGrp" :prepend="$t('Modules.ET.Settings.ArraySep')" class="mt-3">
@@ -45,7 +46,7 @@
         :options="cbOptions"
         v-model="cbSelected"
         @change.native="filterTable">
-      </b-form-checkbox-group>      
+      </b-form-checkbox-group>
     </b-form-group>
     <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="etSugMovieID" triggers="hover">
@@ -80,7 +81,8 @@
             {
                 this.ColumnSep = wtconfig.get('ET.ColumnSep');
             }
-            alert('For this version, export to XLSX is currently disabled');
+            // alert('For this version, export to XLSX is currently disabled');
+            this.showAlert();
         },
         data() {
             return {
@@ -108,6 +110,9 @@
             };
         },
         methods: {
+            showAlert(){
+                dialog.ShowMsg( i18n.t("Modules.ET.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), 'For this version, export to XLSX is currently disabled', 'info');
+            },
             getDefaults(){
                 const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle"];
                 for(let i = 0; i < cbItems.length; i++){
@@ -149,7 +154,7 @@
                         wtconfig.set('ET.ColumnSep', this.ColumnSep)
                     }
                 }
-            },            
+            },
             setArraySep: function(){
                 wtconfig.set('ET.ArraySep', this.ArraySep)
             },

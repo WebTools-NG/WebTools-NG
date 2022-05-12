@@ -3,8 +3,6 @@ This file contains different functions and methods
 that we use in our solution.
  */
 
-//import i18n from '../../../i18n';
-
 //import storeStatus from '../../store';
 
 //storeStatus
@@ -542,6 +540,24 @@ const dialog = new class Dialog {
         }
         let aboutWindow = dialog.showMessageBox(WIN, options)
         return aboutWindow
+    }
+
+    ShowMsg(Title, OKLabel, MsgHeader, Msg, Type)
+    {
+        log.debug(`[wtutils.js] (ShowMsg) Open ShowMsg Dialog`);
+        const {remote} = require('electron'),
+        dialog = remote.dialog,
+        WIN = remote.getCurrentWindow();
+        let options = {
+            buttons: [OKLabel],
+            title: MsgHeader,
+            message: Title,
+            detail: Msg,
+            type: Type,
+            noLink: true
+        }
+        let showMsgWindow = dialog.showMessageBox(WIN, options)
+        return showMsgWindow
     }
 
     OpenDirectory(Title, OKLabel)
