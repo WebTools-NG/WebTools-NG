@@ -12,6 +12,8 @@
 **Changes**:
 
 * [#486 ET Modules Year on shows not working](https://github.com/WebTools-NG/WebTools-NG/issues/486)
+* [#488 ExportTools Settings cannot input any text at all](https://github.com/WebTools-NG/WebTools-NG/issues/488)
+* [#487 ET Settings Page missing text](https://github.com/WebTools-NG/WebTools-NG/issues/487)
 
 ## V0.3.16 (20220511)
 
