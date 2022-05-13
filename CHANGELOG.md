@@ -15,6 +15,7 @@
 * [#488 ExportTools Settings cannot input any text at all](https://github.com/WebTools-NG/WebTools-NG/issues/488)
 * [#487 ET Settings Page missing text](https://github.com/WebTools-NG/WebTools-NG/issues/487)
 * Internal: Updated node.js to V16.13
+* [#494 ET Export optimized versions name](https://github.com/WebTools-NG/WebTools-NG/issues/494)
 
 ## V0.3.16 (20220511)
 
