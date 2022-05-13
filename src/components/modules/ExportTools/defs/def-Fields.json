@@ -826,6 +826,15 @@
                 "subtype": "string",
                 "subkey": "$.tag"
             },
+        "Optimized versions":
+            {
+                "key": "$..target",
+                "call": 1,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$."
+
+            },
         "Original Title":
             {
                 "key": "$..originalTitle",

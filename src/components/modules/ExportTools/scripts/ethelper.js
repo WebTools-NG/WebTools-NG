@@ -945,7 +945,6 @@ const etHelper = new class ETHELPER {
                         val = JSONPath({path: String(key), json: data})[0];
                         break;
                     case "time":
-                        //val = JSONPath({path: String(lookup), json: data});
                         val = JSONPath({path: key, json: data});
                         if ( typeof val !== 'undefined' && val  && val != '')
                         {
@@ -961,7 +960,6 @@ const etHelper = new class ETHELPER {
                         }
                         break;
                     case "datetime":
-                        //val = JSONPath({path: String(lookup), json: data});
                         val = JSONPath({path: key, json: data});
                         if ( typeof val !== 'undefined' && val && val != '')
                         {
