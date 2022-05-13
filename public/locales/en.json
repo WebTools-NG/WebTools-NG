@@ -166,7 +166,6 @@
             "Name": "ExportTools",
             "ErrorServer": "No server",
             "Settings": {
-                "Name": "@:Modules.ET.Name @:Modules.ET.Settings.Settings",
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
