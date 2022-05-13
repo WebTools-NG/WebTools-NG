@@ -28,7 +28,7 @@ const wtutils = new class WTUtils {
     }
 
     get ExportDirPresent(){
-        log.info('Checking ExportPath')
+        log.info('[wtutils.js] (ExportDirPresent) Checking ExportPath')
         const ExportPath = wtconfig.get('General.ExportPath', 'N/A');
         if ( ExportPath == 'N/A' ){
             log.error('ExportPath not defined');
@@ -214,7 +214,7 @@ const wtutils = new class WTUtils {
         var last = wtconfig.get('General.transfilescopied', "0")
         if (!(last == wtutils.AppVersion))
         {
-            log.debug('We need to copy translation strings over')
+            log.debug('[wtutils.js] (MoveToHome) We need to copy translation strings over')
             var fs = require('fs');
             // Check if userdata/locales exists, and create if not
             var TargetDir = wtutils.Home + '/locales';
@@ -226,7 +226,7 @@ const wtutils = new class WTUtils {
             for (var i=0; i<items.length; i++) {
                 var SourceFile = localHome + '/' + items[i];
                 var TargetFile = TargetDir + '/' + items[i];
-                log.debug('Copying ' + SourceFile + ' to ' + TargetFile);
+                log.debug('[wtutils.js] (MoveToHome) Copying ' + SourceFile + ' to ' + TargetFile);
                 fs.copyFile(SourceFile, TargetFile, err => {
                     if (err) return console.error(err)
                 });
@@ -237,24 +237,24 @@ const wtutils = new class WTUtils {
 
     hideMenu(menu)
     {
-        let retVal = false;        
-        log.debug(`Start menu check for ${menu}`);
+        let retVal = false;
+        log.debug(`[wtutils.js] (hideMenu) Start menu check for ${menu}`);
         // If indeveloper mode, always return false
         if (this.isDev){
-            log.debug('We are running in dev mode, so turn on all menues');
+            log.debug('[wtutils.js] (hideMenu) We are running in dev mode, so turn on all menues');
             retVal = false;
         }
         else
         {
             retVal = wtconfig.get('Menu.' + menu, true);
         }
-        log.debug(`Menu returning ${retVal}`);
+        log.debug(`[wtutils.js] (hideMenu) Menu returning ${retVal}`);
         return retVal
     }
 
     UpdateConfigFile() {
         // Update config file with defaults if missing
-        log.verbose('Updating config file');
+        log.verbose('[wtutils.js] (UpdateConfigFile) Updating config file');
         // Hide/Show Menu Set to false if enabled for all
         if ( wtconfig.get('Menu.plextv', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.plextv', false)
@@ -291,7 +291,7 @@ const wtutils = new class WTUtils {
         }
 
 
-        
+
 
 
         // General section
@@ -579,7 +579,7 @@ const dialog = new class Dialog {
 
     SelectFile(Title, OKLabel, filter, defaultPath)
     {
-        log.debug('Start SelectFile Dialog');        
+        log.debug('Start SelectFile Dialog');
         const {remote} = require('electron'),
         dialog = remote.dialog,
         WIN = remote.getCurrentWindow();
@@ -590,7 +590,7 @@ const dialog = new class Dialog {
             filters: filter,
             defaultPath: defaultPath
         }
-        let fileName = dialog.showOpenDialogSync(WIN, options);        
+        let fileName = dialog.showOpenDialogSync(WIN, options);
         log.debug('Returned filename is: ' + fileName)
         return fileName
     }
@@ -671,7 +671,7 @@ const github = new class GitHub {
 
     // Get the releases from GitHub
     async Releases(){
-        log.debug('Checking for Github updates')
+        log.debug('[wtutils.js] (Releases) Checking for Github updates')
         const fetch = require('node-fetch');
         const response = await fetch(this.releaseUrl);
         const releases = await response.json();
@@ -690,7 +690,7 @@ const github = new class GitHub {
                 break;
             }
             if (!rels['beta'] && releases[i].prerelease){
-                log.verbose(`Found beta version ${releases[i].tag_name}`)
+                log.verbose(`[wtutils.js] (Releases) Found beta version ${releases[i].tag_name}`)
                 rels['betaver'] = releases[i].tag_name;
                 rels['beta'] = true;
                 rels['betaname'] = releases[i].name;
@@ -699,7 +699,7 @@ const github = new class GitHub {
                 rels['betadateFull'] = releases[i].published_at;
             }
             else if (!rels['rel'] && !releases[i].prerelease){
-                log.verbose(`Found release version ${releases[i].tag_name}`)
+                log.verbose(`[wtutils.js] (Releases) Found release version ${releases[i].tag_name}`)
                 rels['relver'] = releases[i].tag_name;
                 rels['rel'] = true;
                 rels['relname'] = releases[i].name;

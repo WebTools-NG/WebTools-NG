@@ -120,7 +120,7 @@ export default {
         }
     },
     created(){
-        log.info("menu created")
+        log.info("[Header.vue] (created) menu created")
         this.$store.dispatch('fetchPlexServers');
     },
     computed: {

@@ -86,7 +86,7 @@ export default {
   },
   created() {    
     if (this.$store.getters.getAuthToken != ''){
-      log.verbose(`We have an Auth Token from cli or dev option`)
+      log.verbose(`[login.vue] (created) We have an Auth Token from cli or dev option`)
       store.dispatch('loginToPlexWithToken', {
       token: this.$store.getters.getAuthToken      
       })      

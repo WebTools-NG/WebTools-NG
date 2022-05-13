@@ -31,7 +31,7 @@ log.transports.console.level = wtconfig.get('Log.consoleLevel', 'silly');
 
 // Set logfile to 10Mb
 log.transports.file.maxSize = wtconfig.get('Log.maxSize', 1048576);
-log.info('*********************************')
+log.info('[main.js] *********************************')
 log.info(`[main.js] Starting ${wtutils.AppName} Version: ${wtutils.AppVersion}`);
 log.info(`[main.js] Running on ${wtutils.RunningOS}`);
 log.info(`[main.js] Log level set to ${log.transports.file.level}`);

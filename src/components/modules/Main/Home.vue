@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    log.info("Home Created");
+    log.info("[Home.vue] (mounted) Home Created");
     this.ShowReleaseNote();
     this.checkLangUpdates();
     this.UpdatePresent();
@@ -104,10 +104,10 @@ export default {
     // Is an update present?
     async UpdatePresent(){
       if (wtconfig.get('Update.Update', true)){
-        log.verbose(`Check for updates enabled`)
+        log.verbose(`[Home.vue] (UpdatePresent) Check for updates enabled`)
         // Get release page from GitHub
         const releases = await github.Releases();
-        log.verbose('Github releases', JSON.stringify(releases));
+        log.verbose('[Home.vue] (UpdatePresent) Github releases', JSON.stringify(releases));
         if (wtconfig.get('Update.Beta', true))
         {
           // Need to check both beta and rel versions
@@ -142,18 +142,18 @@ export default {
           // Show an update is present
           if (this.ver == wtconfig.get('Update.SkipVer', ''))
           {
-            log.debug(`Update Deselected by user: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
+            log.debug(`[Home.vue] (UpdatePresent) Update Deselected by user: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
           }
           else
           {
-            log.debug(`Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
+            log.debug(`[Home.vue] (UpdatePresent) Update present: Github-Version: ${this.ver} Current-Version: ${wtutils.AppVersion}`);
             this.GitHubVersion = this.ver;
             this.$refs['showUpdate'].show();
           }
         }
       }
       else{
-        log.verbose(`Check for updates disabled`)
+        log.verbose(`[Home.vue] (UpdatePresent) Check for updates disabled`)
       }
 
     },
@@ -183,11 +183,11 @@ export default {
     async CheckExportDir() {
       if ( wtutils.ExportDirPresent )
       {
-        log.info('ExportDir OK');
+        log.info('[Home.vue] (CheckExportDir) ExportDir OK');
       }
       else
       {
-        log.error('ExportDir missing');
+        log.error('[Home.vue] (CheckExportDir) ExportDir missing');
         const bodyStr = i18n.t("Common.ErrorNoOutDirMsg");
         this.$bvToast.toast(bodyStr, {
           title: this.$t("Common.ErrorNoOutDirTitle"),

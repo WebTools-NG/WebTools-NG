@@ -97,10 +97,10 @@ const actions = {
         })
           .then((response) => {
             let result=[];
-            log.debug('Response from fetchPlexServers recieved');
+            log.debug('[plextv.js] (fetchPlexServers) Response from fetchPlexServers recieved');
             const showNotOwned = wtconfig.get('Developer.showNotOwned', false);
             if (showNotOwned){
-              log.debug('fetchPlexServers : See not owned servers as well');
+              log.debug('[plextv.js] (fetchPlexServers) fetchPlexServers : See not owned servers as well');
             }
             response.data.forEach((req) => {
               if (showNotOwned){
@@ -150,7 +150,7 @@ const actions = {
       headers: wtutils.PMSHeader
     })
       .then(function (response) {
-        log.debug('loginToPlex: Response from fetchPlexServers recieved')
+        log.debug('[plextv.js] (loginToPlex) loginToPlex: Response from fetchPlexServers recieved')
         commit('UPDATE_AUTHTOKEN', response.data.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.thumb)
@@ -187,7 +187,7 @@ const actions = {
         }})
   },
   loginToPlexWithToken({ commit }, payload){
-    log.info("loginToPlex called, using a Token")
+    log.info("[plextv.js] (loginToPlexWithToken) loginToPlex called, using a Token")
     let header = wtutils.PMSHeader;
     //header['X-Plex-Token'] =  payload.token;
     //const url = `${wtutils.plexTVApi}v2/users/signin.json?X-Plex-Token=${payload.token}`;
@@ -198,7 +198,7 @@ const actions = {
       headers: header
     })
       .then(function (response) {
-        log.debug('loginToPlex: Response from fetchPlexServers recieved')
+        log.debug('[plextv.js] (loginToPlexWithToken) loginToPlex: Response from fetchPlexServers recieved')
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.user.thumb)

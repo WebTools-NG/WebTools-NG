@@ -33,7 +33,7 @@ function createWindow () {
     nodeIntegration: true,
     contextIsolation: false,
     webSecurity: false,
-    enableRemoteModule: true   
+    enableRemoteModule: true
   } })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -82,17 +82,17 @@ app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     try {
       //await installExtension(VUEJS_DEVTOOLS)
-      console.log('VUE DevTools disabled for now')
+      console.log('[background.js] (app.on) VUE DevTools disabled for now')
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
 
   }
   // Open system Dialog
-  ipcMain.handle('dialog', (event, method, params) => {       
+  ipcMain.handle('dialog', (event, method, params) => {
     dialog[method](params);
   });
-  
+
   Menu.setApplicationMenu(null)
   createWindow()
 })
