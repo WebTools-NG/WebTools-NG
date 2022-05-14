@@ -137,7 +137,7 @@ const actions = {
    });
   },
   loginToPlex({ commit }, payload){
-    log.info("loginToPlex called")
+    log.info("[plextv.js] (loginToPlex) loginToPlex called")
     var url = `${wtutils.plexTVApi}v2/users/signin`;
     url = url + '?login=' + require('querystring').escape(payload.username);
     url = url + '&password=' + require('querystring').escape(payload.password);
@@ -162,28 +162,27 @@ const actions = {
          if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          log.error(`loginToPlex status: ${error.response.status}`);
-          log.error(`loginToPlex data: ${JSON.stringify(error.response.data)}`);
+          log.error(`[plextv.js] (loginToPlex) status: ${error.response.status}`);
+          log.error(`[plextv.js] (loginToPlex) data: ${JSON.stringify(error.response.data)}`);
           // alert(error.response.data.message)
           var data = JSON.stringify(error.response.data);
           var objectValue = JSON.parse(data);
           var statusCode = JSON.stringify(objectValue.errors[0].code);
-          log.error(`statusCode: ${statusCode}`);
+          log.error(`[plextv.js] (loginToPlex) statusCode: ${statusCode}`);
           if (statusCode == 1029)
           {
-            log.error('Missing 2FA code');
+            log.error('[plextv.js] (loginToPlex) Missing 2FA code');
             alert(i18n.t('Common.Login.Missing2FACode'))
           }
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          // log.error('loginToPlex: ' + error.request)
-          log.error('Could not connect to plex.tv');
+          log.error('[plextv.js] (loginToPlex) Could not connect to plex.tv');
           alert(i18n.t('Common.Login.LoginConnectErr'));
         } else {
           // Something happened in setting up the request that triggered an Error
-          log.error('loginToPlex: ' + error.message)
+          log.error(`[plextv.js] (loginToPlex) ${error.message}`)
         }})
   },
   loginToPlexWithToken({ commit }, payload){
@@ -210,8 +209,8 @@ const actions = {
          if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          log.error('loginToPlexToken1: ' + error.response.status);
-          log.error('loginToPlexToken2: ' + JSON.stringify(error.response.data));
+          log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken1: ' + error.response.status);
+          log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken2: ' + JSON.stringify(error.response.data));
           alert(error.response.data.error)
           //this.danger(error.response.status, error.response.data.error);
         } else if (error.request) {
@@ -219,11 +218,11 @@ const actions = {
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
           // log.error('loginToPlexToken3: ' + JSON.stringify(error.request));
-          log.error('Could not connect to plex.tv with a Token');
+          log.error('[plextv.js] (loginToPlexWithToken) Could not connect to plex.tv with a Token');
           alert(i18n.t('Common.Login.LoginConnectErrToken'));
         } else {
           // Something happened in setting up the request that triggered an Error
-          log.error('loginToPlexToken4: ' + error.message)
+          log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken4: ' + error.message)
         }})
   },
   updatingServerAddress({ commit}, status){
