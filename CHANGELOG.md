@@ -16,6 +16,7 @@
 * [#487 ET Settings Page missing text](https://github.com/WebTools-NG/WebTools-NG/issues/487)
 * Internal: Updated node.js to V16.13
 * [#494 ET Export optimized versions name](https://github.com/WebTools-NG/WebTools-NG/issues/494)
+* [#392 Audio Album Export missing artist](https://github.com/WebTools-NG/WebTools-NG/issues/392)
 
 ## V0.3.16 (20220511)
 

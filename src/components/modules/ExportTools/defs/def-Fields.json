@@ -1265,7 +1265,7 @@
         "Track Counts":
             {
                 "key": "$.leafCount",
-                "call": 1,
+                "call": 2,
                 "type": "string"
             },
         "Type":
