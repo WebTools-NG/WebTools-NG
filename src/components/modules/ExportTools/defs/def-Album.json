@@ -3,12 +3,14 @@
         "level": {
             "level1": [
                 "Key",
+                "Artist",
                 "Title",
                 "Summary",
                 "Studio"
             ],
             "level2": [
                 "Key",
+                "Artist",
                 "Title",
                 "Summary",
                 "Studio",

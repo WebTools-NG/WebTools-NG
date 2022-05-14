@@ -1011,16 +1011,13 @@ const etHelper = new class ETHELPER {
     async getItemDetails( { key })
     {
         var include = await this.getIncludeInfo();
-        // Special case for shows export of level all, do not go for /children
-        if ( ( this.Settings.libTypeSec === this.ETmediaType.Show) &&  ( this.Settings.levelName === 'all') ){
+        if ( key.toString().endsWith("/children") ){
             key = key.toString().slice(0, -9);
         }
         let url = `${this.Settings.baseURL}${key}`;
         if ( include ){
             url = `${url}?${include}`;
         }
-
-
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`[ethelper.js] (getItemDetails) Calling url in getItemDetails: ${url}`)
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
