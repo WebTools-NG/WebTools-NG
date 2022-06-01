@@ -158,6 +158,12 @@
                 "ProcessItem_0_1": "Processing item {count} of {total}",
                 "Finished": "Job finished"
             }
+        },
+        "DateTime": {
+            "Full": "full",
+            "Long": "long",
+            "Medium": "medium",
+            "Short": "short"
         }
     },
     "Modules": {
@@ -349,7 +355,10 @@
             "ContainerSizePhoto": "Amount of photos (Default: 30)",
             "ContainerSizePlaylist": "Amount of playlist (Default: 30)",
             "ContainerSizeLibraries": "Amount of libraries (Default: 30)",
-            "ContainerSizePlaylists": "Amount of playlists (Default: 30)"
+            "ContainerSizePlaylists": "Amount of playlists (Default: 30)",
+            "LocalDateTime": "Select Date/Time format",
+            "DateStyle": "Date Style",
+            "TimeStyle": "Time Style"
         },
         "PMS": {
             "Name": "Plex Media Server",

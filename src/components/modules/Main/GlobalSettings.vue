@@ -12,6 +12,18 @@
         </b-input-group>
         </div>
 
+        <b-input-group id="LocalDateTimeGrp" :prepend="$t('Modules.GlobalSettings.LocalDateTime')" class="mt-3">
+            <b-form-select id="LocalDateTime" name="LocalDateTime" type="text" class="form-control" v-model="LocalDateTime" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'General.DateTimeFormat')" :options="LocalDateTimeOptions"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="DateOptionGrp" :prepend="$t('Modules.GlobalSettings.DateStyle')" class="mt-3">
+            <b-form-select id="DateOption" name="DateOption" type="text" class="form-control" v-model="DateOption" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'General.DateOption')" :options="DateTimeOptions"></b-form-select>
+        </b-input-group>
+
+        <b-input-group id="TimeOptionGrp" :prepend="$t('Modules.GlobalSettings.TimeStyle')" class="mt-3">
+            <b-form-select id="TimeOption" name="TimeOption" type="text" class="form-control" v-model="TimeOption" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'General.TimeOption')" :options="DateTimeOptions"></b-form-select>
+        </b-input-group>
+
         <b-input-group id="TimeOutGrp" :prepend="$t('Modules.GlobalSettings.TimeOut')" class="mt-3">
             <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
         </b-input-group>
@@ -148,9 +160,10 @@
     const log = require("electron-log");
     console.log = log.log;
     import {wtutils, wtconfig, dialog} from '../General/wtutils';
+    import { time } from '../General/time';
     import i18n from '../../../i18n';
 
-    wtutils, dialog, i18n
+    time
 
     export default {
         data() {
@@ -171,7 +184,12 @@
                 ContainerSizePhoto: wtconfig.get('PMS.ContainerSize.13'),
                 ContainerSizePlaylist: wtconfig.get('PMS.ContainerSize.15'),
                 ContainerSizeLibraries: wtconfig.get('PMS.ContainerSize.1002'),
-                ContainerSizePlaylists: wtconfig.get('PMS.ContainerSize.3001')
+                ContainerSizePlaylists: wtconfig.get('PMS.ContainerSize.3001'),
+                LocalDateTime: wtconfig.get('General.DateTimeFormat'),
+                LocalDateTimeOptions: time.countries,
+                DateTimeOptions: [ i18n.t("Common.DateTime.Full"), i18n.t("Common.DateTime.Long"), i18n.t("Common.DateTime.Medium"), i18n.t("Common.DateTime.Short")],
+                DateOption: wtconfig.get('General.DateOption'),
+                TimeOption: wtconfig.get('General.TimeOption')
             }
         },
         methods: {

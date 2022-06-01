@@ -922,11 +922,7 @@ const etHelper = new class ETHELPER {
                                         {
                                             const total = valArrayVal.length
                                             for (let i=0; i<total; i++) {
-                                                seconds = '0' + (Math.round(valArrayVal[i]/1000)%60).toString();
-                                                minutes = '0' + (Math.round((valArrayVal[i]/(1000 * 60))) % 60).toString();
-                                                hours = (Math.trunc(valArrayVal[i] / (1000 * 60 * 60)) % 24).toString();
-                                                // Will display time in 10:30:23 format
-                                                valArrayVal = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                                                valArrayVal = await time.convertMsToTime(valArrayVal);
                                             }
                                         }
                                         break;
@@ -948,11 +944,7 @@ const etHelper = new class ETHELPER {
                         val = JSONPath({path: key, json: data});
                         if ( typeof val !== 'undefined' && val  && val != '')
                         {
-                            seconds = '0' + (Math.round(val/1000)%60).toString();
-                            minutes = '0' + (Math.round((val/(1000 * 60))) % 60).toString();
-                            hours = (Math.trunc(val / (1000 * 60 * 60)) % 24).toString();
-                            // Will display time in 10:30:23 format
-                            val = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                            val = await time.convertMsToTime(val);
                         }
                         else
                         {
@@ -1230,9 +1222,9 @@ const etHelper = new class ETHELPER {
     }
 
     async exportMedias() {
-        time.setStartTime();
+        await time.setStartTime();
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.Processing"));
-        status.updateStatusMsg( status.RevMsgType.StartTime, await time.getStartTime());
+        status.updateStatusMsg( status.RevMsgType.StartTime, (await time.getStartTimeLocal()).toString());
         if ([ et.ETmediaType.Libraries, et.ETmediaType.Playlists].indexOf(this.Settings.libType) > -1)
         {
             this.Settings.levelName = 'All'
@@ -1246,10 +1238,10 @@ const etHelper = new class ETHELPER {
         await this.closeOutFile();
         // Update status window
         status.clearStatus();
-        time.setEndTime();
+        await time.setEndTime();
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t("Common.Status.Msg.Finished"));
-        status.updateStatusMsg( status.RevMsgType.StartTime, await time.getStartTime());
-        status.updateStatusMsg( status.RevMsgType.EndTime, await time.getEndTime());
+        status.updateStatusMsg( status.RevMsgType.StartTime, (await time.getStartTimeLocal()).toString());
+        status.updateStatusMsg( status.RevMsgType.EndTime, (await time.getEndTimeLocal()).toString());
         status.updateStatusMsg( status.RevMsgType.TimeElapsed, await time.getTimeDifStartEnd());
         status.updateStatusMsg( status.RevMsgType.OutFile, this.Settings.outFile);
     }

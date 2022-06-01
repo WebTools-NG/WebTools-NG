@@ -1,6 +1,6 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V0.3.17 (Not Yet Released)
+## V0.3.17 (20220601)
 
 **Note**:   This version is a Beta version
 
@@ -17,6 +17,7 @@
 * Internal: Updated node.js to V16.13
 * [#494 ET Export optimized versions name](https://github.com/WebTools-NG/WebTools-NG/issues/494)
 * [#392 Audio Album Export missing artist](https://github.com/WebTools-NG/WebTools-NG/issues/392)
+* [#467 Non-Localized Time](https://github.com/WebTools-NG/WebTools-NG/issues/467)
 
 ## V0.3.16 (20220511)
 
