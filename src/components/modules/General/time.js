@@ -158,14 +158,9 @@ const time = new class Time {
         }
         else {
             const options = { dateStyle: wtconfig.get('General.DateOption'), timeStyle: wtconfig.get('General.TimeOption') };
-            console.log('Ged 17-1: ' + datetime)
-            console.log('Ged 17-2: ' + localFormat)
-
             console.log(new Intl.DateTimeFormat(localFormat, options).format(datetime));
             return new Intl.DateTimeFormat(localFormat, options).format(datetime);
-
         }
-
     }
 
     async convertToLocalTime( time ){

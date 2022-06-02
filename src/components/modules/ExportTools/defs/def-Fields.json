@@ -390,7 +390,7 @@
                 "key": "$.createdAtTZOffset",
                 "call": 1,
                 "type": "time"
-            },
+            },        
         "Deleted":
             {
                 "key": "$.deletedAt",
@@ -591,7 +591,7 @@
                 "key": "$.leafCount",
                 "call": 1,
                 "type": "string"
-            },
+            },        
         "Key":
             {
                 "key": "$.ratingKey",
@@ -1091,6 +1091,62 @@
                 "key": "$.grandparentTitle",
                 "call": 1,
                 "type": "string"
+            },
+        "Show Prefs Delete episodes after playing":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='autoDeletionItemPolicyWatchedLibrary')].value",
+                "call": 2,
+                "type": "int",
+                "include": "includePreferences=1",
+                "postProcess": true
+            },
+        "Show Prefs Episode ordering":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='showOrdering')].value",
+                "call": 2,
+                "type": "string",
+                "include": "includePreferences=1",
+                "postProcess": true
+            },
+        "Show Prefs Episode sorting":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='episodeSort')].value",
+                "call": 2,
+                "type": "string",
+                "include": "includePreferences=1",
+                "postProcess": true
+            },
+        "Show Prefs Keep":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='autoDeletionItemPolicyUnwatchedLibrary')].value",
+                "call": 2,
+                "type": "int",
+                "include": "includePreferences=1",
+                "postProcess": true
+            },
+        "Show Prefs Metadata language":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='languageOverride')].value",
+                "call": 2,
+                "type": "int",
+                "include": "includePreferences=1",
+                "postProcess": true
+            },
+        "Show Prefs Seasons":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='flattenSeasons')].value",
+                "call": 2,
+                "type": "int",
+                "include": "includePreferences=1",
+                "postProcess": true
+            },
+        "Show Prefs Use original title":
+            {
+                "key": "$..Preferences.Setting[?(@.id=='useOriginalTitle')].value",
+                "call": 2,
+                "type": "int",
+                "include": "includePreferences=1",
+                "postProcess": true
             },
         "Show Title":
             {

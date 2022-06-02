@@ -404,6 +404,53 @@ const etHelper = new class ETHELPER {
         };
         this.intSep = '{*WTNG-ET*}';
         this.StackedFilesName = ['cd', 'disc', 'dvd', 'part', 'pt'];
+        this.MetadataLang = {
+            "": "Library default",
+            "ar-SA": "Arabic (Saudi Arabia)",
+            "bg-BG": "Bulgarian",
+            "ca-ES": "Catalan",
+            "zh-CN": "Chinese",
+            "zh-HK": "Chinese (Hong Kong)",
+            "zh-TW": "Chinese (Taiwan)",
+            "hr-HR": "Croatian",
+            "cs-CZ": "Czech",
+            "da-DK": "Danish",
+            "nl-NL": "Dutch",
+            "en-US": "English",
+            "en-AU": "English (Australia)",
+            "en-CA": "English (Canada)",
+            "en-GB": "English (UK)",
+            "et-EE": "Estonian",
+            "fi-FI": "Finnish",
+            "fr-FR": "French",
+            "fr-CA": "French (Canada)",
+            "de-DE": "German",
+            "el-GR": "Greek",
+            "he-IL": "Hebrew",
+            "hi-IN": "Hindi",
+            "hu-HU": "Hungarian",
+            "id-ID": "Indonesian",
+            "it-IT": "Italian",
+            "ja-JP": "Japanese",
+            "ko-KR": "Korean",
+            "lv-LV": "Latvian",
+            "lt-LT": "Lithuanian",
+            "nb-NO": "Norwegian Bokmål",
+            "fa-IR": "Persian",
+            "pl-PL": "Polish",
+            "pt-BR": "Portuguese",
+            "pt-PT": "Portuguese (Portugal)",
+            "ro-RO": "Romanian",
+            "ru-RU": "Russian",
+            "sk-SK": "Slovak",
+            "es-ES": "Spanish",
+            "es-MX": "Spanish (Mexico)",
+            "sv-SE": "Swedish",
+            "th-TH": "Thai",
+            "tr-TR": "Turkish",
+            "uk-UA": "Ukrainian",
+            "vi-VN": "Vietnamese"
+        }
     }
 
     resetETHelper() {
@@ -849,6 +896,126 @@ const etHelper = new class ETHELPER {
                     var sha1 = shasum.digest('hex');
                     //var path = require('path');
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
+                    break;
+                case "Show Prefs Episode sorting":
+                    switch (val){
+                        case "-1":
+                            retVal = "Library default";
+                            break;
+                        case "0":
+                            retVal = "Oldest first";
+                            break;
+                        case "1":
+                            retVal = "Newest first";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Keep":
+                    switch (val){
+                        case "0":
+                            retVal = "All episodes";
+                            break;
+                        case "5":
+                            retVal = "5 latest episodes";
+                            break;
+                        case "3":
+                            retVal = "3 latest episodes";
+                            break;
+                        case "1":
+                            retVal = "Latest episode";
+                            break;
+                        case "-3":
+                            retVal = "Episodes added in the past 3 days";
+                            break;
+                        case "-7":
+                            retVal = "Episodes added in the past 7 days";
+                            break;
+                        case "-30":
+                            retVal = "Episodes added in the past 30 days";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Delete episodes after playing":
+                    switch (val){
+                        case "0":
+                            retVal = "Never";
+                            break;
+                        case "1":
+                            retVal = "After a day";
+                            break;
+                        case "7":
+                            retVal = "After a week";
+                            break;
+                        case "100":
+                            retVal = "On next refresh";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Seasons":
+                    switch (val){
+                        case "-1":
+                            retVal = "Library default";
+                            break;
+                        case "0":
+                            retVal = "Show";
+                            break;
+                        case "1":
+                            retVal = "Hide";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Episode ordering":
+                    switch (val){
+                        case wtconfig.get('ET.NotAvail'):
+                            retVal = "Library default";
+                            break;
+                        case "tmdbAiring":
+                            retVal = "The Movie Database (Aired)";
+                            break;
+                        case "aired":
+                            retVal = "TheTVDB (Aired)";
+                            break;
+                        case "dvd":
+                            retVal = "TheTVDB (DVD)";
+                            break;
+                        case "absolute":
+                            retVal = "TheTVDB (Absolute)";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Metadata language":
+                    retVal = this.MetadataLang[val];
+                    break;
+                case "Show Prefs Use original title":
+                    switch (val){
+                        case "-1":
+                            retVal = "Library default";
+                            break;
+                        case "0":
+                            retVal = "No";
+                            break;
+                        case "1":
+                            retVal = "Yes";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
                     break;
                 default:
                     log.error(`[ethelper.js] (postProcess) no hit for: ${name}`)

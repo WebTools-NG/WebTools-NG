@@ -78,7 +78,7 @@
         "Include": {
             "Level 1": "",
             "Level 2": "",
-            "all": ""
+            "all": "includePreferences=1"
         }
     },
     "10": {
