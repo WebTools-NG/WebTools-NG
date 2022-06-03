@@ -112,7 +112,8 @@
                 },
                 "PMS": {
                     "Settings": "Settings",
-                    "Butler": "Butler scheduled tasks"
+                    "Butler": "Butler scheduled tasks",
+                    "LibMapping": "Library Mapping"
                 }
             }
         },
@@ -458,6 +459,10 @@
                 "Managed": "Managed User",
                 "lblBtnCopy": "Copy",
                 "genRep": "Generate a report"
+            },
+            "FindMissing": {
+                "Name": "Find Missing",
+                "Description": "@:Modules.PMS.FindMissing.Name module allows you search noth filesystem and Plex database to locate medias missing"
             }
         },
         "PlexTV": {

@@ -101,6 +101,20 @@
                                 icon: 'fas fa-tv',
                             },
                             {
+                                href: { path: '/pms/findmissing' },
+                                title: this.$t("Modules.PMS.FindMissing.Name"),
+                                hidden: wtutils.hideMenu('pmsFindMissing'),
+                                icon: 'fas fa-tv',
+                                child: [
+                                    {
+                                        href: '/pms/libmapping',
+                                        hidden: wtutils.hideMenu('pmsLibMapping'),
+                                        title: this.$t("Common.Menu.Sidebar.PMS.LibMapping"),
+                                        icon: 'fa fa-cog'
+                                    }
+                                ]
+                            },
+                            {
                                 href: '/pms/settings',
                                 hidden: wtutils.hideMenu('pmsSettings'),
                                 title: this.$t("Common.Menu.Sidebar.PMS.Settings"),
