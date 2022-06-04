@@ -101,9 +101,9 @@
                                 icon: 'fas fa-tv',
                             },
                             {
-                                href: { path: '/pms/findmissing' },
-                                title: this.$t("Modules.PMS.FindMissing.Name"),
-                                hidden: wtutils.hideMenu('pmsFindMissing'),
+                                href: { path: '/pms/findmedia' },
+                                title: this.$t("Modules.PMS.FindMedia.Name"),
+                                hidden: wtutils.hideMenu('pmsFindMedia'),
                                 icon: 'fas fa-tv'
                             },
                             {

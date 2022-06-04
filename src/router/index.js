@@ -12,7 +12,7 @@ import Butler from '../components/modules/PMS/Butler/butler';
 import Language from '../components/modules/Main/Language.vue';
 import GlobalSettings from '../components/modules/Main/GlobalSettings';
 import DVR from '../components/modules/PMS/DVR/DVR';
-import FindMissing from '../components/modules/PMS/FindMissing/FindMissing';
+import FindMedia from '../components/modules/PMS/FindMedia/FindMedia';
 import LibraryMapping from '../components/modules/PMS/LibraryMapping/LibraryMapping';
 import ViewState from '../components/modules/PMS/ViewState/ViewState';
 import About from '../components/modules/Main/About';
@@ -97,9 +97,9 @@ Vue.use(VueRouter)
     meta: {requiresAuth: true}
   },
   {
-    path: '/pms/findmissing',
-    name: "FindMissing",
-    component: FindMissing,
+    path: '/pms/findmedia',
+    name: "FindMedia",
+    component: FindMedia,
     meta: {requiresAuth: true}
   },
   {

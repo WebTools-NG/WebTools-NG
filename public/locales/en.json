@@ -460,9 +460,9 @@
                 "lblBtnCopy": "Copy",
                 "genRep": "Generate a report"
             },
-            "FindMissing": {
-                "Name": "Find Missing",
-                "Description": "@:Modules.PMS.FindMissing.Name module allows you search both filesystem and Plex database to locate medias missing"
+            "FindMedia": {
+                "Name": "Find Media",
+                "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate medias missing"
             },
             "LibMapping": {
                 "Name": "Library Mapping",
