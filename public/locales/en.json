@@ -462,7 +462,13 @@
             },
             "FindMissing": {
                 "Name": "Find Missing",
-                "Description": "@:Modules.PMS.FindMissing.Name module allows you search noth filesystem and Plex database to locate medias missing"
+                "Description": "@:Modules.PMS.FindMissing.Name module allows you search both filesystem and Plex database to locate medias missing"
+            },
+            "LibMapping": {
+                "Name": "Library Mapping",
+                "Description": "@:Modules.PMS.LibMapping.Name allows you map the defined Library folders path to match a path for this workstation",
+                "ClickToDefine": "Click to define",
+                "SelectMapDirPath": "Select mapped path"
             }
         },
         "PlexTV": {

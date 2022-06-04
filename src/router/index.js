@@ -12,6 +12,8 @@ import Butler from '../components/modules/PMS/Butler/butler';
 import Language from '../components/modules/Main/Language.vue';
 import GlobalSettings from '../components/modules/Main/GlobalSettings';
 import DVR from '../components/modules/PMS/DVR/DVR';
+import FindMissing from '../components/modules/PMS/FindMissing/FindMissing';
+import LibraryMapping from '../components/modules/PMS/LibraryMapping/LibraryMapping';
 import ViewState from '../components/modules/PMS/ViewState/ViewState';
 import About from '../components/modules/Main/About';
 import Store from '../store/index.js';
@@ -92,6 +94,18 @@ Vue.use(VueRouter)
     path: '/pms/dvr',
     name: "dvr",
     component: DVR,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/pms/findmissing',
+    name: "FindMissing",
+    component: FindMissing,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/pms/libmapping',
+    name: "LibraryMapping",
+    component: LibraryMapping,
     meta: {requiresAuth: true}
   },
   {

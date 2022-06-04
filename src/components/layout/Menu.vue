@@ -104,15 +104,13 @@
                                 href: { path: '/pms/findmissing' },
                                 title: this.$t("Modules.PMS.FindMissing.Name"),
                                 hidden: wtutils.hideMenu('pmsFindMissing'),
-                                icon: 'fas fa-tv',
-                                child: [
-                                    {
-                                        href: '/pms/libmapping',
-                                        hidden: wtutils.hideMenu('pmsLibMapping'),
-                                        title: this.$t("Common.Menu.Sidebar.PMS.LibMapping"),
-                                        icon: 'fa fa-cog'
-                                    }
-                                ]
+                                icon: 'fas fa-tv'
+                            },
+                            {
+                                href: '/pms/libmapping',
+                                hidden: wtutils.hideMenu('pmsLibMapping'),
+                                title: this.$t("Common.Menu.Sidebar.PMS.LibMapping"),
+                                icon: 'fa fa-cog'
                             },
                             {
                                 href: '/pms/settings',
