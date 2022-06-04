@@ -1684,6 +1684,7 @@ const etHelper = new class ETHELPER {
             subItem['type'] = JSONPath({path: '$..type', json: section})[0];
             subItem['scanner'] = JSONPath({path: '$..scanner', json: section})[0];
             subItem['agent'] = JSONPath({path: '$..agent', json: section})[0];
+            subItem['location'] = JSONPath({path: '$..Location', json: section})[0];
             result.push(subItem)
         }
         await Promise.resolve(result);

@@ -12,6 +12,7 @@
 **Changes**:
 
 * [#498 Add preferences to shows export](https://github.com/WebTools-NG/WebTools-NG/issues/498)
+* [#500 Library Path Mapping](https://github.com/WebTools-NG/WebTools-NG/issues/500)
 
 ## V0.3.17 (20220601)
 

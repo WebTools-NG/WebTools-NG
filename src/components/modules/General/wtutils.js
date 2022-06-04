@@ -562,7 +562,7 @@ const dialog = new class Dialog {
 
     OpenDirectory(Title, OKLabel)
     {
-        log.debug('Start OpenDirectory Dialog')
+        log.debug('[wtutils.js] (OpenDirectory) - Start OpenDirectory Dialog')
        // const {remote, app} = require('electron'),
        const {remote} = require('electron'),
         dialog = remote.dialog,
@@ -573,7 +573,7 @@ const dialog = new class Dialog {
             title: Title
         }
         let dirName = dialog.showOpenDialogSync(WIN, options)
-        log.debug('Returned directoryname is: ' + dirName)
+        log.debug('[wtutils.js] (OpenDirectory) - Returned directoryname is: ' + dirName)
         return dirName
     }
 

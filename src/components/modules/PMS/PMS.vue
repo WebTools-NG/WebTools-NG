@@ -26,6 +26,11 @@
         <br />
         * {{ $t("Modules.PMS.FindMissing.Description") }}</p>
       </div>
+      <div v-if="showLibMapping">
+        <p><b>{{ $t("Modules.PMS.LibMapping.Name") }}</b>
+        <br />
+        * {{ $t("Modules.PMS.LibMapping.Description") }}</p>
+      </div>
       <div v-if="showSettings">
         <p><b>{{ $t("Modules.PMS.Settings.Name") }}</b>
         <br />
@@ -60,6 +65,7 @@
           showButler: !(wtutils.hideMenu('pmsButler')),
           showDVR: !(wtutils.hideMenu('pmsDVR')),
           showFindMissing: !(wtutils.hideMenu('pmsFindMissing')),
+          showLibMapping: !(wtutils.hideMenu('pmsLibMapping')),
           showSettings: !(wtutils.hideMenu('pmsSettings')),
           showViewState: !(wtutils.hideMenu('pmsViewState'))
         };
