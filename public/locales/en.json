@@ -462,13 +462,17 @@
             },
             "FindMedia": {
                 "Name": "Find Media",
-                "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate medias missing"
+                "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate medias missing from either of them",
+                "RunTask": "Run",
+                "MissingMapTitle": "Missing a mapped path",
+                "MissingMapDesc": "One or more defined paths for library is not defined. Goto '@:Modules.PMS.LibMapping.Name' to correct"
             },
             "LibMapping": {
                 "Name": "Library Mapping",
                 "Description": "@:Modules.PMS.LibMapping.Name allows you map the defined Library folders path to match a path for this workstation",
                 "ClickToDefine": "Click to define",
-                "SelectMapDirPath": "Select mapped path"
+                "SelectMapDirPath": "Select mapped path",
+                "TTSelectLibrary": "Here you select the library to map"
             }
         },
         "PlexTV": {

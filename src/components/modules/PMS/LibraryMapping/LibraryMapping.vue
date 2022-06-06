@@ -6,10 +6,11 @@
     </div>
     <br>
     <br>
+    <!-- Select Lib -->
     <div class="d-flex align-items-center">
       <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="SelLibGroup" triggers="hover">
-          {{ $t('Modules.PMS.Butler.TTSelectTask') }}
+          {{ $t('Modules.PMS.LibMapping.TTSelectLibrary') }}
         </b-tooltip>
         <b-form-select
           v-model="selLib"
@@ -38,10 +39,7 @@
   import i18n from '../../../../i18n';
   import store from '../../../../store';
   import { wtconfig, dialog } from '../../General/wtutils';
-  //import { dvr } from "./scripts/dvr";
-  const {JSONPath} = require('jsonpath-plus');
-
-  i18n
+  import { pms } from '../../General/pms';
 
   const log = require("electron-log");
   export default {
@@ -57,6 +55,7 @@
     created() {
       log.info("LibraryMapping Created");
       this.serverSelected();
+      this.getPMSSections();
     },
     watch: {
       // Watch for when selected server address is updated
@@ -96,25 +95,7 @@
       },
       getPMSSections: async function(){
         this.selLibrary = "";
-        await this.$store.dispatch('fetchSections')
-        const sections = await this.$store.getters.getPmsSections;
-        const result = [];
-        this.selLib = "";
-        if (Array.isArray(sections) && sections.length) {
-          sections.forEach(req => {
-              if ( ['movie', 'show'].includes(req.type)){
-                log.debug(`[LibraryMapping.vue] (getPMSSections) - pushing library: ${req.title} to results`);
-                let item = [];
-                item['text']=req.title;
-                item['value']=JSONPath({path: '$..path', json: req.location});
-                result.push(Object.assign({}, item));
-              }
-          });
-        } else {
-          log.error("[LibraryMapping.vue] (getPMSSections) - No Library found");
-          result.push["No Library found"];
-        }
-        this.selLibOptions = result;
+        this.selLibOptions = await pms.getPMSSections(['movie', 'show']);
       },
       /* Check if a server is selected, and if not
       tell user, and disable backup */
