@@ -64,18 +64,8 @@ const findMedia = new class FINDMEDIA {
             console.log('Ged 13-1 dirPath: ' + dirPath)
             console.log('Ged 13-2 arrayOfFiles: ' + arrayOfFiles)
 
-            const files = await fs.promises.readdir(dirPath);
-            console.log('Ged 13-6 arrayOfFiles: ' + files)
-            files.forEach(function(file) {
-                console.log('Ged 13-10 file: ' + file)
-                if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-                    console.log('Ged 13-12 Dir found: ' + file)
-                    
-                    return this.doScanPath( dirPath + "/" + file, arrayOfFiles )
-                }
-
-            });
-
+            
+            
 
 
 
