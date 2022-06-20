@@ -26,9 +26,15 @@ const pms = new class PMS {
           sections.forEach(req => {
               if ( libTypes.includes(req.type)){
                 log.debug(`[pms.js] (getPMSSections) - pushing library: ${req.title} to results`);
+                console.log('Ged 22-4: ' + JSON.stringify(req))
                 let item = [];
+                let itemVal = {};
+                itemVal['key'] = JSONPath({path: '$..key', json: req})[0];
+                itemVal['location'] = JSONPath({path: '$..path', json: req.location});
+                itemVal['type'] = JSONPath({path: '$..type', json: req})[0];
                 item['text']=req.title;
-                item['value']=JSONPath({path: '$..path', json: req.location});
+                //item['value']=JSONPath({path: '$..path', json: req.location});
+                item['value']=itemVal;
                 result.push(Object.assign({}, item));
               }
           });

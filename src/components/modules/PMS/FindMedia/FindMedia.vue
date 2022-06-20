@@ -29,6 +29,14 @@
       </div>
     </div>
     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <statusDiv /> <!-- Status Div -->
   </b-container>
 </template>
 
@@ -38,20 +46,23 @@
   import { dialog } from '../../General/wtutils';
   import { pms } from '../../General/pms';
   import { findMedia } from './scripts/FindMedia.js';
-  
-  
+  import statusDiv from '../../General/status.vue';
+
 
   i18n
 
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          serverIsSelected: false,
-          selLibOptions: [],
-          selLib: "",
-          selLibraryWait: true
-        };
+    components: {
+      statusDiv
+    },
+    data() {
+      return {
+        serverIsSelected: false,
+        selLibOptions: [],
+        selLib: "",
+        selLibraryWait: true
+      };
   },
   created() {
     log.info("FindMedia Created");
@@ -79,7 +90,7 @@
     async runFM() {
       log.info(`[FindMedia.vue] (runFM) starting`);
       // Check if we have all lib paths mapped
-      const mappedPathOK = await findMedia.checkPathMapping( this.selLib );
+      const mappedPathOK = await findMedia.checkPathMapping( this.selLib["location"] );
       if ( mappedPathOK === 'WTNG_ERROR_WTNG')
       {
         log.error(`[FindMedia.vue] (runFM) - Missing mapped path for: ${mappedPathOK}`);
@@ -87,7 +98,10 @@
       }
       else{
         log.info(`[FindMedia.vue] (runFM) mappedPath is okay`);
-        await findMedia.scanFileSystemPaths( this.selLib );
+        //await findMedia.scanFileSystemPaths( this.selLib );
+        console.log('Ged 333-3 selLibOptions: ' + JSON.stringify(this.selLibOptions))
+        await findMedia.findMedia( this.selLib["location"], this.selLib["key"], this.selLib["type"] );
+        console.log('Ged 333-7 ended')
       }
 
     },
