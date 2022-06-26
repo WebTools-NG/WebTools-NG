@@ -173,7 +173,7 @@
             "Name": "ExportTools",
             "ErrorServer": "No server",
             "Settings": {
-                "Settings": "Settings",
+                "Name": "@:Modules.ET.Name Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
@@ -465,7 +465,21 @@
                 "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate medias missing from either of them",
                 "RunTask": "Run",
                 "MissingMapTitle": "Missing a mapped path",
-                "MissingMapDesc": "One or more defined paths for library is not defined. Goto '@:Modules.PMS.LibMapping.Name' to correct"
+                "MissingMapDesc": "One or more defined paths for library is not defined. Goto '@:Modules.PMS.LibMapping.Name' to correct",
+                "ttSettings": "Settings for @:Modules.PMS.FindMedia.Name module",
+                "ScanningFS": "Scanning File System",
+                "ScanningLib": "Scanning Library",
+                "Settings": {
+                    "Name": "Find Media Settings",
+                    "Description": "@:Modules.PMS.FindMedia.Name settings allows you to customize how @:Modules.PMS.FindMedia.Name works",
+                    "Note": "Note: After changing a setting, please restart @:Common.AppName",
+                    "Ext": "Comma separated file extensions to look for",
+                    "ignoreDirs": "Comma separated list of directories to skip",
+                    "Return": "Save & Return",
+                    "Reset": "Reset to factory standard",
+                    "IgnoreHidden": "Ignore Hidden files/directories on Linux/Mac",
+                    "IgnoreExtras": "Ignore local extras"
+                }
             },
             "LibMapping": {
                 "Name": "Library Mapping",

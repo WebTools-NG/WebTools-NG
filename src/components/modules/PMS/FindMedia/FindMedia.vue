@@ -1,43 +1,60 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.FindMedia.Name") }}</h1>
-        <p>{{ $t("Modules.PMS.FindMedia.Description") }}</p>
-    </div>
-    <!-- Select Lib -->
-    <div class="d-flex align-items-center">
-      <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="SelLibGroup" triggers="hover">
-          {{ $t('Modules.PMS.LibMapping.TTSelectLibrary') }}
-        </b-tooltip>
-        <b-form-select
-          v-model="selLib"
-          id="selLib"
-          :options="selLibOptions"
-          name="selLib">
-        </b-form-select>
-      </b-form-group>
-    </div>
-    <br>
-    <!-- Buttons -->
-    <div class="buttons">
-      <!-- Buttons -->
-      <div id="buttons" class="text-center">
-          <b-button-group >
-              <b-button variant="success" class="mr-1" :disabled="this.selLib == ''" @click="runFM"> {{ $t('Modules.PMS.FindMedia.RunTask') }} </b-button>
-          </b-button-group>
+  <div>
+    <!-- Settings button -->
+    <div class="text-right">
+      <div class="buttons">
+        <!-- Buttons -->
+        <div id="buttons">
+            <b-button-group id="settings">
+              <b-tooltip target="settings" triggers="hover">
+                  {{ $t('Modules.PMS.FindMedia.ttSettings') }}
+              </b-tooltip>
+              <button class="btn btn-outline-success" @click="showSettings"><i class="fa fa-cog"></i></button>
+            </b-button-group>
+        </div>
       </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <statusDiv /> <!-- Status Div -->
-  </b-container>
+    <!-- Main view -->
+    <b-container fluid>
+      <div class="col-lg-10 col-md-12 col-xs-12">
+          <h1>{{ $t("Modules.PMS.FindMedia.Name") }}</h1>
+          <p>{{ $t("Modules.PMS.FindMedia.Description") }}</p>
+      </div>
+      <!-- Select Lib -->
+      <div class="d-flex align-items-center">
+        <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+          <b-tooltip target="SelLibGroup" triggers="hover">
+            {{ $t('Modules.PMS.LibMapping.TTSelectLibrary') }}
+          </b-tooltip>
+          <b-form-select
+            v-model="selLib"
+            id="selLib"
+            :options="selLibOptions"
+            name="selLib">
+          </b-form-select>
+        </b-form-group>
+      </div>
+      <br>
+      <!-- Buttons -->
+      <div class="buttons">
+        <!-- Buttons -->
+        <div id="buttons" class="text-center">
+            <b-button-group >
+                <b-button variant="success" class="mr-1" :disabled="this.selLib == ''" @click="runFM"> {{ $t('Modules.PMS.FindMedia.RunTask') }} </b-button>
+            </b-button-group>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <statusDiv /> <!-- Status Div -->
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -47,6 +64,7 @@
   import { pms } from '../../General/pms';
   import { findMedia } from './scripts/FindMedia.js';
   import statusDiv from '../../General/status.vue';
+  import { status } from '../../General/status';
 
 
   i18n
@@ -68,7 +86,6 @@
     log.info("FindMedia Created");
     this.serverSelected();
     this.getPMSSections();
-    console.log('Ged 55-0: ' + this.selLib)
   },
   watch: {
       // Watch for when selected server address is updated
@@ -86,9 +103,14 @@
     }
   },
   methods: {
+    // Show Settings
+    showSettings(){
+      this.$router.push({ name: 'FindMediaSettings' })
+    },
     // Run FindMedia
     async runFM() {
       log.info(`[FindMedia.vue] (runFM) starting`);
+
       // Check if we have all lib paths mapped
       const mappedPathOK = await findMedia.checkPathMapping( this.selLib["location"] );
       if ( mappedPathOK === 'WTNG_ERROR_WTNG')
@@ -98,8 +120,10 @@
       }
       else{
         log.info(`[FindMedia.vue] (runFM) mappedPath is okay`);
-        //await findMedia.scanFileSystemPaths( this.selLib );
-        console.log('Ged 333-3 selLibOptions: ' + JSON.stringify(this.selLibOptions))
+        await status.clearStatus();
+        await status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Processing'));
+        // Wait a short moment, so status can update
+        await new Promise(resolve => setTimeout(resolve, 50));
         await findMedia.findMedia( this.selLib["location"], this.selLib["key"], this.selLib["type"] );
         console.log('Ged 333-7 ended')
       }

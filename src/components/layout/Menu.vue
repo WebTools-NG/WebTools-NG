@@ -104,19 +104,19 @@
                                 href: { path: '/pms/findmedia' },
                                 title: this.$t("Modules.PMS.FindMedia.Name"),
                                 hidden: wtutils.hideMenu('pmsFindMedia'),
-                                icon: 'fas fa-tv'
+                                icon: 'fas fa-search'
                             },
                             {
                                 href: '/pms/libmapping',
                                 hidden: wtutils.hideMenu('pmsLibMapping'),
                                 title: this.$t("Common.Menu.Sidebar.PMS.LibMapping"),
-                                icon: 'fa fa-cog'
+                                icon: 'fas fa-hdd'
                             },
                             {
                                 href: '/pms/settings',
                                 hidden: wtutils.hideMenu('pmsSettings'),
                                 title: this.$t("Common.Menu.Sidebar.PMS.Settings"),
-                                icon: 'fa fa-cog'
+                                icon: 'fas fa-cog'
                             },
                             {
                                 href: { path: '/pms/viewstate' },
@@ -136,13 +136,13 @@
                         title: this.$t("Common.Menu.Sidebar.Language.NavTitle"),
                         hidden: wtutils.hideMenu('Language'),
                         //icon: 'fas fa-language'
-                        icon: 'fa fa-globe'
+                        icon: 'fas fa-globe'
                     },
                     {
                         href: '/settings',
                         title: this.$t("Common.Menu.Sidebar.Settings.NavTitle"),
                         hidden: wtutils.hideMenu('Settings'),
-                        icon: 'fa fa-cog'
+                        icon: 'fas fa-cog'
                     },
                     {
                         href: { path: '/about' },
