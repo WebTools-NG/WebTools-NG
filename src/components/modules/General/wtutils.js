@@ -235,6 +235,12 @@ const wtutils = new class WTUtils {
             }
     }
 
+    async sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+    }
+
     hideMenu(menu)
     {
         let retVal = false;

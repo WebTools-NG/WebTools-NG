@@ -80,31 +80,22 @@
         const mapDir = dialog.OpenDirectory( i18n.t("Modules.PMS.LibMapping.SelectMapDirPath"), i18n.t("Common.Ok"));
         if (mapDir)
         {
-          console.log('Ged 44-3 PMS Path: ' + this.items[index]['PMS'])
           let curVal = {};
           curVal['PMS'] = this.items[index]['PMS'];
           // If a dot is present in the path, we need to escape it
           curVal['PMS'] = curVal['PMS'].replace('.', '\\.');
-
           curVal['Workstation'] = mapDir[0];
           curVal['_rowVariant'] = "success";
-          console.log('Ged 44-6 curVal PMS Path: ' + curVal['PMS'])
-          console.log('Ged 44-7 test: ' + JSON.parse(JSON.stringify(curVal['PMS'])) )
-
           // Get ServerID
           const serverID = store.getters.getSelectedServer.clientIdentifier;
           // Save setting
           wtconfig.set(`PMS.LibMapping.${serverID}.${curVal['PMS']}`, curVal['Workstation']);
           // Remove escape char for viewing
           curVal['PMS'] = curVal['PMS'].replace('\\.', '.');
-
-          
           this.items[index] = curVal;
           // Update view
           this.$refs.table.refresh();
-          
-          //wtconfig.set(`PMS.LibMapping.${serverID}./share/external/\\.nd/0/048d01aab-0f16-42b7-b2e8-404a51a60682/movies`, curVal['Workstation']);
-          
+
         }
       },
       getPMSSections: async function(){
@@ -135,7 +126,6 @@
         const fs = require("fs");
         arguments[0]['location'].forEach(element => {
           let entry, virtualElement;
-          console.log('Ged 7-3 element: ' + element)
           virtualElement = element.replace('.', '\\.');
           //const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${element}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));
           const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${virtualElement}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));

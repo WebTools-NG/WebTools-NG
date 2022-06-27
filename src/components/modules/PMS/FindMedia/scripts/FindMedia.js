@@ -49,11 +49,7 @@ const validFile = function( fileName ) {
        returns true or false */
     log.silly(`[FindMedia.js] (validFile) - Checking file: ${fileName}`)
     if ( findMedia.validExt.includes(path.extname(fileName).toLowerCase().slice(1))){
-        log.silly(`[FindMedia.js] (validFile) - Valid ext for file: ${fileName}`)
-        console.log('Ged 15-3: ', (wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true) === 'true' ))
-        console.log('Ged 15-3-3: ', findMedia.settingsIgnoreExtras)
-
-        
+        log.silly(`[FindMedia.js] (validFile) - Valid ext for file: ${fileName}`);
         if ( findMedia.settingsIgnoreExtras ){
             log.silly(`[FindMedia.js] (validFile) - Checking IgnoreExtras for file: ${fileName}`)
             for (let eFile of findMedia.Extrafiles) {
@@ -64,13 +60,13 @@ const validFile = function( fileName ) {
             }
             return true;
         } else { return true }
-    } else { 
+    } else {
         log.silly(`[FindMedia.js] (validFile) - Ext not valid for file: ${fileName}`)
         return false
     }
 }
 
-const NEWgetAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
+const getAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
     /*
         Recursive scanning of a filepath
         Takes dirPath and orgDirPath as parameter
@@ -86,7 +82,7 @@ const NEWgetAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
             if (fs.statSync(dirPath + "/" + curFile).isDirectory()) {
                 // Check if valid dir, then call req.
                 if ( validDir( curFile ) ){
-                    arrayOfFiles = NEWgetAllFiles(path.join(dirPath, curFile), orgDirPath, arrayOfFiles)
+                    arrayOfFiles = getAllFiles(path.join(dirPath, curFile), orgDirPath, arrayOfFiles)
                 }
             } else {
                 // We found a file
@@ -94,7 +90,7 @@ const NEWgetAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
                     // Force forward slash
                     let lookupPath = path.join(dirPath, curFile).replaceAll('\\', '/');
                     log.silly(`[FindMedia.js] (getAllFiles) - Adding ${lookupPath.slice(orgDirPath.length + 1)}: ${ path.join(dirPath, curFile) }`);
-                    status.updateStatusMsg( status.RevMsgType.Item, `${i18n.t('Common.Status.Msg.Processing')}:${curFile}`);
+                    //status.updateStatusMsg( status.RevMsgType.Item, `GED Found file: ${curFile}`);
                     findMedia.filesFound[lookupPath.slice(orgDirPath.length + 1)] = path.join(dirPath, curFile);
                 }
             }
@@ -103,7 +99,7 @@ const NEWgetAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
     return arrayOfFiles
 }
 
-NEWgetAllFiles
+
 
 
 
@@ -210,11 +206,7 @@ const findMedia = new class FINDMEDIA {
         this.filesFound = [];
         await findMedia.scanFileSystemPaths( libpaths );
         // Scan library
-//        await findMedia.scanPMSLibrary(libKey, libType);
-
-        console.log('Ged 54-11-2 End filesFound: ' + JSON.stringify(this.filesFound))
-//        console.log('Ged 54-11-3 End PMSFound: ' + JSON.stringify(this.libFiles))
-
+        await findMedia.scanPMSLibrary(libKey, libType);
         // Create output file
         let outFile = await this.makeOutFile( libKey );
 
@@ -276,12 +268,9 @@ libType
                 log.debug(`[FindMedia.js] (scanFileSystemPaths) - PMS path is: ${libPath}`);
                 log.debug(`[FindMedia.js] (scanFileSystemPaths) - Wkstn path is: ${mappedLibPath}`);
                 //findMedia.filePath.push(...getAllFiles( mappedLibPath, mappedLibPath ));
-                findMedia.filePath.push(...NEWgetAllFiles( mappedLibPath, mappedLibPath ));
-
-
+                findMedia.filePath.push(...getAllFiles( mappedLibPath, mappedLibPath ));
             });
             log.info(`[FindMedia.js] (scanFileSystemPaths) - End`);
-            //console.log('Ged 100: ' + this.filePath)
             resolve();
         });
     }
@@ -332,6 +321,11 @@ libType
             log.error(`[FindMedia.js] (scanPMSLibrary) -  ${JSON.stringify(error.message)}`);
         }
     });
+
+//    totalSize, size
+//    resolve();
+
+
     step = wtconfig.get("PMS.ContainerSize." + mediaType, 20);
     let metaData;
     do {
@@ -353,7 +347,7 @@ libType
                     var title = JSONPath({path: `$..title`, json: metaData[parseInt(idxMetaData)]})[0];
                     var files = JSONPath({path: `$..Part[*].file`, json: metaData[parseInt(idxMetaData)]});
                     for (var idxFiles in files){
-                        if (this.ignoreExt.includes(path.extname(files[idxFiles]).toLowerCase().slice(1))){
+                        if (this.validExt.includes(path.extname(files[idxFiles]).toLowerCase().slice(1))){
                             for (var idxPMSLibPaths in this.PMSLibPaths){
                                 if (files[idxFiles].startsWith(this.PMSLibPaths[idxPMSLibPaths])){
                                     // Slice to lookup in files found
@@ -381,10 +375,13 @@ libType
             if (error.response) {
                 log.error(`[FindMedia.js] (scanPMSLibrary) -  ${JSON.stringify(error.response.data)}`);
                 alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                return
             } else if (error.request) {
                 log.error(`[FindMedia.js] (scanPMSLibrary) -  ${JSON.stringify(error.request)}`);
+                return
             } else {
                 log.error(`[FindMedia.js] (scanPMSLibrary) -  ${JSON.stringify(error.message)}`);
+                return
             }
         });
     } while ( size == step );

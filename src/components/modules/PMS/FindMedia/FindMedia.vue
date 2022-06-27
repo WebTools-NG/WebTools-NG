@@ -125,7 +125,6 @@
         // Wait a short moment, so status can update
         await new Promise(resolve => setTimeout(resolve, 50));
         await findMedia.findMedia( this.selLib["location"], this.selLib["key"], this.selLib["type"] );
-        console.log('Ged 333-7 ended')
       }
 
     },
