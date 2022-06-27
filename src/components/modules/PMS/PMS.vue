@@ -21,10 +21,10 @@
         <br />
         * {{ $t("Modules.PMS.DVR.Description") }}</p>
       </div>
-      <div v-if="showFindMissing">
-        <p><b>{{ $t("Modules.PMS.FindMissing.Name") }}</b>
+      <div v-if="showFindMedia">
+        <p><b>{{ $t("Modules.PMS.FindMedia.Name") }}</b>
         <br />
-        * {{ $t("Modules.PMS.FindMissing.Description") }}</p>
+        * {{ $t("Modules.PMS.FindMedia.Description") }}</p>
       </div>
       <div v-if="showLibMapping">
         <p><b>{{ $t("Modules.PMS.LibMapping.Name") }}</b>
@@ -64,7 +64,7 @@
           selLevel: "",
           showButler: !(wtutils.hideMenu('pmsButler')),
           showDVR: !(wtutils.hideMenu('pmsDVR')),
-          showFindMissing: !(wtutils.hideMenu('pmsFindMissing')),
+          showFindMedia: !(wtutils.hideMenu('pmsFindMedia')),
           showLibMapping: !(wtutils.hideMenu('pmsLibMapping')),
           showSettings: !(wtutils.hideMenu('pmsSettings')),
           showViewState: !(wtutils.hideMenu('pmsViewState'))

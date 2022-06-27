@@ -6,10 +6,11 @@
     </div>
     <br>
     <br>
+    <!-- Select Lib -->
     <div class="d-flex align-items-center">
       <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="SelLibGroup" triggers="hover">
-          {{ $t('Modules.PMS.Butler.TTSelectTask') }}
+          {{ $t('Modules.PMS.LibMapping.TTSelectLibrary') }}
         </b-tooltip>
         <b-form-select
           v-model="selLib"
@@ -38,10 +39,7 @@
   import i18n from '../../../../i18n';
   import store from '../../../../store';
   import { wtconfig, dialog } from '../../General/wtutils';
-  //import { dvr } from "./scripts/dvr";
-  const {JSONPath} = require('jsonpath-plus');
-
-  i18n
+  import { pms } from '../../General/pms';
 
   const log = require("electron-log");
   export default {
@@ -57,6 +55,7 @@
     created() {
       log.info("LibraryMapping Created");
       this.serverSelected();
+      this.getPMSSections();
     },
     watch: {
       // Watch for when selected server address is updated
@@ -83,38 +82,25 @@
         {
           let curVal = {};
           curVal['PMS'] = this.items[index]['PMS'];
+          // If a dot is present in the path, we need to escape it
+          curVal['PMS'] = curVal['PMS'].replace('.', '\\.');
           curVal['Workstation'] = mapDir[0];
           curVal['_rowVariant'] = "success";
-          this.items[index] = curVal;
-          // Update view
-          this.$refs.table.refresh();
           // Get ServerID
           const serverID = store.getters.getSelectedServer.clientIdentifier;
           // Save setting
           wtconfig.set(`PMS.LibMapping.${serverID}.${curVal['PMS']}`, curVal['Workstation']);
+          // Remove escape char for viewing
+          curVal['PMS'] = curVal['PMS'].replace('\\.', '.');
+          this.items[index] = curVal;
+          // Update view
+          this.$refs.table.refresh();
+
         }
       },
       getPMSSections: async function(){
         this.selLibrary = "";
-        await this.$store.dispatch('fetchSections')
-        const sections = await this.$store.getters.getPmsSections;
-        const result = [];
-        this.selLib = "";
-        if (Array.isArray(sections) && sections.length) {
-          sections.forEach(req => {
-              if ( ['movie', 'show'].includes(req.type)){
-                log.debug(`[LibraryMapping.vue] (getPMSSections) - pushing library: ${req.title} to results`);
-                let item = [];
-                item['text']=req.title;
-                item['value']=JSONPath({path: '$..path', json: req.location});
-                result.push(Object.assign({}, item));
-              }
-          });
-        } else {
-          log.error("[LibraryMapping.vue] (getPMSSections) - No Library found");
-          result.push["No Library found"];
-        }
-        this.selLibOptions = result;
+        this.selLibOptions = await pms.getPMSSections(['movie', 'show']);
       },
       /* Check if a server is selected, and if not
       tell user, and disable backup */
@@ -138,24 +124,30 @@
         const serverID = store.getters.getSelectedServer.clientIdentifier;
         log.info(`[LibraryMapping.vue] (getLibPath) ServerID is: ${serverID}`);
         const fs = require("fs");
-        arguments[0].forEach(element => {
-          let entry;
-          const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${element}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));
+        arguments[0]['location'].forEach(element => {
+          let entry, virtualElement;
+          virtualElement = element.replace('.', '\\.');
+          //const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${element}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));
+          const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${virtualElement}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));
           log.info(`[LibraryMapping.vue] (getLibPath) Saved path is: ${wkstnPath}`);
           // Check if path exists
           if (fs.existsSync(wkstnPath)) {
             log.debug(`[LibraryMapping.vue] (getLibPath) Saved path existed`);
+            //element = element.replace('\\.', '.')
             entry = {PMS: element, Workstation: wkstnPath, _rowVariant: 'success'};
+            //entry = {PMS: virtualElement, Workstation: wkstnPath, _rowVariant: 'success'};
           } else {
             log.debug(`[LibraryMapping.vue] (getLibPath) Saved path not defined`);
              if (fs.existsSync(element)) {
                log.debug(`[LibraryMapping.vue] (getLibPath) PMS path existed`);
                wtconfig.set(`PMS.LibMapping.${serverID}.${element}`, element);
                entry = {PMS: element, Workstation: element, _rowVariant: 'success'};
+               //entry = {PMS: virtualElement, Workstation: element, _rowVariant: 'success'};
              }
              else {
                log.error(`[LibraryMapping.vue] (getLibPath) PMS path unknown`);
                entry = {PMS: element, Workstation: wkstnPath, _rowVariant: 'danger'};
+               //entry = {PMS: virtualElement, Workstation: wkstnPath, _rowVariant: 'danger'};
              }
           }
           arrPath.push(entry);

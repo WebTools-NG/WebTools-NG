@@ -235,6 +235,12 @@ const wtutils = new class WTUtils {
             }
     }
 
+    async sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+    }
+
     hideMenu(menu)
     {
         let retVal = false;
@@ -289,11 +295,6 @@ const wtutils = new class WTUtils {
         if ( wtconfig.get('Menu.About', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.About', false)
         }
-
-
-
-
-
         // General section
         if ( wtconfig.get('General.username', 'N/A') == 'N/A' ){
             wtconfig.set('General.username', '')
@@ -350,6 +351,19 @@ const wtutils = new class WTUtils {
         }
         if ( wtconfig.get('PMS.ContainerSize.3001', 'N/A') == 'N/A' ){
             wtconfig.set('PMS.ContainerSize.3001', 20)
+        }
+        if ( wtconfig.get('PMS.FindMedia.Settings.Ext', 'N/A') == 'N/A' ){
+            wtconfig.set('PMS.FindMedia.Settings.Ext', [
+                "3g2","3gp","asf","asx","avc",
+                "avi","avs","bivx","bup","divx",
+                "dv","dvr-ms","evo","fli","flv",
+                "m2t","m2ts","m2v","m4v","mkv",
+                "mov","mp4","mpeg","mpg","mts",
+                "nsv","nuv","ogm","ogv","tp",
+                "pva","qt","rm","rmvb","sdp",
+                "svq3","strm","ts","ty","vdr",
+                "viv","vob","vp3","wmv","wpl",
+                "wtv","xsp","xvid","webm"])
         }
         // ET Settings
         if ( wtconfig.get('ET.ChReturn', 'N/A') == 'N/A' ){
