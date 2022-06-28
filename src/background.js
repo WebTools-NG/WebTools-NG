@@ -67,6 +67,11 @@ app.on('window-all-closed', () => {
   }
 })
 
+ipcMain.on('close-me', () => {
+  log.info('I have been reset');
+  app.quit()
+})
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -112,7 +117,6 @@ if (isDevelopment) {
   }
 }
 
-//const ipcMain = require('electron').ipcMain;
 const axios = require('axios')
 const fs = require('fs')
 

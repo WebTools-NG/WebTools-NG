@@ -24,7 +24,7 @@
       <div class="d-flex align-items-center">
         <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
           <b-tooltip target="SelLibGroup" triggers="hover">
-            {{ $t('Modules.PMS.LibMapping.TTSelectLibrary') }}
+            {{ $t('Modules.PMS.FindMedia.TTSelectLibrary') }}
           </b-tooltip>
           <b-form-select
             v-model="selLib"

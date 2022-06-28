@@ -84,12 +84,12 @@ export default {
       },
     }
   },
-  created() {    
+  created() {
     if (this.$store.getters.getAuthToken != ''){
       log.verbose(`[login.vue] (created) We have an Auth Token from cli or dev option`)
       store.dispatch('loginToPlexWithToken', {
-      token: this.$store.getters.getAuthToken      
-      })      
+      token: this.$store.getters.getAuthToken
+      })
     }
   },
   methods: {
@@ -102,12 +102,12 @@ export default {
       password: this.input.password,
       twoFA: this.input.twoFA
       })
-            
+
       if(this.checkbox){
         log.verbose(`Save username is: ${this.checkbox}`)
         wtconfig.set('General.rememberlastusername', true )
-        wtconfig.set('General.username', this.input.username)      
-      } else {        
+        wtconfig.set('General.username', this.input.username)
+      } else {
         log.verbose(`Save username is: ${this.checkbox}`)
         wtconfig.set('General.rememberlastusername', false )
       }

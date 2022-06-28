@@ -54,15 +54,8 @@
                                 title: this.$t("Common.Menu.Sidebar.ET.Custom"),
                                 hidden: wtutils.hideMenu('etCustom'),
                                 icon: 'fa fa-cog'
-                            },
-                            {
-                                href: '/export/settings',
-                                title: this.$t("Common.Menu.Sidebar.ET.Settings"),
-                                hidden: wtutils.hideMenu('etSettings'),
-                                icon: 'fa fa-cog'
                             }
                         ]
-
                     },
                     // Plex.TV
                     {
@@ -107,12 +100,6 @@
                                 icon: 'fas fa-search'
                             },
                             {
-                                href: '/pms/libmapping',
-                                hidden: wtutils.hideMenu('pmsLibMapping'),
-                                title: this.$t("Common.Menu.Sidebar.PMS.LibMapping"),
-                                icon: 'fas fa-hdd'
-                            },
-                            {
                                 href: '/pms/settings',
                                 hidden: wtutils.hideMenu('pmsSettings'),
                                 title: this.$t("Common.Menu.Sidebar.PMS.Settings"),
@@ -139,7 +126,7 @@
                         icon: 'fas fa-globe'
                     },
                     {
-                        href: '/settings',
+                        href: '/settings/settings',
                         title: this.$t("Common.Menu.Sidebar.Settings.NavTitle"),
                         hidden: wtutils.hideMenu('Settings'),
                         icon: 'fas fa-cog'

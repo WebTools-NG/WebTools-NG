@@ -1,0 +1,136 @@
+<template>
+  <b-container fluid>
+    <div class="col-lg-10 col-md-12 col-xs-12">
+        <h1>{{ $t("Modules.GlobalSettings.Title") }}</h1>
+        <p>{{ $t("Modules.GlobalSettings.Description") }}</p>
+        <p>{{ $t("Common.Settings.Global.Info") }}</p>
+        <br>
+        <!-- Link menu -->
+        <div class="text-center">
+            <h5>
+                <div id="generalDiv">
+                    <b-link id="general" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
+                </div>
+                <br>
+                <br>
+                <div id="exportDiv">
+                    <b-link id="export" to="/settings/export">* Export </b-link>
+                </div>
+                <br>
+                <br>
+                <div id="pmsDiv">
+                    <b-link id="pms" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
+                </div>
+                <br>
+                <br>
+                <div id="libmapDiv">
+                    <b-link id="libmap" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
+                </div>
+            </h5>
+        </div>
+        <!-- Tooltip title specified via div prop id -->
+        <b-tooltip target="libmapDiv" triggers="hover">{{ $t('Common.Settings.Global.ttLibmap') }}</b-tooltip>
+        <b-tooltip target="pmsDiv" triggers="hover">{{ $t('Common.Settings.Global.ttPMS') }}</b-tooltip>
+        <b-tooltip target="exportDiv" triggers="hover">{{ $t('Common.Settings.Global.ttExport') }}</b-tooltip>
+        <b-tooltip target="generalDiv" triggers="hover">{{ $t('Common.Settings.Global.ttGeneral') }}</b-tooltip>
+        <!-- Factory Reset -->
+        <b-modal ref="confirmFactoryReset" hide-footer v-bind:title="$t('Modules.GlobalSettings.FactoryResetConfirmTitle')" >
+          <div class="d-block text-center">
+              {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody') }}
+              {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody2', [$t('Common.AppName')]) }}
+          </div>
+          <b-button class="mt-3" variant="info" block @click="factoryResetClose">{{ $t('Modules.GlobalSettings.FactoryResetBtnCancel') }}</b-button>
+          <b-button class="mt-3" variant="danger" block @click="factoryReset">{{ $t('Modules.GlobalSettings.FactoryResetBtnOk') }}</b-button>
+        </b-modal>
+        <br>
+        <br>
+        <div id="buttons" class="text-center">
+            <b-button-group >
+                <b-button variant="danger" class="mr-1" @click="confirmFactoryReset">{{ $t('Modules.GlobalSettings.FactoryReset') }}</b-button>
+            </b-button-group>
+        </div>
+    </div>
+  </b-container>
+</template>
+
+<script>
+    import { wtutils } from '../../General/wtutils';
+    const log = require("electron-log");
+    console.log = log.log;
+    export default {
+        methods: {
+            confirmFactoryReset(){
+                this.$refs['confirmFactoryReset'].show();
+            },
+            factoryResetClose() {
+                this.$refs['confirmFactoryReset'].hide();
+            },
+            remFile( file ){
+                const fs = require('fs');
+                if (fs.existsSync(file)) {
+                    log.debug(`[Settings.vue] (remFile) - Found file: ${file}`);
+                    try {
+                            log.debug(`[Settings.vue] (remFile) - Removing file: ${file}`);
+                            fs.unlinkSync( file );
+                        }
+                    catch (e) {
+                        log.error(`[Settings.vue] (remFile) - Error removing ${file} was ${e}`);
+                    }
+                }
+            },
+            remDir( dir ){
+                const fs = require('fs');
+                if (fs.existsSync(dir)) {
+                    log.debug(`[Settings.vue] (remDir) - Found directory: ${dir}`);
+                    var rimraf = require("rimraf");
+                    try {
+                            log.debug(`[Settings.vue] (remDir) - Removing directory: ${dir}`);
+                            rimraf.sync( dir );
+                        }
+                    catch (e) {
+                        log.error(`[Settings.vue] (remDir) - Error removing ${dir} was ${e}`);
+                    }
+                }
+            },
+            factoryReset() {
+                // Doing a factory reset
+                log.warn('Doing a factory reset');
+                var fs = require('fs');
+                const postfix = '-' + new Date().toISOString().replaceAll('-','').replaceAll(':','').split('.')[0]+"Z";
+                // Make backup of conf file
+                fs.copyFileSync(wtutils.ConfigFileName, wtutils.ConfigFileName + postfix);
+
+                const home = wtutils.Home;
+                const path = require('path');
+
+                // Remove directories requrcively
+                this.remDir(path.join(home, 'blob_storage'));
+                this.remDir(path.join(home, 'Cache'));
+                this.remDir(path.join(home, 'Code Cache'));
+                this.remDir(path.join(home, 'Crash Reports'));
+                this.remDir(path.join(home, 'Dictionaries'));
+                this.remDir(path.join(home, 'extensions'));
+                this.remDir(path.join(home, 'GPUCache'));
+                this.remDir(path.join(home, 'IndexedDB'));
+                this.remDir(path.join(home, 'locales'));
+                this.remDir(path.join(home, 'Local Storage'));
+                this.remDir(path.join(home, 'Partitions'));
+                this.remDir(path.join(home, 'Session Storage'));
+                this.remDir(path.join(home, 'WebTools-NG'));
+
+                // Remove files
+                this.remFile(wtutils.ConfigFileName);
+                this.remFile(path.join(home, 'Cookies'));
+                this.remFile(path.join(home, 'Cookies-journal'));
+                this.remFile(path.join(home, 'DevTools Extensions'));
+                this.remFile(path.join(home, 'Network Persistent State'));
+                this.remFile(path.join(home, 'Preferences'));
+                this.remFile(path.join(home, 'TransportSecurity'));
+                this.remDir(path.join(home, 'logs'));
+                // Shut down
+                const {ipcRenderer} = require('electron');
+                ipcRenderer.send('close-me');
+            }
+        }
+    }
+</script>
