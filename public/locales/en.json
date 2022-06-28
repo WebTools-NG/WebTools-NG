@@ -10,6 +10,35 @@
             "LangUpdateMsg": "{0} Language has been updated on the translation site",
             "LangUpdateMsg2": "Please go to Language option and select '{0}'"
         },
+        "Settings": {
+            "Return": "Return to main Settings",
+            "Global": {
+                "Info": "The global settings are devided into the following:",
+                "ttLibmap": "Define mapped/mounted drives towards your Plex Media Server Libraries",
+                "ttPMS": "General settings for accessing a Plex Media Server",
+                "ttExport": "Define format for an exported file",
+                "ttGeneral": "Define general settings for @:Common.AppName"
+            },
+            "General": {
+                "Name": "General Settings",
+                "Description": "@:Common.Settings.General.Name allows you set general preferences for @:Common.AppName"
+            },
+            "LibMapping": {
+                "Name": "Library Mapping",
+                "Description": "@:Common.Settings.LibMapping.Name allows you map the defined Library folders path to match a path for this workstation",
+                "ClickToDefine": "Click to define",
+                "SelectMapDirPath": "Select mapped path",
+                "ttSelectLibrary": "Here you select the library to map"
+            },
+            "PMS": {
+                "Name": "PMS Settings",
+                "Description": "@:Common.Settings.PMS.Name allows you set preferences for accessing a Plex Media Server"
+            },
+            "Export": {
+                "Name": "Export Settings",
+                "Description": "@:Common.Settings.Export.Name allows you set preferences for exporting a file"
+            }
+        },
         "Language": {
             "Description": "@:Common.Language.Name allows you to change language of the app",
             "Name": "Language",
@@ -175,6 +204,7 @@
             "Settings": {
                 "Name": "@:Modules.ET.Name Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
+                "Note": "Note: * Click here for general settings regarding export *",
                 "ArraySep": "Delimiter for multiple info in same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
@@ -480,13 +510,6 @@
                     "IgnoreHidden": "Ignore Hidden files/directories on Linux/Mac",
                     "IgnoreExtras": "Ignore local extras"
                 }
-            },
-            "LibMapping": {
-                "Name": "Library Mapping",
-                "Description": "@:Modules.PMS.LibMapping.Name allows you map the defined Library folders path to match a path for this workstation",
-                "ClickToDefine": "Click to define",
-                "SelectMapDirPath": "Select mapped path",
-                "TTSelectLibrary": "Here you select the library to map"
             }
         },
         "PlexTV": {

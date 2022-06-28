@@ -1,16 +1,15 @@
 <template>
   <b-container fluid>
     <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.LibMapping.Name") }}</h1>
-        <p>{{ $t("Modules.PMS.LibMapping.Description") }}</p>
+        <h1>{{ $t("Common.Settings.LibMapping.Name") }}</h1>
+        <p>{{ $t("Common.Settings.LibMapping.Description") }}</p>
     </div>
-    <br>
     <br>
     <!-- Select Lib -->
     <div class="d-flex align-items-center">
       <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-tooltip target="SelLibGroup" triggers="hover">
-          {{ $t('Modules.PMS.LibMapping.TTSelectLibrary') }}
+          {{ $t('Common.Settings.LibMapping.ttSelectLibrary') }}
         </b-tooltip>
         <b-form-select
           v-model="selLib"
@@ -22,7 +21,6 @@
       </b-form-group>
     </div>
     <br>
-    <br>
     <!-- Table of section path -->
     <b-table ref="table"
       striped
@@ -31,6 +29,16 @@
       @row-clicked="pathRowClickHandler"
       >
     </b-table>
+    <br>
+    <!-- Buttons -->
+    <div class="buttons">
+        <!-- Buttons -->
+        <div id="buttons" class="text-center">
+            <b-button-group >
+                <b-button variant="success" class="mr-1" @click="jumpToSettings"> {{ $t('Common.Settings.Return') }} </b-button>
+            </b-button-group>
+        </div>
+    </div>
 
   </b-container>
 </template>
@@ -73,11 +81,15 @@
       }
     },
     methods: {
+      // Return to main Settings
+      jumpToSettings(){
+          this.$router.push({ name: 'settingsGlobal' })
+      },
       // Update mapped path
       pathRowClickHandler: async function( record, index ){
         log.debug(`[LibraryMapping.vue] (pathRowClickHandler) - Start to browse for directory`);
         log.debug(`[LibraryMapping.vue] (pathRowClickHandler) - Defined path is ${JSON.stringify(record)} with an index of: ${index}`);
-        const mapDir = dialog.OpenDirectory( i18n.t("Modules.PMS.LibMapping.SelectMapDirPath"), i18n.t("Common.Ok"));
+        const mapDir = dialog.OpenDirectory( i18n.t("Common.Settings.LibMapping.SelectMapDirPath"), i18n.t("Common.Ok"));
         if (mapDir)
         {
           let curVal = {};
@@ -95,7 +107,6 @@
           this.items[index] = curVal;
           // Update view
           this.$refs.table.refresh();
-
         }
       },
       getPMSSections: async function(){
@@ -127,27 +138,22 @@
         arguments[0]['location'].forEach(element => {
           let entry, virtualElement;
           virtualElement = element.replace('.', '\\.');
-          //const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${element}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));
-          const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${virtualElement}`, this.$t("Modules.PMS.LibMapping.ClickToDefine"));
+          const wkstnPath = wtconfig.get(`PMS.LibMapping.${serverID}.${virtualElement}`, this.$t("Common.Settings.LibMapping.ClickToDefine"));
           log.info(`[LibraryMapping.vue] (getLibPath) Saved path is: ${wkstnPath}`);
           // Check if path exists
           if (fs.existsSync(wkstnPath)) {
             log.debug(`[LibraryMapping.vue] (getLibPath) Saved path existed`);
-            //element = element.replace('\\.', '.')
             entry = {PMS: element, Workstation: wkstnPath, _rowVariant: 'success'};
-            //entry = {PMS: virtualElement, Workstation: wkstnPath, _rowVariant: 'success'};
           } else {
             log.debug(`[LibraryMapping.vue] (getLibPath) Saved path not defined`);
              if (fs.existsSync(element)) {
                log.debug(`[LibraryMapping.vue] (getLibPath) PMS path existed`);
                wtconfig.set(`PMS.LibMapping.${serverID}.${element}`, element);
                entry = {PMS: element, Workstation: element, _rowVariant: 'success'};
-               //entry = {PMS: virtualElement, Workstation: element, _rowVariant: 'success'};
              }
              else {
                log.error(`[LibraryMapping.vue] (getLibPath) PMS path unknown`);
                entry = {PMS: element, Workstation: wkstnPath, _rowVariant: 'danger'};
-               //entry = {PMS: virtualElement, Workstation: wkstnPath, _rowVariant: 'danger'};
              }
           }
           arrPath.push(entry);
