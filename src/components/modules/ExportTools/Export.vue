@@ -1,119 +1,135 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-      <h3>{{ $t("Modules.ET.Name") }} <br>
-        <small>{{ $t("Modules.ET.Description") }}</small>
-      </h3>
-      <br />
-      <b-form-row> <!-- Select Export type -->
-        <b-col> <!-- Main type -->
-          <div class="d-flex align-items-center">
-            <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.optExpType.lblMainExp')" label-size="lg" label-class="font-weight-bold pt-0">
-              <b-tooltip target="etLibTypeMainGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpType') }}
+  <div>
+    <!-- Settings button -->
+    <div class="text-right">
+      <div class="buttons">
+        <!-- Buttons -->
+        <div id="buttons">
+            <b-button-group id="settings">
+              <b-tooltip target="settings" triggers="hover">
+                  {{ $t('Modules.ET.ttSettings') }}
               </b-tooltip>
-              <b-form-select
-                v-model="selExpTypeMain"
-                id="selExpTypeMain"
-                :options="optExpTypeMain"
-                @change="selExpTypeMainChanged"
-                name="selExpTypeMain">
-              </b-form-select>
-            </b-form-group>
-          </div>
-        </b-col>
-        <b-col> <!-- Sec type -->
-          <div class="d-flex align-items-center">
-            <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.optExpType.lblSecExp')" label-size="lg" label-class="font-weight-bold pt-0">
-              <b-tooltip target="etLibTypeSecGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpTypeSec') }}
-              </b-tooltip>
-              <b-form-select
-                v-model="selExpTypeSec"
-                id="selExpTypeSec"
-                :options="optExpTypeSec"
-                @change="selExpTypeSecChanged"
-                name="selExpTypeSec">
-              </b-form-select>
-            </b-form-group>
-          </div>
-        </b-col>
-      </b-form-row>
-      <b-form-row> <!-- Select Library -->
-        <b-col>
-          <div class="d-flex align-items-center">
-            <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
-              <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
-                <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
-              </div>
-              <b-tooltip target="etLibraryGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpLibrary') }}
-              </b-tooltip>
-              <b-form-select
-                v-model="selLibrary"
-                id="selLibrary"
-                :options="selLibraryOptions"
-                @change="selLibraryChanged"
-                name="selLibrary">
-              </b-form-select>
-            </b-form-group>
-          </div>
-        </b-col>
-      </b-form-row>
-      <b-form-row> <!-- Select Export Level -->
-        <b-col>
-          <div>
-            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.optExpType.lblExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
-              <b-tooltip target="etLevelGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpLevel') }}
-              </b-tooltip>
-              <b-form-select
-                class="form-control"
-                v-model="selLevel"
-                id="selLevel"
-                :options="exportLevels"
-                @change="selLevelChanged"
-                name="selLevel">
-              </b-form-select>
-            </b-form-group>
-          </div>
-        </b-col>
-      </b-form-row>
-      <div class="buttons"> <!-- Buttons -->
-        <b-button
-          type="is-primary"
-          @click="showStartEnd"
-          icon-left="fas fa-file-download"
-          icon-pack="fas"
-          :disabled="btnDisable == true"
-          variant="success"
-        >
-        {{ $t("Modules.ET.optExpType.lblBtnExportMedia") }}</b-button>
+              <button class="btn btn-outline-success" @click="showSettings"><i class="fa fa-cog"></i></button>
+            </b-button-group>
+        </div>
       </div>
-      <br>
-      <statusDiv /> <!-- Status Div -->
-      <b-modal ref="startEnd" hide-footer v-bind:title=this.startEnd>
-          <div class="d-block">
-            {{ this.startEndBody }}
-            {{ this.startEndBody2 }}
-            <br>
-            {{ this.startEndBody3 }}
-            <br>
-            <br>
-            {{ this.startEndBody4 }}
-            <br>
-            <br>
-            <b-input-group id="itemStart" :prepend="$t('Modules.ET.optExpType.startStopStartingItem')" class="mt-3">
-              <b-form-input id="itemStartNo" name="itemStartNo" type="number" class="form-control" v-model="itemStartNo" :min=0 :max=this.sectionMaxItems.toString() :disabled=false @change.native="setItemStartNo()"></b-form-input>
-            </b-input-group>
-            <b-input-group id="itemEnd" :prepend="$t('Modules.ET.optExpType.startStopEndingItem')" class="mt-3">
-              <b-form-input id="itemEndNo" name="itemEndNo" type="number" class="form-control" v-model="itemEndNo" :disabled=false :min=this.itemStartNo.toString() :max=this.sectionMaxItems.toString() @change.native="setItemEndNo()"></b-form-input>
-            </b-input-group>
-          </div>
-        <b-button class="mt-3" variant="success" block @click="getMedia">{{ this.startEndBtn }}</b-button>
-      </b-modal>
     </div>
-  </b-container>
+    <b-container fluid>
+      <div class="col-lg-10 col-md-12 col-xs-12">
+        <h3>{{ $t("Modules.ET.Name") }} <br>
+          <small>{{ $t("Modules.ET.Description") }}</small>
+        </h3>
+        <br />
+        <b-form-row> <!-- Select Export type -->
+          <b-col> <!-- Main type -->
+            <div class="d-flex align-items-center">
+              <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.optExpType.lblMainExp')" label-size="lg" label-class="font-weight-bold pt-0">
+                <b-tooltip target="etLibTypeMainGroup" triggers="hover">
+                  {{ $t('Modules.ET.optExpType.ttExpType') }}
+                </b-tooltip>
+                <b-form-select
+                  v-model="selExpTypeMain"
+                  id="selExpTypeMain"
+                  :options="optExpTypeMain"
+                  @change="selExpTypeMainChanged"
+                  name="selExpTypeMain">
+                </b-form-select>
+              </b-form-group>
+            </div>
+          </b-col>
+          <b-col> <!-- Sec type -->
+            <div class="d-flex align-items-center">
+              <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.optExpType.lblSecExp')" label-size="lg" label-class="font-weight-bold pt-0">
+                <b-tooltip target="etLibTypeSecGroup" triggers="hover">
+                  {{ $t('Modules.ET.optExpType.ttExpTypeSec') }}
+                </b-tooltip>
+                <b-form-select
+                  v-model="selExpTypeSec"
+                  id="selExpTypeSec"
+                  :options="optExpTypeSec"
+                  @change="selExpTypeSecChanged"
+                  name="selExpTypeSec">
+                </b-form-select>
+              </b-form-group>
+            </div>
+          </b-col>
+        </b-form-row>
+        <b-form-row> <!-- Select Library -->
+          <b-col>
+            <div class="d-flex align-items-center">
+              <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
+                <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
+                  <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+                </div>
+                <b-tooltip target="etLibraryGroup" triggers="hover">
+                  {{ $t('Modules.ET.optExpType.ttExpLibrary') }}
+                </b-tooltip>
+                <b-form-select
+                  v-model="selLibrary"
+                  id="selLibrary"
+                  :options="selLibraryOptions"
+                  @change="selLibraryChanged"
+                  name="selLibrary">
+                </b-form-select>
+              </b-form-group>
+            </div>
+          </b-col>
+        </b-form-row>
+        <b-form-row> <!-- Select Export Level -->
+          <b-col>
+            <div>
+              <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.optExpType.lblExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
+                <b-tooltip target="etLevelGroup" triggers="hover">
+                  {{ $t('Modules.ET.optExpType.ttExpLevel') }}
+                </b-tooltip>
+                <b-form-select
+                  class="form-control"
+                  v-model="selLevel"
+                  id="selLevel"
+                  :options="exportLevels"
+                  @change="selLevelChanged"
+                  name="selLevel">
+                </b-form-select>
+              </b-form-group>
+            </div>
+          </b-col>
+        </b-form-row>
+        <div class="buttons"> <!-- Buttons -->
+          <b-button
+            type="is-primary"
+            @click="showStartEnd"
+            icon-left="fas fa-file-download"
+            icon-pack="fas"
+            :disabled="btnDisable == true"
+            variant="success"
+          >
+          {{ $t("Modules.ET.optExpType.lblBtnExportMedia") }}</b-button>
+        </div>
+        <br>
+        <statusDiv /> <!-- Status Div -->
+        <b-modal ref="startEnd" hide-footer v-bind:title=this.startEnd>
+            <div class="d-block">
+              {{ this.startEndBody }}
+              {{ this.startEndBody2 }}
+              <br>
+              {{ this.startEndBody3 }}
+              <br>
+              <br>
+              {{ this.startEndBody4 }}
+              <br>
+              <br>
+              <b-input-group id="itemStart" :prepend="$t('Modules.ET.optExpType.startStopStartingItem')" class="mt-3">
+                <b-form-input id="itemStartNo" name="itemStartNo" type="number" class="form-control" v-model="itemStartNo" :min=0 :max=this.sectionMaxItems.toString() :disabled=false @change.native="setItemStartNo()"></b-form-input>
+              </b-input-group>
+              <b-input-group id="itemEnd" :prepend="$t('Modules.ET.optExpType.startStopEndingItem')" class="mt-3">
+                <b-form-input id="itemEndNo" name="itemEndNo" type="number" class="form-control" v-model="itemEndNo" :disabled=false :min=this.itemStartNo.toString() :max=this.sectionMaxItems.toString() @change.native="setItemEndNo()"></b-form-input>
+              </b-input-group>
+            </div>
+          <b-button class="mt-3" variant="success" block @click="getMedia">{{ this.startEndBtn }}</b-button>
+        </b-modal>
+      </div>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -247,6 +263,10 @@
     },
   },
   methods: {
+    // Show Settings
+    showSettings(){
+      this.$router.push({ name: 'exportsettings' })
+    },
     setItemStartNo: async function(){
       // Update settings with new start value
       etHelper.Settings.startItem = this.itemStartNo;

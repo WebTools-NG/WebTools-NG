@@ -54,15 +54,8 @@
                                 title: this.$t("Common.Menu.Sidebar.ET.Custom"),
                                 hidden: wtutils.hideMenu('etCustom'),
                                 icon: 'fa fa-cog'
-                            },
-                            {
-                                href: '/export/settings',
-                                title: this.$t("Common.Menu.Sidebar.ET.Settings"),
-                                hidden: wtutils.hideMenu('etSettings'),
-                                icon: 'fa fa-cog'
                             }
                         ]
-
                     },
                     // Plex.TV
                     {
