@@ -20,27 +20,27 @@ import {csv} from '../../../ExportTools/scripts/csv';
 const validDir = function( dirName ) {
     /* Will check if directory is not hidden or should be ignored
        returns true or false */
-    log.silly(`Checking if ${dirName} is valid`);
+    log.silly(`[FindMedia.js] (validDir) - Checking if ${dirName} is valid`);
     // Got a hidden one?
     if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden', true) === 'true' ){
         if ( dirName.startsWith('.') ){
-            log.silly(`We do not allow hidden dirs like: ${dirName}`);
+            log.silly(`[FindMedia.js] (validDir) - We do not allow hidden dirs like: ${dirName}`);
             return false;
         }
     }
     // Got an Extra dir?
     if ( findMedia.settingsIgnoreExtras ){
         if ( findMedia.ExtraDirs.includes( dirName )){
-            log.silly(`We do not allow extra dirs like: ${dirName}`);
+            log.silly(`[FindMedia.js] (validDir) - We do not allow extra dirs like: ${dirName}`);
             return false;
         }
     }
     // Got a dir to ignore?
     if ( findMedia.settingsIgnoreDirs.includes( dirName ) ){
-        log.silly(`We do not allow ignore dirs like: ${dirName}`);
+        log.silly(`[FindMedia.js] (validDir) - We do not allow ignore dirs like: ${dirName}`);
         return false;
     }
-    log.silly(`${dirName} is valid`);
+    log.silly(`[FindMedia.js] (validDir) - ${dirName} is valid`);
     return true;
 }
 
@@ -98,12 +98,6 @@ const getAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
 
     return arrayOfFiles
 }
-
-
-
-
-
-
 
 const findMedia = new class FINDMEDIA {
     constructor() {
@@ -206,7 +200,7 @@ const findMedia = new class FINDMEDIA {
         this.filesFound = [];
         await findMedia.scanFileSystemPaths( libpaths );
         // Scan library
-        await findMedia.scanPMSLibrary(libKey, libType);
+//        await findMedia.scanPMSLibrary(libKey, libType);
         // Create output file
         let outFile = await this.makeOutFile( libKey );
 
