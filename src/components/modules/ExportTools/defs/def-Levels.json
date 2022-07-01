@@ -40,7 +40,7 @@
         "Include": {
             "Level 1": "",
             "Level 2": "",
-            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1"
+            "all": "checkFiles=1&includeExtras=1&includeBandwidths=1&includeChapters=1&includeMarkers=1"
         }
     },
     "1" : {

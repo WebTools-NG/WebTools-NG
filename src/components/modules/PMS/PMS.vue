@@ -26,11 +26,6 @@
         <br />
         * {{ $t("Modules.PMS.FindMedia.Description") }}</p>
       </div>
-      <div v-if="showLibMapping">
-        <p><b>{{ $t("Modules.PMS.LibMapping.Name") }}</b>
-        <br />
-        * {{ $t("Modules.PMS.LibMapping.Description") }}</p>
-      </div>
       <div v-if="showSettings">
         <p><b>{{ $t("Modules.PMS.Settings.Name") }}</b>
         <br />

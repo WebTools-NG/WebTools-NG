@@ -58,6 +58,7 @@
 <script>
   import i18n from '../../../../i18n';
   import { wtconfig } from '../../General/wtutils';
+
   const log = require("electron-log");
   export default {
       data() {
@@ -160,25 +161,37 @@
                 switch (logSizeBytes)
                 {
                     case '1048576':
-                        logSizeDisp = '1Mb';
-                        break;
+                      logSizeDisp = '1Mb';
+                      break;
                     case '2097152':
-                        logSizeDisp = '2Mb';
-                        break;
+                      logSizeDisp = '2Mb';
+                      break;
                     case '4194304':
-                        logSizeDisp = '4Mb';
-                        break;
+                      logSizeDisp = '4Mb';
+                      break;
                     case '8388608':
-                        logSizeDisp = '8Mb';
-                        break;
+                      logSizeDisp = '8Mb';
+                      break;
                     case '10485760':
-                        logSizeDisp = '10Mb';
-                        break;
+                      logSizeDisp = '10Mb';
+                      break;
                     case '20971520':
-                        logSizeDisp = '20Mb';
-                        break;
+                      logSizeDisp = '20Mb';
+                      break;
+                    case '41943040':
+                      logSizeDisp = '40Mb';
+                      break;
+                    case '62914560':
+                      logSizeDisp = '60Mb';
+                      break;
+                    case '104857600':
+                      logSizeDisp = '100Mb';
+                      break;
+                    case '209715200':
+                      logSizeDisp = '200Mb';
+                      break;
                     default:
-                        logSizeDisp = '1Mb';
+                      logSizeDisp = '1Mb';
                 }
                 return logSizeDisp;
             },

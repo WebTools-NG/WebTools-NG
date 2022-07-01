@@ -20,27 +20,28 @@ import {csv} from '../../../ExportTools/scripts/csv';
 const validDir = function( dirName ) {
     /* Will check if directory is not hidden or should be ignored
        returns true or false */
-    log.silly(`Checking if ${dirName} is valid`);
+    log.silly(`[FindMedia.js] (validDir) - Checking if ${dirName} is valid`);
+
     // Got a hidden one?
-    if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden', true) === 'true' ){
+    if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden') ){
         if ( dirName.startsWith('.') ){
-            log.silly(`We do not allow hidden dirs like: ${dirName}`);
+            log.silly(`[FindMedia.js] (validDir) - We do not allow hidden dirs like: ${dirName}`);
             return false;
         }
     }
     // Got an Extra dir?
-    if ( findMedia.settingsIgnoreExtras ){
+    if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true) ){
         if ( findMedia.ExtraDirs.includes( dirName )){
-            log.silly(`We do not allow extra dirs like: ${dirName}`);
+            log.silly(`[FindMedia.js] (validDir) - We do not allow extra dirs like: ${dirName}`);
             return false;
         }
     }
     // Got a dir to ignore?
-    if ( findMedia.settingsIgnoreDirs.includes( dirName ) ){
-        log.silly(`We do not allow ignore dirs like: ${dirName}`);
+    if ( findMedia.settingsIgnoreDirs.includes( dirName.toLowerCase() ) ){
+        log.silly(`[FindMedia.js] (validDir) - We do not allow ignore dirs like: ${dirName}`);
         return false;
     }
-    log.silly(`${dirName} is valid`);
+    log.silly(`[FindMedia.js] (validDir) - ${dirName} is valid`);
     return true;
 }
 
@@ -50,16 +51,27 @@ const validFile = function( fileName ) {
     log.silly(`[FindMedia.js] (validFile) - Checking file: ${fileName}`)
     if ( findMedia.validExt.includes(path.extname(fileName).toLowerCase().slice(1))){
         log.silly(`[FindMedia.js] (validFile) - Valid ext for file: ${fileName}`);
-        if ( findMedia.settingsIgnoreExtras ){
+        // Got a hidden one?
+        if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden') ){
+            if ( fileName.startsWith('.') ){
+                log.silly(`[FindMedia.js] (validFile) - We do not allow hidden files like: ${fileName}`);
+                return false;
+            }
+        }
+        // Ignore extras
+        if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true) ){
             log.silly(`[FindMedia.js] (validFile) - Checking IgnoreExtras for file: ${fileName}`)
             for (let eFile of findMedia.Extrafiles) {
                 if ( path.parse(fileName).name.endsWith(eFile) ){
-                    log.silly(`We ignore extra file: ${fileName}`)
+                    log.silly(`[FindMedia.js] (validFile) - We ignore extra file: ${fileName}`)
                     return false;
                 }
             }
-            return true;
-        } else { return true }
+            //return true;
+        } // else { return true }
+        log.debug(`[FindMedia.js] (validFile) - *** Valid file found: ${fileName} ***`)
+        return true;
+
     } else {
         log.silly(`[FindMedia.js] (validFile) - Ext not valid for file: ${fileName}`)
         return false
@@ -90,7 +102,6 @@ const getAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
                     // Force forward slash
                     let lookupPath = path.join(dirPath, curFile).replaceAll('\\', '/');
                     log.silly(`[FindMedia.js] (getAllFiles) - Adding ${lookupPath.slice(orgDirPath.length + 1)}: ${ path.join(dirPath, curFile) }`);
-                    //status.updateStatusMsg( status.RevMsgType.Item, `GED Found file: ${curFile}`);
                     findMedia.filesFound[lookupPath.slice(orgDirPath.length + 1)] = path.join(dirPath, curFile);
                 }
             }
@@ -99,24 +110,21 @@ const getAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
     return arrayOfFiles
 }
 
-
-
-
-
-
-
 const findMedia = new class FINDMEDIA {
     constructor() {
-        this.validExt = [
+        // Defaults for ext
+        this.defValidExt = [
             '3g2','3gp','asf','asx','avc','avi','avs','bivx','bup','divx','dv','dvr-ms',
             'evo','fli','flv','m2t','m2ts','m2v','m4v',
             'mkv','mov','mp4','mpeg','mpg','mts','nsv','nuv','ogm','ogv','tp','pva','qt','rm','rmvb','sdp','svq3',
             'strm','ts','ty','vdr','viv','vob','vp3','wmv','wpl','wtv','xsp','xvid','webm'
         ];
+        // Extra dirs
         this.ExtraDirs = [
             'Behind The Scenes', 'Deleted Scenes', 'Featurettes',
             'Interviews', 'Scenes', 'Shorts', 'Trailers', 'Other'
         ];
+        // Extra files
         this.Extrafiles = [
             '-behindthescenes', '-deleted', '-featurette',
             '-interview', '-scene', '-short', '-trailer', '-other'
@@ -124,19 +132,14 @@ const findMedia = new class FINDMEDIA {
         this.ignoreDirs = [
             'lost+found'
         ];
-        this.libPaths = [];
-        this.filePath = [];
-        this.validExt = [];
-        this.currentLibPathLength;
-        this.filesFound = {};
-        this.libFiles = [];
-        this.PMSLibPaths = [];
-        this.csvFile = '';
-        this.libName = '';
-        this.csvStream;
-        this.settingsIgnoreExtras;
-        this.ignoreDirs;
-
+        this.filePath = [];                 // Tmp store
+        this.validExt = [];                 // Valid ext to use
+        this.filesFound = {};               // files from FS to be included in result
+        this.libFiles = [];                 // files from PMS to be included in result
+        this.PMSLibPaths = [];              // All PMS Library paths (Wkstn)
+        this.csvFile = '';                  // Filename for output file
+        this.csvStream;                     // Output stream
+        this.settingsIgnoreDirs;            // Directories to ignore
     }
 
     // Generate the filename for an export
@@ -197,11 +200,12 @@ const findMedia = new class FINDMEDIA {
     async findMedia( libpaths, libKey, libType ){
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Processing'));
         // Get settings needed
-        this.validExt = await wtconfig.get('PMS.FindMedia.Settings.Ext');
-        this.settingsIgnoreExtras = await wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras');
-        this.settingsIgnoreDirs = await wtconfig.get('PMS.FindMedia.Settings.ignoreDirs');
-
-
+        this.validExt = await wtconfig.get('PMS.FindMedia.Settings.Ext', this.defValidExt);
+        this.settingsIgnoreDirs = await wtconfig.get('PMS.FindMedia.Settings.ignoreDirs', this.ExtraDirs);
+        log.info(`[FindMedia.js] (findMedia) - Starting FindMedia`);
+        log.info(`[FindMedia.js] (findMedia) - Ignore Hidden files: ${wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden', true)}`);
+        log.info(`[FindMedia.js] (findMedia) - Ignore Extra files/Dirs: ${wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true)}`);
+        log.info(`[FindMedia.js] (findMedia) - Extra dirs to ignore: ${this.settingsIgnoreDirs}`);
         // Scan file system
         this.filesFound = [];
         await findMedia.scanFileSystemPaths( libpaths );
@@ -209,13 +213,9 @@ const findMedia = new class FINDMEDIA {
         await findMedia.scanPMSLibrary(libKey, libType);
         // Create output file
         let outFile = await this.makeOutFile( libKey );
-
         status.clearStatus();
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Finished'));
         status.updateStatusMsg( status.RevMsgType.OutFile, outFile);
-
-libType
-
     }
 
     async checkPathMapping( paths ){
@@ -267,7 +267,6 @@ libType
                 status.updateStatusMsg( status.RevMsgType.Info, `Now Scanning ${mappedLibPath}`);
                 log.debug(`[FindMedia.js] (scanFileSystemPaths) - PMS path is: ${libPath}`);
                 log.debug(`[FindMedia.js] (scanFileSystemPaths) - Wkstn path is: ${mappedLibPath}`);
-                //findMedia.filePath.push(...getAllFiles( mappedLibPath, mappedLibPath ));
                 findMedia.filePath.push(...getAllFiles( mappedLibPath, mappedLibPath ));
             });
             log.info(`[FindMedia.js] (scanFileSystemPaths) - End`);
@@ -277,7 +276,7 @@ libType
 
    async scanPMSLibrary( library, libType ){
     /*
-        This will scan the PMS library, and add result to this.libPaths,
+        This will scan the PMS library, and add result to this.libFiles,
         if not present in this.filePath.
         If present, then pop it from this.filePath
     */
@@ -321,11 +320,6 @@ libType
             log.error(`[FindMedia.js] (scanPMSLibrary) -  ${JSON.stringify(error.message)}`);
         }
     });
-
-//    totalSize, size
-//    resolve();
-
-
     step = wtconfig.get("PMS.ContainerSize." + mediaType, 20);
     let metaData;
     do {
@@ -347,24 +341,20 @@ libType
                     var title = JSONPath({path: `$..title`, json: metaData[parseInt(idxMetaData)]})[0];
                     var files = JSONPath({path: `$..Part[*].file`, json: metaData[parseInt(idxMetaData)]});
                     for (var idxFiles in files){
-                        if (this.validExt.includes(path.extname(files[idxFiles]).toLowerCase().slice(1))){
-                            for (var idxPMSLibPaths in this.PMSLibPaths){
-                                if (files[idxFiles].startsWith(this.PMSLibPaths[idxPMSLibPaths])){
-                                    // Slice to lookup in files found
-                                    var lookup = files[idxFiles].slice(this.PMSLibPaths[idxPMSLibPaths].length + 1)
-                                    lookup = lookup.replaceAll('\\', '/');
-                                    if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
-                                        // We need to remove from detected files, since we found it
-                                        delete this.filesFound[lookup];
-                                    }
-                                    else {
-                                        // Not found, so only in PMS
-                                        let entry = {}
-                                        entry['title'] = title;
-                                        entry['file'] = files[idxFiles]
-                                        this.libFiles.push(entry);
-                                    }
-                                }
+                        const pmsFile = files[idxFiles].replaceAll('\\', '/');
+                        if (this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))){
+                            const libPathFound = this.getLibPath( files[idxFiles] );
+                            var lookup = pmsFile.slice(libPathFound.length + 1);
+                            if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
+                                // We need to remove from detected files, since we found it
+                                delete this.filesFound[lookup];
+                            }
+                            else {
+                                // Not found, so only in PMS
+                                let entry = {}
+                                entry['title'] = title;
+                                entry['file'] = files[idxFiles]
+                                this.libFiles.push(entry);
                             }
                         }
                     }
@@ -387,6 +377,21 @@ libType
     } while ( size == step );
     log.info(`[FindMedia.js] (scanPMSLibrary) - End`);
     resolve();
+   }
+
+   getLibPath( fileName ){
+    let foundPath = { };
+    foundPath['found'] = [0, ""];
+    for (var Idx in this.PMSLibPaths){
+        if ( fileName.startsWith(this.PMSLibPaths[Idx])){
+            const PMSLibPathsLength = this.PMSLibPaths[Idx].length;
+            if ( PMSLibPathsLength > foundPath['found'][0] ){
+                foundPath['found'] = [PMSLibPathsLength, this.PMSLibPaths[Idx]];
+            }
+
+        }
+    }
+    return foundPath['found'][1];
    }
 
    async getPMSPathArr(){

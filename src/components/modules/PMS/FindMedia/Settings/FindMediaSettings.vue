@@ -37,6 +37,7 @@
                 {{ $t('Modules.PMS.FindMedia.Settings.IgnoreHidden') }}
             </b-form-checkbox>
         </div>
+        <!-- Disabled for now, since req a call for each media in lib
         <div>
             <b-form-checkbox
                 id="IgnoreExtras"
@@ -49,6 +50,8 @@
                 {{ $t('Modules.PMS.FindMedia.Settings.IgnoreExtras') }}
             </b-form-checkbox>
         </div>
+        -->
+
         <br>
         <br>
         <!-- Buttons -->
@@ -85,7 +88,7 @@
         },
         methods: {
             setIgnoreHidden( value ){
-                wtconfig.set('PMS.FindMedia.Settings.IgnoreHidden', value);
+                wtconfig.set('PMS.FindMedia.Settings.IgnoreHidden', value === 'true');
             },
             setIgnoreExtras( value ){
                 wtconfig.set('PMS.FindMedia.Settings.IgnoreExtras', value);
@@ -121,8 +124,8 @@
             },
             // Reset to factory Std
             reset(){
-                this.Ext = findMedia.validExt.toString();
-                wtconfig.set('PMS.FindMedia.Settings.Ext', findMedia.validExt);
+                this.Ext = findMedia.defValidExt.toString();
+                wtconfig.set('PMS.FindMedia.Settings.Ext', findMedia.defValidExt);
                 this.ignoreDirs = findMedia.ignoreDirs.toString();
                 wtconfig.set('PMS.FindMedia.Settings.ignoreDirs', findMedia.ignoreDirs);
                 this.IgnoreHidden = true;
