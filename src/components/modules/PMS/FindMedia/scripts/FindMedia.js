@@ -30,7 +30,7 @@ const validDir = function( dirName ) {
         }
     }
     // Got an Extra dir?
-    if ( (findMedia.settingsIgnoreExtras === 'true') ){
+    if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true) ){
         if ( findMedia.ExtraDirs.includes( dirName )){
             log.silly(`[FindMedia.js] (validDir) - We do not allow extra dirs like: ${dirName}`);
             return false;
@@ -59,7 +59,7 @@ const validFile = function( fileName ) {
             }
         }
         // Ignore extras
-        if ( (findMedia.settingsIgnoreExtras === 'true') ){
+        if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true) ){
             log.silly(`[FindMedia.js] (validFile) - Checking IgnoreExtras for file: ${fileName}`)
             for (let eFile of findMedia.Extrafiles) {
                 if ( path.parse(fileName).name.endsWith(eFile) ){
@@ -139,7 +139,6 @@ const findMedia = new class FINDMEDIA {
         this.PMSLibPaths = [];              // All PMS Library paths (Wkstn)
         this.csvFile = '';                  // Filename for output file
         this.csvStream;                     // Output stream
-        this.settingsIgnoreExtras = true;          // Boolean if ignore extras are needed (Hardcoded)
         this.settingsIgnoreDirs;            // Directories to ignore
     }
 
@@ -202,11 +201,10 @@ const findMedia = new class FINDMEDIA {
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Processing'));
         // Get settings needed
         this.validExt = await wtconfig.get('PMS.FindMedia.Settings.Ext', this.defValidExt);
-        this.settingsIgnoreExtras = await wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', 'true');
         this.settingsIgnoreDirs = await wtconfig.get('PMS.FindMedia.Settings.ignoreDirs', this.ExtraDirs);
         log.info(`[FindMedia.js] (findMedia) - Starting FindMedia`);
         log.info(`[FindMedia.js] (findMedia) - Ignore Hidden files: ${wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden', true)}`);
-        log.info(`[FindMedia.js] (findMedia) - Ignore Extra files/Dirs: ${this.settingsIgnoreExtras}`);
+        log.info(`[FindMedia.js] (findMedia) - Ignore Extra files/Dirs: ${wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true)}`);
         log.info(`[FindMedia.js] (findMedia) - Extra dirs to ignore: ${this.settingsIgnoreDirs}`);
 
         console.log('Ged 47-1', wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden'))
@@ -240,7 +238,7 @@ const findMedia = new class FINDMEDIA {
         console.log('Ged 77-7 filesFound', this.filesFound)
         console.log('Ged 77-8 libFiles', this.libFiles)
         //console.log('Ged 77-9 PMSLibPaths', this.PMSLibPaths)
-        //console.log('Ged 77-13 settingsIgnoreExtras', this.settingsIgnoreExtras)
+
         //console.log('Ged 77-14 settingsIgnoreDirs', this.settingsIgnoreDirs)
 
 libType
