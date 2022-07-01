@@ -88,11 +88,7 @@
         },
         methods: {
             setIgnoreHidden( value ){
-                console.log('Ged 55-3', value)
-                //wtconfig.set('PMS.FindMedia.Settings.IgnoreHidden', value);
-                //wtconfig.set('PMS.FindMedia.Settings.IgnoreHidden', Boolean(value));
                 wtconfig.set('PMS.FindMedia.Settings.IgnoreHidden', value === 'true');
-                //wtconfig.set('PMS.FindMedia.Settings.IgnoreHidden', value)
             },
             setIgnoreExtras( value ){
                 wtconfig.set('PMS.FindMedia.Settings.IgnoreExtras', value);
