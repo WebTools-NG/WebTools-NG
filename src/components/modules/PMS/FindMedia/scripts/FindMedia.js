@@ -206,43 +206,16 @@ const findMedia = new class FINDMEDIA {
         log.info(`[FindMedia.js] (findMedia) - Ignore Hidden files: ${wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden', true)}`);
         log.info(`[FindMedia.js] (findMedia) - Ignore Extra files/Dirs: ${wtconfig.get('PMS.FindMedia.Settings.IgnoreExtras', true)}`);
         log.info(`[FindMedia.js] (findMedia) - Extra dirs to ignore: ${this.settingsIgnoreDirs}`);
-
-        console.log('Ged 47-1', wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden'))
-        
-
-        if ( wtconfig.get('PMS.FindMedia.Settings.IgnoreHidden') ){
-            console.log('Ged 47-22 ignore true')
-        }
-
-
-
-
-
         // Scan file system
         this.filesFound = [];
         await findMedia.scanFileSystemPaths( libpaths );
-        console.log('Ged 77-3 filesFound', this.filesFound)
         // Scan library
         await findMedia.scanPMSLibrary(libKey, libType);
         // Create output file
         let outFile = await this.makeOutFile( libKey );
-
-        //let outFile
-
         status.clearStatus();
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Finished'));
         status.updateStatusMsg( status.RevMsgType.OutFile, outFile);
-
-        //console.log('Ged 77-4 filePath', this.filePath)
-        //console.log('Ged 77-5 validExt', this.validExt)
-        console.log('Ged 77-7 filesFound', this.filesFound)
-        console.log('Ged 77-8 libFiles', this.libFiles)
-        //console.log('Ged 77-9 PMSLibPaths', this.PMSLibPaths)
-
-        //console.log('Ged 77-14 settingsIgnoreDirs', this.settingsIgnoreDirs)
-
-libType
-
     }
 
     async checkPathMapping( paths ){
@@ -368,15 +341,10 @@ libType
                     var title = JSONPath({path: `$..title`, json: metaData[parseInt(idxMetaData)]})[0];
                     var files = JSONPath({path: `$..Part[*].file`, json: metaData[parseInt(idxMetaData)]});
                     for (var idxFiles in files){
-                        console.log('Ged 33-3 PMS file', files[idxFiles])
-                        
                         const pmsFile = files[idxFiles].replaceAll('\\', '/');
-                        console.log('Ged 33-3-2 PMS file', pmsFile)
                         if (this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))){
                             const libPathFound = this.getLibPath( files[idxFiles] );
-                            //console.log('Ged 33-7 libPathFound', libPathFound)
                             var lookup = pmsFile.slice(libPathFound.length + 1);
-                            console.log('Ged 33-8 lookup', lookup)
                             if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
                                 // We need to remove from detected files, since we found it
                                 delete this.filesFound[lookup];
@@ -388,39 +356,6 @@ libType
                                 entry['file'] = files[idxFiles]
                                 this.libFiles.push(entry);
                             }
-
-/* 
-
-                            for (var idxPMSLibPaths in this.PMSLibPaths){
-                                console.log('Ged 33-5 path', this.PMSLibPaths[idxPMSLibPaths])
-                                console.log('Ged 33-6 path length', this.PMSLibPaths[idxPMSLibPaths].length)
-                                console.log('Ged 33-6-2 the file', pmsFile.charAt(this.PMSLibPaths[idxPMSLibPaths].length +1) )
-                                console.log('Ged 33-7 If2', files[idxFiles].substring(0,this.PMSLibPaths[idxPMSLibPaths].length))
-                                //if (files[idxFiles].startsWith(this.PMSLibPaths[idxPMSLibPaths])){
-                                if ( (pmsFile.charAt(this.PMSLibPaths[idxPMSLibPaths].length +1) === '/')){
-
-                                    // Slice to lookup in files found
-                                    //var lookup = files[idxFiles].slice(this.PMSLibPaths[idxPMSLibPaths].length + 1)
-                                    var lookup = pmsFile.slice(this.PMSLibPaths[idxPMSLibPaths].length + 1);
-                                    //lookup = lookup.replaceAll('\\', '/');
-                                    console.log('Ged 33-8 lookup', lookup)
-                                    if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
-                                        // We need to remove from detected files, since we found it
-                                        delete this.filesFound[lookup];
-                                    }
-                                    else {
-                                        // Not found, so only in PMS
-                                        let entry = {}
-                                        entry['title'] = title;
-                                        entry['file'] = files[idxFiles]
-                                        this.libFiles.push(entry);
-                                    }
-                                }
-                            }
-
- */
-
-
                         }
                     }
                 }
@@ -447,13 +382,11 @@ libType
    getLibPath( fileName ){
     let foundPath = { };
     foundPath['found'] = [0, ""];
-    //console.log('Ged 66-3 fileName', fileName);
     for (var Idx in this.PMSLibPaths){
         if ( fileName.startsWith(this.PMSLibPaths[Idx])){
             const PMSLibPathsLength = this.PMSLibPaths[Idx].length;
             if ( PMSLibPathsLength > foundPath['found'][0] ){
-                foundPath['found'] = [PMSLibPathsLength, this.PMSLibPaths[Idx]]
-                //console.log('Ged 99-7 updated to above')
+                foundPath['found'] = [PMSLibPathsLength, this.PMSLibPaths[Idx]];
             }
 
         }
@@ -478,7 +411,6 @@ libType
     }
     log.debug(`[FindMedia.js] (getPMSPathArr) - PMSLibPaths is ${this.PMSLibPaths}`);
     log.info(`[FindMedia.js] (getPMSPathArr) - End`);
-    console.log('Ged 44 this.PMSLibPaths', this.PMSLibPaths)
     resolve();
    }
 }
