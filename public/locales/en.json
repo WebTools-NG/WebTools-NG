@@ -167,7 +167,7 @@
             "Short": "short"
         },
         "Settings": {
-            "Return": "Return to main Settings",
+            "Return": "Return",
             "Global": {
                 "Info": "The global settings are devided into the following:",
                 "ttLibmap": "Define mapped/mounted drives towards your Plex Media Server Libraries",
