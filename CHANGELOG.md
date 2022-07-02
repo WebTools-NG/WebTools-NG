@@ -17,6 +17,7 @@
 * [#509 Refactor Settings](https://github.com/WebTools-NG/WebTools-NG/issues/509)
 * [#512 ET Intro Start/End isn't exported](https://github.com/WebTools-NG/WebTools-NG/issues/512)
 * [#514 Bring back EN translations from Romain](https://github.com/WebTools-NG/WebTools-NG/issues/514)
+* [#508 No timestamp in output file](https://github.com/WebTools-NG/WebTools-NG/issues/508)
 
 ## V0.3.17 (20220601)
 
