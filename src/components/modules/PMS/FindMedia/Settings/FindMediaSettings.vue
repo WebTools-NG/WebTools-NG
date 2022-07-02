@@ -5,6 +5,9 @@
             <br>
             <h1>{{ $t("Modules.PMS.FindMedia.Settings.Name") }}</h1>
             <p>{{ $t("Modules.PMS.FindMedia.Settings.Description") }}</p>
+            <!--<b-link id="general" to="/settings/export">{{ $t("Modules.ET.Settings.Note") }} </b-link> -->
+            <!-- <b-link id="general" :to="{ path: '/settings/export', params: { return: '/pms/findmedia/Settings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link> -->
+            <b-link id="general" :to="{ path: '/settings/export', query: { return: 'FindMediaSettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
             <br>
             <p>{{ $t("Modules.PMS.FindMedia.Settings.Note") }}</p>
         </div>

@@ -8,31 +8,18 @@
         <!-- Link menu -->
         <div class="text-center">
             <h5>
-                <div id="generalDiv">
-                    <b-link id="general" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
-                </div>
+                <b-link id="general" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttGeneral')" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
                 <br>
                 <br>
-                <div id="exportDiv">
-                    <b-link id="export" to="/settings/export">* Export </b-link>
-                </div>
+                <b-link id="export" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttExport')" to="/settings/export">* {{ $t("Common.Settings.Export.Name") }} </b-link>
                 <br>
                 <br>
-                <div id="pmsDiv">
-                    <b-link id="pms" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
-                </div>
+                <b-link id="pms" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttPMS')" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
                 <br>
                 <br>
-                <div id="libmapDiv">
-                    <b-link id="libmap" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
-                </div>
+                <b-link id="libmap" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttLibmap')" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
             </h5>
         </div>
-        <!-- Tooltip title specified via div prop id -->
-        <b-tooltip target="libmapDiv" triggers="hover">{{ $t('Common.Settings.Global.ttLibmap') }}</b-tooltip>
-        <b-tooltip target="pmsDiv" triggers="hover">{{ $t('Common.Settings.Global.ttPMS') }}</b-tooltip>
-        <b-tooltip target="exportDiv" triggers="hover">{{ $t('Common.Settings.Global.ttExport') }}</b-tooltip>
-        <b-tooltip target="generalDiv" triggers="hover">{{ $t('Common.Settings.Global.ttGeneral') }}</b-tooltip>
         <!-- Factory Reset -->
         <b-modal ref="confirmFactoryReset" hide-footer v-bind:title="$t('Modules.GlobalSettings.FactoryResetConfirmTitle')" >
           <div class="d-block text-center">

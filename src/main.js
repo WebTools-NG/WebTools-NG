@@ -83,9 +83,6 @@ log.verbose('[main.js] App Menu builded');
 
 Vue.config.productionTip = false;
 
-
-
-
 new Vue({
   render: h => h(App),
   router: router,

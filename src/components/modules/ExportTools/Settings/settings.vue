@@ -4,7 +4,7 @@
         <p id="demo"></p>
         <h1>{{ $t("Modules.ET.Settings.Name") }}</h1>
         <p>{{ $t("Modules.ET.Settings.Description") }}</p>
-        <b-link id="general" to="/settings/export">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+        <b-link id="general" :to="{ path: '/settings/export', query: { return: 'exportsettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
         <br>
         <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
             <b-tooltip target="PosterGrp" triggers="hover">

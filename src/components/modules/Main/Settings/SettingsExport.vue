@@ -4,6 +4,7 @@
         <h1>{{ $t("Common.Settings.Export.Name") }}</h1>
         <p>{{ $t("Common.Settings.Export.Description") }}</p>
     </div>
+    <div>Params {{ this.$route.query.return }}</div>
     <br>
 
     <b-input-group id="exportDir" :prepend="$t('Common.ExportDir')" class="mt-3">
@@ -61,7 +62,7 @@
         <!-- Buttons -->
         <div id="buttons" class="text-center">
             <b-button-group >
-                <b-button variant="success" class="mr-1" @click="jumpToSettings"> {{ $t('Common.Settings.Return') }} </b-button>
+                <b-button variant="success" class="mr-1" @click="ReturnToRef"> {{ $t('Common.Settings.Return') }} </b-button>
             </b-button-group>
         </div>
     </div>
@@ -73,6 +74,7 @@
   import { wtconfig, wtutils, dialog } from '../../General/wtutils';
   import { time } from '../../General/time';
   import i18n from '../../../../i18n';
+  //import router from '../../../../router'
   const log = require("electron-log");
   export default {
       data() {
@@ -167,8 +169,14 @@
         wtconfig.set(name, value);
       },
       // Return to main Settings
-      jumpToSettings(){
+      ReturnToRef()
+      {
+        if (this.$route.query.return){
+          this.$router.push({ name: this.$route.query.return })
+        }
+        else {
           this.$router.push({ name: 'settingsGlobal' })
+        }
       }
     }
   }
