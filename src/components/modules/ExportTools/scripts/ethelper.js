@@ -1649,8 +1649,10 @@ const etHelper = new class ETHELPER {
         arrFile.push(this.Settings.fileMinor);
         arrFile.push(this.Settings.levelName);
         arrFile.push('Item ' + this.Settings.startItem + '-' + this.Settings.endItem);
-        arrFile.push(timeStamp + '.' + Type + '.tmp');
-        this.Settings.outFile = arrFile.join('_');
+        if (!wtconfig.get('ET.NoTimeStamp', false)){
+            arrFile.push(timeStamp);
+        }
+        this.Settings.outFile = arrFile.join('_') + '.' + Type + '.tmp';
         // Remove unwanted chars from outfile name
         const targetDir = path.join(
             OutDir, wtutils.AppName, i18n.t('Modules.ET.Name'));
