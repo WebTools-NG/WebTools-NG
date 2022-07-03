@@ -59,7 +59,11 @@
         </div>
       </div>
       <br>
-      <p class="text-center">{{ $t('Modules.PlexTV.Settings') }}</p>
+      <div class="text-center">
+        <b-link id="general" :to="{ path: '/settings/export', query: { return: 'plextv' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+      </div>
+      <br>
+      <br>
     </div>
 </template>
 
