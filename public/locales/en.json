@@ -111,7 +111,7 @@
                     "NavTitle": "Global Settings"
                 },
                 "PMS": {
-                    "Settings": "Settings",
+                    "Settings": "Server Settings",
                     "Butler": "Butler scheduled tasks",
                     "LibMapping": "Library Mapping"
                 }
@@ -401,7 +401,7 @@
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
             "Settings": {
-                "Settings": "Settings",
+                "Settings": "Server Settings",
                 "Description": "Here you can define the settings for the selected server",
                 "SelectSettingsSelection": "Select Settings Group",
                 "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
@@ -426,7 +426,7 @@
                 "AllSettings": "Show all settings",
                 "ExportAllSettings": "Export all settings to CSV",
                 "ExportGroupSettings": "Export selected group settings to CSV",
-                "Name": "Settings"
+                "Name": "Server Settings"
             },
             "Export": {
                 "Items": {
