@@ -532,7 +532,6 @@
             "UsrTitle": "User title",
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
-            "Settings": "To configure column separator and 'Not Avail', use @:Modules.ET.Name settings",
             "UsrFriendlyName": "User friendly name"
         }
     }
