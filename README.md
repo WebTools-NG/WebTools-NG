@@ -11,4 +11,4 @@
 
 NOTE: This is currently in **BETA**
 
-Please see the [wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
+Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
