@@ -169,7 +169,7 @@
         "Settings": {
             "Return": "Return",
             "Global": {
-                "Info": "The global settings are devided into the following:",
+                "Info": "The global settings are divided into the following:",
                 "ttLibmap": "Define mapped/mounted drives towards your Plex Media Server Libraries",
                 "ttPMS": "General settings for accessing a Plex Media Server",
                 "ttExport": "Define format for an exported file",
