@@ -1,44 +1,47 @@
 <template>
-  <b-container fluid>
-        <div class="col-lg-9 col-md-12 col-xs-12">
-          <h2>
-            {{ $t("Common.Home.Title") }} <br>
-            <h5>{{ $t("Common.Home.About") }}</h5>
-          </h2>
-          <br>
-          <h3>{{ $t("Common.Home.Modules") }}</h3>
-          <dl>
-            <dt>{{ $t("Modules.ET.Name") }}</dt>
-              <dd>* {{ $t("Modules.ET.Description") }} </dd>
-            <dt>{{ $t("Modules.PMS.Name") }}</dt>
-              <dd>* {{ $t("Modules.PMS.Description") }} </dd>
-            <dt>{{ $t("Modules.PlexTV.Name") }}</dt>
-              <dd>* {{ $t("Modules.PlexTV.Description") }} </dd>
-          </dl>
-        </div>
-        <b-modal ref="showUpdate" hide-footer v-bind:title=this.updateTitle >
-          <div class="d-block text-center">
-            {{ this.body }}
-            <b-form-checkbox
-                id="SkipVerCB"
-                v-model="cbSelected"
-                name="SkipVerCB"
-              >
-                {{ $t("Common.Update.Skip") }}
-            </b-form-checkbox>
-          </div>
-          <b-button class="mt-3" variant="outline-primary" block @click="visitRels">{{ this.body2 }}</b-button>
-        </b-modal>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Common.Home.Title`) }}
+      </h2>
+      <h5>{{ $t(`Common.Home.About`) }}</h5>
+    </div>
+    <br>
+    <div class="col-lg-9 col-md-12 col-xs-12">
+      <h5>{{ $t("Common.Home.Modules") }}</h5>
+      <br>
+      <dl>
+        <dt>{{ $t("Modules.ET.Name") }}</dt>
+          <dd>* {{ $t("Modules.ET.Description") }} </dd>
+        <dt>{{ $t("Modules.PMS.Name") }}</dt>
+          <dd>* {{ $t("Modules.PMS.Description") }} </dd>
+        <dt>{{ $t("Modules.PlexTV.Name") }}</dt>
+          <dd>* {{ $t("Modules.PlexTV.Description") }} </dd>
+      </dl>
+    </div>
+    <b-modal ref="showUpdate" hide-footer v-bind:title=this.updateTitle >
+      <div class="d-block text-center">
+        {{ this.body }}
+        <b-form-checkbox
+            id="SkipVerCB"
+            v-model="cbSelected"
+            name="SkipVerCB"
+          >
+            {{ $t("Common.Update.Skip") }}
+        </b-form-checkbox>
+      </div>
+      <b-button class="mt-3" variant="outline-primary" block @click="visitRels">{{ this.body2 }}</b-button>
+    </b-modal>
 
-        <b-modal ref="showRelNote" scrollable hide-footer v-bind:title=this.relNoteTitle >
-          <div class="d-block text-left">
-            <ul id="v-for-object">
-              <li v-for="value in relNoteArr" v-bind:key="value">
-                {{ value }}
-              </li>
-            </ul>
-          </div>
-        </b-modal>
+    <b-modal ref="showRelNote" scrollable hide-footer v-bind:title=this.relNoteTitle >
+      <div class="d-block text-left">
+        <ul id="v-for-object">
+          <li v-for="value in relNoteArr" v-bind:key="value">
+            {{ value }}
+          </li>
+        </ul>
+      </div>
+    </b-modal>
 
   </b-container>
 
