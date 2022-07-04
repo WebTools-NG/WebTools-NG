@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../components/modules/Main/Login';
 import Home from '../components/modules/Main/Home.vue';
+import Download from '../components/modules/Download/Download';
 import Export from '../components/modules/ExportTools/Export';
 import ExportSettings from '../components/modules/ExportTools/Settings/settings';
 import ExportCustom from '../components/modules/ExportTools/Custom/custom';
@@ -44,6 +45,12 @@ Vue.use(VueRouter)
     path: '/home',
     name: "home",
     component: Home,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/download',
+    name: "download",
+    component: Download,
     meta: {requiresAuth: true}
   },
   {
