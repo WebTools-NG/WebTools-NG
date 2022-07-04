@@ -5,8 +5,9 @@
         {{ $t("Modules.Download.Name") }}
       </h2>
       <h5>{{ $t("Modules.Download.Description") }}</h5>
-      <br />
     </div>
+    <br>
+    <br>
 
 
   </b-container>
