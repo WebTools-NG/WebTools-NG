@@ -1,9 +1,11 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <p id="demo"></p>
-        <h1>{{ $t("Modules.ET.Settings.Name") }}</h1>
-        <p>{{ $t("Modules.ET.Settings.Description") }}</p>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.ET.Settings.Name`) }}
+      </h2>
+      <h5>{{ $t(`Modules.ET.Settings.Description`) }}</h5>
+    </div>
         <b-link id="general" :to="{ path: '/settings/export', query: { return: 'exportsettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
         <br>
         <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
@@ -26,17 +28,15 @@
             @change.native="filterTable">
         </b-form-checkbox-group>
         </b-form-group>
-        <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0">
-            <b-tooltip target="etSugMovieID" triggers="hover">
-                {{ $t('Modules.ET.Settings.ttMoviesUseId') }}
-            </b-tooltip>
+        <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Settings.ttMoviesUseId')">
                 <b-form-select
-                class="form-control"
-                v-model="SelectedMoviesID"
-                id="SelectedMoviesID"
-                :options="SelectedMoviesIDOptions"
-                @change="SelectedMoviesIDChanged"
-                name="SugMovieID">
+                    class="form-control"
+                    v-model="SelectedMoviesID"
+                    id="SelectedMoviesID"
+                    :options="SelectedMoviesIDOptions"
+                    @change="SelectedMoviesIDChanged"
+                    style="width: 50%"
+                    name="SugMovieID">
                 </b-form-select>
         </b-form-group>
         <!-- Buttons -->
@@ -48,7 +48,6 @@
                 </b-button-group>
             </div>
         </div>
-    </div>
   </b-container>
 </template>
 
