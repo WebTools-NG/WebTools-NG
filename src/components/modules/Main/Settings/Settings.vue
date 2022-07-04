@@ -1,41 +1,42 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.GlobalSettings.Title") }}</h1>
-        <p>{{ $t("Modules.GlobalSettings.Description") }}</p>
-        <p>{{ $t("Common.Settings.Global.Info") }}</p>
-        <br>
-        <!-- Link menu -->
-        <div class="text-center">
-            <h5>
-                <b-link id="general" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttGeneral')" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
-                <br>
-                <br>
-                <b-link id="export" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttExport')" to="/settings/export">* {{ $t("Common.Settings.Export.Name") }} </b-link>
-                <br>
-                <br>
-                <b-link id="pms" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttPMS')" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
-                <br>
-                <br>
-                <b-link id="libmap" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttLibmap')" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
-            </h5>
-        </div>
-        <!-- Factory Reset -->
-        <b-modal ref="confirmFactoryReset" hide-footer v-bind:title="$t('Modules.GlobalSettings.FactoryResetConfirmTitle')" >
-          <div class="d-block text-center">
-              {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody') }}
-              {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody2', [$t('Common.AppName')]) }}
-          </div>
-          <b-button class="mt-3" variant="info" block @click="factoryResetClose">{{ $t('Modules.GlobalSettings.FactoryResetBtnCancel') }}</b-button>
-          <b-button class="mt-3" variant="danger" block @click="factoryReset">{{ $t('Modules.GlobalSettings.FactoryResetBtnOk') }}</b-button>
-        </b-modal>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.GlobalSettings.Title`) }}
+      </h2>
+      <h5>{{ $t(`Modules.GlobalSettings.Description`) }}</h5>
+      <p>{{ $t("Common.Settings.Global.Info") }}</p>
+    </div>
+    <br>
+    <div class="text-center">    <!-- Link menu -->
+      <h5>
+        <b-link id="general" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttGeneral')" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
         <br>
         <br>
-        <div id="buttons" class="text-center">
-            <b-button-group >
-                <b-button variant="danger" class="mr-1" @click="confirmFactoryReset">{{ $t('Modules.GlobalSettings.FactoryReset') }}</b-button>
-            </b-button-group>
-        </div>
+        <b-link id="export" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttExport')" to="/settings/export">* {{ $t("Common.Settings.Export.Name") }} </b-link>
+        <br>
+        <br>
+        <b-link id="pms" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttPMS')" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
+        <br>
+        <br>
+        <b-link id="libmap" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttLibmap')" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
+      </h5>
+    </div>
+    <!-- Factory Reset -->
+    <b-modal ref="confirmFactoryReset" hide-footer v-bind:title="$t('Modules.GlobalSettings.FactoryResetConfirmTitle')" >
+      <div class="d-block text-center">
+          {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody') }}
+          {{ $t('Modules.GlobalSettings.FactoryResetConfirmBody2', [$t('Common.AppName')]) }}
+      </div>
+      <b-button class="mt-3" variant="info" block @click="factoryResetClose">{{ $t('Modules.GlobalSettings.FactoryResetBtnCancel') }}</b-button>
+      <b-button class="mt-3" variant="danger" block @click="factoryReset">{{ $t('Modules.GlobalSettings.FactoryResetBtnOk') }}</b-button>
+    </b-modal>
+    <br>
+    <br>
+    <div id="buttons" class="text-center">
+        <b-button-group >
+            <b-button variant="danger" class="mr-1" @click="confirmFactoryReset">{{ $t('Modules.GlobalSettings.FactoryReset') }}</b-button>
+        </b-button-group>
     </div>
   </b-container>
 </template>
