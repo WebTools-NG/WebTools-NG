@@ -1,86 +1,91 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.Settings.Name") }}</h1>
-        <p>{{ $t("Modules.PMS.Settings.Description") }}</p>
-        <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>
-    </div>
-
-    <div> <!-- Settings to show -->
-      <b-form-group id="FilterSettingsGroup" v-bind:label="$t('Modules.PMS.Settings.SettingsFilter')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="FilterSettingsGroup" triggers="hover">
-          {{ $t('Modules.PMS.Settings.TTSettingsFilter') }}
-        </b-tooltip>
-        <b-form-radio-group
-          id="FilterSettings"
-          v-model="selFilterSetting"
-          @change.native="changeFilterSetting()"
-          :options="FilterSettingsOptions"
-          name="FilterSettings"
-        ></b-form-radio-group>
-      </b-form-group>
-    </div>
-
-    <div class="d-flex align-items-center">
-      <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="etLibraryGroup" triggers="hover">
-          {{ $t('Modules.PMS.Settings.TTSelectSettingsSelection') }}
-        </b-tooltip>
-        <b-form-select
-          v-model="selSection"
-          id="selSection"
-          v-on:change="getGroupSelectedItem"
-          :options="selSectionOptions"
-          name="selSection">
-        </b-form-select>
-      </b-form-group>
-    </div>
-    <div> <!-- Modal popup -->
-        <b-modal ref="edtSetting" hide-footer v-bind:title=this.newSettingTitle >
-            <div class="d-block text-center">
-                <b-alert variant="danger" show>{{ $t('Modules.PMS.Settings.varning') }}</b-alert>
-                <b-container fluid>
-                    <b-row>
-                        <b-col sm="2">
-                        <label for="textarea-curSetting">{{ $t('Modules.PMS.Settings.curSetting') }}:</label>
-                        </b-col>
-                        <b-col sm="10">
-                        <b-form-textarea
-                            id="textarea-curSetting"
-                            plaintext
-                            size="sm"
-                            v-model=this.curSetting
-                            rows="1"
-                            max-rows="8"
-                        ></b-form-textarea>
-                        </b-col>
-                    </b-row>
-                    <br>
-                    <b-row>
-                        <b-col sm="2">
-                        <label for="textarea-defSetting">{{ $t('Modules.PMS.Settings.defSetting') }}:</label>
-                        </b-col>
-                        <b-col sm="10">
-                        <b-form-textarea
-                            id="textarea-defSetting"
-                            plaintext
-                            size="sm"
-                            v-model=this.defSetting
-                            rows="1"
-                            max-rows="8"
-                        ></b-form-textarea>
-                        </b-col>
-                    </b-row>
-                </b-container>
-                <br>
-                <b-form-input
-                    v-model="newSettingValue"
-                    v-bind:placeholder=this.newSettingValueTXT >
-                </b-form-input>
-            </div>
-            <b-button class="mt-3" variant="outline-primary" block @click="saveNewSetting">{{ this.newSettingSaveTxt }}</b-button>
-        </b-modal>
-    </div>
+  <b-container class="m-2 mt-2">
+  <div>   <!-- Title and desc -->
+    <h2>
+      {{ $t(`Modules.PMS.Settings.Name`) }}
+    </h2>
+    <h5>{{ $t(`Modules.PMS.Settings.Description`) }}</h5>
+  </div>
+  <b-link id="general" :to="{ path: '/settings/export', query: { return: 'pmssettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+  <br>
+  <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>
+  <br>
+  <div> <!-- Settings to show -->
+    <b-form-group id="FilterSettingsGroup" v-bind:label="$t('Modules.PMS.Settings.SettingsFilter')" label-size="lg" label-class="font-weight-bold pt-0">
+      <b-tooltip target="FilterSettingsGroup" triggers="hover">
+        {{ $t('Modules.PMS.Settings.TTSettingsFilter') }}
+      </b-tooltip>
+      <b-form-radio-group
+        id="FilterSettings"
+        v-model="selFilterSetting"
+        @change.native="changeFilterSetting()"
+        :options="FilterSettingsOptions"
+        name="FilterSettings"
+      ></b-form-radio-group>
+    </b-form-group>
+  </div>
+  <div class="d-flex align-items-center">
+    <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+      <b-tooltip target="etLibraryGroup" triggers="hover">
+        {{ $t('Modules.PMS.Settings.TTSelectSettingsSelection') }}
+      </b-tooltip>
+      <b-form-select
+        v-model="selSection"
+        id="selSection"
+        v-on:change="getGroupSelectedItem"
+        :options="selSectionOptions"
+        name="selSection">
+      </b-form-select>
+    </b-form-group>
+  </div>
+  <div> <!-- Modal popup -->
+    <b-modal ref="edtSetting" hide-footer v-bind:title=this.newSettingTitle >
+      <div class="d-block text-center">
+        <b-alert variant="danger" show>{{ $t('Modules.PMS.Settings.varning') }}</b-alert>
+        <b-container fluid>
+          <b-row>
+            <b-col sm="2">
+            <label for="textarea-curSetting">{{ $t('Modules.PMS.Settings.curSetting') }}:</label>
+            </b-col>
+            <b-col sm="10">
+              <b-form-textarea
+                id="textarea-curSetting"
+                plaintext
+                size="sm"
+                v-model=this.curSetting
+                rows="1"
+                max-rows="8"
+              >
+              </b-form-textarea>
+            </b-col>
+          </b-row>
+          <br>
+          <b-row>
+              <b-col sm="2">
+                <label for="textarea-defSetting">{{ $t('Modules.PMS.Settings.defSetting') }}:</label>
+                </b-col>
+                <b-col sm="10">
+                <b-form-textarea
+                  id="textarea-defSetting"
+                  plaintext
+                  size="sm"
+                  v-model=this.defSetting
+                  rows="1"
+                  max-rows="8"
+                >
+                </b-form-textarea>
+              </b-col>
+          </b-row>
+        </b-container>
+        <br>
+        <b-form-input
+            v-model="newSettingValue"
+            v-bind:placeholder=this.newSettingValueTXT >
+        </b-form-input>
+      </div>
+      <b-button class="mt-3" variant="outline-primary" block @click="saveNewSetting">{{ this.newSettingSaveTxt }}</b-button>
+    </b-modal>
+  </div>
     <div>
         <b-table
             striped
@@ -95,8 +100,7 @@
         </b-table>
     </div>
     <br>
-    <div class="buttons">
-        <!-- Buttons -->
+    <div class="buttons">   <!-- Buttons -->
         <div id="buttons" class="text-center">
             <b-button-group >
                 <b-button variant="success" class="mr-1" :disabled="this.selSection == ''" @click="exportSettings"> {{ $t('Modules.PMS.Settings.ExportGroupSettings') }} </b-button>
@@ -105,7 +109,6 @@
         </div>
     </div>
     <br>
-    <p class="text-center">{{ $t('Modules.PlexTV.Settings') }}</p>
   </b-container>
 </template>
 
@@ -149,7 +152,7 @@
             log.info("PMS Settings Created");
             this.serverSelected();
             this.getFilterSettings();
-            this.getServerSettings();            
+            this.getServerSettings();
         },
         computed: {
             selectedServerAddress: function(){

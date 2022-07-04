@@ -6,48 +6,48 @@
       </h2>
       <h5>{{ $t(`Modules.ET.Settings.Description`) }}</h5>
     </div>
-        <b-link id="general" :to="{ path: '/settings/export', query: { return: 'exportsettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
-        <br>
-        <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
-            <b-tooltip target="PosterGrp" triggers="hover">
-                {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
-            </b-tooltip>
-            <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosters_Dimensions()"></b-form-input>
-        </b-input-group>
-        <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
-            <b-tooltip target="ArtGrp" triggers="hover">
-                {{ $t('Modules.ET.Settings.Art_Dimensions_TT') }}
-            </b-tooltip>
-            <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=false @change="setArt_Dimensions()"></b-form-input>
-        </b-input-group>
-        <b-form-group id="b-form-group">
-        <b-form-checkbox-group
-            stacked
-            :options="cbOptions"
-            v-model="cbSelected"
-            @change.native="filterTable">
-        </b-form-checkbox-group>
-        </b-form-group>
-        <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Settings.ttMoviesUseId')">
-                <b-form-select
-                    class="form-control"
-                    v-model="SelectedMoviesID"
-                    id="SelectedMoviesID"
-                    :options="SelectedMoviesIDOptions"
-                    @change="SelectedMoviesIDChanged"
-                    style="width: 50%"
-                    name="SugMovieID">
-                </b-form-select>
-        </b-form-group>
+    <b-link id="general" :to="{ path: '/settings/export', query: { return: 'exportsettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+    <br>
+    <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
+        <b-tooltip target="PosterGrp" triggers="hover">
+            {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
+        </b-tooltip>
+        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosters_Dimensions()"></b-form-input>
+    </b-input-group>
+    <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
+        <b-tooltip target="ArtGrp" triggers="hover">
+            {{ $t('Modules.ET.Settings.Art_Dimensions_TT') }}
+        </b-tooltip>
+        <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=false @change="setArt_Dimensions()"></b-form-input>
+    </b-input-group>
+    <b-form-group id="b-form-group">
+    <b-form-checkbox-group
+        stacked
+        :options="cbOptions"
+        v-model="cbSelected"
+        @change.native="filterTable">
+    </b-form-checkbox-group>
+    </b-form-group>
+    <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Settings.ttMoviesUseId')">
+            <b-form-select
+                class="form-control"
+                v-model="SelectedMoviesID"
+                id="SelectedMoviesID"
+                :options="SelectedMoviesIDOptions"
+                @change="SelectedMoviesIDChanged"
+                style="width: 50%"
+                name="SugMovieID">
+            </b-form-select>
+    </b-form-group>
+    <!-- Buttons -->
+    <div class="buttons">
         <!-- Buttons -->
-        <div class="buttons">
-            <!-- Buttons -->
-            <div id="buttons" class="text-center">
-                <b-button-group >
-                    <b-button variant="success" class="mr-1" @click="jumpToET"> {{ $t('Modules.ET.Settings.Return') }} </b-button>
-                </b-button-group>
-            </div>
+        <div id="buttons" class="text-center">
+            <b-button-group >
+                <b-button variant="success" class="mr-1" @click="jumpToET"> {{ $t('Modules.ET.Settings.Return') }} </b-button>
+            </b-button-group>
         </div>
+    </div>
   </b-container>
 </template>
 

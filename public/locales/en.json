@@ -502,9 +502,9 @@
             },
             "FindMedia": {
                 "Name": "Find Media",
-                "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate medias missing from either of them",
+                "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate media missing from either of them",
                 "RunTask": "Run",
-                "TTSelectLibrary": "Select library to check for missing medias",
+                "TTSelectLibrary": "Select library to check for missing media",
                 "MissingMapTitle": "Missing a mapped path",
                 "MissingMapDesc": "One or more defined paths for library is not defined. Goto '@:Common.Menu.Sidebar.Settings.NavTitle' and select '@:Common.Settings.LibMapping.Name' to correct",
                 "ttSettings": "Settings for @:Modules.PMS.FindMedia.Name module",

@@ -1,12 +1,12 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Common.Settings.Export.Name") }}</h1>
-        <p>{{ $t("Common.Settings.Export.Description") }}</p>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Common.Settings.Export.Name`) }}
+      </h2>
+      <h5>{{ $t(`Common.Settings.Export.Description`) }}</h5>
     </div>
-    <div>Params {{ this.$route.query.return }}</div>
     <br>
-
     <b-input-group id="exportDir" :prepend="$t('Common.ExportDir')" class="mt-3">
       <b-form-input id="exportDirbox" type="text" name="exportDirbox" v-model="ExportDirVal" :disabled=true v-bind:placeholder="$t('Common.ExportDir')" />
       <b-input-group-append>

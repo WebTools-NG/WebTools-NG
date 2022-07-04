@@ -1,29 +1,27 @@
 <template>
-  <b-container fluid>
-        <div class="col-lg-9 col-md-12 col-xs-12">
-
-    <h2>
-      {{ $t("Common.Language.Name") }}<br>
-      <small>{{ $t("Common.Language.Description") }}</small>
-    </h2>
-    <br>
-
+    <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Common.Language.Name`) }}
+      </h2>
+      <h5>{{ $t(`Common.Language.Description`) }}</h5>
+    </div>
     <div class="control has-icons-left">
-      <div class="locale-changer select is-dark is-medium" >
+      <div class="locale-changer select is-dark is-medium" > <!-- Select Lang -->
         <b-input-group>
         <b-input-group-prepend is-text>
         <b-icon icon="globe2"></b-icon>
-      </b-input-group-prepend>
-        <b-form-select id="langselect" @change.native="onChange($event)" v-model="$i18n.locale" :options="olLangs"></b-form-select>
+        </b-input-group-prepend>
+          <b-form-select id="langselect" @change.native="onChange($event)" v-model="$i18n.locale" :options="olLangs" style="width: 50%"></b-form-select>
         </b-input-group>
       </div>
       <p />
-      <b-button id="btnDownload" variant="success" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</b-button>
+      <div class="text-center">
+        <b-button id="btnDownload" variant="success" v-on:click="forcedownload">{{ $t("Common.Language.btnForce") }}</b-button>
+      </div>
     </div>
     <br/>
-
     <h5>F.A.Q</h5>
-
     <div>
       <ul class="list-unstyled">
         <li><strong>{{ $t("Common.Language.LangMissing") }}</strong>
@@ -55,9 +53,8 @@
         </li>
       </ul>
     </div>
-    <div>
+    <div class="text-center">
       <b-button variant="success" v-on:click="joinPOE">{{ $t("Common.Language.Join") }}</b-button>
-    </div>
     </div>
   </b-container>
 </template>

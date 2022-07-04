@@ -1,70 +1,62 @@
 <template>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-      <h3>{{ $t("Modules.PlexTV.Name") }} <br>
-      </h3>
-      {{ $t("Modules.PlexTV.Description") }}
-
-      <br>
-      <br>
-      <!-- Select User -->
-      <div class="d-flex align-items-center">
-        <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">
-          <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
-            <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
-          </div>
-          <b-tooltip target="plexTVUsers" triggers="hover">
-            {{ $t('Modules.PlexTV.TT-User') }}
-          </b-tooltip>
-          <b-form-select
-            v-model="selUser"
-            id="selUser"
-            :options="selUserOptions"
-            name="selLibrary">
-          </b-form-select>
-        </b-form-group>
-      </div>
-      <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
-            <b-form-input id="usrID" name="usrID" type="text" class="form-control" v-model="usrID" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrName')" class="mt-3">
-            <b-form-input id="usrName" name="usrName" type="text" class="form-control" v-model="usrName" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrFriendlyName')" class="mt-3">
-            <b-form-input id="usrFriendlyName" name="usrFriendlyName" type="text" class="form-control" v-model="usrFriendlyName" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserEmailGrp" :prepend="$t('Modules.PlexTV.UsrEMail')" class="mt-3">
-            <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserRestrictedGrp" :prepend="$t('Modules.PlexTV.UsrRestricted')" class="mt-3">
-            <b-form-input id="usrRestricted" name="usrRestricted"  class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserThumbGrp" :prepend="$t('Modules.PlexTV.UsrThumb')" class="mt-3">
-            <b-form-input id="usrThumb" name="usrThumb" type="text" class="form-control" v-model="usrThumb" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserHomeGrp" :prepend="$t('Modules.PlexTV.UsrHome')" class="mt-3">
-            <b-form-input id="usrHome" name="usrHome" class="form-control" v-model="usrHome" :disabled=true></b-form-input>
-      </b-input-group>
-      <b-input-group id="UserStatusGrp" :prepend="$t('Modules.PlexTV.UsrStatus')" class="mt-3">
-            <b-form-input id="usrStatus" name="usrStatus" type="text" class="form-control" v-model="usrStatus" :disabled=true></b-form-input>
-      </b-input-group>
-      <br>
-      <div class="buttons">
-        <br>
-        <!-- Buttons -->
-        <div id="buttons" class="text-center">
-            <b-button-group >
-                <b-button variant="success" class="mr-1" :disabled="this.selUser == ''" @click="exportUsr"> {{ $t('Modules.PlexTV.ExportUsr') }} </b-button>
-                <b-button variant="success" class="mr-1"  @click="exportAllUsr">{{ $t('Modules.PlexTV.ExportAllUsr') }}</b-button>
-            </b-button-group>
-        </div>
-      </div>
-      <br>
-      <div class="text-center">
-        <b-link id="general" :to="{ path: '/settings/export', query: { return: 'plextv' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
-      </div>
-      <br>
-      <br>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.PlexTV.Name`) }}
+      </h2>
+      <h5>{{ $t(`Modules.PlexTV.Description`) }}</h5>
     </div>
+    <b-link id="general" :to="{ path: '/settings/export', query: { return: 'plextv' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+    <br>
+    <div class="d-flex align-items-center">   <!-- Select User -->
+      <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">
+        <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
+          <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
+        </div>
+        <b-tooltip target="plexTVUsers" triggers="hover">
+          {{ $t('Modules.PlexTV.TT-User') }}
+        </b-tooltip>
+        <b-form-select
+          v-model="selUser"
+          id="selUser"
+          :options="selUserOptions"
+          name="selLibrary">
+        </b-form-select>
+      </b-form-group>
+    </div>
+    <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
+          <b-form-input id="usrID" name="usrID" type="text" class="form-control" v-model="usrID" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrName')" class="mt-3">
+          <b-form-input id="usrName" name="usrName" type="text" class="form-control" v-model="usrName" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserNameGrp" :prepend="$t('Modules.PlexTV.UsrFriendlyName')" class="mt-3">
+          <b-form-input id="usrFriendlyName" name="usrFriendlyName" type="text" class="form-control" v-model="usrFriendlyName" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserEmailGrp" :prepend="$t('Modules.PlexTV.UsrEMail')" class="mt-3">
+          <b-form-input id="usrEmail" name="usrEmail" type="text" class="form-control" v-model="usrEmail" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserRestrictedGrp" :prepend="$t('Modules.PlexTV.UsrRestricted')" class="mt-3">
+          <b-form-input id="usrRestricted" name="usrRestricted"  class="form-control" v-model="usrRestricted" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserThumbGrp" :prepend="$t('Modules.PlexTV.UsrThumb')" class="mt-3">
+          <b-form-input id="usrThumb" name="usrThumb" type="text" class="form-control" v-model="usrThumb" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserHomeGrp" :prepend="$t('Modules.PlexTV.UsrHome')" class="mt-3">
+          <b-form-input id="usrHome" name="usrHome" class="form-control" v-model="usrHome" :disabled=true></b-form-input>
+    </b-input-group>
+    <b-input-group id="UserStatusGrp" :prepend="$t('Modules.PlexTV.UsrStatus')" class="mt-3">
+          <b-form-input id="usrStatus" name="usrStatus" type="text" class="form-control" v-model="usrStatus" :disabled=true></b-form-input>
+    </b-input-group>
+    <br>
+    <br>
+    <div id="buttons" class="text-center"> <!-- Buttons -->
+      <b-button-group>
+          <b-button variant="success" class="mr-1" :disabled="this.selUser == ''" @click="exportUsr"> {{ $t('Modules.PlexTV.ExportUsr') }} </b-button>
+          <b-button variant="success" class="mr-1"  @click="exportAllUsr">{{ $t('Modules.PlexTV.ExportAllUsr') }}</b-button>
+      </b-button-group>
+    </div>
+  </b-container>
 </template>
 
 <script>

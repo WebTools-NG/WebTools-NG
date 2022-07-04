@@ -1,10 +1,11 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.ViewState.Name") }}</h1>
-        <p>{{ $t("Modules.PMS.ViewState.Description") }}</p>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.PMS.ViewState.Name`) }}
+      </h2>
+      <h5>{{ $t(`Modules.PMS.ViewState.Description`) }}</h5>
     </div>
-
     <div class="d-flex align-items-center">
       <b-form-group id="ViewStateSelSourceUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selSourceUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelSourceUsrGroup">
         <b-tooltip target="ViewStateSelSourceUsrGroup" triggers="hover">
@@ -67,7 +68,6 @@
     <br>
     <statusDiv /> <!-- Status Div -->
   </b-container>
-
 </template>
 
 <script>

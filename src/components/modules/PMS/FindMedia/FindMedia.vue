@@ -1,60 +1,56 @@
 <template>
-  <div>
-    <!-- Settings button -->
-    <div class="text-right">
+  <b-container class="m-2 mt-2">
+    <div class="float-right">   <!-- Settings button hidden with d-none -->
       <div class="buttons">
         <!-- Buttons -->
-        <div id="buttons">
-            <b-button-group id="settings">
-              <b-tooltip target="settings" triggers="hover">
-                  {{ $t('Modules.PMS.FindMedia.ttSettings') }}
-              </b-tooltip>
-              <button class="btn btn-outline-success" @click="showSettings"><i class="fa fa-cog"></i></button>
-            </b-button-group>
-        </div>
+        <b-button-group id="settings">
+          <b-tooltip target="settings" triggers="hover">
+              {{ $t(`Modules.PMS.FindMedia.ttSettings`) }}
+          </b-tooltip>
+          <button class="btn btn-outline-success" @click="showSettings"><i class="fa fa-cog"></i></button>
+        </b-button-group>
       </div>
     </div>
-    <!-- Main view -->
-    <b-container fluid>
-      <div class="col-lg-10 col-md-12 col-xs-12">
-          <h1>{{ $t("Modules.PMS.FindMedia.Name") }}</h1>
-          <p>{{ $t("Modules.PMS.FindMedia.Description") }}</p>
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.PMS.FindMedia.Name`) }}
+      </h2>
+      <h5>{{ $t(`Modules.PMS.FindMedia.Description`) }}</h5>
+    </div>
+    <br>
+  <div>
+    <div class="d-flex align-items-center">    <!-- Select Lib -->
+      <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-tooltip target="SelLibGroup" triggers="hover">
+          {{ $t('Modules.PMS.FindMedia.TTSelectLibrary') }}
+        </b-tooltip>
+        <b-form-select
+          v-model="selLib"
+          id="selLib"
+          :options="selLibOptions"
+          name="selLib">
+        </b-form-select>
+      </b-form-group>
+    </div>
+    <br>
+    <div class="buttons">  <!-- Buttons -->
+      <div id="buttons" class="text-center">
+        <b-button-group >
+          <b-button variant="success" class="mr-1" :disabled="this.selLib == ''" @click="runFM"> {{ $t('Modules.PMS.FindMedia.RunTask') }} </b-button>
+        </b-button-group>
       </div>
-      <!-- Select Lib -->
-      <div class="d-flex align-items-center">
-        <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-          <b-tooltip target="SelLibGroup" triggers="hover">
-            {{ $t('Modules.PMS.FindMedia.TTSelectLibrary') }}
-          </b-tooltip>
-          <b-form-select
-            v-model="selLib"
-            id="selLib"
-            :options="selLibOptions"
-            name="selLib">
-          </b-form-select>
-        </b-form-group>
-      </div>
-      <br>
-      <!-- Buttons -->
-      <div class="buttons">
-        <!-- Buttons -->
-        <div id="buttons" class="text-center">
-            <b-button-group >
-                <b-button variant="success" class="mr-1" :disabled="this.selLib == ''" @click="runFM"> {{ $t('Modules.PMS.FindMedia.RunTask') }} </b-button>
-            </b-button-group>
-        </div>
-      </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <statusDiv /> <!-- Status Div -->
-    </b-container>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <statusDiv /> <!-- Status Div -->
   </div>
+  </b-container>
 </template>
 
 <script>

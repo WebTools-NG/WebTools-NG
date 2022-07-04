@@ -1,8 +1,10 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Common.Settings.PMS.Name") }}</h1>
-        <p>{{ $t("Common.Settings.PMS.Description") }}</p>
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Common.Settings.PMS.Name`) }}
+      </h2>
+      <h5>{{ $t(`Common.Settings.PMS.Description`) }}</h5>
     </div>
     <br>
     <b-input-group id="TimeOutGrp" :prepend="$t('Modules.GlobalSettings.TimeOut')" class="mt-3">
@@ -79,7 +81,7 @@
             </b-button-group>
         </div>
     </div>
-
+    <br>
   </b-container>
 </template>
 
