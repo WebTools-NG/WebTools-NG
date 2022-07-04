@@ -1,71 +1,71 @@
 <template>
-    <b-container fluid>
-        <div class="col-lg-10 col-md-12 col-xs-12">
-            <br>
-            <br>
-            <h1>{{ $t("Modules.PMS.FindMedia.Settings.Name") }}</h1>
-            <p>{{ $t("Modules.PMS.FindMedia.Settings.Description") }}</p>
-            <b-link id="general" :to="{ path: '/settings/export', query: { return: 'FindMediaSettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
-            <br>
-            <p>{{ $t("Modules.PMS.FindMedia.Settings.Note") }}</p>
-        </div>
-        <b-input-group id="ExtGrp" :prepend="$t('Modules.PMS.FindMedia.Settings.Ext')" class="mt-3">
-            <b-form-textarea
-                id="Ext" name="Ext" type="text" class="form-control" v-model="Ext" @change="setExt"
-                rows="3"
-                max-rows="3"
-                >
-            </b-form-textarea>
-        </b-input-group>
-        <b-input-group id="ignoreDirsGrp" :prepend="$t('Modules.PMS.FindMedia.Settings.ignoreDirs')" class="mt-3">
-            <b-form-textarea
-                id="ignoreDirs" name="ignoreDirs" type="text" class="form-control" v-model="ignoreDirs" @change="setIgnoreDirs"
-                rows="3"
-                max-rows="3"
-                >
-            </b-form-textarea>
-        </b-input-group>
-        <br>
-        <div>
-            <b-form-checkbox
-                id="IgnoreHidden"
-                v-model="IgnoreHidden"
-                name="IgnoreHidden"
-                value=true
-                unchecked-value=false
-                @change="setIgnoreHidden"
-                >
-                {{ $t('Modules.PMS.FindMedia.Settings.IgnoreHidden') }}
-            </b-form-checkbox>
-        </div>
-        <!-- Disabled for now, since req a call for each media in lib
-        <div>
-            <b-form-checkbox
-                id="IgnoreExtras"
-                v-model="IgnoreExtras"
-                name="IgnoreExtras"
-                value=true
-                unchecked-value=false
-                @change="setIgnoreExtras"
-                >
-                {{ $t('Modules.PMS.FindMedia.Settings.IgnoreExtras') }}
-            </b-form-checkbox>
-        </div>
-        -->
+  <b-container class="m-2 mt-2">
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.PMS.FindMedia.Settings.Name`) }}
+      </h2>
+      <h5>{{ $t(`Modules.PMS.FindMedia.Settings.Description`) }}</h5>
+    </div>
+    <b-link id="general" :to="{ path: '/settings/export', query: { return: 'FindMediaSettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+    <p>{{ $t("Modules.PMS.FindMedia.Settings.Note") }}</p>
+    <br>
+    <b-input-group id="ExtGrp" :prepend="$t('Modules.PMS.FindMedia.Settings.Ext')" class="mt-3">
+        <b-form-textarea
+            id="Ext" name="Ext" type="text" class="form-control" v-model="Ext" @change="setExt"
+            rows="3"
+            max-rows="3"
+            >
+        </b-form-textarea>
+    </b-input-group>
+    <b-input-group id="ignoreDirsGrp" :prepend="$t('Modules.PMS.FindMedia.Settings.ignoreDirs')" class="mt-3">
+        <b-form-textarea
+            id="ignoreDirs" name="ignoreDirs" type="text" class="form-control" v-model="ignoreDirs" @change="setIgnoreDirs"
+            rows="3"
+            max-rows="3"
+            >
+        </b-form-textarea>
+    </b-input-group>
+    <br>
+    <div>
+        <b-form-checkbox
+            id="IgnoreHidden"
+            v-model="IgnoreHidden"
+            name="IgnoreHidden"
+            value=true
+            unchecked-value=false
+            @change="setIgnoreHidden"
+            >
+            {{ $t('Modules.PMS.FindMedia.Settings.IgnoreHidden') }}
+        </b-form-checkbox>
+    </div>
+    <!-- Disabled for now, since req a call for each media in lib
+    <div>
+        <b-form-checkbox
+            id="IgnoreExtras"
+            v-model="IgnoreExtras"
+            name="IgnoreExtras"
+            value=true
+            unchecked-value=false
+            @change="setIgnoreExtras"
+            >
+            {{ $t('Modules.PMS.FindMedia.Settings.IgnoreExtras') }}
+        </b-form-checkbox>
+    </div>
+    -->
 
-        <br>
-        <br>
+    <br>
+    <br>
+    <!-- Buttons -->
+    <div class="buttons">
         <!-- Buttons -->
-        <div class="buttons">
-            <!-- Buttons -->
-            <div id="buttons" class="text-center">
-                <b-button-group >
-                    <b-button variant="danger" class="mr-1" @click="reset"> {{ $t('Modules.PMS.FindMedia.Settings.Reset') }} </b-button>
-                    <b-button variant="success" class="mr-1" @click="jumpToFM"> {{ $t('Modules.PMS.FindMedia.Settings.Return') }} </b-button>
-                </b-button-group>
-            </div>
+        <div id="buttons" class="text-center">
+            <b-button-group >
+                <b-button variant="danger" class="mr-1" @click="reset"> {{ $t('Modules.PMS.FindMedia.Settings.Reset') }} </b-button>
+                <b-button variant="success" class="mr-1" @click="jumpToFM"> {{ $t('Modules.PMS.FindMedia.Settings.Return') }} </b-button>
+            </b-button-group>
         </div>
-    </b-container>
+    </div>
+  </b-container>
 </template>
 
 <script>
