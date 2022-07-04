@@ -1,33 +1,23 @@
 <template>
-  <div>
-    <div class="text-right">   <!-- Settings button -->
+  <b-container class="m-2 mt-2">
+    <div class="float-right d-none">   <!-- Settings button hidden with d-none -->
       <div class="buttons">
         <!-- Buttons -->
-        <div id="buttons">
-            <b-button-group id="settings">
-              <b-tooltip target="settings" triggers="hover">
-                  {{ $t(`Modules.${this.PageName}.ttSettings`) }}
-              </b-tooltip>
-              <!-- Set class d-none if not used, but keep on page for spacing -->
-              <!-- <button class="btn btn-outline-success d-none" @click="showSettings"><i class="fa fa-cog"></i></button> -->
-              <button class="btn btn-outline-success d-none"><i class="fa fa-cog"></i></button>
-            </b-button-group>
-        </div>
+        <b-button-group id="settings">
+          <b-tooltip target="settings" triggers="hover">
+              {{ $t(`Modules.${this.PageName}.ttSettings`) }}
+          </b-tooltip>
+          <button class="btn btn-outline-success" @click="showSettings"><i class="fa fa-cog"></i></button>
+        </b-button-group>
       </div>
     </div>
-    <b-container fluid>
-      <div>   <!-- Title and desc -->
-        <h2>
-          {{ $t(`Modules.${this.PageName}.Name`) }}
-        </h2>
-        <h5>{{ $t(`Modules.${this.PageName}.Description`) }}</h5>
-      </div>
-      <br>
-      <br>
-
-
-    </b-container>
-  </div>
+    <div>   <!-- Title and desc -->
+      <h2>
+        {{ $t(`Modules.${this.PageName}.Name`) }}
+      </h2>
+      <h5>{{ $t(`Modules.${this.PageName}.Description`) }}</h5>
+    </div>
+  </b-container>
 </template>
 
 <script>
