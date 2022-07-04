@@ -1,17 +1,16 @@
 <template>
-    <b-container fluid>
-        <div class="col-lg-10 col-md-12 col-xs-12">
-            <h1>{{ $t("Modules.ET.Custom.Title") }}</h1>
-            <p>{{ $t("Modules.ET.Custom.Description") }}</p>
+    <b-container class="m-2 mt-2">
+        <div>   <!-- Title and desc -->
+            <h2>
+                {{ $t(`Modules.ET.Custom.Title`) }}
+            </h2>
+            <h5>{{ $t(`Modules.ET.Custom.Description`) }}</h5>
         </div>
-        <br />
-
+        <br>
         <!-- Media type to export -->
-        <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.Custom.SelCustType')" label-size="lg" label-class="font-weight-bold pt-0">
-            <b-tooltip target="etTypeGroup" triggers="hover">
-                {{ $t('Modules.ET.Custom.TT-CustType') }}
-            </b-tooltip>
+        <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.Custom.SelCustType')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Custom.TT-CustType')">
             <b-form-select
+                style="width: 50%"
                 v-model="selMediaType"
                 id="mediaType"
                 :options="optionsMediaType"
@@ -21,11 +20,9 @@
         </b-form-group>
 
         <div> <!-- Select Custom Level -->
-            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0">
-                <b-tooltip target="etLevelGroup" triggers="hover">
-                    {{ $t('Modules.ET.Custom.TT-ETEditLevel') }}
-                </b-tooltip>
+            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Custom.TT-ETEditLevel')">
                 <b-form-select
+                    style="width: 50%"
                     class="form-control"
                     v-model="selCustLevel"
                     ref="selLevel"
@@ -38,18 +35,18 @@
         </div>
 
         <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle >
-          <div class="d-block text-center">
-              <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt ></b-form-input>
-          </div>
-          <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
+            <div class="d-block text-center">
+                <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt ></b-form-input>
+            </div>
+            <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
         </b-modal>
 
         <b-modal ref="confirmDeleteLevel" hide-footer v-bind:title=this.deleteLevel >
-          <div class="d-block text-center">
-              {{ $t('Modules.ET.Custom.confirmDelete', [this.selCustLevel]) }}
-          </div>
-          <b-button class="mt-3" variant="info" block @click="deleteClose">{{ $t('Modules.ET.Custom.Cancel') }}</b-button>
-          <b-button class="mt-3" variant="danger" block @click="deleteCustomLevel">{{ $t('Modules.ET.Custom.Delete') }}</b-button>
+            <div class="d-block text-center">
+                {{ $t('Modules.ET.Custom.confirmDelete', [this.selCustLevel]) }}
+            </div>
+            <b-button class="mt-3" variant="info" block @click="deleteClose">{{ $t('Modules.ET.Custom.Cancel') }}</b-button>
+            <b-button class="mt-3" variant="danger" block @click="deleteCustomLevel">{{ $t('Modules.ET.Custom.Delete') }}</b-button>
         </b-modal>
 
         <!-- Buttons -->
@@ -60,27 +57,29 @@
             </b-button-group>
         </div>
 
-        <div class="row">
-            <div class="col-md3">
-                <div id="rowheader" class="font-weight-bold pt-0">
-                    {{ $t('Modules.ET.Custom.availFields') }}
-                </div>
-                <draggable class="list-group" :list="fieldList" group="fields">
-                    <div class="list-group-item" v-for="(element) in fieldList" :key="element.name">
-                        {{ element.name }}
-                    </div>
-                </draggable>
-            </div>
 
-            <div class="col-md3">
-                <div id="rowheader" class="font-weight-bold pt-0">
-                    {{ $t('Modules.ET.Custom.customFields') }}
-                </div>
-                <draggable class="list-group" :list="resultList" group="fields">
-                    <div class="list-group-item" v-for="(element) in resultList" :key="element.name">
-                        {{ element.name }}
+        <div class="container"> <!-- Fields -->
+            <div class="row"> 
+                <div class="col-md-6">
+                    <div id="rowheader" class="font-weight-bold pt-0">
+                        {{ $t('Modules.ET.Custom.availFields') }}
                     </div>
-                </draggable>
+                    <draggable class="list-group" :list="fieldList" group="fields">
+                        <div class="list-group-item" v-for="(element) in fieldList" :key="element.name">
+                            {{ element.name }}
+                        </div>
+                    </draggable>
+                </div>
+                <div class="col-md-6">
+                    <div id="rowheader" class="font-weight-bold pt-0">
+                        {{ $t('Modules.ET.Custom.customFields') }}
+                    </div>
+                    <draggable class="list-group" :list="resultList" group="fields">
+                        <div class="list-group-item" v-for="(element) in resultList" :key="element.name">
+                            {{ element.name }}
+                        </div>
+                    </draggable>
+                </div>
             </div>
         </div>
 
