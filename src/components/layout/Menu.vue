@@ -37,6 +37,13 @@
                         title: this.$t("Common.Menu.Sidebar.NavSections.Tools"),
                         hiddenOnCollapse: true
                     },
+                    // Download
+                    {
+                        href: { path: '/download' },
+                        title: this.$t("Modules.Download.Name"),
+                        hidden: wtutils.hideMenu('download'),
+                        icon: 'fas fa-download'
+                    },
                     // Export Tools
                     {
                         href: { path: '/export' },

@@ -197,6 +197,12 @@
         }
     },
     "Modules": {
+        "Download":{
+            "Name": "Download",
+            "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights"
+
+
+        },
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
