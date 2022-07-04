@@ -1,33 +1,35 @@
 <template>
-  <b-container fluid>
-    <div class="col-lg-10 col-md-12 col-xs-12">
-        <h1>{{ $t("Modules.PMS.Butler.Name") }}</h1>
-        <p>{{ $t("Modules.PMS.Butler.Description") }}</p>
-    </div>
-
-    <div class="d-flex align-items-center">
-      <b-form-group id="ButlerGroup" v-bind:label="$t('Modules.PMS.Butler.SelectTask')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="ButlerGroup" triggers="hover">
-          {{ $t('Modules.PMS.Butler.TTSelectTask') }}
-        </b-tooltip>
-        <b-form-select
-          v-model="selTask"
-          id="selTask"
-          :options="selTaskOptions"
-          name="selTask">
-        </b-form-select>
-      </b-form-group>
-    </div>
-    <br>
-    <br>
-    <div class="buttons">
-        <!-- Buttons -->
-        <div id="buttons" class="text-center">
-            <b-button-group >
-                <b-button variant="success" class="mr-1" :disabled="this.selTask == ''" @click="executeButlerTask"> {{ $t('Modules.PMS.Butler.RunTask') }} </b-button>
-            </b-button-group>
+    <b-container class="m-2 mt-2">
+        <div>   <!-- Title and desc -->
+            <h2>
+                {{ $t(`Modules.PMS.Butler.Name`) }}
+            </h2>
+            <h5>{{ $t(`Modules.PMS.Butler.Description`) }}</h5>
         </div>
-    </div>
+        <br>
+        <div class="d-flex align-items-center">
+        <b-form-group id="ButlerGroup" v-bind:label="$t('Modules.PMS.Butler.SelectTask')" label-size="lg" label-class="font-weight-bold pt-0">
+            <b-tooltip target="ButlerGroup" triggers="hover">
+            {{ $t('Modules.PMS.Butler.TTSelectTask') }}
+            </b-tooltip>
+            <b-form-select
+            v-model="selTask"
+            id="selTask"
+            :options="selTaskOptions"
+            name="selTask">
+            </b-form-select>
+        </b-form-group>
+        </div>
+        <br>
+        <br>
+        <div class="buttons">
+            <!-- Buttons -->
+            <div id="buttons" class="text-center">
+                <b-button-group >
+                    <b-button variant="success" class="mr-1" :disabled="this.selTask == ''" @click="executeButlerTask"> {{ $t('Modules.PMS.Butler.RunTask') }} </b-button>
+                </b-button-group>
+            </div>
+        </div>
   </b-container>
 </template>
 
