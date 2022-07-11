@@ -199,9 +199,9 @@
     "Modules": {
         "Download":{
             "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights"
-
-
+            "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights",
+            "SelSrv": "Select Server",
+            "TT-Server": "Select the server to download from"
         },
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",

@@ -103,24 +103,14 @@ const actions = {
               log.debug('[plextv.js] (fetchPlexServers) fetchPlexServers : See not owned servers as well');
             }
             response.data.forEach((req) => {
-              if (showNotOwned){
-                if (req.product == "Plex Media Server") {
-                  let pmsServer = {};
-                  pmsServer['name'] = req.name;
-                  pmsServer['accessToken'] = req.accessToken;
-                  pmsServer['connections'] = req.connections;
-                  pmsServer['clientIdentifier'] = req.clientIdentifier;
-                  result.push(pmsServer);
-                }
-              } else {
-                if (req.owned == true && req.product == "Plex Media Server") {
-                  let pmsServer = {};
-                  pmsServer['name'] = req.name;
-                  pmsServer['accessToken'] = req.accessToken;
-                  pmsServer['connections'] = req.connections;
-                  pmsServer['clientIdentifier'] = req.clientIdentifier
-                  result.push(pmsServer);
-                }
+              if (req.product == "Plex Media Server") {
+                let pmsServer = {};
+                pmsServer['name'] = req.name;
+                pmsServer['accessToken'] = req.accessToken;
+                pmsServer['connections'] = req.connections;
+                pmsServer['clientIdentifier'] = req.clientIdentifier;
+                pmsServer['owned'] = req.owned;
+                result.push(pmsServer);
               }
             })
             commit('UPDATE_PLEX_SERVERS', result);
