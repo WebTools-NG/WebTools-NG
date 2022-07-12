@@ -57,31 +57,37 @@
             </b-button-group>
         </div>
 
+        <b-container fluid>
+            <b-row>
+                <b-col cols="6">
+                    <b-card-group deck>
+                        <b-card no-body :header= "$t(`Modules.ET.Custom.availFields`)" class="font-weight-bold pt-0">
+                            <b-list-group>
+                                <draggable class="list-group" :list="fieldList" group="fields">
+                                    <div class="list-group-item font-weight-normal" v-for="(element) in fieldList" :key="element.name">
+                                        {{ element.name }}
+                                    </div>
+                                </draggable>
+                            </b-list-group>
+                        </b-card>
+                    </b-card-group>
+                </b-col>
+                <b-col cols="6">
+                    <b-card-group deck>
+                        <b-card no-body :header="$t('Modules.ET.Custom.customFields')" class="font-weight-bold pt-0">
+                            <draggable class="list-group" :list="resultList" group="fields">
+                                <div class="list-group-item font-weight-normal" v-for="(element) in resultList" :key="element.name">
+                                    {{ element.name }}
+                                </div>
+                            </draggable>
+                        </b-card>
+                    </b-card-group>
+                </b-col>
+            </b-row>
+        </b-container>
 
-        <div class="container"> <!-- Fields -->
-            <div class="row"> 
-                <div class="col-md-6">
-                    <div id="rowheader" class="font-weight-bold pt-0">
-                        {{ $t('Modules.ET.Custom.availFields') }}
-                    </div>
-                    <draggable class="list-group" :list="fieldList" group="fields">
-                        <div class="list-group-item" v-for="(element) in fieldList" :key="element.name">
-                            {{ element.name }}
-                        </div>
-                    </draggable>
-                </div>
-                <div class="col-md-6">
-                    <div id="rowheader" class="font-weight-bold pt-0">
-                        {{ $t('Modules.ET.Custom.customFields') }}
-                    </div>
-                    <draggable class="list-group" :list="resultList" group="fields">
-                        <div class="list-group-item" v-for="(element) in resultList" :key="element.name">
-                            {{ element.name }}
-                        </div>
-                    </draggable>
-                </div>
-            </div>
-        </div>
+
+
 
     </b-container>
 </template>
@@ -374,26 +380,22 @@
 
 
 <style scoped>
-#rowheader{
-    margin-left: 25px;
-    margin-bottom: 10px;
-}
 .list-group{
-    width: 350px;
-    height: 250px;
+    /* width: 350px; */
+    width:auto;
+    height: 200px;
     margin-bottom: 10px;
-    overflow:scroll;
+    /*overflow:scroll; */
+    overflow-y:auto;
+    min-height: 20px;
     /* -webkit-overflow-scrolling: touch; */
-    margin-right: 10px;
-    margin-left: 10px;
+    /* margin-right: 10px; */
+    /* margin-left: 10px; */
 }
 
 .ghost {
   opacity: 0.5;
   background: #c8ebfb;
-}
-.list-group {
-  min-height: 20px;
 }
 
 .list-group-item {
