@@ -29,6 +29,7 @@
   //import i18n from '../../../i18n';
   //import store from '../../../store';
   //import { wtconfig, wtutils } from '../General/wtutils';
+  import { ptv } from '../General/plextv'
 
   const log = require("electron-log");
   export default {
@@ -36,7 +37,8 @@
         return {
           PageName: "Download",
           selSrvOptions: [],
-          selSrvWait: true
+          selSrvWait: true,
+          selSrv: null
         };
   },
   created() {
@@ -45,8 +47,27 @@
   },
   methods: {
     // Get a list of servers, that we can download from
-    getValidServers(){
-      console.log('Ged 44-3 get valid servers')
+    async getValidServers(){
+      log.info(`[download.vue] (getValidServers) - Start getting valid servers`);
+      this.selSrvWait = false;
+      // Get all servers
+      let allPMSSrv = await ptv.getPMSServers( true );
+      // Walk each of them, to get the options
+      for (var idx in allPMSSrv){
+        if ( !allPMSSrv[idx]['PMSInfo'] ){
+          await ptv.checkServerOptions(allPMSSrv[idx]);
+        }
+      }
+      // Get all servers again, but this time with updated info
+      allPMSSrv = await ptv.getPMSServers( true );
+      for (idx in allPMSSrv){
+        let option = {}
+        option['text'] = allPMSSrv[idx]['name'];
+        option['value'] = allPMSSrv[idx]['clientIdentifier'];
+        option['disabled'] = (allPMSSrv[idx]['PMSInfo']['Sync'] === false);
+        this.selSrvOptions.push(option);
+      }
+      this.selSrvWait = true;
     }
   },
   watch: {
