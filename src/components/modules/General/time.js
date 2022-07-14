@@ -150,6 +150,13 @@ const time = new class Time {
          };
     }
 
+    async convertEpochToDate( epoch )
+    {
+        console.log('Ged 77-3', epoch)
+        console.log('Ged 77-4', new Intl.DateTimeFormat(wtconfig.get('General.DateTimeFormat')).format(epoch * 1000))
+        return new Intl.DateTimeFormat(wtconfig.get('General.DateTimeFormat')).format(epoch * 1000);
+    }
+
     async convertToLocalDateTime( datetime ){
         const localFormat = wtconfig.get('General.DateTimeFormat', 'NOTSET');
         if ( localFormat === 'NOTSET'){
