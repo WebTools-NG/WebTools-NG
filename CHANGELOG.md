@@ -22,7 +22,6 @@
 * [#529 Spelling error in ET file range dialogue](https://github.com/WebTools-NG/WebTools-NG/issues/529)
 * [#531 Date-Time settings missing from settings](https://github.com/WebTools-NG/WebTools-NG/issues/531)
 * [#530 ET Suggested file naming - incorrect output](https://github.com/WebTools-NG/WebTools-NG/issues/530)
-* [#507 Download Module](https://github.com/WebTools-NG/WebTools-NG/issues/507)
 
 ## V0.3.17 (20220601)
 
