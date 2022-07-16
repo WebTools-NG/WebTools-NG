@@ -128,58 +128,23 @@ function getSuggestedId( data )
 {
     log.verbose(`[ethelper.js] (getSuggestedId) - Started. To see Param, switch to Silly logging`);
     log.silly(`[ethelper.js] (getSuggestedId) - Starting with param: ${JSON.stringify(data)}`);
-    let imdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data}));
-    let tmdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data}));
-    let tvdb = String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data}));
-    if (imdb === ''){
-        imdb = "imdb://" + String(JSONPath({path: "$.data.guid", json: data})).substring(26,).split('?')[0];
+    let imdb = `{imdb-${String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('imdb'))].id", json: data})).substring(7,)}}`;
+    if (imdb === '{imdb-}'){
+        imdb = `{imdb-${String(JSONPath({path: "$.data.guid", json: data})).substring(26,).split('?')[0]}}`;
     }
-    // Fallback to imdb, if tmdb is not present
-    if (tmdb === '')
-    {
-        tmdb = imdb;
-    }
-    // Fallback to imdb, if tvdb is not present
-    if (tvdb === '')
-    {
-        tvdb = imdb;
-    }
-    let selId;
-    if ( etHelper.Settings.libType === 1)
-    {
-        selId = wtconfig.get("ET.SelectedMoviesID", "imdb");
-    }
-    else
-    {
-        selId = wtconfig.get("ET.SelectedShowsID", "tmdb");
-    }
-    log.silly(`[ethelper.js] (getSuggestedId) - imdb ID: ${imdb}`);
-    log.silly(`[ethelper.js] (getSuggestedId) - tmdb ID: ${tmdb}`);
-    log.silly(`[ethelper.js] (getSuggestedId) - tvdb ID: ${tvdb}`);
-
-    let Id;
-    switch(selId) {
+    let tmdb = `{tmdb-${String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tmdb'))].id", json: data})).substring(7,)}}`;
+    let tvdb = `{tvdb-${String(JSONPath({path: "$.data.Guid[?(@.id.startsWith('tvdb'))].id", json: data})).substring(7,)}}`;
+    var Id;
+    switch ( wtconfig.get("ET.SelectedMoviesID", "imdb") ){
         case 'imdb':
-            Id = `{imdb-${imdb.slice(7)}}`;
+            Id = imdb;
             break;
         case 'tmdb':
-            if (tmdb === '')
-            {
-                Id = `{imdb-${imdb.slice(7)}}`;
+            if (tmdb === '{tmdb-}'){
+                Id = imdb;
             }
-            else
-            {
-                Id = `{tmdb-${tmdb.slice(7)}}`;
-            }
-            break;
-        case 'tvdb':
-            if (tvdb === '')
-            {
-                Id = `{imdb-${imdb.slice(7)}}`;
-            }
-            else
-            {
-                Id = `{tvdb-${tvdb.slice(7)}}`;
+            else {
+                Id = tmdb;
             }
             break;
     }
@@ -197,28 +162,20 @@ function stripYearFromFileName( tmpFileName, year ){
 function stripIdFromFileName( param ){
     log.debug(`[ethelper.js] (stripIdFromFileName) - starting function with param as: ${JSON.stringify(param)}`);
     let tmpFileName = param.tmpFileName;
-    let re;
-    const imdb = param.imdb.slice(7);
-    const tmdb = param.tmdb.slice(7);
-    const tvdb = param.tvdb.slice(7);
+    const imdb = param.imdb;
+    const tmdb = param.tmdb;
+    const tvdb = param.tvdb;
     // Remove IMDB id
     log.debug(`[ethelper.js] (stripIdFromFileName) - Imdb string is : ${imdb}`);
-    re = new RegExp(`\\b${imdb}\\b`, 'gi');
-    tmpFileName = tmpFileName.replace(re, "");
-    log.debug(`[ethelper.js] (stripIdFromFileName) - After imdb id is removed: ${tmpFileName}`);
-    tmpFileName = tmpFileName.replace(/imdb-/i, '');
+    tmpFileName = tmpFileName.replaceAll(imdb, '');
+    tmpFileName = tmpFileName.replaceAll(imdb.slice(6,-1), '');
     log.debug(`[ethelper.js] (stripIdFromFileName) - After imdb string is removed: ${tmpFileName}`);
     // Remove TMDB id
-    re = new RegExp(`\\b${tmdb}\\b`, 'gi');
-    tmpFileName = tmpFileName.replace(re, "");
+    tmpFileName = tmpFileName.replaceAll(tmdb, '');
+    tmpFileName = tmpFileName.replaceAll(tmdb.slice(6,-1), '');
     // Remove TVDB id
-    re = new RegExp(`\\b${tvdb}\\b`, 'gi');
-    tmpFileName = tmpFileName.replace(re, "");
-    const idProviders = ['imdb', 'tmdb', 'tvdb'];
-    idProviders.forEach(element => {
-        re = new RegExp(`\\b${element}\\b`, 'gi');
-        tmpFileName = tmpFileName.replace(re, "");
-    });
+    tmpFileName = tmpFileName.replaceAll(tvdb, '');
+    tmpFileName = tmpFileName.replaceAll(tvdb.slice(6,-1), '');
     return tmpFileName.replace(`{-}`, "").trim();
 }
 
@@ -532,45 +489,6 @@ const etHelper = new class ETHELPER {
         tmpFileName = parts.fileName;
         const partName = parts.partName;
         tmpFileName = cleanupSuggestedFile(tmpFileName);
-
-        //cleanupSuggestedFile(tmpFileName);
-
-        /*
-        // Remove empty brackets if present
-        tmpFileName = tmpFileName.replaceAll("()", "");
-        // Remove empty curly brackets if present
-        tmpFileName = tmpFileName.replaceAll("{}", "");
-        // Now replace square brackets if present with a dot
-        tmpFileName = tmpFileName.replaceAll("[", ".");
-        tmpFileName = tmpFileName.replaceAll("]", ".");
-        // Remove double dots if present
-        tmpFileName = tmpFileName.replaceAll("..", ".");
-        tmpFileName = tmpFileName.trim();
-        // Remove leading dots if present
-        while(tmpFileName.charAt(0) === '.')
-        {
-            tmpFileName = tmpFileName.substring(1);
-        }
-        // Remove trailing dots if present
-        while(tmpFileName.slice(-1) === '.')
-        {
-            tmpFileName = tmpFileName.substring(0, tmpFileName.length - 1);
-        }
-        // Remove double square brackets if present
-        tmpFileName = tmpFileName.replaceAll("[]", "");
-        // Remove double square brackets with a space if present
-        tmpFileName = tmpFileName.replaceAll("[ ]", "");
-        // Remove double space if present
-        tmpFileName = tmpFileName.replaceAll("  ", " ");
-        // Remove space dot if present, and replace with dot
-        tmpFileName = tmpFileName.replaceAll(" .", ".");
-
-
-
-
-        tmpFileName = tmpFileName.trim();
-
-         */
         // Get filename part of remaining filename
         if (tmpFileName.length >= 1)
         {
