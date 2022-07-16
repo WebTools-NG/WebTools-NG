@@ -20,6 +20,7 @@
 * [#508 No timestamp in output file](https://github.com/WebTools-NG/WebTools-NG/issues/508)
 * [#521 Inconsistent Font sizing and spacing](https://github.com/WebTools-NG/WebTools-NG/issues/521)
 * [#529 Spelling error in ET file range dialogue](https://github.com/WebTools-NG/WebTools-NG/issues/529)
+* [#531 Date-Time settings missing from settings](https://github.com/WebTools-NG/WebTools-NG/issues/531)
 * [#507 Download Module](https://github.com/WebTools-NG/WebTools-NG/issues/507)
 
 ## V0.3.17 (20220601)

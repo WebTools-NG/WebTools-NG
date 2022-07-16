@@ -22,27 +22,40 @@
     </b-input-group>
 
     <b-input-group id="LogLevelSizeGrp" :prepend="$t('Modules.GlobalSettings.LogSize')" class="mt-3">
-        <b-tooltip target="LogLevelSizeGrp" triggers="hover">
-          {{ $t('Modules.GlobalSettings.RestartNeeded') }}
-        </b-tooltip>
-        <b-form-select id="LogLevelSize" name="LogLevelSize" type="text" class="form-control" v-model="LogLevelSize" :disabled=false :maxlength=4 v-on:change="setLogLevelSize" :options="LogLevelSizes"></b-form-select>
+      <b-tooltip target="LogLevelSizeGrp" triggers="hover">
+        {{ $t('Modules.GlobalSettings.RestartNeeded') }}
+      </b-tooltip>
+      <b-form-select id="LogLevelSize" name="LogLevelSize" type="text" class="form-control" v-model="LogLevelSize" :disabled=false :maxlength=4 v-on:change="setLogLevelSize" :options="LogLevelSizes"></b-form-select>
     </b-input-group>
 
     <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">
-        <b-tooltip target="BetaTesterGrp" triggers="hover">
-          {{ $t('Modules.GlobalSettings.TTBetaTester') }}
-        </b-tooltip>
-        <b-form-select id="BetaTester" name="BetaTester" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
+      <b-tooltip target="BetaTesterGrp" triggers="hover">
+        {{ $t('Modules.GlobalSettings.TTBetaTester') }}
+      </b-tooltip>
+      <b-form-select id="BetaTester" name="BetaTester" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
     </b-input-group>
 
     <b-input-group id="Update" :prepend="$t('Modules.GlobalSettings.Update')" class="mt-3">
-        <b-tooltip target="Update" triggers="hover">
-          {{ $t('Modules.GlobalSettings.TTUpdate') }}
-        </b-tooltip>
-        <b-form-select id="Update" name="Update" type="text" class="form-control" v-model="Update" :disabled=false :maxlength=2 v-on:change="setUpdate" :options="UpdateLevels">
-            {{ this.getUpdate() }}
-        </b-form-select>
+      <b-tooltip target="Update" triggers="hover">
+        {{ $t('Modules.GlobalSettings.TTUpdate') }}
+      </b-tooltip>
+      <b-form-select id="Update" name="Update" type="text" class="form-control" v-model="Update" :disabled=false :maxlength=2 v-on:change="setUpdate" :options="UpdateLevels">
+          {{ this.getUpdate() }}
+      </b-form-select>
     </b-input-group>
+
+    <b-input-group id="LocalDateTimeGrp" :prepend="$t('Modules.GlobalSettings.LocalDateTime')" class="mt-3">
+      <b-form-select id="LocalDateTime" name="LocalDateTime" type="text" class="form-control" v-model="LocalDateTime" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'General.DateTimeFormat')" :options="LocalDateTimeOptions"></b-form-select>
+    </b-input-group>
+
+    <b-input-group id="DateOptionGrp" :prepend="$t('Modules.GlobalSettings.DateStyle')" class="mt-3">
+      <b-form-select id="DateOption" name="DateOption" type="text" class="form-control" v-model="DateOption" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'General.DateOption')" :options="DateTimeOptions"></b-form-select>
+    </b-input-group>
+
+    <b-input-group id="TimeOptionGrp" :prepend="$t('Modules.GlobalSettings.TimeStyle')" class="mt-3">
+      <b-form-select id="TimeOption" name="TimeOption" type="text" class="form-control" v-model="TimeOption" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'General.TimeOption')" :options="DateTimeOptions"></b-form-select>
+    </b-input-group>
+
     <br>
     <!-- Buttons -->
     <div class="buttons">
@@ -60,6 +73,7 @@
 <script>
   import i18n from '../../../../i18n';
   import { wtconfig } from '../../General/wtutils';
+  import { time } from '../../General/time';
 
   const log = require("electron-log");
   export default {
@@ -69,7 +83,12 @@
           LogLevelConsole: wtconfig.get('Log.consoleLevel'),
           LogLevelSize: this.getLogFileSize(),
           BetaTester: this.getBeta(),
-          Update: this.getUpdate()
+          Update: this.getUpdate(),
+          LocalDateTimeOptions: time.countries,
+          DateTimeOptions: [ i18n.t("Common.DateTime.Full"), i18n.t("Common.DateTime.Long"), i18n.t("Common.DateTime.Medium"), i18n.t("Common.DateTime.Short")],
+          LocalDateTime: wtconfig.get('General.DateTimeFormat'),
+          DateOption: wtconfig.get('General.DateOption'),
+          TimeOption: wtconfig.get('General.TimeOption')
         };
     },
     created() {
