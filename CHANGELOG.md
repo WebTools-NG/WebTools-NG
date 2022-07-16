@@ -19,6 +19,7 @@
 * [#514 Bring back EN translations from Romain](https://github.com/WebTools-NG/WebTools-NG/issues/514)
 * [#508 No timestamp in output file](https://github.com/WebTools-NG/WebTools-NG/issues/508)
 * [#521 Inconsistent Font sizing and spacing](https://github.com/WebTools-NG/WebTools-NG/issues/521)
+* [#529 Spelling error in ET file range dialogue](https://github.com/WebTools-NG/WebTools-NG/issues/529)
 * [#507 Download Module](https://github.com/WebTools-NG/WebTools-NG/issues/507)
 
 ## V0.3.17 (20220601)
