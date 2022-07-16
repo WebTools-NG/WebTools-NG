@@ -342,7 +342,7 @@
                 "itemEnd": "The ending item (Normally the last item in the library)",
                 "startStopDesc": "Here you have the option to define what item to start exporting with,",
                 "startStopDesc2": "as well as what item stop at.",
-                "startStopDesc3": "Use this to split export files into smaller chuncks (files) if needed.",
+                "startStopDesc3": "Use this to split export files into smaller chunks (files) if needed.",
                 "startStopDesc4": "We default to export everything.",
                 "startStopStartingItem": "Item to start with",
                 "startStopEndingItem": "Item to end with",
