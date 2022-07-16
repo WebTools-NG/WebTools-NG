@@ -9,17 +9,17 @@
 
 **Changes**:
 
-* [#498 Add preferences to shows export](https://github.com/WebTools-NG/WebTools-NG/issues/498)
-* [#500 Library Path Mapping](https://github.com/WebTools-NG/WebTools-NG/issues/500)
+* [#498 Add preferences to shows export](https://github.com/WebTools-NG/WebTools-NG/issues/498) (New Feature)
+* [#500 Library Path Mapping](https://github.com/WebTools-NG/WebTools-NG/issues/500) (New Feature)
 * [#505 FindMedia](https://github.com/WebTools-NG/WebTools-NG/issues/505) (New Module)
-* [#509 Refactor Settings](https://github.com/WebTools-NG/WebTools-NG/issues/509)
-* [#512 ET Intro Start/End isn't exported](https://github.com/WebTools-NG/WebTools-NG/issues/512)
-* [#514 Bring back EN translations from Romain](https://github.com/WebTools-NG/WebTools-NG/issues/514)
-* [#508 No timestamp in output file](https://github.com/WebTools-NG/WebTools-NG/issues/508)
-* [#521 Inconsistent Font sizing and spacing](https://github.com/WebTools-NG/WebTools-NG/issues/521)
-* [#529 Spelling error in ET file range dialogue](https://github.com/WebTools-NG/WebTools-NG/issues/529)
-* [#531 Date-Time settings missing from settings](https://github.com/WebTools-NG/WebTools-NG/issues/531)
-* [#530 ET Suggested file naming - incorrect output](https://github.com/WebTools-NG/WebTools-NG/issues/530)
+* [#509 Refactor Settings](https://github.com/WebTools-NG/WebTools-NG/issues/509) (Internal)
+* [#512 ET Intro Start/End isn't exported](https://github.com/WebTools-NG/WebTools-NG/issues/512) (Bug fix)
+* [#514 Bring back EN translations from Romain](https://github.com/WebTools-NG/WebTools-NG/issues/514) (Internal)
+* [#508 No timestamp in output file](https://github.com/WebTools-NG/WebTools-NG/issues/508) (New Feature)
+* [#521 Inconsistent Font sizing and spacing](https://github.com/WebTools-NG/WebTools-NG/issues/521) (Bug fix)
+* [#529 Spelling error in ET file range dialogue](https://github.com/WebTools-NG/WebTools-NG/issues/529) (Bug fix)
+* [#531 Date-Time settings missing from settings](https://github.com/WebTools-NG/WebTools-NG/issues/531) (Bug fix)
+* [#530 ET Suggested file naming - incorrect output](https://github.com/WebTools-NG/WebTools-NG/issues/530) (Bug fix)
 
 ## V0.3.17 (20220601)
 
