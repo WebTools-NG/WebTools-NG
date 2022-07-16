@@ -2,9 +2,7 @@
 
 ## V1.0.0 First Official Release (Not Yet Released)
 
-**Note**:   This version is a Beta version
-
-**Note 2**: In this version, the following is disabled:
+**Note**: In this version, the following is disabled:
 
 * Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
 * Photo export
@@ -13,7 +11,7 @@
 
 * [#498 Add preferences to shows export](https://github.com/WebTools-NG/WebTools-NG/issues/498)
 * [#500 Library Path Mapping](https://github.com/WebTools-NG/WebTools-NG/issues/500)
-* [#505 FindMedia](https://github.com/WebTools-NG/WebTools-NG/issues/505)
+* [#505 FindMedia](https://github.com/WebTools-NG/WebTools-NG/issues/505) (New Module)
 * [#509 Refactor Settings](https://github.com/WebTools-NG/WebTools-NG/issues/509)
 * [#512 ET Intro Start/End isn't exported](https://github.com/WebTools-NG/WebTools-NG/issues/512)
 * [#514 Bring back EN translations from Romain](https://github.com/WebTools-NG/WebTools-NG/issues/514)
