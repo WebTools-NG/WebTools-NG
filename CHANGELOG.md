@@ -20,6 +20,7 @@
 * [#529 Spelling error in ET file range dialogue](https://github.com/WebTools-NG/WebTools-NG/issues/529) (Bug fix)
 * [#531 Date-Time settings missing from settings](https://github.com/WebTools-NG/WebTools-NG/issues/531) (Bug fix)
 * [#530 ET Suggested file naming - incorrect output](https://github.com/WebTools-NG/WebTools-NG/issues/530) (Bug fix)
+* [#538 ET Library output needs the Library Title in 1st Column](https://github.com/WebTools-NG/WebTools-NG/issues/538) (Bug fix)
 
 ## V0.3.17 (20220601)
 
