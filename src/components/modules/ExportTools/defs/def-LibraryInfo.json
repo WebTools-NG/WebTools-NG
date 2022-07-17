@@ -2,6 +2,7 @@
     "1002": {
         "level": {
             "all": [
+                "Title",
                 "Agent",
                 "Allow Sync",
                 "Art url",
@@ -18,7 +19,6 @@
                 "Refreshing",
                 "Scanned At",
                 "Scanner",
-                "Title",
                 "Type",
                 "Updated"
             ]
