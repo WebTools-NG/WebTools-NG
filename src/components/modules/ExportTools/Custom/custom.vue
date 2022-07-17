@@ -32,7 +32,7 @@
                 </b-form-select>
             </b-form-group>
         </div>
-        <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle >
+        <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle @hide="newLevelHidden">
             <div class="d-block text-center">
                 <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt ></b-form-input>
             </div>
@@ -126,6 +126,9 @@
         }
     },
     watch: {
+        selCustLevel(){
+            this.btnSaveEnabled = ( (this.selCustLevel != "") && ( this.selCustLevel != "NewLevel"));
+        },
         isDragging(newValue) {
             if (newValue) {
                 this.delayedDragging = true;
@@ -155,6 +158,12 @@
         this.genExportLevels();
     },
     methods: {
+        newLevelHidden(){
+            if (this.NewLevelName === '')
+            {
+                this.selCustLevel = '';
+            }
+        },
         getCustomLevel() {
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
@@ -350,7 +359,7 @@
             this.$refs['confirmDeleteLevel'].show();
         },
         selectExportLevel: async function(value) {
-            this.btnSaveEnabled = ( this.selCustLevel != "");
+            // this.btnSaveEnabled = ( this.selCustLevel != "");
             log.info(`Custom ExportLevel selected as: ${value}`)
             if ( value == 'NewLevel') {
                 // Create new level
@@ -360,6 +369,7 @@
             else {
                 this.btnDeleteEnabled = true;
                 this.selCustLevel = value;
+                //this.btnSaveEnabled = ( this.selCustLevel != "");
             }
             this.resultList = [];
             await this.genExportLevels();
