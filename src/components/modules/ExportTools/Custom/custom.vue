@@ -18,7 +18,6 @@
                 name="mediaType">
             </b-form-select>
         </b-form-group>
-
         <div> <!-- Select Custom Level -->
             <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Custom.TT-ETEditLevel')">
                 <b-form-select
@@ -33,14 +32,12 @@
                 </b-form-select>
             </b-form-group>
         </div>
-
-        <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle >
+        <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle @hide="newLevelHidden">
             <div class="d-block text-center">
                 <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt ></b-form-input>
             </div>
             <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
         </b-modal>
-
         <b-modal ref="confirmDeleteLevel" hide-footer v-bind:title=this.deleteLevel >
             <div class="d-block text-center">
                 {{ $t('Modules.ET.Custom.confirmDelete', [this.selCustLevel]) }}
@@ -48,15 +45,12 @@
             <b-button class="mt-3" variant="info" block @click="deleteClose">{{ $t('Modules.ET.Custom.Cancel') }}</b-button>
             <b-button class="mt-3" variant="danger" block @click="deleteCustomLevel">{{ $t('Modules.ET.Custom.Delete') }}</b-button>
         </b-modal>
-
-        <!-- Buttons -->
-        <div id="buttons" class="text-center">
+        <div id="buttons" class="text-center"> <!-- Buttons -->
             <b-button-group >
-                <b-button variant="success" class="mr-1" @click="saveCustomLevel"> {{ $t('Modules.ET.Custom.btnSave') }} </b-button>
+                <b-button variant="success" class="mr-1" :disabled="this.btnSaveEnabled == 0" @click="saveCustomLevel"> {{ $t('Modules.ET.Custom.btnSave') }} </b-button>
                 <b-button variant="danger" class="mr-1" :disabled="this.btnDeleteEnabled == 0" @click="confirmDeleteLevel">{{ $t('Modules.ET.Custom.btnDelete') }}</b-button>
             </b-button-group>
         </div>
-
         <b-container fluid>
             <b-row>
                 <b-col cols="6">
@@ -85,10 +79,6 @@
                 </b-col>
             </b-row>
         </b-container>
-
-
-
-
     </b-container>
 </template>
 
@@ -130,11 +120,15 @@
             delayedDragging: false,
             fieldList: [],
             btnDeleteEnabled: false,
+            btnSaveEnabled: false,
             optionsLevels: null,
             resultList: []
         }
     },
     watch: {
+        selCustLevel(){
+            this.btnSaveEnabled = ( (this.selCustLevel != "") && ( this.selCustLevel != "NewLevel"));
+        },
         isDragging(newValue) {
             if (newValue) {
                 this.delayedDragging = true;
@@ -164,6 +158,12 @@
         this.genExportLevels();
     },
     methods: {
+        newLevelHidden(){
+            if (this.NewLevelName === '')
+            {
+                this.selCustLevel = '';
+            }
+        },
         getCustomLevel() {
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
@@ -319,13 +319,13 @@
             wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
             wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`);
             wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`);
+            wtconfig.delete(`ET.CustomLevels.${this.selMediaType}.Include.${this.selCustLevel}`);
             this.genExportLevels();
             this.resultList = [];
         },
         saveCustomLevel() {
             let result = []
             let bExportArt = false;
-
             let bExportPosters = false;
             for(var k in this.resultList) {
                 if (this.resultList[k].name == 'Export Posters')
@@ -359,6 +359,7 @@
             this.$refs['confirmDeleteLevel'].show();
         },
         selectExportLevel: async function(value) {
+            // this.btnSaveEnabled = ( this.selCustLevel != "");
             log.info(`Custom ExportLevel selected as: ${value}`)
             if ( value == 'NewLevel') {
                 // Create new level
@@ -368,6 +369,7 @@
             else {
                 this.btnDeleteEnabled = true;
                 this.selCustLevel = value;
+                //this.btnSaveEnabled = ( this.selCustLevel != "");
             }
             this.resultList = [];
             await this.genExportLevels();
