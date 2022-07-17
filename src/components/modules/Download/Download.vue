@@ -114,6 +114,7 @@
         selLibrarySize: null,
         LibraryGroupDisabled: true,
         tableConfig: [
+          { prop: 'mediaKey', isHidden: true },
           { prop: 'Key', isHidden: true },
           { prop: 'Title',searchable: true,sortable: true, width: 80 },
           { prop: 'Released',searchable: true,sortable: true, width: 30 },
@@ -193,6 +194,7 @@
       }
     },
     async getMediaInfo(key){
+      console.log('Ged 44-3', JSON.stringify(this.MItableData))
       const url = `${this.srvBaseAddress}/library/metadata/${key}?${this.uriExclude}`;
       let header = wtutils.PMSHeader;
       header['X-Plex-Token'] = this.srvToken;
@@ -208,6 +210,7 @@
         var path = require('path');
         for (var idx in parts){
           let entry = {};
+          entry['mediaKey'] = key;
           for (var x in this.selLibrary['location']){
             if ( parts[idx]['file'].startsWith( this.selLibrary['location'][x]['path'] ) )
             {
