@@ -137,7 +137,8 @@
           { prop: '_action', name: ' ', actionName: 'actionCommon', width: 10 },
           { prop: 'Key', isHidden: true },
           { prop: 'File',searchable: false,sortable: false, width: 100 },
-          { prop: 'Type',searchable: false,sortable: false, width: 10 }
+          { prop: 'Type',searchable: false,sortable: false, width: 10 },
+          { prop: 'Hash',isHidden: true }
         ],
         MItableData: [],
         MItableAttribute: {
@@ -210,28 +211,32 @@
         var path = require('path');
         for (var idx in parts){
           let entry = {};
-          entry['mediaKey'] = key;
-          for (var x in this.selLibrary['location']){
-            if ( parts[idx]['file'].startsWith( this.selLibrary['location'][x]['path'] ) )
-            {
-              // Get Media Dir
-              this.selMediaDir = path.dirname(parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1));  // Returns a dot if not found
-              entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1).slice(this.selMediaDir.length + 1);
-              break;
+          if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(parts[idx]['key']) == -1){
+            entry['Key'] = parts[idx]['key'];
+            entry['Type'] = response['data']['MediaContainer']['Metadata'][0]['type'];
+            for (var x in this.selLibrary['location']){
+              if ( parts[idx]['file'].startsWith( this.selLibrary['location'][x]['path'] ) )
+              {
+                // Get Media Dir
+                this.selMediaDir = path.dirname(parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1));  // Returns a dot if not found
+                entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1).slice(this.selMediaDir.length + 1);
+                break;
+              }
             }
+            this.MItableData.push(entry);     //Add media
           }
-          entry['Key'] = parts[idx]['key'];
-          entry['Type'] = response['data']['MediaContainer']['Metadata'][0]['type'];
-          this.MItableData.push(entry);     //Add media
           // Get media file without ext
-          const mFile = path.parse(entry['File']).name
+          const mFile = path.parse(parts[idx]['file']).name
           for ( x in parts[idx]['Stream']){
             if (parts[idx]['Stream'][x]['key'] ){
-              entry = {};
-              entry['Key'] = parts[idx]['Stream'][x]['key'];
-              entry['Type'] = parts[idx]['Stream'][x]['format'];
-              entry['File'] = `${mFile}.${parts[idx]['Stream'][x]['languageTag']}.${parts[idx]['Stream'][x]['format']}`;
-              this.MItableData.push(entry);     //Add sub
+              const streamKey = parts[idx]['Stream'][x]['key'];
+              if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(streamKey) == -1){
+                entry = {};
+                entry['Key'] = parts[idx]['Stream'][x]['key'];
+                entry['Type'] = parts[idx]['Stream'][x]['format'];
+                entry['File'] = `${mFile}.${parts[idx]['Stream'][x]['languageTag']}.${parts[idx]['Stream'][x]['format']}`;
+                this.MItableData.push(entry);     //Add sub
+              }
             }
           }
         }
