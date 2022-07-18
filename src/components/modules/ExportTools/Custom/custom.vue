@@ -34,9 +34,9 @@
         </div>
         <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle @hide="newLevelHidden">
             <div class="d-block text-center">
-                <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt ></b-form-input>
+                <b-form-input v-model="NewLevelName" v-bind:placeholder=this.NewLevelInputTxt></b-form-input>
             </div>
-            <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel">{{ this.NewLevelSaveTxt }}</b-button>
+            <b-button class="mt-3" variant="outline-primary" block @click="addNewLevel" :disabled="this.btnAddNewLevelEnabled">{{ this.NewLevelSaveTxt }}</b-button>
         </b-modal>
         <b-modal ref="confirmDeleteLevel" hide-footer v-bind:title=this.deleteLevel >
             <div class="d-block text-center">
@@ -85,7 +85,7 @@
 <script>
   import { et } from "../scripts/et";
   import i18n from '../../../../i18n';
-  import { wtconfig } from '../../General/wtutils';
+  import { wtconfig, dialog } from '../../General/wtutils';
   import draggable from 'vuedraggable'
 
   const log = require("electron-log");
@@ -121,11 +121,15 @@
             fieldList: [],
             btnDeleteEnabled: false,
             btnSaveEnabled: false,
+            btnAddNewLevelEnabled: true,
             optionsLevels: null,
             resultList: []
         }
     },
     watch: {
+        NewLevelName(){
+            this.btnAddNewLevelEnabled = (this.NewLevelName == '');
+        },
         selCustLevel(){
             this.btnSaveEnabled = ( (this.selCustLevel != "") && ( this.selCustLevel != "NewLevel"));
         },
@@ -351,7 +355,7 @@
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.level`, curLevel);
             // Now we need to update levelcount for the level
             this.updateLevelCount();
-            alert( i18n.t("Modules.ET.Custom.AlertSaved"));
+            dialog.ShowMsgBox( i18n.t("Modules.ET.Custom.AlertSaved"), 'info', i18n.t("Modules.ET.Custom.Title"), [i18n.t("Common.Ok")]);
             this.getCustomLevel();
         },
         confirmDeleteLevel() {
