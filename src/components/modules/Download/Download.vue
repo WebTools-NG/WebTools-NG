@@ -169,6 +169,7 @@
   methods: {
     showQueue(){
       console.log('Ged 87-3 Show Queue')
+      this.$router.push({ name: 'queue' }) 
     },
     createHash(str){
       return require('crypto').createHash('md5').update(str).digest("hex")
@@ -184,18 +185,21 @@
         details['mediaDir'] = this.selMediaDir;
         details['title'] = this.selMediaTitle;
         details['type'] = row['Type'];
-        const key = this.createHash(`${this.srvName}-${row['Key']}`);
+        const key = this.createHash(`${this.selSrv}-${row['Key']}`);  // Hashed with ServerID-Filename
+        details['hash'] = key;
         log.debug(`[Download.vue] (Select) - Adding ${key} with a value of: ${JSON.stringify(details)}`)
-        wtconfig.set(`Download.${key}`, details);
+        wtconfig.set(`Download.Queue.${key}`, details);
+        let arr = []
+        arr.push(details)
+        wtconfig.set(`Download.Queue23`, arr);
       }
       else {
         const key = this.createHash(`${this.srvName}-${row['Key']}`);
         log.debug(`[Download.vue] (Select) - Deleting ${key}`)
-        wtconfig.delete(`Download.${key}`);
+        wtconfig.delete(`Download.Queue.${key}`);
       }
     },
     async getMediaInfo(key){
-      console.log('Ged 44-3', JSON.stringify(this.MItableData))
       const url = `${this.srvBaseAddress}/library/metadata/${key}?${this.uriExclude}`;
       let header = wtutils.PMSHeader;
       header['X-Plex-Token'] = this.srvToken;
@@ -254,9 +258,11 @@
     },
     async rowClicked(myarg){
       this.MItableData = [];
+      // Start Spinner
       await this.getMediaInfo(myarg['Key']);
       this.selMediaTitle = myarg['Title'];
       this.mediaInfoTitle = `${i18n.t("Modules.Download.MediaInfoTitle")} - ${myarg['Title']}`
+      // Stop Spinner
       this.$refs['MediaInfo'].show();
     },
     async selSrvChanged() {

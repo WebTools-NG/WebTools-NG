@@ -203,7 +203,11 @@
             "SelSrv": "Select Server",
             "TT-Server": "Select the server to download from. If a server can't be selected, you have not been granted download rights from it",
             "MediaInfoTitle": "Media Info",
-            "ShowQueue": "Show Queue"
+            "ShowQueue": "Show Queue",
+            "Queue":{
+                "Name": "Download Queue",
+                "Description": "Here you see the items in the download queue, as well as start/stop the queue"
+            }
         },
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",

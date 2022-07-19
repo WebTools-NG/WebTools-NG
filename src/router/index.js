@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Login from '../components/modules/Main/Login';
 import Home from '../components/modules/Main/Home.vue';
 import Download from '../components/modules/Download/Download';
+import Queue from '../components/modules/Download/Queue/Queue';
 import Export from '../components/modules/ExportTools/Export';
 import ExportSettings from '../components/modules/ExportTools/Settings/settings';
 import ExportCustom from '../components/modules/ExportTools/Custom/custom';
@@ -51,6 +52,12 @@ Vue.use(VueRouter)
     path: '/download',
     name: "download",
     component: Download,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/queue',
+    name: "queue",
+    component: Queue,
     meta: {requiresAuth: true}
   },
   {
