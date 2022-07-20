@@ -1,5 +1,8 @@
 <template>
   <b-container class="m-2 mt-2">
+    <loading
+          :active="isLoading"
+        />
     <div>   <!-- Title and desc -->
       <h2>
         {{ $t(`Modules.${this.PageName}.Name`) }}
@@ -10,9 +13,6 @@
       <b-form-row>
         <b-col> <!-- Select Server -->
           <b-form-group id="PMSServers" v-bind:label="$t('Modules.Download.SelSrv')" label-size="lg" label-class="font-weight-bold pt-0">
-            <div ref="srvSpinner" id="srvSpinner" :hidden="selSrvWait">
-              <b-spinner id="srvLoad" class="ml-auto text-danger"></b-spinner>
-            </div>
             <b-tooltip target="PMSServers" triggers="hover">
               {{ $t('Modules.Download.TT-Server') }}
             </b-tooltip>
@@ -44,7 +44,7 @@
         </b-col>
       </b-form-row>
     </b-container>
-    <b-progress :value="idx" :max="selLibrarySize" :variant="pgbarstyle" :key="pgbarstyle"></b-progress>
+    <b-progress :value="pgbaridx" :max="pgbarMaxSize" :variant="pgbarstyle" :key="pgbarstyle"></b-progress>
     <vue-virtual-table
      @click="rowClicked"
      :key="idx"
@@ -95,17 +95,20 @@
   import { etHelper } from '../ExportTools/scripts/ethelper';
   import VueVirtualTable from 'vue-virtual-table';
   import axios from 'axios';
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/vue-loading.css';
 
   const log = require("electron-log");
   export default {
     components: {
-      VueVirtualTable
+      VueVirtualTable,
+      Loading
     },
     data() {
       return {
+        isLoading: false,
         PageName: "Download",
         selSrvOptions: [],
-        selSrvWait: true,
         selSrv: null,
         selLibraryOptions: [],
         selMediaType: ['movie'],
@@ -156,7 +159,9 @@
         srvName: "",
         uriExclude: "includeGuids=0&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role,Rating&excludeFields=summary,tagline",
         idx: 0,
+        pgbaridx: 0,
         pgbarstyle: "warning",
+        pgbarMaxSize:0,
         mediaInfoTitle: "",
         selMediaDir: '',
         selMediaTitle: ''
@@ -168,35 +173,37 @@
   },
   methods: {
     showQueue(){
-      console.log('Ged 87-3 Show Queue')
-      this.$router.push({ name: 'queue' }) 
+      this.$router.push({ name: 'queue' });
     },
     createHash(str){
       return require('crypto').createHash('md5').update(str).digest("hex")
     },
     Select(index, row, state){
+      const key = this.createHash(`${this.selSrv}-${row['Key']}`);  // Hashed with ServerID-Filename
+      let arr = wtconfig.get(`Download.Queue`, []);
       if ( state === 'true' ){
-        let details = {};
-        details['key'] = row['Key'];
-        details['file'] = row['File'];
-        details['serverID'] = this.selSrv;
-        details['serverName'] = this.srvName;
-        details['libName'] = this.selLibrary['libName'];
-        details['mediaDir'] = this.selMediaDir;
-        details['title'] = this.selMediaTitle;
-        details['type'] = row['Type'];
-        const key = this.createHash(`${this.selSrv}-${row['Key']}`);  // Hashed with ServerID-Filename
-        details['hash'] = key;
-        log.debug(`[Download.vue] (Select) - Adding ${key} with a value of: ${JSON.stringify(details)}`)
-        wtconfig.set(`Download.Queue.${key}`, details);
-        let arr = []
-        arr.push(details)
-        wtconfig.set(`Download.Queue23`, arr);
+        if ( arr.map(function(x) {return x.hash; }).indexOf(key) < 0 ){  //Missing entry ?
+          let details = {};
+          details['key'] = row['Key'];
+          details['file'] = row['File'];
+          details['serverID'] = this.selSrv;
+          details['serverName'] = this.srvName;
+          details['libName'] = this.selLibrary['libName'];
+          details['mediaDir'] = this.selMediaDir;
+          details['title'] = this.selMediaTitle;
+          details['type'] = row['Type'];
+          details['hash'] = key;
+          log.debug(`[Download.vue] (Select) - Adding ${key} with a value of: ${JSON.stringify(details)}`)
+          arr.push(details)
+          wtconfig.set(`Download.Queue`, arr);
+        }
       }
       else {
-        const key = this.createHash(`${this.srvName}-${row['Key']}`);
-        log.debug(`[Download.vue] (Select) - Deleting ${key}`)
-        wtconfig.delete(`Download.Queue.${key}`);
+        // Find idx of entry
+        var idx = arr.map(function(x) {return x.hash; }).indexOf(key)
+        log.debug(`[Download.vue] (Select) - Deleting ${idx}`)
+        arr.splice(idx, 1);
+        wtconfig.set(`Download.Queue`, arr);
       }
     },
     async getMediaInfo(key){
@@ -259,17 +266,20 @@
     async rowClicked(myarg){
       this.MItableData = [];
       // Start Spinner
+      this.isLoading = true;
       await this.getMediaInfo(myarg['Key']);
       this.selMediaTitle = myarg['Title'];
       this.mediaInfoTitle = `${i18n.t("Modules.Download.MediaInfoTitle")} - ${myarg['Title']}`
       // Stop Spinner
+      this.isLoading = false;
       this.$refs['MediaInfo'].show();
     },
     async selSrvChanged() {
       if ( this.selSrv ){
         this.LibraryGroupDisabled = false;
         // Start spinner
-        this.selLibraryWait = false;
+        //this.selLibraryWait = false;
+        this.isLoading = true;
         log.verbose(`[Download.vue] (selSrvChanged) - Selected server is: ${this.selSrv}`)
         // Clear library options
         this.selLibraryOptions = [];
@@ -302,7 +312,8 @@
           }
         }
         // Stop spinner
-        this.selLibraryWait = true;
+        //this.selLibraryWait = true;
+        this.isLoading = false;
         log.debug(`[Download.vue] (selSrvChanged) - Libs avail are: ${JSON.stringify(this.selLibraryOptions)}`)
       }
     },
@@ -359,9 +370,10 @@
     async selLibraryChanged (){
       // Clean out list
       this.tableData = [];
-      this.idx = 0;   // index
+      this.pgbaridx = 0;   // index
       // We need to scrape the library, so start by getting the size
       await this.getSectionSize(); // Store in this.selLibrarySize
+      this.pgbarMaxSize = this.selLibrarySize;
       // Get library type
       let libType;
       switch ( this.selLibrary['type'] ){
@@ -378,7 +390,7 @@
       this.pgbarstyle = 'warning';
       do {
         // Grap a chunk of the library
-        let response = await this.getSectionChunk(step, this.idx, libType);
+        let response = await this.getSectionChunk(step, this.pgbaridx, libType);
         gotSize = response.length;
         for (var x in response){
           let entry = {};
@@ -390,20 +402,24 @@
           entry['Updated'] = await time.convertEpochToDate(response[x]['updatedAt']);
           this.tableData.push(entry);
         }
-        this.idx += step;
+        this.pgbaridx += step;
       } while ( gotSize == step );
       this.pgbarstyle = 'success';
     },
     // Get a list of servers, that we can download from
     async getValidServers(){
       log.info(`[download.vue] (getValidServers) - Start getting valid servers`);
-      this.selSrvWait = false;
+      this.isLoading = true;
       // Get all servers
       let allPMSSrv = await ptv.getPMSServers( true );
+      this.pgbaridx = 1;
+      this.pgbarstyle = "warning";
+      this.pgbarMaxSize = 1 + (allPMSSrv.length * 2);
       // Walk each of them, to get the options
       for (var idx in allPMSSrv){
         if ( !allPMSSrv[idx]['PMSInfo'] ){
           await ptv.checkServerOptions(allPMSSrv[idx]);
+          this.pgbaridx += 1;
         }
       }
       // Get all servers again, but this time with updated info
@@ -414,8 +430,10 @@
         option['value'] = allPMSSrv[idx]['clientIdentifier'];
         option['disabled'] = (allPMSSrv[idx]['PMSInfo']['Sync'] === false);
         this.selSrvOptions.push(option);
+        this.pgbaridx += 1;
       }
-      this.selSrvWait = true;
+      this.pgbarstyle = "success";
+      this.isLoading = false;
     }
   },
   watch: {

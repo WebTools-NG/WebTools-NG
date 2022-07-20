@@ -48,7 +48,7 @@
           height: 1000,
           itemHeight: 50,
           minWidth: 10,
-          selectable: true,
+          selectable: false,
           enableExport: false,
           bordered: true,
           hoverHighlight: true,
@@ -67,11 +67,8 @@
     methods: {
       GetQueue(){
         log.info(`[Queue.vue] (GetQueue) - Get the queue`);
-
-        console.log('Ged 41-3', wtconfig.get('Download.Queue'))
         const arrQueue = wtconfig.get('Download.Queue');
         for (var qItem in arrQueue){
-          console.log('Ged 42-3', JSON.stringify(qItem));
           let entry = {};
           entry['Title'] = arrQueue[qItem]['title'];
           entry['File'] = arrQueue[qItem]['file'];
@@ -79,21 +76,7 @@
           entry['Status'] = 'GED Idle';
           entry['Hash'] = arrQueue[qItem];
           this.tableData.push(entry);     //Add qItem
-
-
-
-
-          /* 
-            { prop: 'File',searchable: true,sortable: true, width: 80 },
-            { prop: 'Type',searchable: true,sortable: true, width: 30 },
-            { prop: 'Status',searchable: true,sortable: true, width: 30 },
-            { prop: 'Hash'
-
- */
-
-
         }
-
       }
     }
   }

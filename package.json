@@ -53,6 +53,7 @@
     "uuid": "^8.3.1",
     "vue": "^2.6.12",
     "vue-i18n": "^8.22.2",
+    "vue-loading-overlay": "3.0",
     "vue-router": "^3.4.9",
     "vue-sidebar-menu": "^4.7.4",
     "vue-virtual-table": "^0.2.22",
@@ -61,6 +62,8 @@
     "vuex-persist": "^2.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/eslint-parser": "^7.18.9",
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-plugin-router": "^4.5.10",
@@ -69,7 +72,7 @@
     "babel-eslint": "^10.1.0",
     "electron": "^13.6.6",
     "electron-devtools-installer": "^3.1.1",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
     "run-script-os": "^1.1.5",
     "vue-cli-plugin-electron-builder": "^1.4.6",
