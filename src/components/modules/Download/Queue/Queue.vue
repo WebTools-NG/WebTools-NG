@@ -7,6 +7,7 @@
       <h5>{{ $t(`Modules.Download.Queue.Description`) }}</h5>
     </div>
     <br>
+    <!-- Queue Table -->
     <vue-virtual-table
      :config="tableConfig"
      :data="tableData"
@@ -22,14 +23,15 @@
         <button @click="info(scope.index, scope.row)"><i class="fas fa-info"></i></button>
       </template>
     </vue-virtual-table>
+    <!-- Media Info -->
     <b-modal size="lg" ref="MediaInfo" hide-footer v-bind:title=this.mediaInfo.mediaInfoTitle>
       <div>
         <b-table striped :items="mediaInfoItems"></b-table>
       </div>
     </b-modal>
     <br>
-    <div class="d-flex mx-auto">
-      <div class="buttons d-flex mx-auto"> <!-- Buttons -->
+    <div class="d-flex mx-auto">  <!-- Buttons -->
+      <div class="buttons d-flex mx-auto">
         <b-button
           type="is-primary"
           @click="btnToggleQueue"
@@ -48,6 +50,7 @@
   import { wtconfig } from '../../General/wtutils';
   //import { pms } from '../../General/pms';
   import VueVirtualTable from 'vue-virtual-table';
+  import { download } from '../scripts/download';
 
   const log = require("electron-log");
   export default {
@@ -136,7 +139,9 @@
       },
       startQueue(){
         this.queueRunning = true;
+        download.startProcess();
         console.log('Ged 44-3 Queue started')
+
 
       },
       info(index, row){

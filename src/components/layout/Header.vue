@@ -67,11 +67,9 @@ export default {
         async getValidPMSSrv() {
             log.info("[Headers.vue] (getValidPMSSrv) fetching servers");
             // Fetch all servers from plex.tv
-            //await this.$store.dispatch('fetchPlexServers', store.getters.getAuthToken);
             await ptv.fetchPMSServers();
             // Filter result
             const result = await ptv.getPMSServers( wtconfig.get("Developer.showNotOwned", false) );
-            console.log('Ged 17-3', JSON.stringify(result))
             this.pmsServers = result;
         }
     },
