@@ -68,7 +68,8 @@
           { prop: 'serverName', isHidden: true },
           { prop: 'libName', isHidden: true },
           { prop: 'mediaDir', isHidden: true },
-          { prop: 'size', isHidden: true }
+          { prop: 'size', isHidden: true },
+          { prop: 'targetFile', isHidden: true }
         ],
         tableData: [],
         tableAttribute: {
@@ -151,6 +152,7 @@
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.libName") } : ${row['libName']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.sourceUri") } : ${row['key']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetFile") } : ${row['targetFile']}` });
         this.$refs['MediaInfo'].show();
       },
       del(index, row){
@@ -170,7 +172,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#sync-button {
-  margin-left: 1em;
-}
 </style>

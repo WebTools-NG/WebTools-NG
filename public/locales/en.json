@@ -203,6 +203,7 @@
             "SelSrv": "Select Server",
             "TT-Server": "Select the server to download from. If a server can't be selected, you have not been granted download rights from it",
             "ShowQueue": "Show Queue",
+            "Disabled": "Disabled",
             "mediaInfo": {
                 "mediaInfoTitle": "Media Info",
                 "title": "Title",
@@ -214,7 +215,8 @@
                 "libName": "Source Library Name",
                 "sourceUri": "Source Uri",
                 "targetDir": "Target Dir",
-                "size": "Size"
+                "size": "Size",
+                "targetFile": "Target File"
             },
             "Queue":{
                 "Name": "Download Queue",

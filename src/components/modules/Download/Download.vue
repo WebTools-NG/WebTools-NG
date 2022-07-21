@@ -173,6 +173,10 @@
     this.getValidServers();
   },
   methods: {
+    getTargetFile( serverName, libName, mediaDir, file){
+      var path = require('path');
+      return path.join(wtconfig.get('General.ExportPath'), wtutils.AppName, this.$t('Modules.Download.Name'), serverName, libName, mediaDir, file + '.tmp');
+    },
     showQueue(){
       this.$router.push({ name: 'queue' });
     },
@@ -195,6 +199,7 @@
           details['type'] = row['Type'];
           details['size'] = row['Size'];
           details['hash'] = key;
+          details['targetFile'] = this.getTargetFile( this.srvName, this.selLibrary['libName'], this.selMediaDir, row['File']);
           log.debug(`[Download.vue] (Select) - Adding ${key} with a value of: ${JSON.stringify(details)}`)
           arr.push(details)
           wtconfig.set(`Download.Queue`, arr);
@@ -429,9 +434,15 @@
       allPMSSrv = await ptv.getPMSServers( true );
       for (idx in allPMSSrv){
         let option = {}
-        option['text'] = allPMSSrv[idx]['name'];
+        if ( allPMSSrv[idx]['PMSInfo']['Sync'] === false) {
+          option['disabled'] = true;
+          option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
+        } else {
+          option['text'] = allPMSSrv[idx]['name'];
+        }
+        //option['text'] = allPMSSrv[idx]['name'];
         option['value'] = allPMSSrv[idx]['clientIdentifier'];
-        option['disabled'] = (allPMSSrv[idx]['PMSInfo']['Sync'] === false);
+        //option['disabled'] = (allPMSSrv[idx]['PMSInfo']['Sync'] === false);
         this.selSrvOptions.push(option);
         this.pgbaridx += 1;
       }
