@@ -202,12 +202,27 @@
             "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights",
             "SelSrv": "Select Server",
             "TT-Server": "Select the server to download from. If a server can't be selected, you have not been granted download rights from it",
-            "MediaInfoTitle": "Media Info",
             "ShowQueue": "Show Queue",
+            "mediaInfo": {
+                "mediaInfoTitle": "Media Info",
+                "title": "Title",
+                "file": "Source File",
+                "type": "Type",
+                "status": "Status",
+                "serverID": "Source Server Id",
+                "serverName": "Source Server Name",
+                "libName": "Source Library Name",
+                "sourceUri": "Source Uri",
+                "targetDir": "Target Dir",
+                "size": "Size"
+            },
             "Queue":{
                 "Name": "Download Queue",
-                "Description": "Here you see the items in the download queue, as well as start/stop the queue"
+                "Description": "Here you see the items in the download queue, as well as start/stop the queue",
+                "btnStartQueue": "Start Queue",
+                "btnStopQueue": "Stop Queue"
             }
+
         },
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",

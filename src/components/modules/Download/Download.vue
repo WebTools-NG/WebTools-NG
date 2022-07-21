@@ -123,7 +123,7 @@
           { prop: 'Released',searchable: true,sortable: true, width: 30 },
           { prop: 'Added',searchable: true,sortable: true, width: 30 },
           { prop: 'Updated',searchable: true,sortable: true, width: 30 },
-          { prop: 'Type', isHidden: true },
+          { prop: 'Type', isHidden: true }
         ],
         tableData: [],
         tableAttribute: {
@@ -141,7 +141,8 @@
           { prop: 'Key', isHidden: true },
           { prop: 'File',searchable: false,sortable: false, width: 100 },
           { prop: 'Type',searchable: false,sortable: false, width: 10 },
-          { prop: 'Hash',isHidden: true }
+          { prop: 'Hash',isHidden: true },
+          { prop: 'Size', isHidden: true }
         ],
         MItableData: [],
         MItableAttribute: {
@@ -192,6 +193,7 @@
           details['mediaDir'] = this.selMediaDir;
           details['title'] = this.selMediaTitle;
           details['type'] = row['Type'];
+          details['size'] = row['Size'];
           details['hash'] = key;
           log.debug(`[Download.vue] (Select) - Adding ${key} with a value of: ${JSON.stringify(details)}`)
           arr.push(details)
@@ -225,6 +227,7 @@
           if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(parts[idx]['key']) == -1){
             entry['Key'] = parts[idx]['key'];
             entry['Type'] = response['data']['MediaContainer']['Metadata'][0]['type'];
+            entry['Size'] = parts[idx]['size'];
             for (var x in this.selLibrary['location']){
               if ( parts[idx]['file'].startsWith( this.selLibrary['location'][x]['path'] ) )
               {
@@ -269,7 +272,7 @@
       this.isLoading = true;
       await this.getMediaInfo(myarg['Key']);
       this.selMediaTitle = myarg['Title'];
-      this.mediaInfoTitle = `${i18n.t("Modules.Download.MediaInfoTitle")} - ${myarg['Title']}`
+      this.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.mediaInfoTitle")} - ${myarg['Title']}`
       // Stop Spinner
       this.isLoading = false;
       this.$refs['MediaInfo'].show();

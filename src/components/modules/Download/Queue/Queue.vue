@@ -8,8 +8,6 @@
     </div>
     <br>
     <vue-virtual-table
-     @click="rowClicked"
-     :key="idx"
      :config="tableConfig"
      :data="tableData"
      :bordered="tableAttribute.bordered"
@@ -17,13 +15,35 @@
      :language="tableAttribute.language"
      :selectable="tableAttribute.selectable"
      :itemHeight="tableAttribute.itemHeight">
+      <template slot-scope="scope" slot="actionCommon">
+        <button @click="up(scope.index, scope.row)" :disabled="queueRunning"><i class="fas fa-arrow-up"></i></button>
+        <button @click="down(scope.index, scope.row)" :disabled="queueRunning"><i class="fas fa-arrow-down"></i></button>
+        <button @click="del(scope.index, scope.row)" :disabled="queueRunning"><i class="fas fa-trash"></i></button>
+        <button @click="info(scope.index, scope.row)"><i class="fas fa-info"></i></button>
+      </template>
     </vue-virtual-table>
-
+    <b-modal size="lg" ref="MediaInfo" hide-footer v-bind:title=this.mediaInfo.mediaInfoTitle>
+      <div>
+        <b-table striped :items="mediaInfoItems"></b-table>
+      </div>
+    </b-modal>
+    <br>
+    <div class="d-flex mx-auto">
+      <div class="buttons d-flex mx-auto"> <!-- Buttons -->
+        <b-button
+          type="is-primary"
+          @click="btnToggleQueue"
+          variant="success"
+        >
+        {{ this.btnQueueLabel }}</b-button>
+      </div>
+    </div>
+    {{ this.queueRunning }}
   </b-container>
 </template>
 
 <script>
-  //import i18n from '../../../../i18n';
+  import i18n from '../../../../i18n';
   //import store from '../../../../store';
   import { wtconfig } from '../../General/wtutils';
   //import { pms } from '../../General/pms';
@@ -37,11 +57,18 @@
     data() {
       return {
         tableConfig: [
-          { prop: 'Title',searchable: true,sortable: true, width: 80 },
-          { prop: 'File',searchable: true,sortable: true, width: 80 },
-          { prop: 'Type',searchable: true,sortable: true, width: 30 },
-          { prop: 'Status',searchable: true,sortable: true, width: 30 },
-          { prop: 'Hash', isHidden: true }
+          { prop: '_action', name: 'Action', actionName: 'actionCommon', width: 80  },
+          { prop: 'title', name: i18n.t('Modules.Download.mediaInfo.title'), searchable: true,sortable: true, width: 80 },
+          { prop: 'file', name: i18n.t('Modules.Download.mediaInfo.file'), searchable: true,sortable: true, width: 80 },
+          { prop: 'type', name: i18n.t('Modules.Download.mediaInfo.type'), searchable: true,sortable: true, width: 30 },
+          { prop: 'status', name: i18n.t('Modules.Download.mediaInfo.status'), searchable: true,sortable: true, width: 30 },
+          { prop: 'hash', isHidden: true },
+          { prop: 'key', isHidden: true },
+          { prop: 'serverID', isHidden: true },
+          { prop: 'serverName', isHidden: true },
+          { prop: 'libName', isHidden: true },
+          { prop: 'mediaDir', isHidden: true },
+          { prop: 'size', isHidden: true }
         ],
         tableData: [],
         tableAttribute: {
@@ -53,30 +80,87 @@
           bordered: true,
           hoverHighlight: true,
           language: "en"
-        }
+        },
+        mediaInfo: {
+          mediaInfoTitle: ""
+        },
+        mediaInfoItems: [],
+        queueRunning: null,
+        btnQueueLabel: i18n.t('Modules.Download.Queue.btnStartQueue')
       };
     },
     created() {
       log.info(`[Queue.vue] (created) - Download Queue Created`);
       this.GetQueue();
+      this.setCreatedStatus();
     },
     watch: {
     },
     computed: {
     },
     methods: {
+      up( index ){
+        if ( index > 0 ){
+          // Move one up
+          this.tableData.splice(index - 1, 0, this.tableData.splice(index, 1)[0]);
+          // Save to json
+          wtconfig.set('Download.Queue', this.tableData);
+        }
+      },
+      down( index ){
+        if ( index < this.tableData.length){
+          // Move one down
+          this.tableData.splice(index + 1, 0, this.tableData.splice(index, 1)[0]);
+          // Save to json
+          wtconfig.set('Download.Queue', this.tableData);
+        }
+      },
+      setCreatedStatus(){
+        this.queueRunning = wtconfig.get( 'Download.Status', false);
+      },
+      btnToggleQueue(){
+        if ( this.queueRunning ){
+          this.stopQueue();
+          this.btnQueueLabel = i18n.t('Modules.Download.Queue.btnStartQueue');
+        }
+        else {
+          this.startQueue();
+          this.btnQueueLabel = i18n.t('Modules.Download.Queue.btnStopQueue');
+        }
+        wtconfig.set('Download.Status', this.queueRunning);
+      },
+      stopQueue(){
+        this.queueRunning = false;
+        console.log('Ged 43-3 Queue stopped')
+      },
+      startQueue(){
+        this.queueRunning = true;
+        console.log('Ged 44-3 Queue started')
+
+      },
+      info(index, row){
+        this.mediaInfo.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.mediaInfoTitle")}: ${row['title']} - ${row['type']}`
+        this.mediaInfoItems = [];
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.title") }: ${row['title']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.file") } : ${row['file']}` });
+        if ( row['size'] ){
+          this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.size") } : ${row['size']}` });
+        }
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverID") } : ${row['serverID']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverName") } : ${row['serverName']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.libName") } : ${row['libName']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.sourceUri") } : ${row['key']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
+        this.$refs['MediaInfo'].show();
+      },
+      del(index, row){
+        log.info(`[Queue.vue] (del) - Delete index: ${index} with contents: ${ JSON.stringify(row) }`);
+        this.tableData.splice(index, 1);
+        wtconfig.set('Download.Queue', this.tableData);
+      },
       GetQueue(){
         log.info(`[Queue.vue] (GetQueue) - Get the queue`);
-        const arrQueue = wtconfig.get('Download.Queue');
-        for (var qItem in arrQueue){
-          let entry = {};
-          entry['Title'] = arrQueue[qItem]['title'];
-          entry['File'] = arrQueue[qItem]['file'];
-          entry['Type'] = arrQueue[qItem]['type'];
-          entry['Status'] = 'GED Idle';
-          entry['Hash'] = arrQueue[qItem];
-          this.tableData.push(entry);     //Add qItem
-        }
+        this.tableData = wtconfig.get('Download.Queue');
       }
     }
   }
