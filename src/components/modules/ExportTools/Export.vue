@@ -281,6 +281,7 @@
       // Will ask for a starting item as well as an ending item, then export
       // Start by getting the maximum and min items
       etHelper.Settings.currentItem = 0;
+      this.itemStartNo = 0;
       etHelper.Settings.baseURL = this.$store.getters.getSelectedServerAddress;
       etHelper.Settings.accessToken = this.$store.getters.getSelectedServerToken;
       etHelper.Settings.totalItems = await etHelper.getSectionSize();
