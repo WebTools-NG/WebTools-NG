@@ -22,6 +22,8 @@
 * [#530 ET Suggested file naming - incorrect output](https://github.com/WebTools-NG/WebTools-NG/issues/530) (Bug fix)
 * [#538 ET Library output needs the Library Title in 1st Column](https://github.com/WebTools-NG/WebTools-NG/issues/538) (Bug fix)
 * [#537 ET Custom Level - blank with no name](https://github.com/WebTools-NG/WebTools-NG/issues/537) (Bug fix)
+* [#543 ET Limit Export dialogue shows start value equal to end value](https://github.com/WebTools-NG/WebTools-NG/issues/543) (Bug fix)
+* [#542 Export Art & Posters NOT honouring the Dimension settings](https://github.com/WebTools-NG/WebTools-NG/issues/542) (Bug fix)
 
 ## V0.3.17 (20220601)
 
