@@ -34,8 +34,12 @@ const download = new class DOWNLOAD {
       // Find idx of selected server
       let idx = allPMSSrv.map(function(x) {return x.clientIdentifier; }).indexOf(this.item['serverID']);
       this.accessToken = allPMSSrv[idx]['accessToken'];
-      this.srvAddr = await ptv.checkServerConnect(allPMSSrv[idx]);
+      //this.srvAddr = await ptv.checkServerConnect(allPMSSrv[idx]);
+      this.srvAddr = await ptv.getValidPMSAddress( allPMSSrv[idx]['clientIdentifier'], allPMSSrv[idx]['connections'], this.accessToken)
       console.log('Ged 56-9', this.srvAddr, this.accessToken)
+
+
+      
     }
 
     getFirstEntry(){  // Get first entry in the queue

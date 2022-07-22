@@ -6,6 +6,7 @@ import { wtutils, wtconfig } from '../General/wtutils';
 
 const ptv = new class PTV {
     constructor() {
+        this.address = null
     }
     async checkServerOptions(server) {
         log.verbose(`[plextv.js] (checkServerOptions) - Checking address for server: ${server.name}`);
@@ -15,9 +16,6 @@ const ptv = new class PTV {
         let sync = false;
         let allPMSServer = await this.getPMSServers( true );
         let uris = [];
-        // let uri;
-
-
         // If server is owned, we check local connection first
         if (server.owned){
             uris.push(server.connections.filter(function(x){return x.local==true})[0]['uri']);
@@ -201,6 +199,52 @@ const ptv = new class PTV {
             }
         }
         return result;
+    }
+    testCon( address, header, clientIdentifier ){
+        axios.get(address, {
+            headers: header,
+            timeout: 3000
+            })
+            .then(response => {
+                if(response.status == 200){
+                    log.verbose(`[plextv.js] (checkServerOptions) - Address ${address} is alive`);
+                    log.verbose(`[plextv.js] (checkServerOptions) - Need to check if correct one`);
+                    const machineIdentifier = response.data['MediaContainer']['machineIdentifier'];
+                    console.log('Ged 88-4-3', machineIdentifier, clientIdentifier)
+                    if (machineIdentifier == clientIdentifier){
+                        log.verbose(`[plextv.js] (checkServerOptions) - Server found as: ${address}`);
+                        this.address = address;
+                    }
+                }
+                }).catch((error) => {
+                if (error.response) {
+                    // The request was made and server responded with a status code
+                    // that falls out of the range of 2xx
+                    log.warn(`[plextv.js] (checkServerOptions) ${error.response.status}`)
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    log.warn(`[plextv.js] (checkServerOptions) No response recieved`);
+                }
+                    else {
+                    // Something happened in setting up the request that triggered an Error
+                    log.warn(`[plextv.js] (checkServerOptions) ${error.message}`);
+                }
+            }
+        )
+    }
+    async getValidPMSAddress( clientIdentifier, connections, accessToken)
+    {
+        let header = wtutils.PMSHeader;
+        header['X-Plex-Token'] = accessToken;
+        for (var idx in connections){
+            this.address = null;
+            this.testCon(connections[idx]['uri'], header, clientIdentifier);
+        }
+        while (!this.address){
+            await wtutils.sleep(50)
+        }
+        console.log('Ged 77-5 address', this.address)
+        return this.address
     }
 }
 export {ptv};
