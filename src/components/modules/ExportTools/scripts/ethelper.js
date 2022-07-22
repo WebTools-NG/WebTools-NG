@@ -1396,8 +1396,9 @@ const etHelper = new class ETHELPER {
                 fileName
                 );
             // Build up pic url
-            const width = res.split('*')[1].trim();
-            const hight = res.split('*')[0].trim();
+            //const width = res.split('*')[1].trim();
+            const hight = res.split('*')[1].trim();
+            const width = res.split('*')[0].trim();
             let URL = this.Settings.baseURL + '/photo/:/transcode?width=';
             URL += width + '&height=' + hight;
             URL += '&minSize=1&url=';
