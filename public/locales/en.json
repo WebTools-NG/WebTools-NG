@@ -238,7 +238,8 @@
                 "Name": "@:Modules.ET.Name Settings",
                 "Note": "Note: * Click here for general settings regarding export *",
                 "Return": "Return to @:Modules.ET.Name",
-                "NoTimeStamp": "Don't add a timestamp to export file name"
+                "NoTimeStamp": "Don't add a timestamp to export file name",
+                "NoItemRange": "Don't add item range to export file name"
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "SelectLevel": "Select level",
