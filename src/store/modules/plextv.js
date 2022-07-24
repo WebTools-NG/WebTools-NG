@@ -16,7 +16,8 @@ const state = {
   avatar: '',
   plexname: '',
   users: {},
-  MeId: ''
+  MeId: '',
+  dwnsrv: false
 };
 
 const mutations = {
@@ -50,7 +51,10 @@ const mutations = {
   },
   UPDATE_USERS(state, value){
     state.users = value;
-  }
+  },
+  UPDATE_VALID_DWNSRV(state, payload) {
+    state.dwnsrv = payload;
+  },
 };
 
 const actions = {
@@ -187,7 +191,8 @@ const getters = {
     getSelectedServerAddress: state => state.selectedServerAddress,
     getSelectedServerAddressUpdateInProgress: state => state.selectedServerAddressUpdateInProgress,
     getSelectedServerToken: state => state.selectedServerToken,
-    getUsers: state => state.users
+    getUsers: state => state.users,
+    getValidSrvDone: state => state.dwnsrv
 ,
 };
 

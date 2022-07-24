@@ -88,7 +88,7 @@
 
 <script>
   import i18n from '../../../i18n';
-  //import store from '../../../store';
+  import store from '../../../store';
   import { wtutils, wtconfig } from '../General/wtutils';
   import { time } from '../General/time';
   import { ptv } from '../General/plextv';
@@ -298,13 +298,13 @@
         // Find idx of selected server
         let idx = allPMSServer.map(function(x) {return x.clientIdentifier; }).indexOf(this.selSrv);
         // Get Sections
-        const sections = await etHelper.getSections( allPMSServer[idx]['PMSInfo']['Address'], allPMSServer[idx]['accessToken'] );
+        const sections = await etHelper.getSections( allPMSServer[idx]['PMSInfo']['address'], allPMSServer[idx]['accessToken'] );
         // Get Server Name
         this.srvName = allPMSServer[idx]['name'];
         // Get Server Token
         this.srvToken = allPMSServer[idx]['accessToken'];
         // Get Base Address
-        this.srvBaseAddress = allPMSServer[idx]['PMSInfo']['Address'];
+        this.srvBaseAddress = allPMSServer[idx]['PMSInfo']['address'];
         // Filter sections to only include whats in this.selMediaType
         for (idx in sections){
           if ( this.selMediaType.includes(sections[idx]['type'])){
@@ -414,22 +414,58 @@
       } while ( gotSize == step );
       this.pgbarstyle = 'success';
     },
-    // Get a list of servers, that we can download from
-    async getValidServers(){
-      log.info(`[download.vue] (getValidServers) - Start getting valid servers`);
-      this.isLoading = true;
-      // Get all servers
-      let allPMSSrv = await ptv.getPMSServers( true );
+    async updateSrvList(){
+      log.info(`[download.vue] (updateSrvList) - Start getting valid servers`);
       this.pgbaridx = 1;
       this.pgbarstyle = "warning";
-      this.pgbarMaxSize = 1 + (allPMSSrv.length * 2);
+      // Get all servers
+      let allPMSSrv = await ptv.getPMSServers( true );
+      this.pgbarMaxSize = 1 + allPMSSrv.length;
       // Walk each of them, to get the options
       for (var idx in allPMSSrv){
         if ( !allPMSSrv[idx]['PMSInfo'] ){
-          await ptv.checkServerOptions(allPMSSrv[idx]);
-          this.pgbaridx += 1;
+          // We need at least address and sync
+          await ptv.updatePMSInfo( allPMSSrv[idx], idx, ['address', 'allowSync']);
         }
+        this.pgbaridx += 1;
       }
+    },
+    // Get a list of servers, that we can download from
+    async getValidServers(){
+      console.log('Ged 41-1 validSrvDone', store.getters.getValidSrvDone)
+      log.info(`[download.vue] (getValidServers) - Starting`);
+      this.isLoading = true;
+      if (!store.getters.getValidSrvDone)   // If we haven't got valid address and sync info, update srv list
+      {
+        await this.updateSrvList();
+      }
+      log.info(`[download.vue] (getValidServers) - Building CBOptions`);
+      // Get all servers
+      let allPMSSrv = await ptv.getPMSServers( true );
+
+      // Walk each of them, to get the options
+      for (var idx in allPMSSrv){
+        let option = {};
+        if ( allPMSSrv[idx]['PMSInfo'] ){
+          if ( allPMSSrv[idx]['PMSInfo']['allowSync'] === false) {
+            option['disabled'] = true;
+            option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
+          } else {
+            option['text'] = allPMSSrv[idx]['name'];
+          }
+          option['value'] = allPMSSrv[idx]['clientIdentifier'];
+        } else {
+          option['disabled'] = true;
+          option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
+        }
+        option['value'] = allPMSSrv[idx]['clientIdentifier'];
+        this.selSrvOptions.push(option);
+          
+      }
+
+
+/* 
+
       // Get all servers again, but this time with updated info
       allPMSSrv = await ptv.getPMSServers( true );
       for (idx in allPMSSrv){
@@ -445,7 +481,11 @@
         //option['disabled'] = (allPMSSrv[idx]['PMSInfo']['Sync'] === false);
         this.selSrvOptions.push(option);
         this.pgbaridx += 1;
+
+
+
       }
+       */
       this.pgbarstyle = "success";
       this.isLoading = false;
     }

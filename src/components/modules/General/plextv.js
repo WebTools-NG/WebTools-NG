@@ -6,7 +6,9 @@ import { wtutils, wtconfig } from '../General/wtutils';
 
 const ptv = new class PTV {
     constructor() {
-        this.address = null
+        this.address = null;
+        this.resp = null;
+        this.allResp = {};
     }
     async checkServerOptions(server) {
         log.verbose(`[plextv.js] (checkServerOptions) - Checking address for server: ${server.name}`);
@@ -200,34 +202,44 @@ const ptv = new class PTV {
         }
         return result;
     }
-    testCon( address, header, clientIdentifier ){
+    testCon( address, header, clientIdentifier, local, owned ){
         axios.get(address, {
             headers: header,
             timeout: 3000
             })
             .then(response => {
                 if(response.status == 200){
-                    log.verbose(`[plextv.js] (checkServerOptions) - Address ${address} is alive`);
-                    log.verbose(`[plextv.js] (checkServerOptions) - Need to check if correct one`);
+                    log.verbose(`[plextv.js] (testCon) - Address ${address} is alive`);
+                    log.verbose(`[plextv.js] (testCon) - Need to check if correct one`);
                     const machineIdentifier = response.data['MediaContainer']['machineIdentifier'];
-                    console.log('Ged 88-4-3', machineIdentifier, clientIdentifier)
                     if (machineIdentifier == clientIdentifier){
-                        log.verbose(`[plextv.js] (checkServerOptions) - Server found as: ${address}`);
-                        this.address = address;
+                        log.verbose(`[plextv.js] (testCon) - Server found as: ${address}`);
+                        if (!this.allResp[clientIdentifier]['address']){ // Add if not already present
+                            this.allResp[clientIdentifier]['address'] = address;
+                            this.allResp[clientIdentifier]['resp'] = response.data['MediaContainer'];
+                            this.allResp[clientIdentifier]['local'] = local;
+                            this.allResp[clientIdentifier]['count'] += 1;
+                            if (local || !owned){
+                                this.allResp[clientIdentifier]['count'] = this.allResp[clientIdentifier]['conCount'];
+                            }
+                        }
                     }
                 }
                 }).catch((error) => {
                 if (error.response) {
                     // The request was made and server responded with a status code
                     // that falls out of the range of 2xx
-                    log.warn(`[plextv.js] (checkServerOptions) ${error.response.status}`)
+                    log.warn(`[plextv.js] (testCon) ${error.response.status}`);
+                    this.allResp[clientIdentifier]['count'] += 1;
                 } else if (error.request) {
                     // The request was made but no response was received
-                    log.warn(`[plextv.js] (checkServerOptions) No response recieved`);
+                    log.warn(`[plextv.js] (testCon) No response recieved`);
+                    this.allResp[clientIdentifier]['count'] += 1;
                 }
                     else {
                     // Something happened in setting up the request that triggered an Error
-                    log.warn(`[plextv.js] (checkServerOptions) ${error.message}`);
+                    log.warn(`[plextv.js] (testCon) ${error.message}`);
+                    this.allResp[clientIdentifier]['count'] += 1;
                 }
             }
         )
@@ -238,13 +250,51 @@ const ptv = new class PTV {
         header['X-Plex-Token'] = accessToken;
         for (var idx in connections){
             this.address = null;
-            this.testCon(connections[idx]['uri'], header, clientIdentifier);
+            this.resp = null;
+            this.testCon(connections[idx]['uri'], header, clientIdentifier, connections[idx]['local']);
         }
         while (!this.address){
+            console.log('Ged 55', this.address)
             await wtutils.sleep(50)
         }
-        console.log('Ged 77-5 address', this.address)
         return this.address
+    }
+    async updatePMSInfo( PMS, index, options){  //Update PMS entry with missing info
+        log.verbose(`[plextv.js] (updatePMSInfo) - look at server: ${PMS['name']} with an Id of: ${PMS['clientIdentifier']} to update ${options}`);
+        // Let's start by setting the header once and for all
+        let header = wtutils.PMSHeader;
+        header['X-Plex-Token'] = PMS['accessToken'];
+        const conCount = PMS['connections'].length;
+        const clientIdentifier = PMS['clientIdentifier'];
+        this.allResp[clientIdentifier] = {};
+        this.allResp[clientIdentifier]['count'] = 0;
+        this.allResp[clientIdentifier]['conCount'] = conCount;
+        // Now walk each connection avail
+        for (var idx in PMS['connections']){
+            this.testCon(PMS['connections'][idx]['uri'], header, clientIdentifier, PMS['connections'][idx]['local'], PMS['owned']);
+        }
+        while (this.allResp[clientIdentifier]['count'] < conCount){
+            await wtutils.sleep(250)
+        }
+        // Amount of info retrieved. we have two keys always
+        const retInfoAmount =  Object.keys(this.allResp[clientIdentifier]).length;
+        if ( Number(retInfoAmount) > 2 ){
+            var allServers = await this.getPMSServers( true);
+            if (!allServers[index]['PMSInfo']){
+                allServers[index]['PMSInfo'] = {};
+            }
+            for ( var optionIdx in options) {
+                var result;
+                if ( this.allResp[clientIdentifier][options[optionIdx]] ){
+                    result = this.allResp[clientIdentifier][options[optionIdx]];
+                } else {
+                    result = this.allResp[clientIdentifier]['resp'][options[optionIdx]];
+                }
+                allServers[index]['PMSInfo'][options[optionIdx]] = result;
+                log.debug(`[plextv.js] (updatePMSInfo) - Adding ${options[optionIdx]} to PMSInfo with a value of ${result}`)
+            }
+            store.commit('UPDATE_PLEX_SERVERS', allServers);
+        }
     }
 }
 export {ptv};
