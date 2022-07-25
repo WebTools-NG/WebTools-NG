@@ -9,7 +9,7 @@
 
 **Changes**:
 
-* [#547 Add link to Library Map on FM Settings page](https://github.com/WebTools-NG/WebTools-NG/issues/547) (New Feature)
+* [#547 Add link to Library Map on FM Settings page](https://github.com/WebTools-NG/WebTools-NG/issues/547) (Enhancement)
 
 ## V1.0.0 First Official Release (20220724)
 
