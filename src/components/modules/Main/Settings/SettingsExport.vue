@@ -92,8 +92,6 @@
           DateTimeOptions: [ i18n.t("Common.DateTime.Full"), i18n.t("Common.DateTime.Long"), i18n.t("Common.DateTime.Medium"), i18n.t("Common.DateTime.Short")],
           DateOption: wtconfig.get('General.DateOption'),
           TimeOption: wtconfig.get('General.TimeOption')
-
-
         };
     },
     created() {
@@ -163,7 +161,6 @@
       setNotAvailIndicator: function(){
         wtconfig.set('ET.NotAvail', this.NotAvailIndicator)
       },
-
       // Update conf file
       setPrefs: function(value, name){
         log.info(`[SettingsPMS.vue] (setPrefs) - Update prefs for ${name} set to ${value}`);

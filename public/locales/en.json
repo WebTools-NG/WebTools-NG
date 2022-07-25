@@ -520,7 +520,8 @@
                     "Return": "Save & Return",
                     "Reset": "Reset to factory standard",
                     "IgnoreHidden": "Ignore Hidden files/directories on Linux/Mac",
-                    "IgnoreExtras": "Ignore local extras"
+                    "IgnoreExtras": "Ignore local extras",
+                    "NoteLibMap": "Note: * Click here for general settings regarding @:Common.Menu.Sidebar.PMS.LibMapping *"
                 }
             }
         },
