@@ -1,6 +1,6 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V1.0.0 First Official Release (Not Yet Released)
+## V1.0.0 First Official Release (20220724)
 
 **Note**: In this version, the following is disabled:
 
