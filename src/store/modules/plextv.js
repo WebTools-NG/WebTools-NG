@@ -50,10 +50,42 @@ const mutations = {
   },
   UPDATE_USERS(state, value){
     state.users = value;
+  },
+  UPDATE_Features(state, value){
+    state.features = value;
   }
 };
 
 const actions = {
+  async fetchFeatures( { commit, getters }){
+    log.debug(`[plextv.js] (fetchFeatures) - Getting features from plex.tv`);
+    let header = wtutils.PMSHeader;
+    header['X-Plex-Token'] = getters.getAuthToken;
+    await axios({
+      method: 'get',
+      url: `${wtutils.plexTVApi}v2/features`,
+      headers: header
+    })
+      .then((response) => {
+        log.debug(`[plextv.js] (fetchFeatures) - Response recieved`);
+        
+
+        commit
+        console.log('Ged 66-3', JSON.stringify(response))
+        //commit('UPDATE_Features', ptvusers);
+        log.verbose(`[plextv.js] (fetchFeatures) - Featues added to store`)
+      })
+      .catch(function (error) {
+        if (error.response) {
+            log.error(`[plextv.js] (fetchFeatures) - ${error.response.data}`);
+            alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+        } else if (error.request) {
+            log.error(`[plextv.js] (fetchFeatures) - ${error.request}`);
+        } else {
+            log.error(`[plextv.js] (fetchFeatures) - ${error.message}`);
+      }
+    });
+  },
   async fetchUsers( { commit, getters }){
     log.debug('Getting users from plex.tv');
     let header = wtutils.PMSHeader;
@@ -155,7 +187,8 @@ const actions = {
         commit('UPDATE_AUTHENTICATED', true)
         commit('UPDATE_AVATAR', response.data.thumb)
         commit('UPDATE_PLEXNAME', response.data.username)
-        commit('UPDATE_MeId', response.data.user.id)
+        commit('UPDATE_MeId', response.data.user.id);
+        commit('UPDATE_Features', response.data.user.subscription.features);
         router.replace({name: "home"});
     })
       .catch(function (error) {
@@ -188,8 +221,6 @@ const actions = {
   loginToPlexWithToken({ commit }, payload){
     log.info("[plextv.js] (loginToPlexWithToken) loginToPlex called, using a Token")
     let header = wtutils.PMSHeader;
-    //header['X-Plex-Token'] =  payload.token;
-    //const url = `${wtutils.plexTVApi}v2/users/signin.json?X-Plex-Token=${payload.token}`;
     const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;
     axios({
       method: 'POST',
@@ -197,12 +228,14 @@ const actions = {
       headers: header
     })
       .then(function (response) {
-        log.debug('[plextv.js] (loginToPlexWithToken) loginToPlex: Response from fetchPlexServers recieved')
-        commit('UPDATE_AUTHTOKEN', response.data.user.authToken)
-        commit('UPDATE_AUTHENTICATED', true)
-        commit('UPDATE_AVATAR', response.data.user.thumb)
-        commit('UPDATE_PLEXNAME', response.data.user.username)
-        commit('UPDATE_MeId', response.data.user.id)
+        log.debug(`[plextv.js] (loginToPlexWithToken) - Response recieved`);
+        console.log('Ged 55-3', JSON.stringify(response.data))
+        commit('UPDATE_AUTHTOKEN', response.data.user.authToken);
+        commit('UPDATE_AUTHENTICATED', true);
+        commit('UPDATE_AVATAR', response.data.user.thumb);
+        commit('UPDATE_PLEXNAME', response.data.user.username);
+        commit('UPDATE_MeId', response.data.user.id);
+        commit('UPDATE_Features', response.data.user.subscription.features);
         router.replace({name: "home"});
     })
       .catch(function (error) {
@@ -240,7 +273,8 @@ const getters = {
     getSelectedServerAddress: state => state.selectedServerAddress,
     getSelectedServerAddressUpdateInProgress: state => state.selectedServerAddressUpdateInProgress,
     getSelectedServerToken: state => state.selectedServerToken,
-    getUsers: state => state.users
+    getUsers: state => state.users,
+    getFeatures: state => state.features
 ,
 };
 
