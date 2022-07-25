@@ -1,6 +1,17 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V1.0.0 First Official Release (Not Yet Released)
+## V1.0.1 ( Not released yet )
+
+**Note**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
+**Changes**:
+
+* [#547 Add link to Library Map on FM Settings page](https://github.com/WebTools-NG/WebTools-NG/issues/547) (Enhancement)
+
+## V1.0.0 First Official Release (20220724)
 
 **Note**: In this version, the following is disabled:
 

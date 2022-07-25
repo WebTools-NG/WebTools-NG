@@ -6,7 +6,8 @@
       </h2>
       <h5>{{ $t(`Modules.PMS.FindMedia.Settings.Description`) }}</h5>
     </div>
-    <b-link id="general" :to="{ path: '/settings/export', query: { return: 'FindMediaSettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
+    <b-link id="general" :to="{ path: '/settings/export', query: { return: 'FindMediaSettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link> <br>
+    <b-link id="general" :to="{ path: '/settings/libmapping', query: { return: 'FindMediaSettings' } }">{{ $t("Modules.PMS.FindMedia.Settings.NoteLibMap") }} </b-link>
     <p>{{ $t("Modules.PMS.FindMedia.Settings.Note") }}</p>
     <br>
     <b-input-group id="ExtGrp" :prepend="$t('Modules.PMS.FindMedia.Settings.Ext')" class="mt-3">

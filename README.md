@@ -9,6 +9,4 @@
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
 [![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml)
 
-NOTE: This is currently in **BETA**
-
 Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
