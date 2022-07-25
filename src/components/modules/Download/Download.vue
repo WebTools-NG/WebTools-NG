@@ -124,6 +124,7 @@
           { prop: 'Added',searchable: true,sortable: true, width: 30 },
           { prop: 'Updated',searchable: true,sortable: true, width: 30 },
           { prop: 'Type', isHidden: true }
+
         ],
         tableData: [],
         tableAttribute: {
@@ -199,6 +200,7 @@
           details['type'] = row['Type'];
           details['size'] = row['Size'];
           details['hash'] = key;
+          details['baseAddress'] = this.srvBaseAddress;
           details['targetFile'] = this.getTargetFile( this.srvName, this.selLibrary['libName'], this.selMediaDir, row['File']);
           log.debug(`[Download.vue] (Select) - Adding ${key} with a value of: ${JSON.stringify(details)}`)
           arr.push(details)
@@ -460,32 +462,7 @@
         }
         option['value'] = allPMSSrv[idx]['clientIdentifier'];
         this.selSrvOptions.push(option);
-          
       }
-
-
-/* 
-
-      // Get all servers again, but this time with updated info
-      allPMSSrv = await ptv.getPMSServers( true );
-      for (idx in allPMSSrv){
-        let option = {}
-        if ( allPMSSrv[idx]['PMSInfo']['Sync'] === false) {
-          option['disabled'] = true;
-          option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
-        } else {
-          option['text'] = allPMSSrv[idx]['name'];
-        }
-        //option['text'] = allPMSSrv[idx]['name'];
-        option['value'] = allPMSSrv[idx]['clientIdentifier'];
-        //option['disabled'] = (allPMSSrv[idx]['PMSInfo']['Sync'] === false);
-        this.selSrvOptions.push(option);
-        this.pgbaridx += 1;
-
-
-
-      }
-       */
       this.pgbarstyle = "success";
       this.isLoading = false;
     }
