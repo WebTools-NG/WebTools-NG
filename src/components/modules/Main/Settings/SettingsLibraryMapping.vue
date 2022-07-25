@@ -37,7 +37,7 @@
         <!-- Buttons -->
         <div id="buttons" class="text-center">
             <b-button-group >
-                <b-button variant="success" class="mr-1" @click="jumpToSettings"> {{ $t('Common.Settings.Return') }} </b-button>
+                <b-button variant="success" class="mr-1" @click="ReturnToRef"> {{ $t('Common.Settings.Return') }} </b-button>
             </b-button-group>
         </div>
     </div>
@@ -84,8 +84,15 @@
     },
     methods: {
       // Return to main Settings
-      jumpToSettings(){
+      // Return to main Settings
+      ReturnToRef()
+      {
+        if (this.$route.query.return){
+          this.$router.push({ name: this.$route.query.return })
+        }
+        else {
           this.$router.push({ name: 'settingsGlobal' })
+        }
       },
       // Update mapped path
       pathRowClickHandler: async function( record, index ){
