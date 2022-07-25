@@ -89,7 +89,7 @@
 <script>
   import i18n from '../../../i18n';
   import store from '../../../store';
-  import { wtutils, wtconfig } from '../General/wtutils';
+  import { wtutils, wtconfig, dialog } from '../General/wtutils';
   import { time } from '../General/time';
   import { ptv } from '../General/plextv';
   import { etHelper } from '../ExportTools/scripts/ethelper';
@@ -171,6 +171,13 @@
   },
   created() {
     log.info(`[${this.PageName}.vue] (created) - ${this.PageName} Created`);
+    console.log('Ged 44-2', JSON.stringify(store.getters.getFeatures))
+
+    if ( !store.getters.getFeatures.includes("pass"))
+    {
+      dialog.ShowMsg( i18n.t("Modules.Download.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t("Common.PPReq", [i18n.t("Modules.Download.Name")]), 'info' );
+      this.$router.push({ name: 'home' });
+    }
     this.getValidServers();
   },
   methods: {
@@ -431,6 +438,7 @@
         }
         this.pgbaridx += 1;
       }
+      store.commit("UPDATE_VALID_DWNSRV", true);
     },
     // Get a list of servers, that we can download from
     async getValidServers(){

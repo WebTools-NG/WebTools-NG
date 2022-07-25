@@ -132,6 +132,7 @@
         "ErrorNoOutDirTitle": "No output directory defined",
         "ReleaseNoteTitle": "Release Note",
         "Cancel": "Cancel",
+        "PPReq": "{0} needs a valid Plex pass to work",
         "Status": {
             "Name": {
                 "Global": {
