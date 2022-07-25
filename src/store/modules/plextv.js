@@ -227,7 +227,6 @@ const getters = {
     getUsers: state => state.users,
     getValidSrvDone: state => state.dwnsrv,
     getFeatures: state => state.features
-,
 };
 
 const serverModule = {

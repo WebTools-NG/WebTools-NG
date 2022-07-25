@@ -50,7 +50,9 @@
   import { wtconfig } from '../../General/wtutils';
   //import { pms } from '../../General/pms';
   import VueVirtualTable from 'vue-virtual-table';
-  import { download } from '../scripts/download';
+  import { download } from '../scripts/Download.js';
+
+  
 
   const log = require("electron-log");
   export default {
