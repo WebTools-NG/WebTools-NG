@@ -1378,35 +1378,51 @@ const etHelper = new class ETHELPER {
         {
             log.error(`[etHelper] (exportPics) Exception in exportPics is: ${error}`);
         }
-        log.verbose(`[etHelper] (exportPics) picUrl is: ${picUrl}`);
-        log.verbose(`[etHelper] (exportPics) resolutions is: ${JSON.stringify(resolutions)}`);
-        log.verbose(`[etHelper] (exportPics) ExpDir is: ${ExpDir}`);
         // Create export dir
         var fs = require('fs');
         if (!fs.existsSync(ExpDir)){
             fs.mkdirSync(ExpDir, { recursive: true });
         }
+        log.verbose(`[etHelper] (exportPics) picUrl is: ${picUrl}`);
+        log.verbose(`[etHelper] (exportPics) resolutions is: ${JSON.stringify(resolutions)}`);
+        const ArtPostersOrigen = wtconfig.get('ET.ArtPostersOrigen', false);
+        log.verbose(`[etHelper] (exportPics) resolutions as orginal: ${ArtPostersOrigen}`);
+        log.verbose(`[etHelper] (exportPics) ExpDir is: ${ExpDir}`);
         let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
         let title = String(JSONPath({path: '$.title', json: data})[0]);
-        // Get resolutions to export as
-        for(let res of resolutions) {
-            const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '_' + res.trim().replace("*", "x") + '.jpg';
+        if ( ArtPostersOrigen ){ // Export at original size
+            const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '.jpg';
             let outFile = path.join(
                 ExpDir,
                 fileName
                 );
-            // Build up pic url
-            //const width = res.split('*')[1].trim();
-            const hight = res.split('*')[1].trim();
-            const width = res.split('*')[0].trim();
-            let URL = this.Settings.baseURL + '/photo/:/transcode?width=';
-            URL += width + '&height=' + hight;
-            URL += '&minSize=1&url=';
+            let URL = this.Settings.baseURL;
             URL += picUrl;
             log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
             log.verbose(`[etHelper] (exportPics) Outfile is ${outFile}`);
             URL += '&X-Plex-Token=' + this.Settings.accessToken;
             await this.forceDownload( { url:URL, target:outFile, title:title} );
+        }
+        else { // Get resolutions to export as
+            for(let res of resolutions) {
+                const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '_' + res.trim().replace("*", "x") + '.jpg';
+                let outFile = path.join(
+                    ExpDir,
+                    fileName
+                    );
+                // Build up pic url
+                //const width = res.split('*')[1].trim();
+                const hight = res.split('*')[1].trim();
+                const width = res.split('*')[0].trim();
+                let URL = this.Settings.baseURL + '/photo/:/transcode?width=';
+                URL += width + '&height=' + hight;
+                URL += '&minSize=1&url=';
+                URL += picUrl;
+                log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
+                log.verbose(`[etHelper] (exportPics) Outfile is ${outFile}`);
+                URL += '&X-Plex-Token=' + this.Settings.accessToken;
+                await this.forceDownload( { url:URL, target:outFile, title:title} );
+            }
         }
     }
 

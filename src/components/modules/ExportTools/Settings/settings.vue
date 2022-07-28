@@ -68,6 +68,7 @@
                 ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
                 cbSelected: [],
                 cbOptions: [
+                    { text: i18n.t('Modules.ET.Settings.ArtPostersOrigen'), value: 'ArtPostersOrigen' },
                     { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpXLSX', disabled: true },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
@@ -92,7 +93,7 @@
                 dialog.ShowMsg( i18n.t("Modules.ET.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), 'For this version, export to XLSX is currently disabled', 'info');
             },
             getDefaults(){
-                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange"];
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
@@ -105,7 +106,7 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
             },

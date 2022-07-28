@@ -208,6 +208,7 @@
             "Name": "ExportTools",
             "ErrorServer": "No server",
             "Settings": {
+                "ArtPostersOrigen": "Export Art and Posters in original size",
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
