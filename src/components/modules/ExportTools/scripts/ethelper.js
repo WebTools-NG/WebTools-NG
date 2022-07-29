@@ -1350,79 +1350,78 @@ const etHelper = new class ETHELPER {
         this.Settings.outFile = newFile;
     }
 
-    async exportPics( { type: extype, data: data} ) {
-        let ExpDir, picUrl, resolutions;
-        log.verbose(`[etHelper] (exportPics) Going to export ${extype}`);
-        try
-        {
-            if (extype == 'posters')
-            {
-                picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
-                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
-                ExpDir = path.join(
-                    wtconfig.get('General.ExportPath'),
-                    wtutils.AppName,
-                    'ExportTools', 'Posters');
-            }
-            else
-            {
-                picUrl = String(JSONPath({path: '$.art', json: data})[0]);
-                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
-                ExpDir = path.join(
-                    wtconfig.get('General.ExportPath'),
-                    wtutils.AppName,
-                    'ExportTools', 'Art');
-            }
-        }
-        catch (error)
-        {
-            log.error(`[etHelper] (exportPics) Exception in exportPics is: ${error}`);
-        }
+    async getExportPicsUrlandFileFileName( { type: extype, data: data, res: res} ) { // Get Art/Poster filename
+        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
+        let title = String(JSONPath({path: '$.title', json: data})[0]);
+        let fileName = '';
+        const ExpDir = path.join(
+            wtconfig.get('General.ExportPath'),
+            wtutils.AppName,
+            i18n.t('Modules.ET.Name'),
+            extype);
+        // Also create exp dir if it doesn't exists
         // Create export dir
         var fs = require('fs');
         if (!fs.existsSync(ExpDir)){
             fs.mkdirSync(ExpDir, { recursive: true });
         }
-        log.verbose(`[etHelper] (exportPics) picUrl is: ${picUrl}`);
-        log.verbose(`[etHelper] (exportPics) resolutions is: ${JSON.stringify(resolutions)}`);
-        const ArtPostersOrigen = wtconfig.get('ET.ArtPostersOrigen', false);
-        log.verbose(`[etHelper] (exportPics) resolutions as orginal: ${ArtPostersOrigen}`);
-        log.verbose(`[etHelper] (exportPics) ExpDir is: ${ExpDir}`);
-        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
-        let title = String(JSONPath({path: '$.title', json: data})[0]);
-        if ( ArtPostersOrigen ){ // Export at original size
-            const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '.jpg';
-            let outFile = path.join(
-                ExpDir,
-                fileName
-                );
-            let URL = this.Settings.baseURL;
-            URL += picUrl;
-            log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
-            log.verbose(`[etHelper] (exportPics) Outfile is ${outFile}`);
-            URL += '&X-Plex-Token=' + this.Settings.accessToken;
-            await this.forceDownload( { url:URL, target:outFile, title:title} );
+        if ( res ){
+            // Remove whitespace
+            res = res.replace(/\s/g, "");
+            fileName = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}_${res}`;
+        } else {
+            fileName = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}`;
         }
-        else { // Get resolutions to export as
+        let outFile = path.join(
+            ExpDir,
+            fileName + '.jpg'
+        );
+        log.debug(`[ethelper.js] (getExportPicsUrlandFileFileName) - Outfile is: ${outFile}`);
+        return outFile;
+    }
+
+    async getExportPicsUrlandFile( { type: extype, data: data} ) {
+        const ArtPostersOrigen = wtconfig.get('ET.ArtPostersOrigen', false);
+        let resp = [];
+        let picUrl = '';
+        let entry = {};
+        let resolutions;
+        switch ( extype ) {
+            case 'posters':
+                picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                break;
+            case 'arts':
+                picUrl = String(JSONPath({path: '$.art', json: data})[0]);
+                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
+                break;
+        }
+        if ( ArtPostersOrigen ) {  // Export in origen resolution
+            entry['url'] = `${this.Settings.baseURL}${picUrl}`;
+            entry['outFile'] = await this.getExportPicsUrlandFileFileName( { type: extype, data: data} );
+            resp.push(entry);
+        } else {  // Export in defined resolutions
             for(let res of resolutions) {
-                const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '_' + res.trim().replace("*", "x") + '.jpg';
-                let outFile = path.join(
-                    ExpDir,
-                    fileName
-                    );
+                entry = {};
+                res = res.replace('*', 'x');
+                console.log('Ged 21-3', res)
                 // Build up pic url
-                //const width = res.split('*')[1].trim();
-                const hight = res.split('*')[1].trim();
-                const width = res.split('*')[0].trim();
-                let URL = this.Settings.baseURL + '/photo/:/transcode?width=';
-                URL += width + '&height=' + hight;
-                URL += '&minSize=1&url=';
-                URL += picUrl;
+                const hight = res.split('x')[1].trim();
+                const width = res.split('x')[0].trim();
+                entry['url'] = `${this.Settings.baseURL}/photo/:/transcode?width=${width}&height=${hight}&minSize=1&url=${picUrl}`;
                 log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
-                log.verbose(`[etHelper] (exportPics) Outfile is ${outFile}`);
-                URL += '&X-Plex-Token=' + this.Settings.accessToken;
-                await this.forceDownload( { url:URL, target:outFile, title:title} );
+                entry['outFile'] = await this.getExportPicsUrlandFileFileName( { type: extype, data: data, res: res} );
+                resp.push(entry);
             }
+        }
+        return resp;
+    }
+
+    async exportPics( { type: extype, data: data} ) {
+        let files = await this.getExportPicsUrlandFile( { type: extype, data: data} );
+        let title = String(JSONPath({path: '$.title', json: data})[0]);
+        for (var idx in files){
+            await this.forceDownload( { url:files[idx]['url'], target:files[idx]['outFile'], title:title} );
         }
     }
 
@@ -1831,7 +1830,7 @@ const etHelper = new class ETHELPER {
             }
             Object.keys(levels).forEach(function(key) {
                 // Skip picture export fields
-                if ( !["Export Art", "Export Posters"].includes(levels[key]) )
+                if ( !["Export Art", "Export Posters", "Export Show Art", "Export Season Posters", "Export Show Posters"].includes(levels[key]) )
                 {
                     out.push(levels[key])
                 }
