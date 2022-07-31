@@ -12,13 +12,13 @@
         <b-tooltip target="PosterGrp" triggers="hover">
             {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
         </b-tooltip>
-        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosters_Dimensions()"></b-form-input>
+        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=PosterDimDisabled @change="setPosters_Dimensions()"></b-form-input>
     </b-input-group>
     <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
         <b-tooltip target="ArtGrp" triggers="hover">
             {{ $t('Modules.ET.Settings.Art_Dimensions_TT') }}
         </b-tooltip>
-        <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=false @change="setArt_Dimensions()"></b-form-input>
+        <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=ArtDimDisabled @change="setArt_Dimensions()"></b-form-input>
     </b-input-group>
     <b-form-group id="b-form-group">
     <b-form-checkbox-group
@@ -64,10 +64,13 @@
         },
         data() {
             return {
+                PosterDimDisabled: false,
+                ArtDimDisabled: false,
                 PosterDim: wtconfig.get('ET.Posters_Dimensions', '75*75'),
                 ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
                 cbSelected: [],
                 cbOptions: [
+                    { text: i18n.t('Modules.ET.Settings.ArtPostersOrigen'), value: 'ArtPostersOrigen' },
                     { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpXLSX', disabled: true },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
@@ -92,12 +95,14 @@
                 dialog.ShowMsg( i18n.t("Modules.ET.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), 'For this version, export to XLSX is currently disabled', 'info');
             },
             getDefaults(){
-                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange"];
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
                     }
                 }
+                this.PosterDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
+                this.ArtDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
                 this.SelectedMoviesID = wtconfig.get("ET.SelectedMoviesID", "imdb");
             },
             SelectedMoviesIDChanged(){
@@ -105,9 +110,11 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
+                this.PosterDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
+                this.ArtDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
             },
             setPosters_Dimensions: function(){
                 wtconfig.set('ET.Posters_Dimensions', this.PosterDim);

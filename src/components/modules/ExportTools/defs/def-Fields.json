@@ -429,7 +429,25 @@
                 "call": 1,
                 "type": "string"
             },
+        "Export Show Art":
+            {
+                "key": "$.ratingKey",
+                "call": 1,
+                "type": "string"
+            },
         "Export Posters":
+            {
+                "key": "$.ratingKey",
+                "call": 1,
+                "type": "string"
+            },
+        "Export Season Posters":
+            {
+                "key": "$.ratingKey",
+                "call": 1,
+                "type": "string"
+            },
+        "Export Show Posters":
             {
                 "key": "$.ratingKey",
                 "call": 1,
