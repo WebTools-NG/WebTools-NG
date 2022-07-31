@@ -1160,6 +1160,9 @@ const etHelper = new class ETHELPER {
         // Get status for exporting arts and posters
         const bExportPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Posters.${this.Settings.levelName}`, false);
         const bExportArt = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Art.${this.Settings.levelName}`, false);
+        const bSeasonPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.SeasonPosters.${this.Settings.levelName}`, false);
+        const bShowPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.ShowPosters.${this.Settings.levelName}`, false);
+        const bShowArt = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.ShowArt.${this.Settings.levelName}`, false);
         // Chunck step
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         let size = 0;   // amount of items fetched each time
@@ -1218,6 +1221,18 @@ const etHelper = new class ETHELPER {
                 if (bExportArt)
                 {
                     await this.exportPics( { type: 'arts', data: chunckItems[item] } )
+                }
+                if (bSeasonPosters)
+                {
+                    await this.exportPics( { type: 'seasonposters', data: chunckItems[item] } )
+                }
+                if (bShowPosters)
+                {
+                    await this.exportPics( { type: 'showposters', data: chunckItems[item] } )
+                }
+                if (bShowArt)
+                {
+                    await this.exportPics( { type: 'showart', data: chunckItems[item] } )
                 }
                 ++this.Settings.count;
                 if ( this.Settings.count >= this.Settings.endItem) {
@@ -1352,13 +1367,141 @@ const etHelper = new class ETHELPER {
 
     async getExportPicsUrlandFileFileName( { type: extype, data: data, res: res} ) { // Get Art/Poster filename
         let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
-        let title = String(JSONPath({path: '$.title', json: data})[0]);
+        let title, show, season, seasonNumber, episodeNumber, year;
         let fileName = '';
-        const ExpDir = path.join(
-            wtconfig.get('General.ExportPath'),
-            wtutils.AppName,
-            i18n.t('Modules.ET.Name'),
-            extype);
+        let ExpDir;
+        if ( wtconfig.get('ET.ExportPostersArtsTree', true)){
+            let filePath;
+            let mediaType = JSONPath({path: '$.type', json: data})[0];
+            switch (mediaType) {
+                case 'episode':
+                    switch (extype) {
+                        case 'posters':
+                            show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
+                            if ( String(seasonNumber).length < 2){
+                                seasonNumber = '0' + seasonNumber;
+                            }
+                            season = `Season ${seasonNumber}`;
+                            episodeNumber = JSONPath({path: '$.index', json: data})[0];
+                            if ( String(episodeNumber).length < 2){
+                                episodeNumber = '0' + episodeNumber;
+                            }
+                            title = `${show} -S${seasonNumber}E${episodeNumber}- ${title}`;
+                            filePath = path.join(show, season);
+                            break;
+                        case 'seasonposters':
+                            show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
+                            if ( String(seasonNumber).length < 2){
+                                seasonNumber = '0' + seasonNumber;
+                            }
+                            season = `Season ${seasonNumber}`;
+                            episodeNumber = JSONPath({path: '$.index', json: data})[0];
+                            if ( String(episodeNumber).length < 2){
+                                episodeNumber = '0' + episodeNumber;
+                            }
+                            title = `Season${seasonNumber}`;
+                            filePath = path.join(show, season);
+                            break;
+                        case 'arts':
+                            show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
+                            if ( String(seasonNumber).length < 2){
+                                seasonNumber = '0' + seasonNumber;
+                            }
+                            season = `Season ${seasonNumber}`;
+                            episodeNumber = JSONPath({path: '$.index', json: data})[0];
+                            if ( String(episodeNumber).length < 2){
+                                episodeNumber = '0' + episodeNumber;
+                            }
+                            title = `${show} -S${seasonNumber}E${episodeNumber}- ${title} -art`;
+                            filePath = path.join(show, season);
+                            break;
+                        case 'showposters':
+                            filePath = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = `show`;
+                            break;
+                        case 'showart':
+                            filePath = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = `show -Art`;
+                            break;
+                    }
+                    break;
+                case 'movie':
+                    switch (extype) {
+                        case 'posters':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            year = JSONPath({path: '$.year', json: data})[0];
+                            filePath = `${title} (${year})`;
+                            title = filePath
+                            break;
+                        case 'arts':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            year = JSONPath({path: '$.year', json: data})[0];
+                            filePath = `${title} (${year})`;
+                            title = `${filePath} -art`;
+                            break;
+                    }
+                    break;
+                case 'show':
+                    switch (extype) {
+                        case 'posters':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            filePath = title;
+                            break;
+                        case 'arts':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            filePath = title;
+                            title = `${title} -art`;
+                            break;
+                    }
+                    break;
+            }
+            ExpDir = path.join(
+                wtconfig.get('General.ExportPath'),
+                wtutils.AppName,
+                sanitize(i18n.t('Modules.ET.Name')),
+                sanitize(i18n.t('Modules.ET.ExportPostersArts')),
+                sanitize(i18n.t('Modules.ET.ExportPostersArtsTree')),
+                sanitize(store.getters.getSelectedServer['name']),
+                sanitize(this.Settings.LibName),
+                filePath);
+        } else  {
+            switch (extype) {
+                case 'seasonposters':
+                    show = JSONPath({path: '$.grandparentTitle', json: data})[0];
+                    season = JSONPath({path: '$.parentTitle', json: data})[0];
+                    title = `${show}_${season}`;
+                    break;
+                    case 'showposters':
+                        show = JSONPath({path: '$.grandparentTitle', json: data})[0];
+                        title = `${show}`;
+                        break;
+                    case 'showart':
+                        show = JSONPath({path: '$.grandparentTitle', json: data})[0];
+                        title = `${show}`;
+                        break;
+                    case 'showart2':
+                        show = JSONPath({path: '$.grandparentArt', json: data})[0];
+                        title = `${show}`;
+                        break;
+                default:
+                    title = String(JSONPath({path: '$.title', json: data})[0]);
+                    title = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}`;
+                    break;
+                }
+            ExpDir = path.join(
+                wtconfig.get('General.ExportPath'),
+                wtutils.AppName,
+                i18n.t('Modules.ET.Name'),
+                i18n.t('Modules.ET.ExportPostersArts'),
+                i18n.t('Modules.ET.ExportPostersArtsFlat'),
+                extype);
+        }
         // Also create exp dir if it doesn't exists
         // Create export dir
         var fs = require('fs');
@@ -1368,9 +1511,9 @@ const etHelper = new class ETHELPER {
         if ( res ){
             // Remove whitespace
             res = res.replace(/\s/g, "");
-            fileName = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}_${res}`;
+            fileName = `${title}_${res}`;
         } else {
-            fileName = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}`;
+            fileName = title;
         }
         let outFile = path.join(
             ExpDir,
@@ -1393,6 +1536,18 @@ const etHelper = new class ETHELPER {
                 break;
             case 'arts':
                 picUrl = String(JSONPath({path: '$.art', json: data})[0]);
+                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
+                break;
+            case 'seasonposters':
+                picUrl = String(JSONPath({path: '$.parentThumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                break;
+            case 'showposters':
+                picUrl = String(JSONPath({path: '$.grandparentThumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                break;
+            case 'showart':
+                picUrl = String(JSONPath({path: '$.grandparentArt', json: data})[0]);
                 resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
                 break;
         }
@@ -1421,6 +1576,7 @@ const etHelper = new class ETHELPER {
         let files = await this.getExportPicsUrlandFile( { type: extype, data: data} );
         let title = String(JSONPath({path: '$.title', json: data})[0]);
         for (var idx in files){
+            log.silly(`[ethelper.js] (exportPics) - downloading ${files[idx]['url']} as file ${files[idx]['outFile']} with a title as ${title}`)
             await this.forceDownload( { url:files[idx]['url'], target:files[idx]['outFile'], title:title} );
         }
     }
@@ -1830,7 +1986,7 @@ const etHelper = new class ETHELPER {
             }
             Object.keys(levels).forEach(function(key) {
                 // Skip picture export fields
-                if ( !["Export Art", "Export Posters", "Export Show Art", "Export Season Posters", "Export Show Posters"].includes(levels[key]) )
+                if ( !["Export Art", "Export Show Art", "Export Posters", "Export Season Posters", "Export Show Posters"].includes(levels[key]) )
                 {
                     out.push(levels[key])
                 }
