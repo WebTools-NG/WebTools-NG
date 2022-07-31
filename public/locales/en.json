@@ -206,12 +206,13 @@
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
-            "ExportPostersArts": "Posters and Arts",
+            "ExportPostersArts": "Posters and Art",
             "ExportPostersArtsTree": "tree",
             "ExportPostersArtsFlat": "flat",
             "ErrorServer": "No server",
             "Settings": {
                 "ArtPostersOrigen": "Export Art and Posters in original size",
+                "ExportPostersArtsTree": "Export Art and Posters in a file tree",
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
