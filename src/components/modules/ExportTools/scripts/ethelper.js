@@ -1220,7 +1220,7 @@ const etHelper = new class ETHELPER {
                 }
                 if (bExportArt)
                 {
-                    await this.exportPics( { type: 'arts', data: chunckItems[item] } )
+                    await this.exportPics( { type: 'art', data: chunckItems[item] } )
                 }
                 if (bSeasonPosters)
                 {
@@ -1406,7 +1406,7 @@ const etHelper = new class ETHELPER {
                             title = `Season${seasonNumber}`;
                             filePath = path.join(show, season);
                             break;
-                        case 'arts':
+                        case 'art':
                             show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
                             title = sanitize(JSONPath({path: '$.title', json: data})[0]);
                             seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
@@ -1439,7 +1439,7 @@ const etHelper = new class ETHELPER {
                             filePath = `${title} (${year})`;
                             title = filePath
                             break;
-                        case 'arts':
+                        case 'art':
                             title = sanitize(JSONPath({path: '$.title', json: data})[0]);
                             year = JSONPath({path: '$.year', json: data})[0];
                             filePath = `${title} (${year})`;
@@ -1453,7 +1453,7 @@ const etHelper = new class ETHELPER {
                             title = sanitize(JSONPath({path: '$.title', json: data})[0]);
                             filePath = title;
                             break;
-                        case 'arts':
+                        case 'art':
                             title = sanitize(JSONPath({path: '$.title', json: data})[0]);
                             filePath = title;
                             title = `${title} -art`;
@@ -1534,7 +1534,7 @@ const etHelper = new class ETHELPER {
                 picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
                 resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
                 break;
-            case 'arts':
+            case 'art':
                 picUrl = String(JSONPath({path: '$.art', json: data})[0]);
                 resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
                 break;
