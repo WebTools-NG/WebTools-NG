@@ -10,11 +10,11 @@
     <br>
     <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
         <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=PosterDimDisabled @change="setPosters_Dimensions()"></b-form-input>
-        <WTNGtt tt="Modules.ET.Settings.Posters_Dimensions_TT" size="25px"></WTNGtt>
+        <WTNGtt tt="Modules.ET.Settings.Posters_Dimensions_TT" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
         <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=ArtDimDisabled @change="setArt_Dimensions()"></b-form-input>
-        <WTNGtt tt="Modules.ET.Settings.Art_Dimensions_TT" size="25px"></WTNGtt>
+        <WTNGtt tt="Modules.ET.Settings.Art_Dimensions_TT" size="20px"></WTNGtt>
     </b-input-group>
     <b-form-group id="b-form-group">
     <b-form-checkbox-group
@@ -34,7 +34,7 @@
             style="width: 50%"
             name="SugMovieID">
         </b-form-select>
-        <WTNGtt tt="Modules.ET.Settings.ttMoviesUseId" size="25px"></WTNGtt>
+        <WTNGtt tt="Modules.ET.Settings.ttMoviesUseId" size="20px"></WTNGtt>
     </b-form-group>
     <!-- Buttons -->
     <div class="buttons">

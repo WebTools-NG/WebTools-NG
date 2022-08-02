@@ -31,7 +31,7 @@
                 style="width: Auto"
                 name="selExpTypeMain">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpType" size="25px"></WTNGtt>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpType" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -46,7 +46,7 @@
                 style="width: Auto"
                 name="selExpTypeSec">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpTypeSec" size="25px"></WTNGtt>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpTypeSec" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -66,7 +66,7 @@
                 style="width: 75%"
                 name="selLibrary">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpLibrary" size="25px"></WTNGtt>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpLibrary" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -84,7 +84,7 @@
                 style="width: 75%"
                 name="selLevel">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpLevel" size="25px"></WTNGtt>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpLevel" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>

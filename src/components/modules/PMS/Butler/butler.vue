@@ -9,15 +9,14 @@
         <br>
         <div class="d-flex align-items-center">
         <b-form-group id="ButlerGroup" v-bind:label="$t('Modules.PMS.Butler.SelectTask')" label-size="lg" label-class="font-weight-bold pt-0">
-            <b-tooltip target="ButlerGroup" triggers="hover">
-            {{ $t('Modules.PMS.Butler.TTSelectTask') }}
-            </b-tooltip>
             <b-form-select
             v-model="selTask"
             id="selTask"
             :options="selTaskOptions"
+            style="width: auto"
             name="selTask">
             </b-form-select>
+            <WTNGtt tt="Modules.PMS.Butler.TTSelectTask" size="20px"></WTNGtt>
         </b-form-group>
         </div>
         <br>
@@ -37,7 +36,11 @@
     const log = require("electron-log");
     import i18n from '../../../../i18n';
     import store from '../../../../store';
+    import WTNGtt from '../../General/wtng-tt.vue'
     export default {
+        components: {
+            WTNGtt
+        },
         data() {
             return {
                 selTaskOptions: [
