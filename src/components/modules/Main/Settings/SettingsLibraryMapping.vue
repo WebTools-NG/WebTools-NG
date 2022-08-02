@@ -10,16 +10,15 @@
     <!-- Select Lib -->
     <div class="d-flex align-items-center">
       <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="SelLibGroup" triggers="hover">
-          {{ $t('Common.Settings.LibMapping.ttSelectLibrary') }}
-        </b-tooltip>
         <b-form-select
           v-model="selLib"
           id="selLib"
           :options="selLibOptions"
           @change="getLibPath"
+          style="width: auto"
           name="selLib">
         </b-form-select>
+        <WTNGtt tt="Common.Settings.LibMapping.ttSelectLibrary" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <br>
@@ -49,18 +48,22 @@
   import i18n from '../../../../i18n';
   import store from '../../../../store';
   import { wtconfig, dialog } from '../../General/wtutils';
+  import WTNGtt from '../../General/wtng-tt.vue'
   import { pms } from '../../General/pms';
 
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          serverIsSelected: false,
-          selLibOptions: [],
-          selLib: "",
-          selLibraryWait: true,
-          items: []
-        };
+    components: {
+            WTNGtt
+        },
+    data() {
+      return {
+        serverIsSelected: false,
+        selLibOptions: [],
+        selLib: "",
+        selLibraryWait: true,
+        items: []
+      };
     },
     created() {
       log.info("LibraryMapping Created");

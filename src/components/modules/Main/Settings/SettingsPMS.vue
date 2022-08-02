@@ -11,64 +11,44 @@
       <b-form-input id="TimeOut" name="TimeOut" type="text" class="form-control" v-model="TimeOut" :disabled=false :maxlength=2 @change="setTimeOut()"></b-form-input>
     </b-input-group>
     <b-input-group id="ContainerSizeMovie" :prepend="$t('Modules.GlobalSettings.ContainerSizeMovie')" class="mt-3">
-      <b-tooltip target="ContainerSizeMovie" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeMovie" name="ContainerSizeMovie" type="text" class="form-control" v-model="ContainerSizeMovie" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.1')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizeShow" :prepend="$t('Modules.GlobalSettings.ContainerSizeShow')" class="mt-3">
-      <b-tooltip target="ContainerSizeShow" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeShow" name="ContainerSizeShow" type="text" class="form-control" v-model="ContainerSizeShow" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.2')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizeEpisode" :prepend="$t('Modules.GlobalSettings.ContainerSizeEpisode')" class="mt-3">
-      <b-tooltip target="ContainerSizeEpisode" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeEpisode" name="ContainerSizeEpisode" type="text" class="form-control" v-model="ContainerSizeEpisode" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.4')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizeArtist" :prepend="$t('Modules.GlobalSettings.ContainerSizeArtist')" class="mt-3">
-      <b-tooltip target="ContainerSizeArtist" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeArtist" name="ContainerSizeArtist" type="text" class="form-control" v-model="ContainerSizeArtist" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.8')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizeAlbum" :prepend="$t('Modules.GlobalSettings.ContainerSizeAlbum')" class="mt-3">
-      <b-tooltip target="ContainerSizeAlbum" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeAlbum" name="ContainerSizeAlbum" type="text" class="form-control" v-model="ContainerSizeAlbum" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.9')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizeTrack" :prepend="$t('Modules.GlobalSettings.ContainerSizeTrack')" class="mt-3">
-      <b-tooltip target="ContainerSizeTrack" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeTrack" name="ContainerSizeTrack" type="text" class="form-control" v-model="ContainerSizeTrack" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.10')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizePhoto" :prepend="$t('Modules.GlobalSettings.ContainerSizePhoto')" class="mt-3">
-      <b-tooltip target="ContainerSizePhoto" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizePhoto" name="ContainerSizePhoto" type="text" class="form-control" v-model="ContainerSizePhoto" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.13')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizePlaylist" :prepend="$t('Modules.GlobalSettings.ContainerSizePlaylist')" class="mt-3">
-      <b-tooltip target="ContainerSizePlaylist" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizePlaylist" name="ContainerSizePlaylist" type="text" class="form-control" v-model="ContainerSizePlaylist" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.15')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizeLibraries" :prepend="$t('Modules.GlobalSettings.ContainerSizeLibraries')" class="mt-3">
-      <b-tooltip target="ContainerSizeLibraries" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizeLibraries" name="ContainerSizeLibraries" type="text" class="form-control" v-model="ContainerSizeLibraries" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.1002')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ContainerSizePlaylists" :prepend="$t('Modules.GlobalSettings.ContainerSizePlaylists')" class="mt-3">
-      <b-tooltip target="ContainerSizePlaylists" triggers="hover">
-        {{ $t('Modules.GlobalSettings.TTContainerSize') }}
-      </b-tooltip>
       <b-form-select id="ContainerSizePlaylists" name="ContainerSizePlaylists" type="text" class="form-control" v-model="ContainerSizePlaylists" :options="ContainerSizes" :disabled=false v-on:change="setPrefs($event, 'PMS.ContainerSize.3001')"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.TTContainerSize" size="20px"></WTNGtt>
     </b-input-group>
 
     <br>
@@ -87,23 +67,27 @@
 
 <script>
   import { wtconfig } from '../../General/wtutils';
+  import WTNGtt from '../../General/wtng-tt.vue'
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          ContainerSizeMovie: wtconfig.get('PMS.ContainerSize.1'),
-          ContainerSizeShow: wtconfig.get('PMS.ContainerSize.2'),
-          ContainerSizeEpisode: wtconfig.get('PMS.ContainerSize.4'),
-          ContainerSizeArtist: wtconfig.get('PMS.ContainerSize.8'),
-          ContainerSizeAlbum: wtconfig.get('PMS.ContainerSize.9'),
-          ContainerSizeTrack: wtconfig.get('PMS.ContainerSize.10'),
-          ContainerSizePhoto: wtconfig.get('PMS.ContainerSize.13'),
-          ContainerSizePlaylist: wtconfig.get('PMS.ContainerSize.15'),
-          ContainerSizeLibraries: wtconfig.get('PMS.ContainerSize.1002'),
-          ContainerSizePlaylists: wtconfig.get('PMS.ContainerSize.3001'),
-          TimeOut: wtconfig.get('PMS.TimeOut', 20)
+    components: {
+            WTNGtt
+        },
+    data() {
+      return {
+        ContainerSizeMovie: wtconfig.get('PMS.ContainerSize.1'),
+        ContainerSizeShow: wtconfig.get('PMS.ContainerSize.2'),
+        ContainerSizeEpisode: wtconfig.get('PMS.ContainerSize.4'),
+        ContainerSizeArtist: wtconfig.get('PMS.ContainerSize.8'),
+        ContainerSizeAlbum: wtconfig.get('PMS.ContainerSize.9'),
+        ContainerSizeTrack: wtconfig.get('PMS.ContainerSize.10'),
+        ContainerSizePhoto: wtconfig.get('PMS.ContainerSize.13'),
+        ContainerSizePlaylist: wtconfig.get('PMS.ContainerSize.15'),
+        ContainerSizeLibraries: wtconfig.get('PMS.ContainerSize.1002'),
+        ContainerSizePlaylists: wtconfig.get('PMS.ContainerSize.3001'),
+        TimeOut: wtconfig.get('PMS.TimeOut', 20)
 
-        };
+      };
     },
     created() {
       log.info(`[SettingsPMS.vue] (created) - SettingsPMS Created`);

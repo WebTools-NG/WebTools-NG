@@ -11,31 +11,29 @@
   <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>
   <br>
   <div> <!-- Settings to show -->
+    <WTNGtt tt="Modules.PMS.Settings.TTSettingsFilter" size="20px"></WTNGtt>
     <b-form-group id="FilterSettingsGroup" v-bind:label="$t('Modules.PMS.Settings.SettingsFilter')" label-size="lg" label-class="font-weight-bold pt-0">
-      <b-tooltip target="FilterSettingsGroup" triggers="hover">
-        {{ $t('Modules.PMS.Settings.TTSettingsFilter') }}
-      </b-tooltip>
       <b-form-radio-group
         id="FilterSettings"
         v-model="selFilterSetting"
         @change.native="changeFilterSetting()"
         :options="FilterSettingsOptions"
         name="FilterSettings"
-      ></b-form-radio-group>
+      >
+      </b-form-radio-group>
     </b-form-group>
   </div>
   <div class="d-flex align-items-center">
     <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-      <b-tooltip target="etLibraryGroup" triggers="hover">
-        {{ $t('Modules.PMS.Settings.TTSelectSettingsSelection') }}
-      </b-tooltip>
       <b-form-select
         v-model="selSection"
         id="selSection"
         v-on:change="getGroupSelectedItem"
         :options="selSectionOptions"
+        style="width: 75%"
         name="selSection">
       </b-form-select>
+      <WTNGtt tt="Modules.PMS.Settings.TTSelectSettingsSelection" size="20px"></WTNGtt>
     </b-form-group>
   </div>
   <div> <!-- Modal popup -->
@@ -116,10 +114,14 @@
     const log = require("electron-log");
     const {JSONPath} = require('jsonpath-plus');
     import {wtconfig} from './../../General/wtutils';
+    import WTNGtt from './../../General/wtng-tt.vue'
     import i18n from '../../../../i18n';
     import store from '../../../../store';
     import { pmssettings } from "./scripts/settings";
     export default {
+        components: {
+            WTNGtt
+        },
         data() {
             return {
                 newSettingTitle: "",

@@ -13,6 +13,7 @@
 * [#552 Export posters and art in original size](https://github.com/WebTools-NG/WebTools-NG/issues/552) (Enhancement)
 * [#550 Export posters for Seasons and Shows](https://github.com/WebTools-NG/WebTools-NG/issues/550) (Enhancement)
 * [#551 Exporting posters and Arts into tree](https://github.com/WebTools-NG/WebTools-NG/issues/551) (Enhancement)
+* [#553 Request Tooltips be replaced with Info or ? icons](https://github.com/WebTools-NG/WebTools-NG/issues/553) (Enhancement)
 
 ## V1.0.0 First Official Release (20220724)
 

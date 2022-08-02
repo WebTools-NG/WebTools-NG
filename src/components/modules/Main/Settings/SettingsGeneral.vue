@@ -8,40 +8,30 @@
     </div>
     <br>
     <b-input-group id="LogLevelGrp" :prepend="$t('Modules.GlobalSettings.LogLevelFile')" class="mt-3">
-      <b-tooltip target="LogLevelGrp" triggers="hover">
-        {{ $t('Modules.GlobalSettings.RestartNeeded') }}
-      </b-tooltip>
       <b-form-select id="LogLevel" name="LogLevel" type="text" class="form-control" v-model="LogLevel" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'Log.fileLevel')" :options="logLevels"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.RestartNeeded" size="20px"></WTNGtt>
     </b-input-group>
 
     <b-input-group id="LogLevelConsoleGrp" :prepend="$t('Modules.GlobalSettings.LogLevelConsole')" class="mt-3">
-      <b-tooltip target="LogLevelConsoleGrp" triggers="hover">
-        {{ $t('Modules.GlobalSettings.RestartNeeded') }}
-      </b-tooltip>
       <b-form-select id="LogLevelConsole" name="LogLevelConsole" type="text" class="form-control" v-model="LogLevelConsole" :disabled=false :maxlength=2 v-on:change="setPrefs($event, 'Log.consoleLevel')" :options="logLevels"></b-form-select>
+      <WTNGtt tt="Modules.GlobalSettings.RestartNeeded" size="20px"></WTNGtt>
     </b-input-group>
 
     <b-input-group id="LogLevelSizeGrp" :prepend="$t('Modules.GlobalSettings.LogSize')" class="mt-3">
-        <b-tooltip target="LogLevelSizeGrp" triggers="hover">
-          {{ $t('Modules.GlobalSettings.RestartNeeded') }}
-        </b-tooltip>
         <b-form-select id="LogLevelSize" name="LogLevelSize" type="text" class="form-control" v-model="LogLevelSize" :disabled=false :maxlength=4 v-on:change="setLogLevelSize" :options="LogLevelSizes"></b-form-select>
+        <WTNGtt tt="Modules.GlobalSettings.RestartNeeded" size="20px"></WTNGtt>
     </b-input-group>
 
     <b-input-group id="BetaTesterGrp" :prepend="$t('Modules.GlobalSettings.BetaTester')" class="mt-3">
-        <b-tooltip target="BetaTesterGrp" triggers="hover">
-          {{ $t('Modules.GlobalSettings.TTBetaTester') }}
-        </b-tooltip>
         <b-form-select id="BetaTester" name="BetaTester" type="text" class="form-control" v-model="BetaTester" :disabled=false :maxlength=2 v-on:change="setBeta" :options="BetaLevels"></b-form-select>
+        <WTNGtt tt="Modules.GlobalSettings.TTBetaTester" size="20px"></WTNGtt>
     </b-input-group>
 
     <b-input-group id="Update" :prepend="$t('Modules.GlobalSettings.Update')" class="mt-3">
-        <b-tooltip target="Update" triggers="hover">
-          {{ $t('Modules.GlobalSettings.TTUpdate') }}
-        </b-tooltip>
         <b-form-select id="Update" name="Update" type="text" class="form-control" v-model="Update" :disabled=false :maxlength=2 v-on:change="setUpdate" :options="UpdateLevels">
             {{ this.getUpdate() }}
         </b-form-select>
+        <WTNGtt tt="Modules.GlobalSettings.TTUpdate" size="20px"></WTNGtt>
     </b-input-group>
     <br>
     <!-- Buttons -->
@@ -60,17 +50,21 @@
 <script>
   import i18n from '../../../../i18n';
   import { wtconfig } from '../../General/wtutils';
+  import WTNGtt from '../../General/wtng-tt.vue'
 
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          LogLevel: wtconfig.get('Log.fileLevel'),
-          LogLevelConsole: wtconfig.get('Log.consoleLevel'),
-          LogLevelSize: this.getLogFileSize(),
-          BetaTester: this.getBeta(),
-          Update: this.getUpdate()
-        };
+    components: {
+            WTNGtt
+        },
+    data() {
+      return {
+        LogLevel: wtconfig.get('Log.fileLevel'),
+        LogLevelConsole: wtconfig.get('Log.consoleLevel'),
+        LogLevelSize: this.getLogFileSize(),
+        BetaTester: this.getBeta(),
+        Update: this.getUpdate()
+      };
     },
     created() {
       log.info(`[SettingsGeneral.vue] (created) - SettingsGeneral Created`);
