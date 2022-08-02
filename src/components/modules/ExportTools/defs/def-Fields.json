@@ -417,6 +417,12 @@
                 "call": 1,
                 "type": "time"
             },
+        "Edition Title":
+            {
+                "key": "$.editionTitle",
+                "call": 1,
+                "type": "string"
+            },
         "Episode":
             {
                 "key": "$.index",
