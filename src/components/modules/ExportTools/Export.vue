@@ -23,32 +23,30 @@
         <b-col> <!-- Main type -->
           <div class="d-flex align-items-center">
             <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.optExpType.lblMainExp')" label-size="lg" label-class="font-weight-bold pt-0">
-              <b-tooltip target="etLibTypeMainGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpType') }}
-              </b-tooltip>
               <b-form-select
                 v-model="selExpTypeMain"
                 id="selExpTypeMain"
                 :options="optExpTypeMain"
                 @change="selExpTypeMainChanged"
+                style="width: Auto"
                 name="selExpTypeMain">
               </b-form-select>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpType" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
         <b-col> <!-- Sec type -->
           <div class="d-flex align-items-center">
             <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.optExpType.lblSecExp')" label-size="lg" label-class="font-weight-bold pt-0">
-              <b-tooltip target="etLibTypeSecGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpTypeSec') }}
-              </b-tooltip>
               <b-form-select
                 v-model="selExpTypeSec"
                 id="selExpTypeSec"
                 :options="optExpTypeSec"
                 @change="selExpTypeSecChanged"
+                style="width: Auto"
                 name="selExpTypeSec">
               </b-form-select>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpTypeSec" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -60,16 +58,15 @@
               <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
                 <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
               </div>
-              <b-tooltip target="etLibraryGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpLibrary') }}
-              </b-tooltip>
               <b-form-select
                 v-model="selLibrary"
                 id="selLibrary"
                 :options="selLibraryOptions"
                 @change="selLibraryChanged"
+                style="width: 75%"
                 name="selLibrary">
               </b-form-select>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpLibrary" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -78,17 +75,16 @@
         <b-col>
           <div>
             <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.optExpType.lblExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
-              <b-tooltip target="etLevelGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpLevel') }}
-              </b-tooltip>
               <b-form-select
                 class="form-control"
                 v-model="selLevel"
                 id="selLevel"
                 :options="exportLevels"
                 @change="selLevelChanged"
+                style="width: 75%"
                 name="selLevel">
               </b-form-select>
+              <WTNGtt tt="Modules.ET.optExpType.ttExpLevel" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -137,10 +133,11 @@
   import { etHelper } from "./scripts/ethelper";
   import statusDiv from '../General/status.vue';
   import { status } from '../General/status';
+  import WTNGtt from '../General/wtng-tt.vue'
   const log = require("electron-log");
   export default {
     components: {
-      statusDiv
+      statusDiv, WTNGtt
     },
     data() {
       return {

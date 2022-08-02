@@ -9,16 +9,12 @@
     <b-link id="general" :to="{ path: '/settings/export', query: { return: 'exportsettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
     <br>
     <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
-        <b-tooltip target="PosterGrp" triggers="hover">
-            {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
-        </b-tooltip>
         <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=PosterDimDisabled @change="setPosters_Dimensions()"></b-form-input>
+        <WTNGtt tt="Modules.ET.Settings.Posters_Dimensions_TT" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
-        <b-tooltip target="ArtGrp" triggers="hover">
-            {{ $t('Modules.ET.Settings.Art_Dimensions_TT') }}
-        </b-tooltip>
         <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=ArtDimDisabled @change="setArt_Dimensions()"></b-form-input>
+        <WTNGtt tt="Modules.ET.Settings.Art_Dimensions_TT" size="20px"></WTNGtt>
     </b-input-group>
     <b-form-group id="b-form-group">
     <b-form-checkbox-group
@@ -28,16 +24,17 @@
         @change.native="filterTable">
     </b-form-checkbox-group>
     </b-form-group>
-    <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Settings.ttMoviesUseId')">
-            <b-form-select
-                class="form-control"
-                v-model="SelectedMoviesID"
-                id="SelectedMoviesID"
-                :options="SelectedMoviesIDOptions"
-                @change="SelectedMoviesIDChanged"
-                style="width: 50%"
-                name="SugMovieID">
-            </b-form-select>
+    <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-form-select
+            class="form-control"
+            v-model="SelectedMoviesID"
+            id="SelectedMoviesID"
+            :options="SelectedMoviesIDOptions"
+            @change="SelectedMoviesIDChanged"
+            style="width: 50%"
+            name="SugMovieID">
+        </b-form-select>
+        <WTNGtt tt="Modules.ET.Settings.ttMoviesUseId" size="20px"></WTNGtt>
     </b-form-group>
     <!-- Buttons -->
     <div class="buttons">
@@ -53,10 +50,14 @@
 
 <script>
     const log = require("electron-log");
-    import {wtutils, wtconfig, dialog} from '../../General/wtutils'
+    import {wtutils, wtconfig, dialog} from '../../General/wtutils';
+    import WTNGtt from '../../General/wtng-tt.vue'
     log, wtutils, wtconfig, dialog
     import i18n from '../../../../i18n'
     export default {
+        components: {
+            WTNGtt
+        },
         created() {
             this.getDefaults();
             // alert('For this version, export to XLSX is currently disabled');
@@ -133,6 +134,12 @@
     }
     #b-form-group{
         margin-top: 20px;
+    }
+    #qmark2222{
+        margin-left:10px;
+    }
+    i.ttqmark{
+        margin-left:10px;
     }
 
 </style>

@@ -10,16 +10,20 @@
     <br>
     <div class="text-center">    <!-- Link menu -->
       <h5>
-        <b-link id="general" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttGeneral')" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
+        <b-link id="general" to="/settings/settingsgeneral">* {{ $t("Common.Settings.General.Name") }} </b-link>
+        <WTNGtt tt="Common.Settings.Global.ttGeneral" size="20px"></WTNGtt>
         <br>
         <br>
-        <b-link id="export" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttExport')" to="/settings/export">* {{ $t("Common.Settings.Export.Name") }} </b-link>
+        <b-link id="export" to="/settings/export">* {{ $t("Common.Settings.Export.Name") }} </b-link>
+        <WTNGtt tt="Common.Settings.Global.ttExport" size="20px"></WTNGtt>
         <br>
         <br>
-        <b-link id="pms" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttPMS')" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
+        <b-link id="pms" to="/settings/settingspms">*  {{ $t("Common.Settings.PMS.Name") }} </b-link>
+        <WTNGtt tt="Common.Settings.Global.ttPMS" size="20px"></WTNGtt>
         <br>
         <br>
-        <b-link id="libmap" v-b-tooltip.hover.right="$t('Common.Settings.Global.ttLibmap')" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
+        <b-link id="libmap" to="/settings/libmapping">* {{ $t("Common.Settings.LibMapping.Name") }}</b-link>
+        <WTNGtt tt="Common.Settings.LibMapping.Name" size="20px"></WTNGtt>
       </h5>
     </div>
     <!-- Factory Reset -->
@@ -43,9 +47,13 @@
 
 <script>
     import { wtutils } from '../../General/wtutils';
+    import WTNGtt from '../../General/wtng-tt.vue'
     const log = require("electron-log");
     console.log = log.log;
     export default {
+        components: {
+            WTNGtt
+        },
         methods: {
             confirmFactoryReset(){
                 this.$refs['confirmFactoryReset'].show();

@@ -11,15 +11,14 @@
     <br>
     <div class="d-flex align-items-center">
       <b-form-group id="dvrSelDVRGroup" v-bind:label="$t('Modules.PMS.DVR.selDVR')" label-size="lg" label-class="font-weight-bold pt-0" name="dvrSelDVRGroup">
-        <b-tooltip target="dvrSelDVRGroup" triggers="hover">
-          {{ $t('Modules.PMS.DVR.ttselDVR') }}
-        </b-tooltip>
         <b-form-select
           v-model="selDVR"
           id="selDVR"
           :options="optSelDVR"
+          style="width: auto"
           name="selDVR">
         </b-form-select>
+        <WTNGtt tt="Modules.PMS.DVR.ttselDVR" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <br>
@@ -61,17 +60,21 @@
   //import store from '../../../store';
   //import { wtconfig } from '../General/wtutils';
   import { dvr } from "./scripts/dvr";
+  import WTNGtt from '../../General/wtng-tt.vue'
 
   i18n, dvr
 
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          optSelDVR: [],
-          selDVR: "",
-          serverIsSelected: false
-        };
+    components: {
+            WTNGtt
+        },
+    data() {
+      return {
+        optSelDVR: [],
+        selDVR: "",
+        serverIsSelected: false
+      };
   },
   created() {
     log.info("DVR Created");

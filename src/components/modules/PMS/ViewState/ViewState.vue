@@ -8,16 +8,15 @@
     </div>
     <div class="d-flex align-items-center">
       <b-form-group id="ViewStateSelSourceUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selSourceUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelSourceUsrGroup">
-        <b-tooltip target="ViewStateSelSourceUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.ViewState.ttSelSourceUsr') }}
-        </b-tooltip>
         <b-form-select
           v-model="selSrcUsr"
           id="selSrcUsr"
           :options="optselSrcUsr"
           @change="selSrcUsrChanged"
+          style="width: 75%"
           name="selSrcUsr">
         </b-form-select>
+        <WTNGtt tt="Modules.PMS.ViewState.ttSelSourceUsr" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <div ref="libSpinner" id="libSpinner" :hidden="WaitForUsers">
@@ -25,16 +24,15 @@
     </div>
     <div class="d-flex align-items-center">
       <b-form-group id="ViewStateSelTargetUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selTargetUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelTargetUsrGroup">
-        <b-tooltip target="ViewStateSelTargetUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.ViewState.ttSelTargetUsr') }}
-        </b-tooltip>
         <b-form-select
           v-model="selTargetUsr"
           @change="selTargetUsrChanged"
           id="selTargetUsr"
           :options="optSelTargetUsr"
+          style="width: 75%"
           name="selTargetUsr">
         </b-form-select>
+        <WTNGtt tt="Modules.PMS.ViewState.ttSelTargetUsr" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <br>
@@ -74,13 +72,15 @@
   import i18n from '../../../../i18n';
   import store from '../../../../store';
   import { wtconfig } from '../../General/wtutils'
+  import WTNGtt from '../../General/wtng-tt.vue'
   import { status } from '../../General/status';
   import { viewstate } from "./scripts/viewstate";
   import statusDiv from '../../General/status.vue'
   const log = require("electron-log");
   export default {
     components: {
-      statusDiv
+      statusDiv,
+      WTNGtt
     },
       data() {
         return {

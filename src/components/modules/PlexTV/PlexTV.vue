@@ -13,15 +13,14 @@
         <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
           <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
         </div>
-        <b-tooltip target="plexTVUsers" triggers="hover">
-          {{ $t('Modules.PlexTV.TT-User') }}
-        </b-tooltip>
         <b-form-select
           v-model="selUser"
           id="selUser"
           :options="selUserOptions"
+          style="width: Auto"
           name="selLibrary">
         </b-form-select>
+        <WTNGtt tt="Modules.PlexTV.TT-User" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
@@ -64,24 +63,28 @@
   import { plextv } from "./scripts/plextv";
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
+  import WTNGtt from '../General/wtng-tt.vue'
 
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          selUserWait: false,
-          selUser: "",
-          selUserOptions: [],
-          selUserDetails: {},
-          usrID: "",
-          usrEmail: "",
-          usrName: "",
-          usrFriendlyName: "",
-          usrRestricted: "",
-          usrThumb: "",
-          usrHome: "",
-          usrStatus: ""
-        };
+    components: {
+            WTNGtt
+        },
+    data() {
+      return {
+        selUserWait: false,
+        selUser: "",
+        selUserOptions: [],
+        selUserDetails: {},
+        usrID: "",
+        usrEmail: "",
+        usrName: "",
+        usrFriendlyName: "",
+        usrRestricted: "",
+        usrThumb: "",
+        usrHome: "",
+        usrStatus: ""
+      };
   },
   async created() {
     log.info("PlexTV Created");
