@@ -22,6 +22,9 @@
       </b-form-group>
     </div>
     <br>
+
+
+
     <!-- Table of section path -->
     <b-table ref="table"
       striped
