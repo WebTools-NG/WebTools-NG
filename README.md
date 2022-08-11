@@ -9,4 +9,36 @@
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
 [![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml)
 
-Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
+## Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
+
+
+### Special thanks goes to:
+
+<a href="https://plex.tv/">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-black.png" width="50">
+</a>
+<br>
+<a href="https://plex.tv/">
+    For providing the best multimedia server EVER!
+</a>
+<br>
+<br>
+<a href="https://poeditor.com/">
+    <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="50">
+</a>
+<br>
+<a href="https://poeditor.com/">
+    For providing translations for free, since we are Open Source
+</a>
+<br>
+<br>
+<a href="https://www.themoviedb.org/">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.svg" width="50">
+</a>
+<br>
+<a href="https://www.themoviedb.org/">
+    For providing a beautiful API for free, since we are a non profit project
+</a>
+
+
+
