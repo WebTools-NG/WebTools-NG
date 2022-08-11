@@ -390,7 +390,7 @@
                 "key": "$.createdAtTZOffset",
                 "call": 1,
                 "type": "time"
-            },        
+            },
         "Deleted":
             {
                 "key": "$.deletedAt",
@@ -617,7 +617,7 @@
                 "key": "$.leafCount",
                 "call": 1,
                 "type": "string"
-            },        
+            },
         "Key":
             {
                 "key": "$.ratingKey",
@@ -1118,6 +1118,20 @@
                 "call": 1,
                 "type": "string"
             },
+        "Show Episode Count (PMS)":
+            {
+                "key": "$.leafCount",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
+        "Show Episode Count (TMDB)":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
         "Show Prefs Delete episodes after playing":
             {
                 "key": "$..Preferences.Setting[?(@.id=='autoDeletionItemPolicyWatchedLibrary')].value",
@@ -1174,12 +1188,33 @@
                 "include": "includePreferences=1",
                 "postProcess": true
             },
+        "Show Season Count (PMS)":
+            {
+                "key": "$.childCount",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
+        "Show Season Count (TMDB)":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
+        "Missing":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
         "Show Title":
             {
                 "key": "$.parentTitle",
                 "call": 1,
                 "type": "string"
-            },    
+            },
         "Similar":
             {
                 "key": "$.Similar[*]",
@@ -1395,6 +1430,13 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.id",
+                "postProcess": true
+            },
+        "TMDB Status":
+            {
+                "key": "$.title",
+                "call": 1,
+                "type": "string",
                 "postProcess": true
             },
         "Updated":
