@@ -15,13 +15,13 @@
 ### Special thanks goes to:
 
 <a href="https://plex.tv/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-black.png" width="50"> For providing the best multimedia server EVER!
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-black.png" width="50">
 </a>
 <br>
 <a href="https://plex.tv/">
     For providing the best multimedia server EVER!
 </a>
-
+<br>
 <br>
 
 <a href="https://www.qries.com/">
