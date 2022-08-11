@@ -14,7 +14,10 @@
 
 ### Special thanks goes to:
 
-[![ Plex, for providing the best multimedia server in the world ](https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-white.png)](https://plex.tv)
+<img src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-white.png" alt="Plex" width="200"/>
+
+
+<br>
 
 [![Foo](http://www.google.com.au/images/nav_logo7.png)](http://google.com.au/)
 
