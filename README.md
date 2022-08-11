@@ -14,7 +14,7 @@
 
 ### Special thanks goes to:
 
-<img src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-white.png" alt="Plex" width="200"/>
+<img src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-black.png" alt="Plex" width="50"/>
 
 
 <br>
