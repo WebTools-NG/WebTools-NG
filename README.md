@@ -9,4 +9,11 @@
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
 [![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml)
 
-Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
+## Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
+
+
+### Special thanks goes to:
+
+![Plex](https://brand.plex.tv/d/qxmJ3odkK0fj/style-guide)
+
+
