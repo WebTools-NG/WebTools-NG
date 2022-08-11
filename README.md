@@ -17,6 +17,9 @@
 <a href="https://plex.tv/">
     <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-black.png" width="50"> For providing the best multimedia server EVER!
 </a>
+<a href="https://plex.tv/">
+    For providing the best multimedia server EVER!
+</a>
 
 <br>
 
