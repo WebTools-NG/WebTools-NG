@@ -23,14 +23,15 @@
 </a>
 <br>
 <br>
-
-<a href="https://www.qries.com/">
-         <img alt="Qries" src="https://www.qries.com/images/banner_logo.png"
-         width=150" height="70"> Gummi ged
-      </a>
-
+<a href="https://poeditor.com/">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="50">
+</a>
+<br>
+<a href="https://poeditor.com/">
+    For providing translations for free, since we are Open Source
+</a>
+<br>
 <br>
 
-[![Foo](http://www.google.com.au/images/nav_logo7.png)](http://google.com.au/)
 
 
