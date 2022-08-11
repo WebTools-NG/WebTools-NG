@@ -33,7 +33,7 @@
 <br>
 <br>
 <a href="https://www.themoviedb.org/">
-    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/tmdb-logo.svg" width="50">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.svg" width="50">
 </a>
 <br>
 <a href="https://www.themoviedb.org/">
