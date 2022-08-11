@@ -24,7 +24,7 @@
 <br>
 <br>
 <a href="https://poeditor.com/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="50">
+    <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="50">
 </a>
 <br>
 <a href="https://poeditor.com/">
@@ -32,6 +32,13 @@
 </a>
 <br>
 <br>
+<a href="https://www.themoviedb.org/">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/tmdb-logo.svg" width="50">
+</a>
+<br>
+<a href="https://www.themoviedb.org/">
+    For providing a beautiful API for free, since we are a non profit project
+</a>
 
 
 
