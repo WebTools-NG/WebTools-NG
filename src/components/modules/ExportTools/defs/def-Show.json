@@ -71,6 +71,17 @@
                 "TVDB Language (Legacy)",
                 "Updated",
                 "Year"
+            ],
+            "findmissingEp": [
+                "Key",
+                "Title",
+                "TMDB Link",
+                "Show Episode Count (PMS)",
+                "Show Episode Count (TMDB)",
+                "Show Season Count (PMS)",
+                "Show Season Count (TMDB)",
+                "TMDB Status",
+                "Missing"
             ]
         }
     }
