@@ -545,12 +545,11 @@ const etHelper = new class ETHELPER {
                         break;
                 case "Missing":
                     retVal = i18n.t('Common.Ok');
-//                    retVal = wtconfig.get('ET.NotAvail');
-                    console.log('Ged 77-3', JSON.stringify(this.Settings.tmdbShowInfo))
                     if ( this.Settings.tmdbShowInfo['TMDBEPCount'] != this.Settings.tmdbShowInfo['PMSEPCount']){
-                    //if ( this.Settings.tmdbShowInfo['Missing']){
-                       // retVal = this.Settings.tmdbShowInfo['Missing'];
                         retVal = "Episode mismatch"
+                    }
+                    if (!this.Settings.tmdbShowInfo['TMDBEPCount']){
+                        retVal = "No tmdb Guid found"
                     }
                     break;
                 case "Rating":
@@ -848,7 +847,6 @@ const etHelper = new class ETHELPER {
                     break;
                 case "Show Episode Count (TMDB)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    console.log('Ged 22-3', JSON.stringify(this.Settings.tmdbShowInfo))
                     if ( this.Settings.tmdbShowInfo['TMDBEPCount']){
                         retVal = String(this.Settings.tmdbShowInfo['TMDBEPCount']);
                     }
@@ -1000,8 +998,12 @@ const etHelper = new class ETHELPER {
             log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
             this.Settings.tmdbShowInfo = {};
             const tmdbId = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
-            this.Settings.tmdbShowInfo = await tmdb.getTMDBShowInfo(tmdbId);
-            console.log('Ged 88-3', JSON.stringify(this.Settings.tmdbShowInfo))
+            if ( tmdbId){
+                this.Settings.tmdbShowInfo = await tmdb.getTMDBShowInfo(tmdbId);
+            } else {
+                const title = JSONPath({ path: "$.title", json: data });
+                log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+            }
         }
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
@@ -1615,7 +1617,6 @@ const etHelper = new class ETHELPER {
             for(let res of resolutions) {
                 entry = {};
                 res = res.replace('*', 'x');
-                console.log('Ged 21-3', res)
                 // Build up pic url
                 const hight = res.split('x')[1].trim();
                 const width = res.split('x')[0].trim();
