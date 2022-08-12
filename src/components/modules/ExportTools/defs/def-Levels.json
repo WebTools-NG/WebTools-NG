@@ -66,18 +66,20 @@
         "levels": {
             "Level 1": "level1",
             "Level 2": "level2",
-            "All": "all"
+            "All": "all",
+            "Find Missing Episodes": "findmissingEp"
         },
         "LevelCount": {
             "Level 1": 1,
             "Level 2": 1,
             "All": 2,
-            "all": 2
+            "Find Missing Episodes": 1
         },
         "Include": {
             "Level 1": "",
             "Level 2": "",
-            "all": "includePreferences=1"
+            "Find Missing Episodes": "includeGuids=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline",
+            "All": "includePreferences=1"
         }
     },
     "10": {

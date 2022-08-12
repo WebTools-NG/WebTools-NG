@@ -22,6 +22,7 @@
       </div>
       <br>
       <p>{{ $t("Modules.About.PlexPoCredits") }}</p>
+      <p>{{ $t("Modules.About.TMDBCredit") }}</p>
     </div>
   </b-container>
 </template>

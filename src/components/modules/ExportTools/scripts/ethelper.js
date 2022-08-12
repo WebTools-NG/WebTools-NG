@@ -9,6 +9,7 @@ import filesize from 'filesize';
 import Excel from 'exceljs';
 import { status } from '../../General/status';
 import { time } from '../../General/time';
+import { tmdb } from '../../General/tmdb';
 
 var path = require("path");
 var sanitize = require("sanitize-filename");
@@ -306,7 +307,8 @@ const etHelper = new class ETHELPER {
             fileMinor: null,
             element: null,
             SelectedMoviesID: null,
-            SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb")
+            SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb"),
+            tmdbShowInfo: null
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -539,15 +541,20 @@ const etHelper = new class ETHELPER {
             const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
             switch ( String(name) ){
                 case "Audience Rating":
-                    {
                         retVal = val.substring(0, 3);
                         break;
+                case "Missing":
+                    retVal = i18n.t('Common.Ok');
+                    if ( this.Settings.tmdbShowInfo['TMDBEPCount'] != this.Settings.tmdbShowInfo['PMSEPCount']){
+                        retVal = "Episode mismatch"
                     }
+                    if (!this.Settings.tmdbShowInfo['TMDBEPCount']){
+                        retVal = "No tmdb Guid found"
+                    }
+                    break;
                 case "Rating":
-                    {
                         retVal = val.substring(0, 3);
                         break;
-                    }
                 case "Suggested File Name":
                     retVal = await this.getSuggestedFileName( {data: data} );
                     break;
@@ -773,8 +780,27 @@ const etHelper = new class ETHELPER {
                     for(const item of guidArr) {
                         if ( item.startsWith("tmdb://") )
                         {
-                            retVal = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                            const mediaType = JSONPath({path: '$.type', json: data})[0];
+                            if ( mediaType == 'movie'){
+                                retVal = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                            }
+
+                            /* else if ( mediaType == 'episode'){
+                                const season = 1
+                                const episode = 1
+                                retVal = `https://www.themoviedb.org/tv/${item.substring(7)}/season/${season}/episode/${episode}`
+                            }
+                             */
+                            else {
+                                retVal = 'https://www.themoviedb.org/tv/' + item.substring(7);
+                            }
                         }
+                    }
+                    break;
+                case "TMDB Status":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.tmdbShowInfo['TMDBStatus']){
+                        retVal = this.Settings.tmdbShowInfo['TMDBStatus'];
                     }
                     break;
                 case "PMS Media Path":
@@ -814,6 +840,16 @@ const etHelper = new class ETHELPER {
                     var sha1 = shasum.digest('hex');
                     //var path = require('path');
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
+                    break;
+                case "Show Episode Count (PMS)":
+                    this.Settings.tmdbShowInfo['PMSEPCount'] = parseInt(val);
+                    retVal = val;
+                    break;
+                case "Show Episode Count (TMDB)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.tmdbShowInfo['TMDBEPCount']){
+                        retVal = String(this.Settings.tmdbShowInfo['TMDBEPCount']);
+                    }
                     break;
                 case "Show Prefs Episode sorting":
                     switch (val){
@@ -935,6 +971,16 @@ const etHelper = new class ETHELPER {
                             break;
                     }
                     break;
+                case "Show Season Count (PMS)":
+                    this.Settings.tmdbShowInfo['PMSSCount'] = parseInt(val);
+                    retVal = val;
+                    break;
+                case "Show Season Count (TMDB)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.tmdbShowInfo['TMDBSCount']){
+                        retVal = String(this.Settings.tmdbShowInfo['TMDBSCount']);
+                    }
+                    break;
                 default:
                     log.error(`[ethelper.js] (postProcess) no hit for: ${name}`)
                     break;
@@ -947,6 +993,18 @@ const etHelper = new class ETHELPER {
     }
 
     async addRowToTmp( { data }) {
+        if ( this.Settings.levelName == 'Find Missing Episodes'){
+            // Special level, so we need to get info from tmdb
+            log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
+            this.Settings.tmdbShowInfo = {};
+            const tmdbId = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
+            if ( tmdbId){
+                this.Settings.tmdbShowInfo = await tmdb.getTMDBShowInfo(tmdbId);
+            } else {
+                const title = JSONPath({ path: "$.title", json: data });
+                log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+            }
+        }
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`[ethelper.js] (addRowToTmp) Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
@@ -1559,7 +1617,6 @@ const etHelper = new class ETHELPER {
             for(let res of resolutions) {
                 entry = {};
                 res = res.replace('*', 'x');
-                console.log('Ged 21-3', res)
                 // Build up pic url
                 const hight = res.split('x')[1].trim();
                 const width = res.split('x')[0].trim();

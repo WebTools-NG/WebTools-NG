@@ -369,7 +369,8 @@
             "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work! And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
             "NavTitle": "About Us",
             "WikiDevelopers": "Wiki was made by:",
-            "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)"
+            "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)",
+            "TMDBCredit": "And lastly huge thanks to TMDB for providing a beautiful API for free, since we are a non profit project"
         },
         "GlobalSettings": {
             "Title": "Global Settings",
