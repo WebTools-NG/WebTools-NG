@@ -22,7 +22,7 @@
       </div>
       <br>
       <p>{{ $t("Modules.About.PlexPoCredits") }}</p>
-      <p>And lastly huge thanks to TMDB for providing a beautiful API for free, since we are a non profit project</p>
+      <p>{{ $t("Modules.About.TMDBCredit") }}</p>
     </div>
   </b-container>
 </template>
