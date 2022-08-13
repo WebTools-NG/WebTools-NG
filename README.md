@@ -12,7 +12,7 @@
 ## For installation and other information, please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for more details.
 
 
-### Special thanks goes to:
+### Special thanks go to the following:
 
 <a href="https://plex.tv/">
     <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022.png" width="50">
