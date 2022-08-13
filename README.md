@@ -17,7 +17,7 @@
 ### Special thanks go to the following:
 
 <a href="https://plex.tv/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-02.png" width="50">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="50">
 </a>
 <br>
 <a href="https://plex.tv/">
