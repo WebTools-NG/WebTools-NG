@@ -23,6 +23,21 @@
     </div>
     <br>
 
+    <div class="d-flex align-items-center">
+      <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-form-select
+          v-model="selLib"
+          id="selLib"
+          :options="selLibOptions"
+          @change="getLibPath"
+          style="width: auto"
+          name="selLib">
+        </b-form-select>
+        <WTNGtt tt="Common.Settings.LibMapping.ttSelectLibrary" size="20px"></WTNGtt>
+      </b-form-group>
+    </div>
+    <br>
+
 
 
     <!-- Table of section path -->
