@@ -9,13 +9,15 @@
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
 [![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml)
 
-## Please see the [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) for futher information.
+### WebTools-NG is designed to help users of Plex Media Server, maintain their server/s and media. The software is free for anyone to download and use.
+
+## For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki).
 
 
-### Special thanks goes to:
+### Special thanks go to the following:
 
 <a href="https://plex.tv/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-full-color-on-black.png" width="50">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="50">
 </a>
 <br>
 <a href="https://plex.tv/">
@@ -28,7 +30,7 @@
 </a>
 <br>
 <a href="https://poeditor.com/">
-    For providing translations for free, since we are Open Source
+    For providing translations for free, since we are a non profit Open Source project
 </a>
 <br>
 <br>
@@ -37,8 +39,7 @@
 </a>
 <br>
 <a href="https://www.themoviedb.org/">
-    For providing a beautiful API for free, since we are a non profit project
-</a>
+    For providing a beautiful API for free, since we are a non profit Open Source project
 
 
 
