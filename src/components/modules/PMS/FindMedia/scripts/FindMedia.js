@@ -342,11 +342,15 @@ const findMedia = new class FINDMEDIA {
                     var files = JSONPath({path: `$..Part[*].file`, json: metaData[parseInt(idxMetaData)]});
                     for (var idxFiles in files){
                         const pmsFile = files[idxFiles].replaceAll('\\', '/');
+                        log.silly(`[FindMedia.js] (scanPMSLibrary) - pmsFile is: ${pmsFile}`);
+                        log.silly(`[FindMedia.js] (scanPMSLibrary) - pmsFile compare: ${this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))}`);
                         if (this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))){
                             const libPathFound = this.getLibPath( files[idxFiles] );
                             var lookup = pmsFile.slice(libPathFound.length + 1);
+                            log.silly(`[FindMedia.js] (scanPMSLibrary) - lookup is: ${lookup}`);
                             if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
                                 // We need to remove from detected files, since we found it
+                                log.silly(`[FindMedia.js] (scanPMSLibrary) - Removing ${this.filesFound[lookup]}`);
                                 delete this.filesFound[lookup];
                             }
                             else {
@@ -354,6 +358,8 @@ const findMedia = new class FINDMEDIA {
                                 let entry = {}
                                 entry['title'] = title;
                                 entry['file'] = files[idxFiles]
+                                log.silly(`[FindMedia.js] (scanPMSLibrary) - Not found, so only in PMS. We add ${JSON.stringify(entry)}`);
+                                log.silly(`[FindMedia.js] (scanPMSLibrary) - filesFound are: ${JSON.stringify(this.filesFound)}`);
                                 this.libFiles.push(entry);
                             }
                         }
