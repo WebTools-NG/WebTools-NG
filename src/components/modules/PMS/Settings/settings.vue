@@ -12,17 +12,25 @@
   <br>
   <div> <!-- Settings to show -->
 
+<!-- tt="Modules.PMS.Settings.TTSettingsFilter" color="green" -->
 
     <b-form-group id="FilterSettingsGroup" label-size="lg" label-class="font-weight-bold pt-0">
+      <WTNGttlabel tt="Modules.PMS.Settings.TTSettingsFilter" label="GummiGed 664 lidt mere" />
+
+
+<!--
         <template v-slot:label>
             <div class="icon is-right">
                 {{$t(`Modules.PMS.Settings.SettingsFilter`)}}
                 <b-tooltip target="FilterSettingsTT" triggers="hover">
                     {{ $t(`Modules.PMS.Settings.TTSettingsFilter`) }}
                 </b-tooltip>
-                <span id="FilterSettingsTT"><i :style="getStyle" class="ttqmark far fa-question-circle"></i></span>
+                <span id="FilterSettingsTT"><i class="ttqmark far fa-question-circle"></i></span>
             </div>
         </template>
+        -->
+
+
 
       <b-form-radio-group
         id="FilterSettings"
@@ -126,14 +134,14 @@
     const {JSONPath} = require('jsonpath-plus');
     import {wtconfig} from './../../General/wtutils';
     import WTNGtt from './../../General/wtng-tt.vue';
-    //import WTNGttlabel from './../../General/wtng-ttlabel.vue'
+    import WTNGttlabel from './../../General/wtng-ttlabel.vue'
     import i18n from '../../../../i18n';
     import store from '../../../../store';
     import { pmssettings } from "./scripts/settings";
     export default {
         components: {
             WTNGtt,
-           // WTNGttlabel
+            WTNGttlabel
         },
         data() {
             return {
