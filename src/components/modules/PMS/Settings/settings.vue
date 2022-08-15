@@ -11,8 +11,19 @@
   <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>
   <br>
   <div> <!-- Settings to show -->
-    <WTNGtt tt="Modules.PMS.Settings.TTSettingsFilter" size="20px"></WTNGtt>
-    <b-form-group id="FilterSettingsGroup" v-bind:label="$t('Modules.PMS.Settings.SettingsFilter')" label-size="lg" label-class="font-weight-bold pt-0">
+
+
+    <b-form-group id="FilterSettingsGroup" label-size="lg" label-class="font-weight-bold pt-0">
+        <template v-slot:label>
+            <div class="icon is-right">
+                {{$t(`Modules.PMS.Settings.SettingsFilter`)}}
+                <b-tooltip target="FilterSettingsTT" triggers="hover">
+                    {{ $t(`Modules.PMS.Settings.TTSettingsFilter`) }}
+                </b-tooltip>
+                <span id="FilterSettingsTT"><i :style="getStyle" class="ttqmark far fa-question-circle"></i></span>
+            </div>
+        </template>
+
       <b-form-radio-group
         id="FilterSettings"
         v-model="selFilterSetting"
@@ -114,13 +125,15 @@
     const log = require("electron-log");
     const {JSONPath} = require('jsonpath-plus');
     import {wtconfig} from './../../General/wtutils';
-    import WTNGtt from './../../General/wtng-tt.vue'
+    import WTNGtt from './../../General/wtng-tt.vue';
+    //import WTNGttlabel from './../../General/wtng-ttlabel.vue'
     import i18n from '../../../../i18n';
     import store from '../../../../store';
     import { pmssettings } from "./scripts/settings";
     export default {
         components: {
-            WTNGtt
+            WTNGtt,
+           // WTNGttlabel
         },
         data() {
             return {

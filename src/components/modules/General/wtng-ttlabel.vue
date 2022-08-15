@@ -1,12 +1,11 @@
 <template>
-    <span class="icon is-right" v-bind:id="ttid">
-        <b-tooltip v-bind:target="ttid" triggers="hover">
-            {{ tooltip }}
-        </b-tooltip>
-        <template v-slot:label>
-            Customer Name <i :style="getStyle" class="ttqmark far fa-question-circle"></i>
-        </template>
-    </span>
+    <div class="icon is-right">
+                {{$t(`Modules.PMS.Settings.SettingsFilter`)}}
+                <b-tooltip target="FilterSettingsTT" triggers="hover">
+                    {{ $t(`Modules.PMS.Settings.TTSettingsFilter`) }}
+                </b-tooltip>
+                <span id="FilterSettingsTT"><i :style="getStyle" class="ttqmark far fa-question-circle"></i></span>
+            </div>
 </template>
 
 <script>
