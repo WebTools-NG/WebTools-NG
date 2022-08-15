@@ -102,7 +102,7 @@ const getAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
                     // Force forward slash
                     let lookupPath = path.join(dirPath, curFile).replaceAll('\\', '/');
                     log.silly(`[FindMedia.js] (getAllFiles) - Adding ${lookupPath.slice(orgDirPath.length + 1)}: ${ path.join(dirPath, curFile) }`);
-                    findMedia.filesFound[lookupPath.slice(orgDirPath.length + 1)] = path.join(dirPath, curFile);
+                    findMedia.filesFound[lookupPath.slice(orgDirPath.length + 1).normalize('NFC')] = path.join(dirPath, curFile);
                 }
             }
         })
@@ -346,7 +346,7 @@ const findMedia = new class FINDMEDIA {
                         log.silly(`[FindMedia.js] (scanPMSLibrary) - pmsFile compare: ${this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))}`);
                         if (this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))){
                             const libPathFound = this.getLibPath( files[idxFiles] );
-                            var lookup = pmsFile.slice(libPathFound.length + 1);
+                            var lookup = pmsFile.slice(libPathFound.length + 1).normalize('NFC');
                             log.silly(`[FindMedia.js] (scanPMSLibrary) - lookup is: ${lookup}`);
                             if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
                                 // We need to remove from detected files, since we found it
