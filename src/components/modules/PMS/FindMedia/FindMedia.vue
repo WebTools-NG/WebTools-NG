@@ -20,7 +20,8 @@
     <br>
   <div>
     <div class="d-flex align-items-center">    <!-- Select Lib -->
-      <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+      <b-form-group>
+        <WTNGttlabel tt="Modules.PMS.FindMedia.TTSelectLibrary" label="Modules.ET.optExpType.lblSelectSelection" />
         <b-form-select
           v-model="selLib"
           id="selLib"
@@ -28,7 +29,6 @@
           style="width: auto"
           name="selLib">
         </b-form-select>
-        <WTNGtt tt="Modules.PMS.FindMedia.TTSelectLibrary" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <br>
@@ -54,22 +54,18 @@
 
 <script>
   import i18n from '../../../../i18n';
-  //import store from '../../../store';
   import { dialog } from '../../General/wtutils';
-  import WTNGtt from '../../General/wtng-tt.vue'
+  import WTNGttlabel from '../../General/wtng-ttlabel.vue'
   import { pms } from '../../General/pms';
   import { findMedia } from './scripts/FindMedia.js';
   import statusDiv from '../../General/status.vue';
   import { status } from '../../General/status';
 
-
-  i18n
-
   const log = require("electron-log");
   export default {
     components: {
       statusDiv,
-      WTNGtt
+      WTNGttlabel
     },
     data() {
       return {

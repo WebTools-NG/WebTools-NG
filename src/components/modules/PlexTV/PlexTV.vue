@@ -9,7 +9,8 @@
     <b-link id="general" :to="{ path: '/settings/export', query: { return: 'plextv' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
     <br>
     <div class="d-flex align-items-center">   <!-- Select User -->
-      <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">
+      <b-form-group>
+        <WTNGttlabel tt="Modules.PlexTV.TT-User" label="Modules.PlexTV.SelUsr" />
         <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
           <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
         </div>
@@ -20,7 +21,6 @@
           style="width: Auto"
           name="selLibrary">
         </b-form-select>
-        <WTNGtt tt="Modules.PlexTV.TT-User" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <b-input-group id="UserIDGrp" :prepend="$t('Modules.PlexTV.UsrID')" class="mt-3">
@@ -63,12 +63,12 @@
   import { plextv } from "./scripts/plextv";
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
-  import WTNGtt from '../General/wtng-tt.vue'
+  import WTNGttlabel from '../General/wtng-ttlabel.vue';
 
   const log = require("electron-log");
   export default {
     components: {
-            WTNGtt
+            WTNGttlabel
         },
     data() {
       return {

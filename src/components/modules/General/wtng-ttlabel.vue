@@ -1,25 +1,35 @@
-<template>
-    <span class="icon is-right" v-bind:id="ttid">
+<template v-slot:label>
+    <p class="icon is-right font-weight-bold" :style="getStyle">
+        {{ getLabel }}
+        <span :id="ttid"><i :style="getIconStyle" class="ttqmark far fa-question-circle"></i></span>
         <b-tooltip v-bind:target="ttid" triggers="hover">
             {{ tooltip }}
         </b-tooltip>
-        <i :style="getStyle" class="ttqmark far fa-question-circle"></i>
-    </span>
+    </p>
 </template>
 
 <script>
     import i18n from '../../../i18n'
     export default{
+        name: "WTNGttlabel",
         props:{
             tt:{
                 type:String
             },
             size:{
-                type:String
+                type:String,
+                default: "20px"
             },
             color:{
                 type:String,
+                default: 'black'
+            },
+            iconColor:{
+                type:String,
                 default: 'limegreen'
+            },
+            label:{
+                type: String
             }
         },
         computed:{
@@ -29,9 +39,18 @@
             tooltip: function() {
                 return i18n.t(this.tt);
             },
+            getLabel: function() {
+                return i18n.t(this.label);
+            },
             getStyle: function(){
                 return {
                     color: this.color,
+                    fontSize: this.size
+                }
+            },
+            getIconStyle: function(){
+                return {
+                    color: this.iconColor,
                     fontSize: this.size
                 }
             }
@@ -47,7 +66,6 @@
                 }
                 return result;
             }
-
         }
     }
 </script>
