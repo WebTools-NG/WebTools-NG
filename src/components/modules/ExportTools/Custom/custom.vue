@@ -8,7 +8,8 @@
         </div>
         <br>
         <!-- Media type to export -->
-        <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.Custom.SelCustType')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-form-group>
+            <WTNGttlabel tt="Modules.ET.Custom.TT-CustType" label="Modules.ET.Custom.SelCustType" />
             <b-form-select
                 style="width: 50%"
                 v-model="selMediaType"
@@ -17,10 +18,10 @@
                 @change="changeType()"
                 name="mediaType">
             </b-form-select>
-            <WTNGtt tt="Modules.ET.Custom.TT-CustType" size="20px"></WTNGtt>
         </b-form-group>
         <div> <!-- Select Custom Level -->
-            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0">
+            <b-form-group>
+                <WTNGttlabel tt="Modules.ET.Custom.TT-ETEditLevel" label="Modules.ET.Custom.CustomLevel" />
                 <b-form-select
                     style="width: 50%"
                     class="form-control"
@@ -31,7 +32,6 @@
                     :options="optionsLevels"
                     name="selLevel">
                 </b-form-select>
-                <WTNGtt tt="Modules.ET.Custom.TT-ETEditLevel" size="20px"></WTNGtt>
             </b-form-group>
         </div>
         <b-modal ref="showNewLevel" hide-footer v-bind:title=this.customTitle @hide="newLevelHidden">
@@ -89,14 +89,14 @@
   import i18n from '../../../../i18n';
   import { wtconfig, dialog } from '../../General/wtutils';
   import draggable from 'vuedraggable';
-  import WTNGtt from '../../General/wtng-tt.vue';
+  import WTNGttlabel from '../../General/wtng-ttlabel.vue'
 
   const log = require("electron-log");
 
   export default {
     components: {
         draggable,
-        WTNGtt
+        WTNGttlabel
     },
     data() {
         return {

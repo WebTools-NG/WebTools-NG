@@ -24,7 +24,6 @@
     </b-form-group>
   </div>
   <div class="d-flex align-items-center">
-    <!--<b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0"> -->
     <b-form-group>
       <WTNGttlabel tt="Modules.PMS.Settings.TTSelectSettingsSelection" label="Modules.PMS.Settings.SelectSettingsSelection" />
       <b-form-select
@@ -115,14 +114,12 @@
     const log = require("electron-log");
     const {JSONPath} = require('jsonpath-plus');
     import {wtconfig} from './../../General/wtutils';
-   // import WTNGtt from './../../General/wtng-tt.vue';
     import WTNGttlabel from './../../General/wtng-ttlabel.vue'
     import i18n from '../../../../i18n';
     import store from '../../../../store';
     import { pmssettings } from "./scripts/settings";
     export default {
         components: {
-    //        WTNGtt,
             WTNGttlabel
         },
         data() {

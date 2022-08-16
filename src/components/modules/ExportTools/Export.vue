@@ -22,13 +22,13 @@
       <b-form-row> <!-- Select Export type -->
         <b-col> <!-- Main type -->
           <div class="d-flex align-items-center">
-            <b-form-group id="etLibTypeMainGroup" v-bind:label="$t('Modules.ET.optExpType.lblMainExp')" label-size="lg" label-class="font-weight-bold pt-0">
+            <b-form-group>
+              <WTNGttlabel tt="Modules.ET.optExpType.ttExpType" label="Modules.ET.optExpType.lblMainExp" />
               <b-form-select
                 v-model="selExpTypeMain"
                 id="selExpTypeMain"
                 :options="optExpTypeMain"
                 @change="selExpTypeMainChanged"
-                style="width: Auto"
                 name="selExpTypeMain">
               </b-form-select>
               <WTNGtt tt="Modules.ET.optExpType.ttExpType" size="20px"></WTNGtt>
@@ -37,16 +37,15 @@
         </b-col>
         <b-col> <!-- Sec type -->
           <div class="d-flex align-items-center">
-            <b-form-group id="etLibTypeSecGroup" v-bind:label="$t('Modules.ET.optExpType.lblSecExp')" label-size="lg" label-class="font-weight-bold pt-0">
+            <b-form-group>
+              <WTNGttlabel tt="Modules.ET.optExpType.ttExpTypeSec" label="Modules.ET.optExpType.lblSecExp" />
               <b-form-select
                 v-model="selExpTypeSec"
                 id="selExpTypeSec"
                 :options="optExpTypeSec"
                 @change="selExpTypeSecChanged"
-                style="width: Auto"
                 name="selExpTypeSec">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpTypeSec" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -54,7 +53,8 @@
       <b-form-row> <!-- Select Library -->
         <b-col>
           <div class="d-flex align-items-center">
-            <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLibraryGroupDisabled>
+            <b-form-group :disabled=this.etLibraryGroupDisabled>
+              <WTNGttlabel tt="Modules.ET.optExpType.ttExpLibrary" label="Modules.ET.optExpType.lblSelectSelection" />
               <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
                 <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
               </div>
@@ -63,10 +63,8 @@
                 id="selLibrary"
                 :options="selLibraryOptions"
                 @change="selLibraryChanged"
-                style="width: 75%"
                 name="selLibrary">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpLibrary" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -74,17 +72,16 @@
       <b-form-row> <!-- Select Export Level -->
         <b-col>
           <div>
-            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.optExpType.lblExportLevel')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.etLevelGroupDisabled>
+            <b-form-group :disabled=this.etLevelGroupDisabled>
+              <WTNGttlabel tt="Modules.ET.optExpType.ttExpLevel" label="Modules.ET.optExpType.lblExportLevel" />
               <b-form-select
                 class="form-control"
                 v-model="selLevel"
                 id="selLevel"
                 :options="exportLevels"
                 @change="selLevelChanged"
-                style="width: 75%"
                 name="selLevel">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpLevel" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
@@ -133,11 +130,12 @@
   import { etHelper } from "./scripts/ethelper";
   import statusDiv from '../General/status.vue';
   import { status } from '../General/status';
-  import WTNGtt from '../General/wtng-tt.vue'
+  import WTNGttlabel from '../General/wtng-ttlabel.vue'
   const log = require("electron-log");
   export default {
     components: {
-      statusDiv, WTNGtt
+      statusDiv,
+      WTNGttlabel
     },
     data() {
       return {
@@ -195,7 +193,7 @@
       };
   },
   watch: {
-    /* 
+    /*
     // Watch for status update
     ETStatus: function() {
       this.statusMsg = this.$store.getters.getETStatus;
