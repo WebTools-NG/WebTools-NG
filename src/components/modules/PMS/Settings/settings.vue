@@ -11,27 +11,8 @@
   <p>{{ $t("Modules.PMS.Settings.Notice") }}</p>
   <br>
   <div> <!-- Settings to show -->
-
-<!-- tt="Modules.PMS.Settings.TTSettingsFilter" color="green" -->
-
-    <b-form-group id="FilterSettingsGroup" label-size="lg" label-class="font-weight-bold pt-0">
-      <WTNGttlabel tt="Modules.PMS.Settings.TTSettingsFilter" label="GummiGed 664 lidt mere" />
-
-
-<!--
-        <template v-slot:label>
-            <div class="icon is-right">
-                {{$t(`Modules.PMS.Settings.SettingsFilter`)}}
-                <b-tooltip target="FilterSettingsTT" triggers="hover">
-                    {{ $t(`Modules.PMS.Settings.TTSettingsFilter`) }}
-                </b-tooltip>
-                <span id="FilterSettingsTT"><i class="ttqmark far fa-question-circle"></i></span>
-            </div>
-        </template>
-        -->
-
-
-
+    <b-form-group>
+      <WTNGttlabel tt="Modules.PMS.Settings.TTSettingsFilter" label="Modules.PMS.Settings.SettingsFilter" />
       <b-form-radio-group
         id="FilterSettings"
         v-model="selFilterSetting"
@@ -43,7 +24,9 @@
     </b-form-group>
   </div>
   <div class="d-flex align-items-center">
-    <b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0">
+    <!--<b-form-group id="etLibraryGroup" v-bind:label="$t('Modules.PMS.Settings.SelectSettingsSelection')" label-size="lg" label-class="font-weight-bold pt-0"> -->
+    <b-form-group>
+      <WTNGttlabel tt="Modules.PMS.Settings.TTSelectSettingsSelection" label="Modules.PMS.Settings.SelectSettingsSelection" />
       <b-form-select
         v-model="selSection"
         id="selSection"
@@ -52,7 +35,6 @@
         style="width: 75%"
         name="selSection">
       </b-form-select>
-      <WTNGtt tt="Modules.PMS.Settings.TTSelectSettingsSelection" size="20px"></WTNGtt>
     </b-form-group>
   </div>
   <div> <!-- Modal popup -->
@@ -133,14 +115,14 @@
     const log = require("electron-log");
     const {JSONPath} = require('jsonpath-plus');
     import {wtconfig} from './../../General/wtutils';
-    import WTNGtt from './../../General/wtng-tt.vue';
+   // import WTNGtt from './../../General/wtng-tt.vue';
     import WTNGttlabel from './../../General/wtng-ttlabel.vue'
     import i18n from '../../../../i18n';
     import store from '../../../../store';
     import { pmssettings } from "./scripts/settings";
     export default {
         components: {
-            WTNGtt,
+    //        WTNGtt,
             WTNGttlabel
         },
         data() {

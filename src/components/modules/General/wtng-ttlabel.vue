@@ -1,14 +1,11 @@
 <template v-slot:label>
-    <span class="icon is-right font-weight-bold" v-bind:id="ttid">
-        <!--<slot name="label"></slot>-->
-        <span size="lg">
-        {{ label }}
-        </span>
+    <p class="icon is-right font-weight-bold" :style="getStyle">
+        {{ getLabel }}
+        <span :id="ttid"><i :style="getIconStyle" class="ttqmark far fa-question-circle"></i></span>
         <b-tooltip v-bind:target="ttid" triggers="hover">
             {{ tooltip }}
         </b-tooltip>
-        <span id="ttid"><i :style="getStyle" class="ttqmark far fa-question-circle"></i></span>
-    </span>
+    </p>
 </template>
 
 <script>
@@ -21,11 +18,15 @@
             },
             size:{
                 type:String,
-                default: "lg"
+                default: "20px"
             },
             color:{
                 type:String,
-                default: 'teal'
+                default: 'black'
+            },
+            iconColor:{
+                type:String,
+                default: 'limegreen'
             },
             label:{
                 type: String
@@ -36,15 +37,20 @@
                 return this.makeid(16)
             },
             tooltip: function() {
-                console.log('Ged 44-3', this.tt)
                 return i18n.t(this.tt);
             },
             getLabel: function() {
-                return this.label;
+                return i18n.t(this.label);
             },
             getStyle: function(){
                 return {
                     color: this.color,
+                    fontSize: this.size
+                }
+            },
+            getIconStyle: function(){
+                return {
+                    color: this.iconColor,
                     fontSize: this.size
                 }
             }

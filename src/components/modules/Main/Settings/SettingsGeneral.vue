@@ -50,7 +50,7 @@
 <script>
   import i18n from '../../../../i18n';
   import { wtconfig } from '../../General/wtutils';
-  import WTNGtt from '../../General/wtng-tt.vue'
+  import WTNGtt from '../../General/wtng-tt.vue';
 
   const log = require("electron-log");
   export default {
