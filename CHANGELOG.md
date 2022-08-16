@@ -15,6 +15,7 @@
 * [#551 Exporting posters and Arts into tree](https://github.com/WebTools-NG/WebTools-NG/issues/551) (Enhancement)
 * [#553 Request Tooltips be replaced with Info or ? icons](https://github.com/WebTools-NG/WebTools-NG/issues/553) (Enhancement)
 * [#561 Find episodes I miss in my library](https://github.com/WebTools-NG/WebTools-NG/issues/561) (Enhancement)
+* [#554 Find Media and extended characters](https://github.com/WebTools-NG/WebTools-NG/issues/554) (Bug)
 * Added credits to tmdb.org for allowing us to use their API for free (Internal)
 
 ## V1.0.0 First Official Release (20220724)
