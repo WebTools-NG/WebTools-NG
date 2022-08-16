@@ -10,7 +10,8 @@
     <br>
     <br>
     <div class="d-flex align-items-center">
-      <b-form-group id="dvrSelDVRGroup" v-bind:label="$t('Modules.PMS.DVR.selDVR')" label-size="lg" label-class="font-weight-bold pt-0" name="dvrSelDVRGroup">
+      <b-form-group name="dvrSelDVRGroup">
+        <WTNGttlabel tt="Modules.PMS.DVR.ttselDVR" label="Modules.PMS.DVR.selDVR" />
         <b-form-select
           v-model="selDVR"
           id="selDVR"
@@ -18,7 +19,6 @@
           style="width: auto"
           name="selDVR">
         </b-form-select>
-        <WTNGtt tt="Modules.PMS.DVR.ttselDVR" size="20px"></WTNGtt>
       </b-form-group>
     </div>
     <br>
@@ -60,14 +60,14 @@
   //import store from '../../../store';
   //import { wtconfig } from '../General/wtutils';
   import { dvr } from "./scripts/dvr";
-  import WTNGtt from '../../General/wtng-tt.vue'
+  import WTNGttlabel from './../../General/wtng-ttlabel.vue'
 
   i18n, dvr
 
   const log = require("electron-log");
   export default {
     components: {
-            WTNGtt
+            WTNGttlabel
         },
     data() {
       return {
