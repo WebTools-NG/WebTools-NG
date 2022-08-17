@@ -47,7 +47,8 @@
 </a>
 <br>
 <a href="https://www.thetvdb.com/">
-    For providing a beautiful API for free, since we are a non profit Open Source project
+    For providing a beautiful API for free, since we are a non profit Open Source project.<br>   
+    Please consider subscribing to the TVDB https://thetvdb.com/subscribe
 </a>
 
 
