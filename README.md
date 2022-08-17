@@ -40,6 +40,14 @@
 <br>
 <a href="https://www.themoviedb.org/">
     For providing a beautiful API for free, since we are a non profit Open Source project
-
+<br>
+<br>
+<a href="https://www.thetvdb.com/">
+    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="50">
+</a>
+<br>
+<a href="https://www.thetvdb.com/">
+    For providing a beautiful API for free, since we are a non profit Open Source project
+</a>
 
 
