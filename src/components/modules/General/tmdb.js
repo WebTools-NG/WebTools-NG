@@ -2,6 +2,7 @@
 //import store from '../../../store';
 //import { wtconfig } from './wtutils';
 import axios from 'axios';
+import { wtutils } from './wtutils';
 
 const log = require('electron-log');
 const {JSONPath} = require('jsonpath-plus');
@@ -12,7 +13,7 @@ const tmdb = new class TMDB {
     constructor() {
         this.baseUrl = 'https://www.themoviedb.org/';
         this.baseAPIUrl = 'https://api.themoviedb.org';
-        this.BearerKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNzZjOTRlOTM5YThkNzhjOTg1NGY4MTc0YTI5NGVhYSIsInN1YiI6IjYyNTA5NjcxYzYxM2NlMDA1MWYwMjMyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ch9U33tcVeh5qbVUG12LZ7qX8ulbIZjURlyGuj3ULBk';
+       // this.BearerKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNzZjOTRlOTM5YThkNzhjOTg1NGY4MTc0YTI5NGVhYSIsInN1YiI6IjYyNTA5NjcxYzYxM2NlMDA1MWYwMjMyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ch9U33tcVeh5qbVUG12LZ7qX8ulbIZjURlyGuj3ULBk';
         this.apiKey = '076c94e939a8d78c9854f8174a294eaa';
 
     }
@@ -35,7 +36,8 @@ const tmdb = new class TMDB {
             "Accept": "application/json"
         };
         log.info(`[tmdb.js] (getTMDBShowInfo) - Url is ${url}`)
-        url = `${url}&api_key=${this.apiKey}`;
+        const apiKey = wtutils.envVarLocal( 'Key_tmdb' );
+        url = `${url}&api_key=${apiKey}`;
         const result = {};
         await axios({
             method: 'get',
