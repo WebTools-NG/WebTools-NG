@@ -17,7 +17,7 @@
 ### Special thanks go to the following:
 
 <a href="https://plex.tv/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="50">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="75">
 </a>
 <br>
 <a href="https://plex.tv/">
@@ -26,7 +26,7 @@
 <br>
 <br>
 <a href="https://poeditor.com/">
-    <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="50">
+    <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="75">
 </a>
 <br>
 <a href="https://poeditor.com/">
@@ -35,7 +35,7 @@
 <br>
 <br>
 <a href="https://www.themoviedb.org/">
-    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.svg" width="50">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.svg" width="75">
 </a>
 <br>
 <a href="https://www.themoviedb.org/">
@@ -43,7 +43,7 @@
 <br>
 <br>
 <a href="https://www.thetvdb.com/">
-    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="50">
+    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="75">
 </a>
 <br>
 <a href="https://www.thetvdb.com/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>   
