@@ -30,7 +30,7 @@
 </a>
 <br>
 <a href="https://poeditor.com/">
-    For providing translations for free, since we are a non profit Open Source project
+    For providing translations for free, since we are a non profit Open Source project.
 </a>
 <br>
 <br>
@@ -39,7 +39,7 @@
 </a>
 <br>
 <a href="https://www.themoviedb.org/">
-    For providing a beautiful API for free, since we are a non profit Open Source project
+    For providing a beautiful API for free, since we are a non profit Open Source project.
 <br>
 <br>
 <a href="https://www.thetvdb.com/">
