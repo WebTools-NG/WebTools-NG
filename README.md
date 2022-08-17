@@ -39,7 +39,7 @@
 </a>
 <br>
 <a href="https://www.themoviedb.org/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>
-Please consider signing up to the TMDB. <a href="https://www.themoviedb.org/signup">Here</a>
+Please consider signing up to the TMDB <a href="https://www.themoviedb.org/signup">Here</a>
 <br>
 <br>
 <a href="https://www.thetvdb.com/">
@@ -47,6 +47,6 @@ Please consider signing up to the TMDB. <a href="https://www.themoviedb.org/sign
 </a>
 <br>
 <a href="https://www.thetvdb.com/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>   
- Please consider subscribing to the TVDB. <a href="https://thetvdb.com/subscribe">Here</a> 
+ Please consider subscribing to the TVDB <a href="https://thetvdb.com/subscribe">Here</a> 
 
 
