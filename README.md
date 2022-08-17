@@ -47,7 +47,7 @@
 </a>
 <br>
 <a href="https://www.thetvdb.com/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>   
-    <a href="https://thetvdb.com/subscribe"> Please consider subscribing to the TVDB</a> 
+    <a href="https://thetvdb.com/subscribe"> Please consider subscribing to the TVDB.</a> 
 
 
 
