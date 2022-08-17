@@ -27,6 +27,8 @@ jobs:
         run: npm install
       - name: see directory with dependencies
         run: ls
+      - name: Add env file
+        run: echo "${{secrets.KEY_TMDB2}}22" > .env
       - name: Deploy Releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
