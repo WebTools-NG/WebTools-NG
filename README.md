@@ -35,7 +35,7 @@
 <br>
 <br>
 <a href="https://www.themoviedb.org/">
-    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.svg" width="75">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="75">
 </a>
 <br>
 <a href="https://www.themoviedb.org/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>
