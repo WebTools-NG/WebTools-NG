@@ -7,6 +7,8 @@ that we use in our solution.
 
 //storeStatus
 
+import {ipcRenderer} from 'electron';
+
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -19,6 +21,11 @@ const wtutils = new class WTUtils {
     constructor() {
         this.logFileName = this.AppName + '.log';
         this.plexTVApi = 'https://plex.tv/api/';
+    }
+
+    envVarLocal( envName ){
+        const envVar = ipcRenderer.sendSync('getAPIKeys', envName);
+        return envVar;
     }
 
     get ConfigFileName(){
