@@ -38,7 +38,7 @@
     <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="75">
 </a>
 <br>
-<a href="https://www.themoviedb.org/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>
+<a href="https://www.themoviedb.org/">For providing a very useful API for free, since we are a non profit Open Source project.</a><br>
 Please consider signing up to the TMDB <a href="https://www.themoviedb.org/signup">Here</a>
 <br>
 <br>
@@ -46,7 +46,7 @@ Please consider signing up to the TMDB <a href="https://www.themoviedb.org/signu
     <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="75">
 </a>
 <br>
-<a href="https://www.thetvdb.com/">For providing a beautiful API for free, since we are a non profit Open Source project.</a><br>   
+<a href="https://www.thetvdb.com/">For providing a very useful API for free, since we are a non profit Open Source project.</a><br>   
  Please consider subscribing to the TVDB <a href="https://thetvdb.com/subscribe">Here</a> 
 
 
