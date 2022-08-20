@@ -20,19 +20,15 @@
     <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="75">
 </a>
 <br>
-<a href="https://plex.tv/">
-    For providing the best multimedia server EVER!
-</a>
-<br>
+<a href="https://plex.tv/">For providing the best multimedia server EVER!</a><br>
+You may download Plex Media Server <a href="https://www.plex.tv/en-au/media-server-downloads">Here</a><br>
 <br>
 <a href="https://poeditor.com/">
     <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="75">
 </a>
 <br>
-<a href="https://poeditor.com/">
-    For providing translations for free, since we are a non profit Open Source project.
-</a>
-<br>
+<a href="https://poeditor.com/">For providing translations for free, since we are a non profit Open Source project.</a><br>
+You may sign up to POEditor <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">Here</a><br>
 <br>
 <a href="https://www.themoviedb.org/">
     <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="75">
