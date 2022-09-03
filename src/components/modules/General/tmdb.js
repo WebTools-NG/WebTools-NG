@@ -13,9 +13,6 @@ const tmdb = new class TMDB {
     constructor() {
         this.baseUrl = 'https://www.themoviedb.org/';
         this.baseAPIUrl = 'https://api.themoviedb.org';
-       // this.BearerKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNzZjOTRlOTM5YThkNzhjOTg1NGY4MTc0YTI5NGVhYSIsInN1YiI6IjYyNTA5NjcxYzYxM2NlMDA1MWYwMjMyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ch9U33tcVeh5qbVUG12LZ7qX8ulbIZjURlyGuj3ULBk';
-        this.apiKey = '076c94e939a8d78c9854f8174a294eaa';
-
     }
 
     get tmdbHeader(){
@@ -31,7 +28,6 @@ const tmdb = new class TMDB {
     async getTMDBShowInfo( tmdbId ){
         log.info(`[tmdb.js] (getTMDBShowInfo) - Getting tmdb info for ${tmdbId}`);
         let url = `${this.baseAPIUrl}/3/tv/${tmdbId}?language=en-US`
-        // api_key=<<api_key>>
         let header = {
             "Accept": "application/json"
         };

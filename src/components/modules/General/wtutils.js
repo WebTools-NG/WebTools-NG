@@ -23,18 +23,10 @@ const wtutils = new class WTUtils {
 
     envVarLocal( envName ){
         // This will return the value of a line defined in /locales/.env.local
-        const { readFileSync } = require('fs')
-
+        const { readFileSync } = require('fs');
         const data = readFileSync( wtutils.Home + '/locales/.env.local', 'utf8').split(/[\n\r]/);
-
-        console.log('Ged 55-3' + JSON.stringify(data))
-
         const matches = data.filter(s => s.includes(envName));
-        console.log('Ged 55-4' + JSON.stringify(matches))
-        const retval = matches[0].split('=')[1]
-
-        console.log('Ged 55-5: ' + retval)
-
+        const retval = matches[0].split('=')[1];
         return retval;
     }
 

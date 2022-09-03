@@ -91,13 +91,11 @@ app.on('ready', async () => {
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
-
   }
   // Open system Dialog
   ipcMain.handle('dialog', (event, method, params) => {
     dialog[method](params);
   });
-
   Menu.setApplicationMenu(null)
   createWindow()
 })
