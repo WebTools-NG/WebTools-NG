@@ -19,7 +19,8 @@
 * [#570 Find Media and Multi Episodes](https://github.com/WebTools-NG/WebTools-NG/issues/570) (Bug)
 * Added credits to tmdb.org for allowing us to use their API for free (Internal)
 * Added credits to thetvdb.com for allowing us to use their API for free (Internal)
-* [#574 Make secrets work on both Github and local](https://github.com/WebTools-NG/WebTools-NG/issues/574) (Enhancement)
+* [#574 Make secrets work on both Github and local](https://github.com/WebTools-NG/WebTools-NG/issues/574) (Internal)
+* [#583 Update About screen to look better](https://github.com/WebTools-NG/WebTools-NG/issues/583) (Enhancement)
 
 ## V1.0.0 First Official Release (20220724)
 

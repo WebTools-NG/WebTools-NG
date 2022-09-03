@@ -364,11 +364,17 @@
             "DevCPSO": "Casper (aka CPSO), a Plex community member (CPSO on GitHub)",
             "TranslationBetaTestersTitle": "Translators and Beta Testers",
             "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
-            "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work! And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
             "NavTitle": "About Us",
             "WikiDevelopers": "Wiki was made by:",
             "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)",
-            "TMDB-TVDBCredit": "Huge thanks also goes to both TMDB and TheTVDB for providing a beautiful API for free, since we are a non profit project"
+            "Credits": "Credits",
+            "API-Credit": "Huge thanks also goes to {0} for providing a beautiful API for free, since we are a non profit project.",
+            "API-SignUp": "Please consider signing up",
+            "API-SignupHere": "here",
+            "POE-Credit": "And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
+            "POE-SignUp": "You can help translating our work",
+            "Plex-Credit": "Many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work!",
+            "PMS-Download": "You can download Plex Media server"
         },
         "GlobalSettings": {
             "Title": "Global Settings",
