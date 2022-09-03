@@ -7,8 +7,6 @@ that we use in our solution.
 
 //storeStatus
 
-import {ipcRenderer} from 'electron';
-
 const log = require('electron-log');
 console.log = log.log;
 const electron = require('electron');
@@ -24,8 +22,12 @@ const wtutils = new class WTUtils {
     }
 
     envVarLocal( envName ){
-        const envVar = ipcRenderer.sendSync('getAPIKeys', envName);
-        return envVar;
+        // This will return the value of a line defined in /locales/.env.local
+        const { readFileSync } = require('fs');
+        const data = readFileSync( wtutils.Home + '/locales/.env.local', 'utf8').split(/[\n\r]/);
+        const matches = data.filter(s => s.includes(envName));
+        const retval = matches[0].split('=')[1];
+        return retval;
     }
 
     get ConfigFileName(){
@@ -239,7 +241,7 @@ const wtutils = new class WTUtils {
                 });
             }
             wtconfig.set('General.transfilescopied', wtutils.AppVersion)
-            }
+        }
     }
 
     async sleep(ms) {

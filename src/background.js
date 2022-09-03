@@ -16,20 +16,6 @@ import {
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-// Return defined vars from .env.local
-ipcMain.on('getAPIKeys', function(event, arg) {
-  switch( arg ) {
-    case 'Key_tmdb':
-      event.returnValue = process.env.Key_tmdb
-      break;
-    case 'Key_tvdb':
-      event.returnValue = process.env.Key_tvdb
-      break;
-    default:
-      return false;
-  }
-});
-
 // Bad thing, but need to disable cert checks, since connecting via ip
 // to a cert issued for plex.direct
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
@@ -105,13 +91,11 @@ app.on('ready', async () => {
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
-
   }
   // Open system Dialog
   ipcMain.handle('dialog', (event, method, params) => {
     dialog[method](params);
   });
-
   Menu.setApplicationMenu(null)
   createWindow()
 })
