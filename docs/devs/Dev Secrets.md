@@ -6,8 +6,10 @@ So as a dev, you need to create the file
 
 public/locales/.env.local
 
-File should have the following contents
+File should have the following contents:
 
-Key_tmdb=<YOUR TMDB API KEY>
-Key_tvdb=<YOUR TVDB API KEY>
-Key_poeditor=<YOUR POEDITOR API KEY>
+Key_tmdb=YOUR_TMDB_API_KEY
+
+Key_tvdb=YOUR_TVDB_API_KEY
+
+Key_poeditor=YOUR_POEDITOR_API_KEY
