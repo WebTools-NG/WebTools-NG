@@ -22,7 +22,7 @@
       </div>
       <br>
       <p>{{ $t("Modules.About.PlexPoCredits") }}</p>
-      <p>{{ $t("Modules.About.TMDBCredit") }}</p>
+      <p>{{ $t("Modules.About.TMDB-TVDBCredit") }}</p>
     </div>
   </b-container>
 </template>
