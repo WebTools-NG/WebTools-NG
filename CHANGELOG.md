@@ -21,6 +21,7 @@
 * Added credits to thetvdb.com for allowing us to use their API for free (Internal)
 * [#574 Make secrets work on both Github and local](https://github.com/WebTools-NG/WebTools-NG/issues/574) (Internal)
 * [#583 Update About screen to look better](https://github.com/WebTools-NG/WebTools-NG/issues/583) (Enhancement)
+* [#586 Export Episodes containing Export Season Posters fails to proceed](https://github.com/WebTools-NG/WebTools-NG/issues/586) (Bug)
 
 ## V1.0.0 First Official Release (20220724)
 
