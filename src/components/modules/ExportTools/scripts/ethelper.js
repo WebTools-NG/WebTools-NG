@@ -1163,6 +1163,9 @@ const etHelper = new class ETHELPER {
     }
 
     async forceDownload( { url: url, target: target, title: title } ) {
+        let header = wtutils.PMSHeader;
+        header['X-Plex-Token'] = store.getters.getSelectedServer.accessToken;
+
         const _this = this;
         return new Promise((resolve) => {
             try
@@ -1170,7 +1173,8 @@ const etHelper = new class ETHELPER {
                 _this.isDownloading = true;
                 ipcRenderer.send('downloadFile', {
                     item: url,
-                    filePath: target
+                    filePath: target,
+                    header: header
                 })
             }
             catch (error)
