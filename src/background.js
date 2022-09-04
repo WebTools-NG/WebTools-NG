@@ -128,6 +128,7 @@ ipcMain.on('downloadFile', function (event, data) {
   axios({
     method: 'GET',
     url: item,
+    headers: data.header,
     responseType: 'stream',
     httpsAgent: agent
   }).then((response) => {
