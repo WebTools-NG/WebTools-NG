@@ -1535,22 +1535,22 @@ const etHelper = new class ETHELPER {
         } else  {
             switch (extype) {
                 case 'seasonposters':
-                    show = JSONPath({path: '$.grandparentTitle', json: data})[0];
-                    season = JSONPath({path: '$.parentTitle', json: data})[0];
+                    show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                    season = sanitize(JSONPath({path: '$.parentTitle', json: data})[0]);
                     title = `${show}_${season}`;
                     break;
-                    case 'showposters':
-                        show = JSONPath({path: '$.grandparentTitle', json: data})[0];
-                        title = `${show}`;
-                        break;
-                    case 'showart':
-                        show = JSONPath({path: '$.grandparentTitle', json: data})[0];
-                        title = `${show}`;
-                        break;
-                    case 'showart2':
-                        show = JSONPath({path: '$.grandparentArt', json: data})[0];
-                        title = `${show}`;
-                        break;
+                case 'showposters':
+                    show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                    title = `${show}`;
+                    break;
+                case 'showart':
+                    show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                    title = `${show}`;
+                    break;
+                case 'showart2':
+                    show = sanitize(JSONPath({path: '$.grandparentArt', json: data})[0]);
+                    title = `${show}`;
+                    break;
                 default:
                     title = String(JSONPath({path: '$.title', json: data})[0]);
                     title = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}`;
@@ -1625,7 +1625,7 @@ const etHelper = new class ETHELPER {
                 const hight = res.split('x')[1].trim();
                 const width = res.split('x')[0].trim();
                 entry['url'] = `${this.Settings.baseURL}/photo/:/transcode?width=${width}&height=${hight}&minSize=1&url=${picUrl}`;
-                log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
+                log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${entry['url']}`);
                 entry['outFile'] = await this.getExportPicsUrlandFileFileName( { type: extype, data: data, res: res} );
                 resp.push(entry);
             }
