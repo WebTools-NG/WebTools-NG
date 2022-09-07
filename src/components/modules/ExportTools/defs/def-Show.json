@@ -75,12 +75,16 @@
             "findmissingEp": [
                 "Key",
                 "Title",
+                "Sort Season by",
                 "TMDB Link",
                 "Show Episode Count (PMS)",
-                "Show Episode Count (TMDB)",
                 "Show Season Count (PMS)",
+                "Show Episode Count (TMDB)",
                 "Show Season Count (TMDB)",
                 "TMDB Status",
+                "Show Episode Count (TVDB)",
+                "Show Season Count (TVDB)",
+                "TVDB Status",
                 "Missing"
             ]
         }

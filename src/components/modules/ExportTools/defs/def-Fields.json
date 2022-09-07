@@ -844,6 +844,13 @@
                 "type": "string",
                 "postProcess": true
             },
+        "Missing":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
         "Mood":
             {
                 "key": "$.Mood[*]",
@@ -1132,6 +1139,13 @@
                 "type": "string",
                 "postProcess": true
             },
+        "Show Episode Count (TVDB)":
+            {
+                "key": "$.parentTitle",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
         "Show Prefs Delete episodes after playing":
             {
                 "key": "$..Preferences.Setting[?(@.id=='autoDeletionItemPolicyWatchedLibrary')].value",
@@ -1202,7 +1216,7 @@
                 "type": "string",
                 "postProcess": true
             },
-        "Missing":
+        "Show Season Count (TVDB)":
             {
                 "key": "$.parentTitle",
                 "call": 1,
@@ -1228,6 +1242,13 @@
                 "key": "$.smart",
                 "call": 1,
                 "type": "string"
+            },
+        "Sort Season by":
+            {
+                "key": "$.title",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
             },
         "Sort title":
             {
@@ -1433,6 +1454,13 @@
                 "postProcess": true
             },
         "TMDB Status":
+            {
+                "key": "$.title",
+                "call": 1,
+                "type": "string",
+                "postProcess": true
+            },
+        "TVDB Status":
             {
                 "key": "$.title",
                 "call": 1,

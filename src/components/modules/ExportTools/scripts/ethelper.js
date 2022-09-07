@@ -308,7 +308,8 @@ const etHelper = new class ETHELPER {
             element: null,
             SelectedMoviesID: null,
             SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb"),
-            tmdbShowInfo: null
+            showInfo: null,
+            SelectedLibShowOrdering: null
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -428,6 +429,8 @@ const etHelper = new class ETHELPER {
         this.Settings.fields = null;
         this.Settings.currentItem = 0;
         this.Settings.totalItems = null;
+        this.Settings.SelectedLibShowOrdering = null;
+        this.Settings.showInfo = null;
     }
 
     isEmpty( {val} )
@@ -545,10 +548,10 @@ const etHelper = new class ETHELPER {
                         break;
                 case "Missing":
                     retVal = i18n.t('Common.Ok');
-                    if ( this.Settings.tmdbShowInfo['TMDBEPCount'] != this.Settings.tmdbShowInfo['PMSEPCount']){
+                    if ( this.Settings.showInfo['TMDBEPCount'] != this.Settings.showInfo['PMSEPCount']){
                         retVal = "Episode mismatch"
                     }
-                    if (!this.Settings.tmdbShowInfo['TMDBEPCount']){
+                    if (!this.Settings.showInfo['TMDBEPCount']){
                         retVal = "No tmdb Guid found"
                     }
                     break;
@@ -799,8 +802,8 @@ const etHelper = new class ETHELPER {
                     break;
                 case "TMDB Status":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.tmdbShowInfo['TMDBStatus']){
-                        retVal = this.Settings.tmdbShowInfo['TMDBStatus'];
+                    if ( this.Settings.showInfo['TMDBStatus']){
+                        retVal = this.Settings.showInfo['TMDBStatus'];
                     }
                     break;
                 case "PMS Media Path":
@@ -842,14 +845,19 @@ const etHelper = new class ETHELPER {
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
                     break;
                 case "Show Episode Count (PMS)":
-                    this.Settings.tmdbShowInfo['PMSEPCount'] = parseInt(val);
+                    this.Settings.showInfo['PMSEPCount'] = parseInt(val);
                     retVal = val;
                     break;
                 case "Show Episode Count (TMDB)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.tmdbShowInfo['TMDBEPCount']){
-                        retVal = String(this.Settings.tmdbShowInfo['TMDBEPCount']);
+                    if ( this.Settings.showInfo['TMDBEPCount']){
+                        retVal = String(this.Settings.showInfo['TMDBEPCount']);
                     }
+                    break;
+                case "Sort Season by":
+                    console.log('Ged 11-3', JSON.stringify(val), name, title)
+                    retVal = this.Settings.showInfo['showOrdering'];
+                    console.log('Ged 11-4', JSON.stringify(retVal))
                     break;
                 case "Show Prefs Episode sorting":
                     switch (val){
@@ -972,13 +980,13 @@ const etHelper = new class ETHELPER {
                     }
                     break;
                 case "Show Season Count (PMS)":
-                    this.Settings.tmdbShowInfo['PMSSCount'] = parseInt(val);
+                    this.Settings.showInfo['PMSSCount'] = parseInt(val);
                     retVal = val;
                     break;
                 case "Show Season Count (TMDB)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.tmdbShowInfo['TMDBSCount']){
-                        retVal = String(this.Settings.tmdbShowInfo['TMDBSCount']);
+                    if ( this.Settings.showInfo['TMDBSCount']){
+                        retVal = String(this.Settings.showInfo['TMDBSCount']);
                     }
                     break;
                 default:
@@ -992,19 +1000,68 @@ const etHelper = new class ETHELPER {
         return await retVal;
     }
 
+    // Get ordering for individual show
+    async showOrdering( {ratingKey} ){
+
+        console.log('Ged 55-3', ratingKey)
+        const url = `${this.Settings.baseURL}/library/metadata/${ratingKey}?includeGuids=1&includePreferences=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline`;
+        console.log('Ged 55-4', url)
+
+    }
+
+    // Get library default show ordering
+    async SelectedLibShowOrdering(){
+        if (!this.Settings.SelectedLibShowOrdering){
+            // We need to get the default for this library
+            log.info(`[ethelper.js] (SelectedLibShowOrdering) - Getting default show ordering for library ${this.Settings.LibName}`);
+            let url = `${this.Settings.baseURL}/library/sections/all?includePreferences=1`;
+            this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+            log.verbose(`[ethelper.js] (SelectedLibShowOrdering) Calling url: ${url}`)
+            let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+            let resp = await response.json();
+            this.Settings.SelectedLibShowOrdering = JSONPath({path: `$..Directory[?(@.key==${this.Settings.selLibKey})].Preferences.Setting[?(@.id=="showOrdering")].value`, json: resp})[0];
+            log.info(`[ethelper.js] (SelectedLibShowOrdering) - Default show ordering for library is: ${this.Settings.SelectedLibShowOrdering}`);
+        }
+        return this.Settings.SelectedLibShowOrdering
+    }
+
+    async getShowOrdering( { ratingKey }){
+        console.log('Ged 66-2', JSON.stringify(this.Settings.showInfo))
+        let retVal = await this.SelectedLibShowOrdering();
+        console.log('Ged 66-3 We need to lookup individual show!!!', retVal)
+        let url = `${this.Settings.baseURL}/library/metadata/${ratingKey}?includeGuids=1&includePreferences=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline`;
+        // https://192.168.1.59:32400/library/metadata/55112?includeGuids=1&includePreferences=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline
+        this.Settings.showInfo['showOrdering'] = retVal;
+
+        console.log('Ged 66-4', JSON.stringify(this.Settings.showInfo))
+        url
+    }
+
     async addRowToTmp( { data }) {
+        console.log('Ged 17-1')
         if ( this.Settings.levelName == 'Find Missing Episodes'){
+            this.Settings.showInfo = {};
+            console.log('Ged 17-1-3')
+            await this.getShowOrdering();
+            console.log('Ged 17-1-4')
             // Special level, so we need to get info from tmdb
             log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
-            this.Settings.tmdbShowInfo = {};
             const tmdbId = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
-            if ( tmdbId){
-                this.Settings.tmdbShowInfo = await tmdb.getTMDBShowInfo(tmdbId);
+            if ( tmdbId ){
+                const TMDBInfo = await tmdb.getTMDBShowInfo(tmdbId);
+                for(var attributename in TMDBInfo){
+                    console.log('Ged 87-3' + attributename+": "+TMDBInfo[attributename]);
+                    this.Settings.showInfo[attributename] = TMDBInfo[attributename];
+                }
+
+
+                
             } else {
                 const title = JSONPath({ path: "$.title", json: data });
                 log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
             }
         }
+        console.log('Ged 17-3', JSON.stringify(data))
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`[ethelper.js] (addRowToTmp) Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
@@ -1029,9 +1086,12 @@ const etHelper = new class ETHELPER {
                 subType = fieldDef["subtype"];
                 subKey = fieldDef["subkey"];
                 doPostProc = fieldDef["postProcess"];
+                console.log('Ged 17-6')
                 switch(type) {
                     case "string":
+                        console.log('Ged 17-7')
                         val = String(JSONPath({path: key, json: data})[0]);
+                        console.log('Ged 17-8')
                         // Make N/A if not found
                         if (!val)
                         {

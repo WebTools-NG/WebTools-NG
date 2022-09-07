@@ -45,7 +45,7 @@ const tmdb = new class TMDB {
               result['TMDBStatus'] = JSONPath({ path: "$.status", json: response.data })[0];
               result['TMDBEPCount'] = JSONPath({ path: "$.number_of_episodes", json: response.data })[0];
               result['TMDBSCount'] = JSONPath({ path: "$.number_of_seasons", json: response.data })[0];
-              result['seasons'] = {};
+              result['TMDBSeasons'] = {};
               const arrSeasons = JSONPath({ path: "$.seasons", json: response.data })[0];
               for (const season of arrSeasons) {
                 const season_number = JSONPath({ path: "$.season_number", json: season })[0];
@@ -62,6 +62,7 @@ const tmdb = new class TMDB {
                   log.error('getTMDBShowInfo: ' + error.message);
               }
             })
+        log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`)
         return result;
     }
 }
