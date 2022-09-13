@@ -1042,7 +1042,9 @@ const etHelper = new class ETHELPER {
         if ( this.Settings.levelName == 'Find Missing Episodes'){
             this.Settings.showInfo = {};
             console.log('Ged 17-1-3')
-            await this.getShowOrdering();
+            console.log('Ged 17-1-3-1 *********** We need the ratingKey for below call ************')
+            var ratingKey = 1
+            await this.getShowOrdering( ratingKey );
             console.log('Ged 17-1-4')
             // Special level, so we need to get info from tmdb
             log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
