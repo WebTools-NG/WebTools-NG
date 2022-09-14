@@ -656,6 +656,13 @@
             "call": 1,
             "type": "string"
         },
+        "Link":
+        {
+            "key": "$.title",
+            "call": 1,
+            "type": "string",
+            "postProcess": true
+        },
         "Location":
             {
                 "key": "$.Location[*]",
@@ -1257,6 +1264,13 @@
                 "type": "string",
                 "postProcess": true
             },
+        "Status":
+        {
+            "key": "$.title",
+            "call": 1,
+            "type": "string",
+            "postProcess": true
+        },
         "Studio":
             {
                 "key": "$.studio",

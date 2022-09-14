@@ -45,21 +45,26 @@ const tmdb = new class TMDB {
               result['TMDBStatus'] = JSONPath({ path: "$.status", json: response.data })[0];
               result['TMDBEPCount'] = JSONPath({ path: "$.number_of_episodes", json: response.data })[0];
               result['TMDBSCount'] = JSONPath({ path: "$.number_of_seasons", json: response.data })[0];
-              result['TMDBSeasons'] = {};
+              //result['seasons'] = {}
+              /* 
               const arrSeasons = JSONPath({ path: "$.seasons", json: response.data })[0];
+              console.log('Ged 56-3', JSON.stringify(arrSeasons))
               for (const season of arrSeasons) {
+                console.log('Ged 56-3-2', JSON.stringify(season))
                 const season_number = JSONPath({ path: "$.season_number", json: season })[0];
-                result['seasons'][season_number] = JSONPath({ path: "$.episode_count", json: season });
-              }
+                console.log('Ged 56-3-3', season_number)
+                console.log('Ged 56-3-4', JSONPath({ path: "$.episode_count", json: season })[0])
+                result['seasons'][season_number] = JSONPath({ path: "$.episode_count", json: season })[0];
+              } */
             })
             .catch(function (error) {
               if (error.response) {
-                  log.error('getTMDBShowInfo: ' + error.response.data);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
               } else if (error.request) {
-                  log.error('getTMDBShowInfo: ' + error.request);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Request Error: ${error.request}`);
               } else {
-                  log.error('getTMDBShowInfo: ' + error.message);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - ${error.message}`);
               }
             })
         log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`)
