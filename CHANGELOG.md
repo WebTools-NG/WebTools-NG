@@ -1,5 +1,16 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V1.1.1 ( Not released yet )
+
+**Note**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
+**Changes**:
+
+* [#573 Add tvdb to find missing episodes](https://github.com/WebTools-NG/WebTools-NG/issues/573) (Enhancement)
+
 ## V1.1.0 ( 20220913 )
 
 **Note**: In this version, the following is disabled:

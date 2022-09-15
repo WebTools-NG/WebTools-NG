@@ -42,26 +42,28 @@ const tmdb = new class TMDB {
           })
             .then((response) => {
               log.debug('[tmdb.js] (getTMDBShowInfo) - Response from getTMDBShowInfo recieved');
-              result['TMDBStatus'] = JSONPath({ path: "$.status", json: response.data })[0];
-              result['TMDBEPCount'] = JSONPath({ path: "$.number_of_episodes", json: response.data })[0];
-              result['TMDBSCount'] = JSONPath({ path: "$.number_of_seasons", json: response.data })[0];
-              result['seasons'] = {};
-              const arrSeasons = JSONPath({ path: "$.seasons", json: response.data })[0];
-              for (const season of arrSeasons) {
-                const season_number = JSONPath({ path: "$.season_number", json: season })[0];
-                result['seasons'][season_number] = JSONPath({ path: "$.episode_count", json: season });
+              result['Status (Cloud)'] = JSONPath({ path: "$.status", json: response.data })[0];
+              result['Episode Count (Cloud)'] = JSONPath({ path: "$.number_of_episodes", json: response.data })[0];
+              result['Season Count (Cloud)'] = JSONPath({ path: "$.number_of_seasons", json: response.data })[0];
+              // Now get season/episode
+              const seasons = JSONPath({ path: "$..seasons[*]", json: response.data })
+              let Seasons_Cloud = {};
+              for ( var idx in seasons ){
+                Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
               }
+              result['Seasons (Cloud)'] = Seasons_Cloud;
             })
             .catch(function (error) {
               if (error.response) {
-                  log.error('getTMDBShowInfo: ' + error.response.data);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
               } else if (error.request) {
-                  log.error('getTMDBShowInfo: ' + error.request);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Request Error: ${error.request}`);
               } else {
-                  log.error('getTMDBShowInfo: ' + error.message);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - ${error.message}`);
               }
             })
+        log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`)
         return result;
     }
 }

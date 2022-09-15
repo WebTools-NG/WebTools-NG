@@ -31,7 +31,6 @@
                 @change="selExpTypeMainChanged"
                 name="selExpTypeMain">
               </b-form-select>
-              <WTNGtt tt="Modules.ET.optExpType.ttExpType" size="20px"></WTNGtt>
             </b-form-group>
           </div>
         </b-col>
