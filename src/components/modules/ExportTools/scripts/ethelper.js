@@ -1036,7 +1036,6 @@ const etHelper = new class ETHELPER {
         log.verbose(`[ethelper.js] (getShowOrdering) Calling url: ${url}`);
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
-        console.log('Ged 54-3', this.Settings.SelectedLibShowOrdering)
         var showOrder = JSONPath({path: `$..Preferences.Setting[?(@.id=="showOrdering")].value`, json: resp})[0];
         if (showOrder != ""){
             this.Settings.showInfo['showOrdering'] = showOrder;
