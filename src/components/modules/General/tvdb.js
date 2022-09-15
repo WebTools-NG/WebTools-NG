@@ -43,7 +43,7 @@ const tvdb = new class TVDB {
     }
 
     async getTVDBShowAired( {tvdbId: tvdbId, bearer: bearer} ){
-        log.info(`[tvdb.js] (getTVDBShowAired) - Getting tmdb aired info for ${tvdbId}`);
+        log.info(`[tvdb.js] (getTVDBShowAired) - Getting tvdb aired info for ${tvdbId}`);
         let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/official?page=0`;
         let headers = this.headers;
         let seasons = {};
