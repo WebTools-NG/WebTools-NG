@@ -9,6 +9,8 @@
 
 **Changes**:
 
+* [#573 Add tvdb to find missing episodes](https://github.com/WebTools-NG/WebTools-NG/issues/573) (Enhancement)
+
 ## V1.1.0 ( 20220913 )
 
 **Note**: In this version, the following is disabled:

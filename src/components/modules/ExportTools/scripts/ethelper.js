@@ -10,6 +10,7 @@ import Excel from 'exceljs';
 import { status } from '../../General/status';
 import { time } from '../../General/time';
 import { tmdb } from '../../General/tmdb';
+import { tvdb } from '../../General/tvdb';
 
 var path = require("path");
 var sanitize = require("sanitize-filename");
@@ -309,7 +310,8 @@ const etHelper = new class ETHELPER {
             SelectedMoviesID: null,
             SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb"),
             showInfo: null,
-            SelectedLibShowOrdering: null
+            SelectedLibShowOrdering: null,
+            tvdbBearer: null
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -546,13 +548,23 @@ const etHelper = new class ETHELPER {
                 case "Audience Rating":
                         retVal = val.substring(0, 3);
                         break;
+                case "Episode Count (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Episode Count (Cloud)']){
+                        retVal = this.Settings.showInfo['Episode Count (Cloud)'];
+                    }
+                    break;
+                case "Episode Count (PMS)":
+                    this.Settings.showInfo['PMSEPCount'] = parseInt(val);
+                    retVal = val;
+                    break;
                 case "Missing":
                     retVal = i18n.t('Common.Ok');
-                    if ( this.Settings.showInfo['TMDBEPCount'] != this.Settings.showInfo['PMSEPCount']){
+                    if ( this.Settings.showInfo['Episode Count (Cloud)'] != this.Settings.showInfo['PMSEPCount']){
                         retVal = "Episode mismatch"
                     }
-                    if (!this.Settings.showInfo['TMDBEPCount']){
-                        retVal = "No tmdb Guid found"
+                    if (!this.Settings.showInfo['Episode Count (Cloud)']){
+                        retVal = "No Guid found, please refresh metadata, or sort order not avail at cloud provider"
                     }
                     break;
                 case "Rating":
@@ -723,10 +735,10 @@ const etHelper = new class ETHELPER {
                         retVal = retVal.split('?')[0];
                     }
                     break;
-                case "Link":
+                case "Link (Cloud)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.showInfo['link']){
-                        retVal = this.Settings.showInfo['link'];
+                    if ( this.Settings.showInfo['Link (Cloud)']){
+                        retVal = this.Settings.showInfo['Link (Cloud)'];
                     }
                     break;
                 case "TVDB ID":
@@ -844,20 +856,20 @@ const etHelper = new class ETHELPER {
                     //var path = require('path');
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
                     break;
-                case "Show Episode Count (PMS)":
-                    this.Settings.showInfo['PMSEPCount'] = parseInt(val);
-                    retVal = val;
-                    break;
-                case "Show Episode Count (TMDB)":
+                case "Season Count (Cloud)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.showInfo['TMDBEPCount']){
-                        retVal = String(this.Settings.showInfo['TMDBEPCount']);
+                    if ( this.Settings.showInfo['Season Count (Cloud)']){
+                        retVal = this.Settings.showInfo['Season Count (Cloud)'];
                     }
                     break;
-                case "Show Episode Count (TVDB)":
+                case "Season Count (PMS)":
+                    this.Settings.showInfo['PMSSCount'] = parseInt(val);
+                    retVal = val;
+                    break;
+                case "Seasons (Cloud)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.showInfo['TVDBEPCount']){
-                        retVal = String(this.Settings.showInfo['TVDBEPCount']);
+                    if ( this.Settings.showInfo['Seasons (Cloud)']){
+                        retVal = JSON.stringify(this.Settings.showInfo['Seasons (Cloud)']);
                     }
                     break;
                 case "Sort Season by":
@@ -983,26 +995,10 @@ const etHelper = new class ETHELPER {
                             break;
                     }
                     break;
-                case "Show Season Count (PMS)":
-                    this.Settings.showInfo['PMSSCount'] = parseInt(val);
-                    retVal = val;
-                    break;
-                case "Show Season Count (TMDB)":
+                case "Status (Cloud)":
                     retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.showInfo['TMDBSCount']){
-                        retVal = String(this.Settings.showInfo['TMDBSCount']);
-                    }
-                    break;
-                case "Show Season Count (TVDB)":
-                    retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.showInfo['TVDBSCount']){
-                        retVal = String(this.Settings.showInfo['TVDBSCount']);
-                    }
-                    break;
-                case "Status":
-                    retVal = wtconfig.get('ET.NotAvail');
-                    if ( this.Settings.showInfo['Status']){
-                        retVal = this.Settings.showInfo['Status'];
+                    if ( this.Settings.showInfo['Status (Cloud)']){
+                        retVal = this.Settings.showInfo['Status (Cloud)'];
                     }
                     break;
                 default:
@@ -1018,6 +1014,7 @@ const etHelper = new class ETHELPER {
 
     // Get library default show ordering
     async SelectedLibShowOrdering(){
+        console.log('Ged 44-3', this.Settings.SelectedLibShowOrdering)
         if (!this.Settings.SelectedLibShowOrdering){
             // We need to get the default for this library
             log.info(`[ethelper.js] (SelectedLibShowOrdering) - Getting default show ordering for library ${this.Settings.LibName}`);
@@ -1039,6 +1036,7 @@ const etHelper = new class ETHELPER {
         log.verbose(`[ethelper.js] (getShowOrdering) Calling url: ${url}`);
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
         let resp = await response.json();
+        console.log('Ged 54-3', this.Settings.SelectedLibShowOrdering)
         var showOrder = JSONPath({path: `$..Preferences.Setting[?(@.id=="showOrdering")].value`, json: resp})[0];
         if (showOrder != ""){
             this.Settings.showInfo['showOrdering'] = showOrder;
@@ -1050,20 +1048,17 @@ const etHelper = new class ETHELPER {
     async addRowToTmp( { data }) {
         if ( this.Settings.levelName == 'Find Missing Episodes'){
             this.Settings.showInfo = {};
-            let id;
+            let id, attributename;
             await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
-
-            console.log('Ged 33-3', this.Settings.showInfo["showOrdering"])
             switch ( this.Settings.showInfo["showOrdering"] ) {
                 case "tmdbAiring":
                     // Special level, so we need to get info from tmdb
                     log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
                     id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
                     if ( id ){
-                        this.Settings.showInfo["link"] = `https://www.themoviedb.org/tv/${id}`;
+                        this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
                         const TMDBInfo = await tmdb.getTMDBShowInfo(id);
-                        for(var attributename in TMDBInfo){
-                            console.log('Ged 87-3 ' + attributename + ": " + JSON.stringify(TMDBInfo[attributename]));
+                        for( attributename in TMDBInfo){
                             this.Settings.showInfo[attributename] = TMDBInfo[attributename];
                         }
                     } else {
@@ -1074,23 +1069,68 @@ const etHelper = new class ETHELPER {
                     this.Settings.showInfo["Status"] = this.Settings.showInfo["TMDBStatus"];
                     break;
                 case "aired":
-                    this.Settings.showInfo["TVDBStatus"] = "Ged 1";
-                    this.Settings.showInfo["TVDBEPCount"] = "Ged 2";
-                    this.Settings.showInfo["TVDBSCount"] = "Ged 3";
+                    // Special level, so we need to get info from tvdb
+                    log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                    // Get TVDB Access Token
+                    if (!this.Settings.tvdbBearer){
+                        this.Settings.tvdbBearer = await tvdb.login();
+                    }
+                    if ( id ){
+                        const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                        for( attributename in showInfo){
+                            this.Settings.showInfo[attributename] = showInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
                     this.Settings.showInfo["showOrdering"] = "TVDB Airing";
-                    this.Settings.showInfo["Status"] = this.Settings.showInfo["TVDBStatus"];
                     break;
                 case "dvd":
+                    // Special level, so we need to get info from tvdb
+                    log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb for DVD order`);
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                    // Get TVDB Access Token
+                    if (!this.Settings.tvdbBearer){
+                        this.Settings.tvdbBearer = await tvdb.login();
+                    }
+                    if ( id ){
+                        const showInfo = await tvdb.getTVDBShowDVD( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                        for( attributename in showInfo){
+                            this.Settings.showInfo[attributename] = showInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+
                     this.Settings.showInfo["showOrdering"] = "TVDB DVD";
                     this.Settings.showInfo["Status"] = this.Settings.showInfo["TVDBStatus"];
                     break;
                 case "absolute":
+                    // Special level, so we need to get info from tvdb
+                    log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                    // Get TVDB Access Token
+                    if (!this.Settings.tvdbBearer){
+                        this.Settings.tvdbBearer = await tvdb.login();
+                    }
+
+                    if ( id ){
+                        const showInfo = await tvdb.getTVDBShowAbsolute( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                        for( attributename in showInfo){
+                            this.Settings.showInfo[attributename] = showInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
                     this.Settings.showInfo["showOrdering"] = "TVDB Absolute";
                     this.Settings.showInfo["Status"] = this.Settings.showInfo["TVDBStatus"];
                     break;
             }
         }
-        console.log('Ged 17-1-4-3', JSON.stringify(this.Settings.showInfo))
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`[ethelper.js] (addRowToTmp) Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
@@ -1115,12 +1155,9 @@ const etHelper = new class ETHELPER {
                 subType = fieldDef["subtype"];
                 subKey = fieldDef["subkey"];
                 doPostProc = fieldDef["postProcess"];
-                console.log('Ged 17-6')
                 switch(type) {
                     case "string":
-                        console.log('Ged 17-7')
                         val = String(JSONPath({path: key, json: data})[0]);
-                        console.log('Ged 17-8')
                         // Make N/A if not found
                         if (!val)
                         {

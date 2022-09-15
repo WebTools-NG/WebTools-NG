@@ -42,20 +42,16 @@ const tmdb = new class TMDB {
           })
             .then((response) => {
               log.debug('[tmdb.js] (getTMDBShowInfo) - Response from getTMDBShowInfo recieved');
-              result['TMDBStatus'] = JSONPath({ path: "$.status", json: response.data })[0];
-              result['TMDBEPCount'] = JSONPath({ path: "$.number_of_episodes", json: response.data })[0];
-              result['TMDBSCount'] = JSONPath({ path: "$.number_of_seasons", json: response.data })[0];
-              //result['seasons'] = {}
-              /* 
-              const arrSeasons = JSONPath({ path: "$.seasons", json: response.data })[0];
-              console.log('Ged 56-3', JSON.stringify(arrSeasons))
-              for (const season of arrSeasons) {
-                console.log('Ged 56-3-2', JSON.stringify(season))
-                const season_number = JSONPath({ path: "$.season_number", json: season })[0];
-                console.log('Ged 56-3-3', season_number)
-                console.log('Ged 56-3-4', JSONPath({ path: "$.episode_count", json: season })[0])
-                result['seasons'][season_number] = JSONPath({ path: "$.episode_count", json: season })[0];
-              } */
+              result['Status (Cloud)'] = JSONPath({ path: "$.status", json: response.data })[0];
+              result['Episode Count (Cloud)'] = JSONPath({ path: "$.number_of_episodes", json: response.data })[0];
+              result['Season Count (Cloud)'] = JSONPath({ path: "$.number_of_seasons", json: response.data })[0];
+              // Now get season/episode
+              const seasons = JSONPath({ path: "$..seasons[*]", json: response.data })
+              let Seasons_Cloud = {};
+              for ( var idx in seasons ){
+                Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
+              }
+              result['Seasons (Cloud)'] = Seasons_Cloud;
             })
             .catch(function (error) {
               if (error.response) {

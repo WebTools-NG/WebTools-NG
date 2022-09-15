@@ -76,14 +76,13 @@
                 "Key",
                 "Title",
                 "Sort Season by",
-                "Link",
-                "Show Episode Count (PMS)",
-                "Show Season Count (PMS)",
-                "Show Episode Count (TMDB)",
-                "Show Season Count (TMDB)",
-                "Show Episode Count (TVDB)",
-                "Show Season Count (TVDB)",
-                "Status",
+                "Link (Cloud)",
+                "Status (Cloud)",
+                "Episode Count (PMS)",
+                "Season Count (PMS)",
+                "Episode Count (Cloud)",
+                "Season Count (Cloud)",
+                "Seasons (Cloud)",
                 "Missing"
             ]
         }
