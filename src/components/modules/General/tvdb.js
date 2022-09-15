@@ -84,12 +84,19 @@ const tvdb = new class TVDB {
               if (error.response) {
                   log.error(`[tvdb.js] (getTVDBShowAired) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                  log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowAired) - Request Error: ${error.request}`);
+                  log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else {
                   log.error(`[tvdb.js] (getTVDBShowAired) - ${error.message}`);
+                  log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               }
             })
+            log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
             return result;
     }
 
@@ -135,12 +142,19 @@ const tvdb = new class TVDB {
               if (error.response) {
                   log.error(`[tvdb.js] (getTVDBShowDVD) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                  log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`)
+                  return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowDVD) - Request Error: ${error.request}`);
+                  log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else {
                   log.error(`[tvdb.js] (getTVDBShowDVD) - ${error.message}`);
+                  log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               }
             })
+            log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
             return result;
     }
 
@@ -186,12 +200,19 @@ const tvdb = new class TVDB {
               if (error.response) {
                   log.error(`[tvdb.js] (getTVDBShowAbsolute) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                  log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowAbsolute) - Request Error: ${error.request}`);
+                  log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else {
                   log.error(`[tvdb.js] (getTVDBShowAbsolute) - ${error.message}`);
+                  log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               }
             })
+            log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
             return result;
     }
 }

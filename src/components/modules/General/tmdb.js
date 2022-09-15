@@ -57,13 +57,19 @@ const tmdb = new class TMDB {
               if (error.response) {
                   log.error(`[tmdb.js] (getTMDBShowInfo) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                  log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else if (error.request) {
                   log.error(`[tmdb.js] (getTMDBShowInfo) - Request Error: ${error.request}`);
+                  log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               } else {
                   log.error(`[tmdb.js] (getTMDBShowInfo) - ${error.message}`);
+                  log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  return result;
               }
             })
-        log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`)
+        log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
         return result;
     }
 }
