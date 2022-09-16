@@ -564,7 +564,7 @@ const etHelper = new class ETHELPER {
                         retVal = "Episode mismatch"
                     }
                     if (!this.Settings.showInfo['Episode Count (Cloud)']){
-                        retVal = "No Guid found, please refresh metadata, or sort order not avail at cloud provider"
+                        retVal = "Guid problem found, please refresh metadata, or sort order not avail at cloud provider"
                     }
                     break;
                 case "Rating":
@@ -1014,7 +1014,6 @@ const etHelper = new class ETHELPER {
 
     // Get library default show ordering
     async SelectedLibShowOrdering(){
-        console.log('Ged 44-3', this.Settings.SelectedLibShowOrdering)
         if (!this.Settings.SelectedLibShowOrdering){
             // We need to get the default for this library
             log.info(`[ethelper.js] (SelectedLibShowOrdering) - Getting default show ordering for library ${this.Settings.LibName}`);
@@ -1047,22 +1046,28 @@ const etHelper = new class ETHELPER {
     async addRowToTmp( { data }) {
         if ( this.Settings.levelName == 'Find Missing Episodes'){
             this.Settings.showInfo = {};
-            let id, attributename;
+            let id, ids, attributename;
             await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
             switch ( this.Settings.showInfo["showOrdering"] ) {
                 case "tmdbAiring":
                     // Special level, so we need to get info from tmdb
                     log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
-                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
-                    if ( id ){
-                        this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
-                        const TMDBInfo = await tmdb.getTMDBShowInfo(id);
-                        for( attributename in TMDBInfo){
-                            this.Settings.showInfo[attributename] = TMDBInfo[attributename];
-                        }
+                    ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data });
+                    if ( ids.length != 1){
+                        this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                        log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
                     } else {
-                        const title = JSONPath({ path: "$.title", json: data });
-                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
+                        if ( id ){
+                            this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
+                            const TMDBInfo = await tmdb.getTMDBShowInfo(id);
+                            for( attributename in TMDBInfo){
+                                this.Settings.showInfo[attributename] = TMDBInfo[attributename];
+                            }
+                        } else {
+                            const title = JSONPath({ path: "$.title", json: data });
+                            log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        }
                     }
                     this.Settings.showInfo["showOrdering"] = "TMDB Airing";
                     this.Settings.showInfo["Status"] = this.Settings.showInfo["TMDBStatus"];
@@ -1070,60 +1075,77 @@ const etHelper = new class ETHELPER {
                 case "aired":
                     // Special level, so we need to get info from tvdb
                     log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
-                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
-                    // Get TVDB Access Token
-                    if (!this.Settings.tvdbBearer){
-                        this.Settings.tvdbBearer = await tvdb.login();
-                    }
-                    if ( id ){
-                        const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
-                        for( attributename in showInfo){
-                            this.Settings.showInfo[attributename] = showInfo[attributename];
-                        }
+                    ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
+                    if ( ids.length != 1){
+                        this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                        log.error(`[ethelper.js] (addRowToTmp) - tvdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
                     } else {
-                        const title = JSONPath({ path: "$.title", json: data });
-                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                        // Get TVDB Access Token
+                        if (!this.Settings.tvdbBearer){
+                            this.Settings.tvdbBearer = await tvdb.login();
+                        }
+                        if ( id ){
+                            const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                            for( attributename in showInfo){
+                                this.Settings.showInfo[attributename] = showInfo[attributename];
+                            }
+                        } else {
+                            const title = JSONPath({ path: "$.title", json: data });
+                            log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        }
                     }
                     this.Settings.showInfo["showOrdering"] = "TVDB Airing";
                     break;
                 case "dvd":
                     // Special level, so we need to get info from tvdb
                     log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb for DVD order`);
-                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
-                    // Get TVDB Access Token
-                    if (!this.Settings.tvdbBearer){
-                        this.Settings.tvdbBearer = await tvdb.login();
-                    }
-                    if ( id ){
-                        const showInfo = await tvdb.getTVDBShowDVD( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
-                        for( attributename in showInfo){
-                            this.Settings.showInfo[attributename] = showInfo[attributename];
-                        }
+                    ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
+                    if ( ids.length != 1){
+                        this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                        log.error(`[ethelper.js] (addRowToTmp) - tvdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
                     } else {
-                        const title = JSONPath({ path: "$.title", json: data });
-                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                        // Get TVDB Access Token
+                        if (!this.Settings.tvdbBearer){
+                            this.Settings.tvdbBearer = await tvdb.login();
+                        }
+                        if ( id ){
+                            const showInfo = await tvdb.getTVDBShowDVD( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                            for( attributename in showInfo){
+                                this.Settings.showInfo[attributename] = showInfo[attributename];
+                            }
+                        } else {
+                            const title = JSONPath({ path: "$.title", json: data });
+                            log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        }
                     }
-
                     this.Settings.showInfo["showOrdering"] = "TVDB DVD";
                     this.Settings.showInfo["Status"] = this.Settings.showInfo["TVDBStatus"];
                     break;
                 case "absolute":
                     // Special level, so we need to get info from tvdb
                     log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
-                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
-                    // Get TVDB Access Token
-                    if (!this.Settings.tvdbBearer){
-                        this.Settings.tvdbBearer = await tvdb.login();
-                    }
-
-                    if ( id ){
-                        const showInfo = await tvdb.getTVDBShowAbsolute( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
-                        for( attributename in showInfo){
-                            this.Settings.showInfo[attributename] = showInfo[attributename];
-                        }
+                    ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
+                    if ( ids.length != 1){
+                        this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                        log.error(`[ethelper.js] (addRowToTmp) - tvdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
                     } else {
-                        const title = JSONPath({ path: "$.title", json: data });
-                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                        // Get TVDB Access Token
+                        if (!this.Settings.tvdbBearer){
+                            this.Settings.tvdbBearer = await tvdb.login();
+                        }
+
+                        if ( id ){
+                            const showInfo = await tvdb.getTVDBShowAbsolute( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                            for( attributename in showInfo){
+                                this.Settings.showInfo[attributename] = showInfo[attributename];
+                            }
+                        } else {
+                            const title = JSONPath({ path: "$.title", json: data });
+                            log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                        }
                     }
                     this.Settings.showInfo["showOrdering"] = "TVDB Absolute";
                     this.Settings.showInfo["Status"] = this.Settings.showInfo["TVDBStatus"];
