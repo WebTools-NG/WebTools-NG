@@ -82,11 +82,11 @@ const tvdb = new class TVDB {
             })
             .catch(function (error) {
               if (error.response) {
-                  log.error(`[tvdb.js] (getTVDBShowAired) - Response error: ${error.response.data}`);
-                  alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tvdb.js] (getTVDBShowAired) - Response error: ${JSON.stringify(error.response.data)}`);
+                  //alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
                   result['Link (Cloud)'] = '**** ERROR ****';
                   log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
+                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
                   return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowAired) - Request Error: ${error.request}`);
