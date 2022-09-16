@@ -42,7 +42,7 @@ const tvdb = new class TVDB {
         return bearer;
     }
 
-    async getTVDBShowAired( {tvdbId: tvdbId, bearer: bearer} ){
+    async getTVDBShowAired( {tvdbId: tvdbId, bearer: bearer, title: title} ){
         log.info(`[tvdb.js] (getTVDBShowAired) - Getting tvdb aired info for ${tvdbId}`);
         let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/official?page=0`;
         let headers = this.headers;
@@ -84,15 +84,21 @@ const tvdb = new class TVDB {
               if (error.response) {
                   log.error(`[tvdb.js] (getTVDBShowAired) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowAired) - Request Error: ${error.request}`);
-                  log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else {
                   log.error(`[tvdb.js] (getTVDBShowAired) - ${error.message}`);
-                  log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               }
             })
@@ -100,7 +106,7 @@ const tvdb = new class TVDB {
             return result;
     }
 
-    async getTVDBShowDVD( {tvdbId: tvdbId, bearer: bearer} ){
+    async getTVDBShowDVD( {tvdbId: tvdbId, bearer: bearer, title: title} ){
         log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tmdb DVD info for ${tvdbId}`);
         let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/dvd?page=0`;
         let headers = this.headers;
@@ -142,15 +148,21 @@ const tvdb = new class TVDB {
               if (error.response) {
                   log.error(`[tvdb.js] (getTVDBShowDVD) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`)
+                  log.error(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowDVD) - Request Error: ${error.request}`);
-                  log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else {
                   log.error(`[tvdb.js] (getTVDBShowDVD) - ${error.message}`);
-                  log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               }
             })
@@ -158,7 +170,7 @@ const tvdb = new class TVDB {
             return result;
     }
 
-    async getTVDBShowAbsolute( {tvdbId: tvdbId, bearer: bearer} ){
+    async getTVDBShowAbsolute( {tvdbId: tvdbId, bearer: bearer, title: title} ){
         log.info(`[tvdb.js] (getTVDBShowAbsolute) - Getting tmdb Absolute info for ${tvdbId}`);
         let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/absolute?page=0`;
         let headers = this.headers;
@@ -200,15 +212,21 @@ const tvdb = new class TVDB {
               if (error.response) {
                   log.error(`[tvdb.js] (getTVDBShowAbsolute) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else if (error.request) {
                   log.error(`[tvdb.js] (getTVDBShowAbsolute) - Request Error: ${error.request}`);
-                  log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else {
                   log.error(`[tvdb.js] (getTVDBShowAbsolute) - ${error.message}`);
-                  log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               }
             })

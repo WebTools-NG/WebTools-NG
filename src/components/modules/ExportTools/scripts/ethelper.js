@@ -1060,7 +1060,7 @@ const etHelper = new class ETHELPER {
                         id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
                         if ( id ){
                             this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
-                            const TMDBInfo = await tmdb.getTMDBShowInfo(id);
+                            const TMDBInfo = await tmdb.getTMDBShowInfo({tmdbId: id, title: JSONPath({ path: "$.title", json: data })});
                             for( attributename in TMDBInfo){
                                 this.Settings.showInfo[attributename] = TMDBInfo[attributename];
                             }
@@ -1086,7 +1086,7 @@ const etHelper = new class ETHELPER {
                             this.Settings.tvdbBearer = await tvdb.login();
                         }
                         if ( id ){
-                            const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                            const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data })} );
                             for( attributename in showInfo){
                                 this.Settings.showInfo[attributename] = showInfo[attributename];
                             }
@@ -1111,7 +1111,7 @@ const etHelper = new class ETHELPER {
                             this.Settings.tvdbBearer = await tvdb.login();
                         }
                         if ( id ){
-                            const showInfo = await tvdb.getTVDBShowDVD( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                            const showInfo = await tvdb.getTVDBShowDVD( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data })} );
                             for( attributename in showInfo){
                                 this.Settings.showInfo[attributename] = showInfo[attributename];
                             }
@@ -1138,7 +1138,7 @@ const etHelper = new class ETHELPER {
                         }
 
                         if ( id ){
-                            const showInfo = await tvdb.getTVDBShowAbsolute( {tvdbId: id, bearer: this.Settings.tvdbBearer} );
+                            const showInfo = await tvdb.getTVDBShowAbsolute( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data })} );
                             for( attributename in showInfo){
                                 this.Settings.showInfo[attributename] = showInfo[attributename];
                             }

@@ -25,7 +25,7 @@ const tmdb = new class TMDB {
         return headers
     }
 
-    async getTMDBShowInfo( tmdbId ){
+    async getTMDBShowInfo( { tmdbId: tmdbId, title: title } ){
         log.info(`[tmdb.js] (getTMDBShowInfo) - Getting tmdb info for ${tmdbId}`);
         let url = `${this.baseAPIUrl}/3/tv/${tmdbId}?language=en-US`
         let header = {
@@ -57,15 +57,21 @@ const tmdb = new class TMDB {
               if (error.response) {
                   log.error(`[tmdb.js] (getTMDBShowInfo) - Response error: ${error.response.data}`);
                   alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else if (error.request) {
                   log.error(`[tmdb.js] (getTMDBShowInfo) - Request Error: ${error.request}`);
-                  log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               } else {
                   log.error(`[tmdb.js] (getTMDBShowInfo) - ${error.message}`);
-                  log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  log.error(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
+                  result['Link (Cloud)'] = '**** ERROR ****';
+                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
                   return result;
               }
             })
