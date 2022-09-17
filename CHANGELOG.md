@@ -10,6 +10,7 @@
 **Changes**:
 
 * [#598 Refactor tvdb rutines](https://github.com/WebTools-NG/WebTools-NG/issues/598) (Internal)
+* [#597 Add PMS Season/EP Count to FindMissing](https://github.com/WebTools-NG/WebTools-NG/issues/597) (Enhancement)
 
 ## V1.1.1 ( 20220917 )
 

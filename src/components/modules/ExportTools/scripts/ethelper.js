@@ -873,6 +873,12 @@ const etHelper = new class ETHELPER {
                         retVal = JSON.stringify(this.Settings.showInfo['Seasons (Cloud)']);
                     }
                     break;
+                case "Seasons (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Seasons (PMS)']){
+                        retVal = JSON.stringify(this.Settings.showInfo['Seasons (PMS)']);
+                    }
+                    break;
                 case "Sort Season by":
                     retVal = this.Settings.showInfo['showOrdering'];
                     break;
@@ -1031,7 +1037,7 @@ const etHelper = new class ETHELPER {
 
     // Get specific show ordering
     async getShowOrdering( { ratingKey } ){
-        let url = `${this.Settings.baseURL}/library/metadata/${ratingKey}?includeGuids=0&includePreferences=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline`;
+        let url = `${this.Settings.baseURL}/library/metadata/${ratingKey}?includeGuids=1&includeChildren=1&includePreferences=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline`;
         this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
         log.verbose(`[ethelper.js] (getShowOrdering) Calling url: ${url}`);
         let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
@@ -1042,6 +1048,16 @@ const etHelper = new class ETHELPER {
         } else {
             this.Settings.showInfo['showOrdering'] = await this.SelectedLibShowOrdering();
         }
+        console.log('Ged 88-3', JSON.stringify(resp))
+        let seasonCountPMS = {};
+        const children = JSONPath({path: `$..Children.Metadata[*]`, json: resp});
+        for (var idx in children){
+            const child = children[idx];
+            seasonCountPMS[JSONPath({path: `$..index`, json: child})] = JSONPath({path: `$..leafCount`, json: child})[0];
+        }
+        this.Settings.showInfo['Seasons (PMS)'] = seasonCountPMS;
+        console.log('Ged 77-3', JSON.stringify(this.Settings.showInfo['Seasons (PMS)']))
+        
     }
 
     async addRowToTmp( { data }) {
@@ -1050,7 +1066,6 @@ const etHelper = new class ETHELPER {
             let id, ids, attributename;
             await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
             if ( this.Settings.showInfo["showOrdering"] == "tmdbAiring" ){
-                console.log('Ged 66-3 tmdb airing')
                 // Special level, so we need to get info from tmdb
                 log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
                 ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data });
@@ -1073,7 +1088,6 @@ const etHelper = new class ETHELPER {
                 this.Settings.showInfo["showOrdering"] = "TMDB Airing";
                 this.Settings.showInfo["Status"] = this.Settings.showInfo["TMDBStatus"];
             } else {
-                console.log('Ged 66-3-2 use tvdb')
                 // Special level, so we need to get info from tvdb
                 log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
                 ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
@@ -1342,7 +1356,6 @@ const etHelper = new class ETHELPER {
         let chunck; // placeholder for items fetched
         let chunckItems; // Array of items in the chunck
         this.Settings.element = this.getElement();
-//        let postURI = this.getPostURI();
         // Get the fields for this level
         do  // Walk section in steps
         {
