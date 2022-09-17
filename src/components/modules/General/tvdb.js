@@ -42,197 +42,70 @@ const tvdb = new class TVDB {
         return bearer;
     }
 
-    async getTVDBShowAired( {tvdbId: tvdbId, bearer: bearer, title: title} ){
-        log.info(`[tvdb.js] (getTVDBShowAired) - Getting tvdb aired info for ${tvdbId}`);
-        let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/official?page=0`;
-        let headers = this.headers;
-        let seasons = {};
-        headers["Authorization"] = `Bearer ${bearer}`;
-        let result = {};
-        await axios({
-            method: 'get',
-            url: url,
-            headers: headers
-          })
-            .then((response) => {
-              log.debug('[tvdb.js] (getTVDBShowAired) - Response from getTVDBShowAired recieved');
-              result['Link (Cloud)'] = `https://thetvdb.com/series/${JSONPath({ path: "$..slug", json: response.data })[0]}`;
-              result['Status (Cloud)'] = JSONPath({ path: "$..status.name", json: response.data })[0];
-              // Sadly, the tvdb doesn't have a count field for seasons and episodes, so we need to count each :-(
-              let episodes = JSONPath({ path: "$..episodes[*]", json: response.data });
-              // Gather season/episode info
-              for ( var idx in episodes ){
-                const season = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
-                if( Object.prototype.hasOwnProperty.call(seasons, season) ){
-                    seasons[season] = seasons[season] + 1;
-                } else {
-                    seasons[season] = 1;
-                }
-              }
-              // Get Season Count
-              result['Season Count (Cloud)'] = Object.keys(seasons).length;
-              // Get episode count
-              let episodeCount = 0;
-              Object.entries(seasons).forEach(([key, value]) => {
-                episodeCount = episodeCount + parseInt(value);
-                key;
-              })
-              result['Episode Count (Cloud)'] = episodeCount;
-              result['Seasons (Cloud)'] = seasons;
-            })
-            .catch(function (error) {
-              if (error.response) {
-                  log.error(`[tvdb.js] (getTVDBShowAired) - Response error: ${JSON.stringify(error.response.data)}`);
-                  //alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
-                  return result;
-              } else if (error.request) {
-                  log.error(`[tvdb.js] (getTVDBShowAired) - Request Error: ${error.request}`);
-                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
+    async getTVDBShow( {tvdbId: tvdbId, bearer: bearer, title: title, order: order} ){
+      log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tmdb ${order} info for ${tvdbId}`);
+      let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/${order}?page=0`;
+      let headers = this.headers;
+      let seasons = {};
+      headers["Authorization"] = `Bearer ${bearer}`;
+      let result = {};
+      await axios({
+          method: 'get',
+          url: url,
+          headers: headers
+        })
+          .then((response) => {
+            log.debug('[tvdb.js] (getTVDBShow) - Response from getTVDBShow recieved');
+            result['Link (Cloud)'] = `https://thetvdb.com/series/${JSONPath({ path: "$..slug", json: response.data })[0]}`;
+            result['Status (Cloud)'] = JSONPath({ path: "$..status.name", json: response.data })[0];
+            // Sadly, the tvdb doesn't have a count field for seasons and episodes, so we need to count each :-(
+            let episodes = JSONPath({ path: "$..episodes[*]", json: response.data });
+            // Gather season/episode info
+            for ( var idx in episodes ){
+              const season = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
+              if( Object.prototype.hasOwnProperty.call(seasons, season) ){
+                  seasons[season] = seasons[season] + 1;
               } else {
-                  log.error(`[tvdb.js] (getTVDBShowAired) - ${error.message}`);
-                  log.error(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
+                  seasons[season] = 1;
               }
+            }
+            // Get Season Count
+            result['Season Count (Cloud)'] = Object.keys(seasons).length;
+            // Get episode count
+            let episodeCount = 0;
+            Object.entries(seasons).forEach(([key, value]) => {
+              episodeCount = episodeCount + parseInt(value);
+              key;
             })
-            log.silly(`[tmdb.js] (getTVDBShowAired) - Returning: ${JSON.stringify(result)}`);
-            return result;
-    }
+            result['Episode Count (Cloud)'] = episodeCount;
+            result['Seasons (Cloud)'] = seasons;
+          })
+          .catch(function (error) {
+            if (error.response) {
+                log.error(`[tvdb.js] (getTVDBShow) - Response error: ${error.response.data}`);
+                alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                log.error(`[tmdb.js] (getTVDBShow) - Returning: ${JSON.stringify(result)}`);
+                result['Link (Cloud)'] = '**** ERROR ****';
+                log.error(`[tvdb.js] (getTVDBShow) - tmdb guid problem for ${title}`);
+                return result;
+            } else if (error.request) {
+                log.error(`[tvdb.js] (getTVDBShow) - Request Error: ${error.request}`);
+                log.error(`[tmdb.js] (getTVDBShow) - Returning: ${JSON.stringify(result)}`);
+                result['Link (Cloud)'] = '**** ERROR ****';
+                log.error(`[tvdb.js] (getTVDBShow) - tmdb guid problem for ${title}`);
+                return result;
+            } else {
+                log.error(`[tvdb.js] (getTVDBShow) - ${error.message}`);
+                log.error(`[tmdb.js] (getTVDBShow) - Returning: ${JSON.stringify(result)}`);
+                result['Link (Cloud)'] = '**** ERROR ****';
+                log.error(`[tvdb.js] (getTVDBShow) - tmdb guid problem for ${title}`);
+                return result;
+            }
+          })
+          log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
+          return result;
+  }
 
-    async getTVDBShowDVD( {tvdbId: tvdbId, bearer: bearer, title: title} ){
-        log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tmdb DVD info for ${tvdbId}`);
-        let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/dvd?page=0`;
-        let headers = this.headers;
-        let seasons = {};
-        headers["Authorization"] = `Bearer ${bearer}`;
-        let result = {};
-        await axios({
-            method: 'get',
-            url: url,
-            headers: headers
-          })
-            .then((response) => {
-              log.debug('[tvdb.js] (getTVDBShowDVD) - Response from getTVDBShowDVD recieved');
-              result['Link (Cloud)'] = `https://thetvdb.com/series/${JSONPath({ path: "$..slug", json: response.data })[0]}`;
-              result['Status (Cloud)'] = JSONPath({ path: "$..status.name", json: response.data })[0];
-              // Sadly, the tvdb doesn't have a count field for seasons and episodes, so we need to count each :-(
-              let episodes = JSONPath({ path: "$..episodes[*]", json: response.data });
-              // Gather season/episode info
-              for ( var idx in episodes ){
-                const season = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
-                if( Object.prototype.hasOwnProperty.call(seasons, season) ){
-                    seasons[season] = seasons[season] + 1;
-                } else {
-                    seasons[season] = 1;
-                }
-              }
-              // Get Season Count
-              result['Season Count (Cloud)'] = Object.keys(seasons).length;
-              // Get episode count
-              let episodeCount = 0;
-              Object.entries(seasons).forEach(([key, value]) => {
-                episodeCount = episodeCount + parseInt(value);
-                key;
-              })
-              result['Episode Count (Cloud)'] = episodeCount;
-              result['Seasons (Cloud)'] = seasons;
-            })
-            .catch(function (error) {
-              if (error.response) {
-                  log.error(`[tvdb.js] (getTVDBShowDVD) - Response error: ${error.response.data}`);
-                  alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.error(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
-              } else if (error.request) {
-                  log.error(`[tvdb.js] (getTVDBShowDVD) - Request Error: ${error.request}`);
-                  log.error(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
-              } else {
-                  log.error(`[tvdb.js] (getTVDBShowDVD) - ${error.message}`);
-                  log.error(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
-              }
-            })
-            log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
-            return result;
-    }
-
-    async getTVDBShowAbsolute( {tvdbId: tvdbId, bearer: bearer, title: title} ){
-        log.info(`[tvdb.js] (getTVDBShowAbsolute) - Getting tmdb Absolute info for ${tvdbId}`);
-        let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/absolute?page=0`;
-        let headers = this.headers;
-        let seasons = {};
-        headers["Authorization"] = `Bearer ${bearer}`;
-        let result = {};
-        await axios({
-            method: 'get',
-            url: url,
-            headers: headers
-          })
-            .then((response) => {
-              log.debug('[tvdb.js] (getTVDBShowAbsolute) - Response from getTVDBShowAbsolute recieved');
-              result['Link (Cloud)'] = `https://thetvdb.com/series/${JSONPath({ path: "$..slug", json: response.data })[0]}`;
-              result['Status (Cloud)'] = JSONPath({ path: "$..status.name", json: response.data })[0];
-              // Sadly, the tvdb doesn't have a count field for seasons and episodes, so we need to count each :-(
-              let episodes = JSONPath({ path: "$..episodes[*]", json: response.data });
-              // Gather season/episode info
-              for ( var idx in episodes ){
-                const season = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
-                if( Object.prototype.hasOwnProperty.call(seasons, season) ){
-                    seasons[season] = seasons[season] + 1;
-                } else {
-                    seasons[season] = 1;
-                }
-              }
-              // Get Season Count
-              result['Season Count (Cloud)'] = Object.keys(seasons).length;
-              // Get episode count
-              let episodeCount = 0;
-              Object.entries(seasons).forEach(([key, value]) => {
-                episodeCount = episodeCount + parseInt(value);
-                key;
-              })
-              result['Episode Count (Cloud)'] = episodeCount;
-              result['Seasons (Cloud)'] = seasons;
-            })
-            .catch(function (error) {
-              if (error.response) {
-                  log.error(`[tvdb.js] (getTVDBShowAbsolute) - Response error: ${error.response.data}`);
-                  alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-                  log.error(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
-              } else if (error.request) {
-                  log.error(`[tvdb.js] (getTVDBShowAbsolute) - Request Error: ${error.request}`);
-                  log.error(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
-              } else {
-                  log.error(`[tvdb.js] (getTVDBShowAbsolute) - ${error.message}`);
-                  log.error(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
-                  result['Link (Cloud)'] = '**** ERROR ****';
-                  log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${title}`);
-                  return result;
-              }
-            })
-            log.silly(`[tmdb.js] (getTVDBShowAbsolute) - Returning: ${JSON.stringify(result)}`);
-            return result;
-    }
 }
 
 export { tvdb };
