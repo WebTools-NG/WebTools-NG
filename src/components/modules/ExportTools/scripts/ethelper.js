@@ -11,6 +11,7 @@ import { status } from '../../General/status';
 import { time } from '../../General/time';
 import { tmdb } from '../../General/tmdb';
 import { tvdb } from '../../General/tvdb';
+import { title } from 'process';
 
 var path = require("path");
 var sanitize = require("sanitize-filename");
@@ -1048,6 +1049,216 @@ const etHelper = new class ETHELPER {
             this.Settings.showInfo = {};
             let id, ids, attributename;
             await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
+            if ( this.Settings.showInfo["showOrdering"] == "tmdbAiring" ){
+                console.log('Ged 66-3 tmdb airing')
+                // Special level, so we need to get info from tmdb
+                log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
+                ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data });
+                if ( ids.length != 1){
+                    this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                    log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
+                } else {
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
+                    if ( id ){
+                        this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
+                        const TMDBInfo = await tmdb.getTMDBShowInfo({tmdbId: id, title: JSONPath({ path: "$.title", json: data })});
+                        for( attributename in TMDBInfo){
+                            this.Settings.showInfo[attributename] = TMDBInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+                }
+                this.Settings.showInfo["showOrdering"] = "TMDB Airing";
+                this.Settings.showInfo["Status"] = this.Settings.showInfo["TMDBStatus"];
+            } else {
+                console.log('Ged 66-3-2 use tvdb')
+                // Special level, so we need to get info from tvdb
+                log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
+                ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
+                if ( ids.length != 1){
+                    this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                    log.error(`[ethelper.js] (addRowToTmp) - tvdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
+                } else {
+                    let order;
+                    switch ( this.Settings.showInfo["showOrdering"] ) {
+                        case "aired":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb aired selected for the show named ${title}`);
+                            order = 'official';
+                            this.Settings.showInfo["showOrdering"] = "TVDB Airing";
+                            break;
+                        case "dvd":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb dvd selected for the show named ${title}`);
+                            order = 'dvd';
+                            this.Settings.showInfo["showOrdering"] = "TVDB DVD";
+                            break;
+                        case "absolute":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb absolute selected for the show named ${title}`);
+                            order = 'absolute';
+                            this.Settings.showInfo["showOrdering"] = "TVDB Absolute";
+                            break;
+                    }
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                    // Get TVDB Access Token
+                    if (!this.Settings.tvdbBearer){
+                        this.Settings.tvdbBearer = await tvdb.login();
+                    }
+                    if ( id ){
+                        const showInfo = await tvdb.getTVDBShow( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data }), order: order} );
+                        for( attributename in showInfo){
+                            this.Settings.showInfo[attributename] = showInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+                }
+            }
+        }
+        this.Settings.currentItem +=1;
+        status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
+        log.debug(`[ethelper.js] (addRowToTmp) Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
+        log.silly(`[ethelper.js] (addRowToTmp) Data is: ${JSON.stringify(data)}`)
+        let name, key, type, subType, subKey, doPostProc;
+        let date, year, month, day, hours, minutes, seconds;
+        let val, array, i, valArray, valArrayVal
+        let str = ''
+        let textSep = wtconfig.get('ET.TextQualifierCSV', '"');
+        if ( textSep === ' ')
+        {
+            textSep = '';
+        }
+        try
+        {
+            for (var x=0; x<this.Settings.fields.length; x++) {
+                status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
+                var fieldDef = JSONPath({path: '$.fields.' + this.Settings.fields[x], json: defFields})[0];
+                name = this.Settings.fields[x];
+                key = fieldDef["key"];
+                type = fieldDef["type"];
+                subType = fieldDef["subtype"];
+                subKey = fieldDef["subkey"];
+                doPostProc = fieldDef["postProcess"];
+                switch(type) {
+                    case "string":
+                        val = String(JSONPath({path: key, json: data})[0]);
+                        // Make N/A if not found
+                        if (!val)
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A');
+                        }
+                        val = etHelper.isEmpty( { "val": val } );
+                        break;
+                    case "array":
+                        array = JSONPath({path: key, json: data});
+                        if (array === undefined || array.length == 0) {
+                            val = wtconfig.get('ET.NotAvail', 'N/A');
+                        }
+                        else
+                        {
+                            valArray = []
+                            for (i=0; i<array.length; i++) {
+                                switch(String(subType)) {
+                                    case "string":
+                                        valArrayVal = String(JSONPath({path: String(subKey), json: array[i]}));
+                                        // Make N/A if not found
+                                        valArrayVal = this.isEmpty( { val: valArrayVal });
+                                        break;
+                                    case "time":
+                                        valArrayVal = JSONPath({path: String(subKey), json: array[i]});
+                                        // Make N/A if not found
+                                        if (valArrayVal == null || valArrayVal == "")
+                                        {
+                                            valArrayVal = wtconfig.get('ET.NotAvail', 'N/A')
+                                        }
+                                        else
+                                        {
+                                            const total = valArrayVal.length
+                                            for (let i=0; i<total; i++) {
+                                                valArrayVal = await time.convertMsToTime(valArrayVal);
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        log.error('[ethelper.js] (addRowToTmp) NO ARRAY HIT (addRowToSheet-array)')
+                                }
+                                valArray.push(valArrayVal)
+                            }
+                            val = valArray.join(wtconfig.get('ET.ArraySep', ' * '));
+                        }
+                        break;
+                    case "array-count":
+                        val = JSONPath({path: String(key), json: data}).length;
+                        break;
+                    case "int":
+                        val = JSONPath({path: String(key), json: data})[0];
+                        break;
+                    case "time":
+                        val = JSONPath({path: key, json: data});
+                        if ( typeof val !== 'undefined' && val  && val != '')
+                        {
+                            val = await time.convertMsToTime(val);
+                        }
+                        else
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A')
+                        }
+                        break;
+                    case "datetime":
+                        val = JSONPath({path: key, json: data});
+                        if ( typeof val !== 'undefined' && val && val != '')
+                        {
+                            // Create a new JavaScript Date object based on the timestamp
+                            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                            date = new Date(val * 1000);
+                            year = date.getFullYear().toString();
+                            month = ('0' + date.getMonth().toString()).substr(-2);
+                            day = ('0' +  date.getDate().toString()).substr(-2);
+                            hours = date.getHours();
+                            minutes = "0" + date.getMinutes();
+                            seconds = "0" + date.getSeconds();
+                            // Will display time in 10:30:23 format
+                            val = year+'-'+month+'-'+day+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        }
+                        else
+                        {
+                            val = wtconfig.get('ET.NotAvail', 'N/A')
+                        }
+                        break;
+                }
+                if ( doPostProc )
+                {
+                    const title = JSONPath({path: String('$.title'), json: data})[0];
+                    log.debug(`[ethelper.js] (addRowToTmp doPostProc) - Name is: ${name} - Title is: ${title} - Val is: ${val}`)
+                    val = await this.postProcess( {name: name, val: val, title: title, data: data} );
+                }
+                // Here we add qualifier, if not a number
+                if (!['array-count', 'int'].includes(type))
+                {
+                    val = setQualifier( {str: val} );
+                }
+                str += val + etHelper.intSep;
+            }
+        }
+        catch (error)
+        {
+            log.error(`[ethelper.js] (addRowToTmp) - We had an exception as ${error}`);
+            log.error(`[ethelper.js] (addRowToTmp) - Fields are name: ${name}, key: ${key}, type: ${type}, subType: ${subType}, subKey: ${subKey}`);
+        }
+        // Remove last internal separator
+        str = str.substring(0,str.length-etHelper.intSep.length);
+        str = str.replaceAll(this.intSep, wtconfig.get("ET.ColumnSep", '|'));
+        status.updateStatusMsg( status.RevMsgType.TimeElapsed, await time.getTimeElapsed());
+        log.debug(`etHelper (addRowToTmp) returned: ${JSON.stringify(str)}`);
+        return str;
+    }
+
+    async DELMEaddRowToTmp( { data }) {
+        if ( this.Settings.levelName == 'Find Missing Episodes'){
+            this.Settings.showInfo = {};
+            let id, ids, attributename;
+            await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
             switch ( this.Settings.showInfo["showOrdering"] ) {
                 case "tmdbAiring":
                     // Special level, so we need to get info from tmdb
@@ -1086,7 +1297,8 @@ const etHelper = new class ETHELPER {
                             this.Settings.tvdbBearer = await tvdb.login();
                         }
                         if ( id ){
-                            const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data })} );
+                            //const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data })} );
+                            const showInfo = await tvdb.getTVDBShowAired( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data }), order: 'official'} );
                             for( attributename in showInfo){
                                 this.Settings.showInfo[attributename] = showInfo[attributename];
                             }
