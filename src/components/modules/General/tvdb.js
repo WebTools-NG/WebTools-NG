@@ -1,8 +1,6 @@
 // TVDB stuff used
-//import store from '../../../store';
-//import { wtconfig } from './wtutils';
 import axios from 'axios';
-import { wtutils } from './wtutils';
+import {  wtconfig, wtutils } from './wtutils';
 
 const log = require('electron-log');
 const {JSONPath} = require('jsonpath-plus');
@@ -43,10 +41,11 @@ const tvdb = new class TVDB {
     }
 
     async getTVDBShow( {tvdbId: tvdbId, bearer: bearer, title: title, order: order} ){
-      log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tmdb ${order} info for ${tvdbId}`);
+      log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tmdb ${order} info for ${tvdbId} with a title of: ${title}`);
       let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/${order}?page=0`;
       let headers = this.headers;
       let seasons = {};
+      let episodeCount = 0;
       headers["Authorization"] = `Bearer ${bearer}`;
       let result = {};
       await axios({
@@ -55,29 +54,33 @@ const tvdb = new class TVDB {
           headers: headers
         })
           .then((response) => {
-            log.debug('[tvdb.js] (getTVDBShow) - Response from getTVDBShow recieved');
+            log.debug('[tvdb.js] (getTVDBShow) - Response from getTVDBShow recieved. Use silly logging to see the data');
+            log.silly(JSON.stringify(response.data))
             result['Link (Cloud)'] = `https://thetvdb.com/series/${JSONPath({ path: "$..slug", json: response.data })[0]}`;
             result['Status (Cloud)'] = JSONPath({ path: "$..status.name", json: response.data })[0];
             // Sadly, the tvdb doesn't have a count field for seasons and episodes, so we need to count each :-(
             let episodes = JSONPath({ path: "$..episodes[*]", json: response.data });
             // Gather season/episode info
             for ( var idx in episodes ){
-              const season = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
-              if( Object.prototype.hasOwnProperty.call(seasons, season) ){
-                  seasons[season] = seasons[season] + 1;
-              } else {
-                  seasons[season] = 1;
-              }
-            }
-            // Get Season Count
-            result['Season Count (Cloud)'] = Object.keys(seasons).length;
-            // Get episode count
-            let episodeCount = 0;
-            Object.entries(seasons).forEach(([key, value]) => {
-              episodeCount = episodeCount + parseInt(value);
-              key;
-            })
-            result['Episode Count (Cloud)'] = episodeCount;
+                const seasonNumber = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
+                if ( JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0] == 0) {
+                    if ( !wtconfig.get('ET.noSpecials') ){
+                        episodeCount++;
+                        if( Object.prototype.hasOwnProperty.call(seasons, seasonNumber) ){
+                            seasons[seasonNumber] = seasons[seasonNumber] + 1;
+                        } else {
+                            seasons[seasonNumber] = 1;
+                        }
+                    }
+                    } else {
+                        episodeCount++;
+                        if( Object.prototype.hasOwnProperty.call(seasons, seasonNumber) ){
+                            seasons[seasonNumber] = seasons[seasonNumber] + 1;
+                        } else {
+                            seasons[seasonNumber] = 1;
+                        }
+                    }
+                }
             result['Seasons (Cloud)'] = seasons;
           })
           .catch(function (error) {
@@ -102,6 +105,8 @@ const tvdb = new class TVDB {
                 return result;
             }
           })
+          result['Episode Count (Cloud)'] = episodeCount;
+          result['Season Count (Cloud)'] = Object.keys(seasons).length;
           log.silly(`[tmdb.js] (getTVDBShowDVD) - Returning: ${JSON.stringify(result)}`);
           return result;
   }

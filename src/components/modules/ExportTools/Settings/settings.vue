@@ -80,7 +80,8 @@
                     { text: i18n.t('Modules.ET.Settings.suggestedFileNoExtra'), value: 'suggestedFileNoExtra' },
                     { text: i18n.t('Modules.ET.Settings.suggestedUseOrigenTitle'), value: 'suggestedUseOrigenTitle' },
                     { text: i18n.t('Modules.ET.Settings.NoTimeStamp'), value: 'NoTimeStamp' },
-                    { text: i18n.t('Modules.ET.Settings.NoItemRange'), value: 'NoItemRange' }
+                    { text: i18n.t('Modules.ET.Settings.NoItemRange'), value: 'NoItemRange' },
+                    { text: i18n.t('Modules.ET.Settings.FindMissingNoSpecials'), value: 'noSpecials' }
                 ],
                 SelectedMoviesIDOptions: ['imdb', 'tmdb'],
                 SelectedMoviesID: '',
@@ -97,7 +98,7 @@
                 dialog.ShowMsg( i18n.t("Modules.ET.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), 'For this version, export to XLSX is currently disabled', 'info');
             },
             getDefaults(){
-                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen", "ExportPostersArtsTree"];
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen", "ExportPostersArtsTree", "noSpecials"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
@@ -112,7 +113,7 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen", "ExportPostersArtsTree"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen", "ExportPostersArtsTree", "noSpecials"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
                 this.PosterDimDisabled = this.cbSelected.includes('ArtPostersOrigen');

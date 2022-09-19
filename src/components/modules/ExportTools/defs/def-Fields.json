@@ -437,9 +437,9 @@
                 "postProcess": true
             },
         "Episode Count (PMS)": {
-                "key": "$.leafCount",
+                "key": "$.title",
                 "call": 1,
-                "type": "string",
+                "type": "int",
                 "postProcess": true
             },
         "Export Art":
@@ -1088,9 +1088,9 @@
                 "postProcess": true
             },
         "Season Count (PMS)": {
-                "key": "$.childCount",
+                "key": "$.title",
                 "call": 1,
-                "type": "string",
+                "type": "int",
                 "postProcess": true
             },
         "Seasons (Cloud)": {
