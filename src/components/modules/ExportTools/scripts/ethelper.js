@@ -556,12 +556,14 @@ const etHelper = new class ETHELPER {
                     }
                     break;
                 case "Episode Count (PMS)":
-                    this.Settings.showInfo['PMSEPCount'] = parseInt(val);
-                    retVal = val;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Episode Count (PMS)']){
+                        retVal = this.Settings.showInfo['Episode Count (PMS)'];
+                    }
                     break;
                 case "Missing":
                     retVal = i18n.t('Common.Ok');
-                    if ( this.Settings.showInfo['Episode Count (Cloud)'] != this.Settings.showInfo['PMSEPCount']){
+                    if ( this.Settings.showInfo['Episode Count (Cloud)'] != this.Settings.showInfo['Episode Count (PMS)']){
                         retVal = "Episode mismatch"
                     }
                     if (!this.Settings.showInfo['Episode Count (Cloud)']){
@@ -864,8 +866,10 @@ const etHelper = new class ETHELPER {
                     }
                     break;
                 case "Season Count (PMS)":
-                    this.Settings.showInfo['PMSSCount'] = parseInt(val);
-                    retVal = val;
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Season Count (PMS)']){
+                        retVal = this.Settings.showInfo['Season Count (PMS)'];
+                    }
                     break;
                 case "Seasons (Cloud)":
                     retVal = wtconfig.get('ET.NotAvail');
@@ -1048,16 +1052,27 @@ const etHelper = new class ETHELPER {
         } else {
             this.Settings.showInfo['showOrdering'] = await this.SelectedLibShowOrdering();
         }
-        console.log('Ged 88-3', JSON.stringify(resp))
         let seasonCountPMS = {};
+        let seasonCount = 0;
+        let episodeCount = 0;
         const children = JSONPath({path: `$..Children.Metadata[*]`, json: resp});
         for (var idx in children){
             const child = children[idx];
-            seasonCountPMS[JSONPath({path: `$..index`, json: child})] = JSONPath({path: `$..leafCount`, json: child})[0];
+            if ( JSONPath({path: `$..index`, json: child})[0] == 0) {
+                if ( !wtconfig.get('ET.noSpecials') ){
+                    seasonCountPMS[JSONPath({path: `$..index`, json: child})] = JSONPath({path: `$..leafCount`, json: child})[0];
+                    seasonCount++;
+                    episodeCount = episodeCount + JSONPath({path: `$..leafCount`, json: child})[0];
+                }
+            } else {
+                seasonCountPMS[JSONPath({path: `$..index`, json: child})] = JSONPath({path: `$..leafCount`, json: child})[0];
+                seasonCount++;
+                episodeCount = episodeCount + JSONPath({path: `$..leafCount`, json: child})[0];
+            }
         }
         this.Settings.showInfo['Seasons (PMS)'] = seasonCountPMS;
-        console.log('Ged 77-3', JSON.stringify(this.Settings.showInfo['Seasons (PMS)']))
-        
+        this.Settings.showInfo['Episode Count (PMS)'] = episodeCount;
+        this.Settings.showInfo['Season Count (PMS)'] = seasonCount;
     }
 
     async addRowToTmp( { data }) {
