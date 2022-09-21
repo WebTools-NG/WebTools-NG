@@ -69,7 +69,6 @@ const tmdb = new class TMDB {
                     // Is season currently running
                     if ( nextSeason == (parseInt(idx)+1) ){
                         // Season is currently running
-                        console.log('Ged 88-3-2 We have a running Season', idx)
                         if ( nextEpisodeToAir > 0){
                             // First episode has aired
                             log.info(`[tmdb.js] (getTMDBShowInfo) - Some episodes are in the future, so adj.`);

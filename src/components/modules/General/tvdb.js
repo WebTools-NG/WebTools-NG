@@ -41,8 +41,9 @@ const tvdb = new class TVDB {
     }
 
     async getTVDBShow( {tvdbId: tvdbId, bearer: bearer, title: title, order: order} ){
-      log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tmdb ${order} info for ${tvdbId} with a title of: ${title}`);
+      log.info(`[tvdb.js] (getTVDBShowDVD) - Getting tvdb ${order} info for ${tvdbId} with a title of: ${title}`);
       let url = `${this.baseAPIUrl}series/${tvdbId}/episodes/${order}?page=0`;
+      log.debug(`[tvdb.js] (getTVDBShowDVD) - Calling url: ${url}`);
       let headers = this.headers;
       let seasons = {};
       let episodeCount = 0;
@@ -60,27 +61,57 @@ const tvdb = new class TVDB {
             result['Status (Cloud)'] = JSONPath({ path: "$..status.name", json: response.data })[0];
             // Sadly, the tvdb doesn't have a count field for seasons and episodes, so we need to count each :-(
             let episodes = JSONPath({ path: "$..episodes[*]", json: response.data });
+            const nextAired = JSONPath({ path: "$..nextAired", json: response.data })[0];
+            let nextEpisodeToAir, nextSeasonToAir;
+            if ( nextAired ) {
+                const futureEpisode = JSONPath({ path: '$..episodes[?(@.aired=="' + nextAired + '")]"', json: response.data });
+                nextEpisodeToAir = parseInt(JSONPath({ path: '$..number', json: futureEpisode })[0]);
+                nextSeasonToAir = parseInt(JSONPath({ path: '$..seasonNumber', json: futureEpisode })[0]);
+            }
+            let doAdd;
+
             // Gather season/episode info
             for ( var idx in episodes ){
-                const seasonNumber = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
-                if ( JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0] == 0) {
-                    if ( !wtconfig.get('ET.noSpecials') ){
-                        episodeCount++;
-                        if( Object.prototype.hasOwnProperty.call(seasons, seasonNumber) ){
-                            seasons[seasonNumber] = seasons[seasonNumber] + 1;
+                doAdd = false;
+                // Get current season and episode numbers
+                const curSeason = JSONPath({ path: "$..seasonNumber", json: episodes[idx] })[0];
+                const curEpisode = JSONPath({ path: "$..number", json: episodes[idx] })[0];
+                log.debug(`[tvdb.js] (getTVDBShow) - Looking at ${curSeason}:${curEpisode}`);
+                // Is this a running season ?
+                if ( curSeason == nextSeasonToAir ){
+                    log.debug(`[tvdb.js] (getTVDBShow) - We have a running season`);
+                    if ( curEpisode < nextEpisodeToAir){
+                        // Now check if it's a special
+                        if ( curSeason == 0 ){
+                            if ( !wtconfig.get('ET.noSpecials') ){
+                                log.debug(`[tvdb.js] (getTVDBShow) - We have a special, but that's allowed`);
+                                doAdd = true;
+                            }
                         } else {
-                            seasons[seasonNumber] = 1;
+                            doAdd = true;
                         }
                     }
-                    } else {
-                        episodeCount++;
-                        if( Object.prototype.hasOwnProperty.call(seasons, seasonNumber) ){
-                            seasons[seasonNumber] = seasons[seasonNumber] + 1;
-                        } else {
-                            seasons[seasonNumber] = 1;
+                } else {
+                    // Now check if it's a special
+                    if ( curSeason == 0 ){
+                        if ( !wtconfig.get('ET.noSpecials') ){
+                            log.debug(`[tvdb.js] (getTVDBShow) - We have a special, but that's allowed`);
+                            doAdd = true;
                         }
+                    } else {
+                        doAdd = true;
                     }
                 }
+                if ( doAdd ){
+                    log.debug(`[tvdb.js] (getTVDBShow) - Adding ${curSeason}:${curEpisode}`);
+                    episodeCount++;
+                    if( Object.prototype.hasOwnProperty.call(seasons, curSeason) ){
+                        seasons[curSeason] = seasons[curSeason] + 1;
+                    } else {
+                        seasons[curSeason] = 1;
+                    }
+                }
+            }
             result['Seasons (Cloud)'] = seasons;
           })
           .catch(function (error) {
