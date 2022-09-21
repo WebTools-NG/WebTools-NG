@@ -13,6 +13,7 @@
 * [#597 Add PMS Season/EP Count to FindMissing](https://github.com/WebTools-NG/WebTools-NG/issues/597) (Enhancement)
 * [#603 Find Missing Episodes Reorder columns](https://github.com/WebTools-NG/WebTools-NG/issues/603) (Enhancement)
 * [#596 Find missing episodes specials](https://github.com/WebTools-NG/WebTools-NG/issues/596) (Enhancement)
+* [#607 Find Missing Episodes and episodes in the future](https://github.com/WebTools-NG/WebTools-NG/issues/607) (Enhancement)
 
 ## V1.1.1 ( 20220917 )
 

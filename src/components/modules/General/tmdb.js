@@ -22,7 +22,7 @@ const tmdb = new class TMDB {
     }
 
     async getTMDBShowInfo( { tmdbId: tmdbId, title: title } ){
-        log.info(`[tmdb.js] (getTMDBShowInfo) - Getting tmdb info for ${tmdbId}`);
+        log.info(`[tmdb.js] (getTMDBShowInfo) - Getting tmdb info for ${tmdbId} with a titler of ${title}`);
         let url = `${this.baseAPIUrl}/3/tv/${tmdbId}?language=en-US`
         let header = {
             "Accept": "application/json"
@@ -43,18 +43,44 @@ const tmdb = new class TMDB {
               result['Status (Cloud)'] = JSONPath({ path: "$.status", json: response.data })[0];
               // Now get season/episode
               const seasons = JSONPath({ path: "$..seasons[*]", json: response.data })
+              let nextEpisodeToAir = JSONPath({ path: "$..next_episode_to_air.episode_number", json: response.data })[0];
+              let nextSeason = JSONPath({ path: "$..next_episode_to_air.season_number", json: response.data })[0];
               let Seasons_Cloud = {};
               for ( var idx in seasons ){
                 if ( JSONPath({ path: "$..season_number", json: seasons[idx]}) == 0) {
                     if ( !wtconfig.get('ET.noSpecials') ){
+                        // Is season currently running
+                        if ( nextSeason == (parseInt(idx) + 1) ){
+                            // Season is currently running
+                            if ( nextEpisodeToAir > 0){
+                                // First episode has aired
+                                log.info(`[tmdb.js] (getTMDBShowInfo) - Some episodes are in the future, so adj.`);
+                                Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = nextEpisodeToAir -1;
+                                seasonCount++;
+                                episodeCount = episodeCount + nextEpisodeToAir -1;
+                            }
+                        } else {
+                            Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
+                            seasonCount++;
+                            episodeCount = episodeCount + JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
+                        }
+                    }
+                } else {
+                    // Is season currently running
+                    if ( nextSeason == (parseInt(idx)+1) ){
+                        // Season is currently running
+                        if ( nextEpisodeToAir > 0){
+                            // First episode has aired
+                            log.info(`[tmdb.js] (getTMDBShowInfo) - Some episodes are in the future, so adj.`);
+                            Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})[0]] = nextEpisodeToAir -1;
+                            seasonCount++;
+                            episodeCount = episodeCount + nextEpisodeToAir -1;
+                        }
+                    } else {
                         Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
                         seasonCount++;
                         episodeCount = episodeCount + JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
                     }
-                } else {
-                    Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
-                    seasonCount++;
-                    episodeCount = episodeCount + JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
                 }
               }
               result['Seasons (Cloud)'] = Seasons_Cloud;
