@@ -1398,8 +1398,6 @@ const etHelper = new class ETHELPER {
                 {
                     // Let's get the needed row
                     tmpRow = await this.addRowToTmp({ data: chunckItems[item]});
-
-                    console.log('Ged 11-3', JSON.stringify(tmpRow))
                     if (this.Settings.csvFile){
                         await csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
                     }
@@ -1830,7 +1828,6 @@ const etHelper = new class ETHELPER {
             this.Settings.csvStream = fs.createWriteStream(this.Settings.csvFile, {flags:'a'});
             await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
         }
-        console.log('Ged 17-2', wtconfig.get("ET.ExpXLSX", false))
         try
         {
             // Create XLSX Stream
