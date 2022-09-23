@@ -22,7 +22,7 @@ const tmdb = new class TMDB {
     }
 
     async getTMDBShowInfo( { tmdbId: tmdbId, title: title } ){
-        log.info(`[tmdb.js] (getTMDBShowInfo) - Getting tmdb info for ${tmdbId} with a titler of ${title}`);
+        log.info(`[tmdb.js] (getTMDBShowInfo) - Getting tmdb info for ${tmdbId} with a title of ${title}`);
         let url = `${this.baseAPIUrl}/3/tv/${tmdbId}?language=en-US`
         let header = {
             "Accept": "application/json"
@@ -31,8 +31,10 @@ const tmdb = new class TMDB {
         const apiKey = wtutils.envVarLocal( 'Key_tmdb' );
         url = `${url}&api_key=${apiKey}`;
         const result = {};
-        let seasonCount = 0;
-        let episodeCount = 0;
+        let Seasons_Cloud = {};
+        let totalEpisodes = 0;
+        let curSeason = 0;
+        let totalSeasonEpisodes = 0;
         await axios({
             method: 'get',
             url: url,
@@ -43,47 +45,46 @@ const tmdb = new class TMDB {
               result['Status (Cloud)'] = JSONPath({ path: "$.status", json: response.data })[0];
               // Now get season/episode
               const seasons = JSONPath({ path: "$..seasons[*]", json: response.data })
-              let nextEpisodeToAir = JSONPath({ path: "$..next_episode_to_air.episode_number", json: response.data })[0];
-              let nextSeason = JSONPath({ path: "$..next_episode_to_air.season_number", json: response.data })[0];
-              let Seasons_Cloud = {};
+              const nextEpisodeToAir = parseInt(JSONPath({ path: "$..next_episode_to_air.episode_number", json: response.data })[0]);
+              const nextSeason = parseInt(JSONPath({ path: "$..next_episode_to_air.season_number", json: response.data })[0]);
+              let doAdd = false;
               for ( var idx in seasons ){
-                if ( JSONPath({ path: "$..season_number", json: seasons[idx]}) == 0) {
-                    if ( !wtconfig.get('ET.noSpecials') ){
-                        // Is season currently running
-                        if ( nextSeason == (parseInt(idx) + 1) ){
-                            // Season is currently running
-                            if ( nextEpisodeToAir > 0){
-                                // First episode has aired
-                                log.info(`[tmdb.js] (getTMDBShowInfo) - Some episodes are in the future, so adj.`);
-                                Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = nextEpisodeToAir -1;
-                                seasonCount++;
-                                episodeCount = episodeCount + nextEpisodeToAir -1;
-                            }
+                curSeason = parseInt(JSONPath({ path: "$..season_number", json: seasons[idx]})[0]);
+                totalSeasonEpisodes = parseInt(JSONPath({ path: "$..episode_count", json: seasons[idx]})[0]);
+                // Do we have a special here?
+                if ( curSeason == 0)
+                {
+                    // Is specials allowed?
+                    if ( !wtconfig.get('ET.noSpecials' ) ){
+                        if ( curSeason == nextSeason) {
+                            totalSeasonEpisodes = nextEpisodeToAir -1;
+                            doAdd = true;
                         } else {
-                            Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
-                            seasonCount++;
-                            episodeCount = episodeCount + JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
+                            // Not the season with future episodes, so simply add
+                            doAdd = true;
                         }
                     }
-                } else {
-                    // Is season currently running
-                    if ( nextSeason == (parseInt(idx)+1) ){
-                        // Season is currently running
-                        if ( nextEpisodeToAir > 0){
-                            // First episode has aired
-                            log.info(`[tmdb.js] (getTMDBShowInfo) - Some episodes are in the future, so adj.`);
-                            Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})[0]] = nextEpisodeToAir -1;
-                            seasonCount++;
-                            episodeCount = episodeCount + nextEpisodeToAir -1;
+                } else{
+                    if ( nextEpisodeToAir ) {
+                        log.debug(`[tmdb.js] (getTMDBShowInfo) - We need to lookout for future episodes past ${nextSeason}:${nextEpisodeToAir -1}`);
+                        if ( curSeason == nextSeason) {
+                            totalSeasonEpisodes = nextEpisodeToAir -1;
+                            doAdd = true;
+                        } else {
+                            // Not the season with future episodes, so simply add
+                            doAdd = true;
                         }
                     } else {
-                        Seasons_Cloud[JSONPath({ path: "$..season_number", json: seasons[idx]})] = JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
-                        seasonCount++;
-                        episodeCount = episodeCount + JSONPath({ path: "$..episode_count", json: seasons[idx]})[0];
+                        // We don't have a future episode, so simply add
+                        doAdd = true;
                     }
                 }
+                if ( doAdd ){
+                    log.debug(`[tmdb.js] (getTMDBShowInfo) - Adding ${curSeason}:${totalSeasonEpisodes}`);
+                    totalEpisodes = totalEpisodes + totalSeasonEpisodes;
+                    Seasons_Cloud[curSeason] = totalSeasonEpisodes;
+                }
               }
-              result['Seasons (Cloud)'] = Seasons_Cloud;
             })
             .catch(function (error) {
               if (error.response) {
@@ -107,8 +108,9 @@ const tmdb = new class TMDB {
                   return result;
               }
             })
-        result['Episode Count (Cloud)'] = episodeCount;
-        result['Season Count (Cloud)'] = seasonCount;
+        result['Episode Count (Cloud)'] = totalEpisodes;
+        result['Season Count (Cloud)'] = Object.keys(Seasons_Cloud).length;
+        result['Seasons (Cloud)'] = Seasons_Cloud;
         log.silly(`[tmdb.js] (getTMDBShowInfo) - Returning: ${JSON.stringify(result)}`);
         return result;
     }
