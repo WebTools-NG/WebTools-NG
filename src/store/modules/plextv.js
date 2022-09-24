@@ -151,7 +151,6 @@ const actions = {
     })
       .then(function (response) {
         log.debug(`[plextv.js] (loginToPlexWithToken) - Response recieved`);
-        console.log('Ged 55-3', JSON.stringify(response.data))
         commit('UPDATE_AUTHTOKEN', response.data.user.authToken);
         commit('UPDATE_AUTHENTICATED', true);
         commit('UPDATE_AVATAR', response.data.user.thumb);

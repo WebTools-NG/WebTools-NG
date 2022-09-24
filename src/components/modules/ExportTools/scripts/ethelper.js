@@ -3,12 +3,17 @@ import {ipcRenderer} from 'electron';
 import { wtconfig, wtutils } from '../../General/wtutils';
 import store from '../../../../store';
 import {csv} from './csv';
+import {excel} from './excel';
 import {et} from './et';
 import i18n from '../../../../i18n';
 import filesize from 'filesize';
-import Excel from 'exceljs';
+//import Excel from 'exceljs';
 import { status } from '../../General/status';
 import { time } from '../../General/time';
+import { tmdb } from '../../General/tmdb';
+import { tvdb } from '../../General/tvdb';
+import { title } from 'process';
+import { ExcelWriter } from 'node-excel-stream';
 
 var path = require("path");
 var sanitize = require("sanitize-filename");
@@ -293,6 +298,7 @@ const etHelper = new class ETHELPER {
             csvFile: null,
             csvStream: null,
             xlsxFile: null,
+            xlsxHeader: null,
             xlsxStream: null,
             call: null,
             fields: null,
@@ -306,7 +312,10 @@ const etHelper = new class ETHELPER {
             fileMinor: null,
             element: null,
             SelectedMoviesID: null,
-            SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb")
+            SelectedShowsID: wtconfig.get("ET.SelectedShowsID", "tmdb"),
+            showInfo: null,
+            SelectedLibShowOrdering: null,
+            tvdbBearer: null
         };
 
         this.PMSHeader = wtutils.PMSHeader;
@@ -426,6 +435,8 @@ const etHelper = new class ETHELPER {
         this.Settings.fields = null;
         this.Settings.currentItem = 0;
         this.Settings.totalItems = null;
+        this.Settings.SelectedLibShowOrdering = null;
+        this.Settings.showInfo = null;
     }
 
     isEmpty( {val} )
@@ -539,15 +550,32 @@ const etHelper = new class ETHELPER {
             const valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
             switch ( String(name) ){
                 case "Audience Rating":
-                    {
                         retVal = val.substring(0, 3);
                         break;
+                case "Episode Count (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Episode Count (Cloud)']){
+                        retVal = this.Settings.showInfo['Episode Count (Cloud)'];
                     }
+                    break;
+                case "Episode Count (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Episode Count (PMS)']){
+                        retVal = this.Settings.showInfo['Episode Count (PMS)'];
+                    }
+                    break;
+                case "Missing":
+                    retVal = i18n.t('Common.Ok');
+                    if ( this.Settings.showInfo['Episode Count (Cloud)'] != this.Settings.showInfo['Episode Count (PMS)']){
+                        retVal = "Episode mismatch"
+                    }
+                    if (!this.Settings.showInfo['Episode Count (Cloud)']){
+                        retVal = "Guid problem found, please refresh metadata, or sort order not avail at cloud provider"
+                    }
+                    break;
                 case "Rating":
-                    {
                         retVal = val.substring(0, 3);
                         break;
-                    }
                 case "Suggested File Name":
                     retVal = await this.getSuggestedFileName( {data: data} );
                     break;
@@ -713,6 +741,12 @@ const etHelper = new class ETHELPER {
                         retVal = retVal.split('?')[0];
                     }
                     break;
+                case "Link (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Link (Cloud)']){
+                        retVal = this.Settings.showInfo['Link (Cloud)'];
+                    }
+                    break;
                 case "TVDB ID":
                     retVal = wtconfig.get('ET.NotAvail');
                     guidArr = val.split(wtconfig.get('ET.ArraySep'));
@@ -773,7 +807,20 @@ const etHelper = new class ETHELPER {
                     for(const item of guidArr) {
                         if ( item.startsWith("tmdb://") )
                         {
-                            retVal = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                            const mediaType = JSONPath({path: '$.type', json: data})[0];
+                            if ( mediaType == 'movie'){
+                                retVal = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                            }
+
+                            /* else if ( mediaType == 'episode'){
+                                const season = 1
+                                const episode = 1
+                                retVal = `https://www.themoviedb.org/tv/${item.substring(7)}/season/${season}/episode/${episode}`
+                            }
+                             */
+                            else {
+                                retVal = 'https://www.themoviedb.org/tv/' + item.substring(7);
+                            }
                         }
                     }
                     break;
@@ -814,6 +861,33 @@ const etHelper = new class ETHELPER {
                     var sha1 = shasum.digest('hex');
                     //var path = require('path');
                     retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
+                    break;
+                case "Season Count (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Season Count (Cloud)']){
+                        retVal = this.Settings.showInfo['Season Count (Cloud)'];
+                    }
+                    break;
+                case "Season Count (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Season Count (PMS)']){
+                        retVal = this.Settings.showInfo['Season Count (PMS)'];
+                    }
+                    break;
+                case "Seasons (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Seasons (Cloud)']){
+                        retVal = JSON.stringify(this.Settings.showInfo['Seasons (Cloud)']);
+                    }
+                    break;
+                case "Seasons (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Seasons (PMS)']){
+                        retVal = JSON.stringify(this.Settings.showInfo['Seasons (PMS)']);
+                    }
+                    break;
+                case "Sort Season by":
+                    retVal = this.Settings.showInfo['showOrdering'];
                     break;
                 case "Show Prefs Episode sorting":
                     switch (val){
@@ -935,6 +1009,12 @@ const etHelper = new class ETHELPER {
                             break;
                     }
                     break;
+                case "Status (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Status (Cloud)']){
+                        retVal = this.Settings.showInfo['Status (Cloud)'];
+                    }
+                    break;
                 default:
                     log.error(`[ethelper.js] (postProcess) no hit for: ${name}`)
                     break;
@@ -946,7 +1026,128 @@ const etHelper = new class ETHELPER {
         return await retVal;
     }
 
+    // Get library default show ordering
+    async SelectedLibShowOrdering(){
+        if (!this.Settings.SelectedLibShowOrdering){
+            // We need to get the default for this library
+            log.info(`[ethelper.js] (SelectedLibShowOrdering) - Getting default show ordering for library ${this.Settings.LibName}`);
+            let url = `${this.Settings.baseURL}/library/sections/all?includePreferences=1`;
+            this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+            log.verbose(`[ethelper.js] (SelectedLibShowOrdering) Calling url: ${url}`);
+            let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+            let resp = await response.json();
+            this.Settings.SelectedLibShowOrdering = JSONPath({path: `$..Directory[?(@.key==${this.Settings.selLibKey})].Preferences.Setting[?(@.id=="showOrdering")].value`, json: resp})[0];
+            log.info(`[ethelper.js] (SelectedLibShowOrdering) - Default show ordering for library is: ${this.Settings.SelectedLibShowOrdering}`);
+        }
+        return this.Settings.SelectedLibShowOrdering
+    }
+
+    // Get specific show ordering
+    async getShowOrdering( { ratingKey } ){
+        let url = `${this.Settings.baseURL}/library/metadata/${ratingKey}?includeGuids=1&includeChildren=1&includePreferences=1&checkFiles=0&includeRelated=0&includeExtras=0&includeBandwidths=0&includeChapters=0&excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline`;
+        this.PMSHeader["X-Plex-Token"] = this.Settings.accessToken;
+        log.verbose(`[ethelper.js] (getShowOrdering) Calling url: ${url}`);
+        let response = await fetch(url, { method: 'GET', headers: this.PMSHeader});
+        let resp = await response.json();
+        var showOrder = JSONPath({path: `$..Preferences.Setting[?(@.id=="showOrdering")].value`, json: resp})[0];
+        if (showOrder != ""){
+            this.Settings.showInfo['showOrdering'] = showOrder;
+        } else {
+            this.Settings.showInfo['showOrdering'] = await this.SelectedLibShowOrdering();
+        }
+        let seasonCountPMS = {};
+        let seasonCount = 0;
+        let episodeCount = 0;
+        const children = JSONPath({path: `$..Children.Metadata[*]`, json: resp});
+        for (var idx in children){
+            const child = children[idx];
+            if ( JSONPath({path: `$..index`, json: child})[0] == 0) {
+                if ( !wtconfig.get('ET.noSpecials') ){
+                    seasonCountPMS[JSONPath({path: `$..index`, json: child})] = JSONPath({path: `$..leafCount`, json: child})[0];
+                    seasonCount++;
+                    episodeCount = episodeCount + JSONPath({path: `$..leafCount`, json: child})[0];
+                }
+            } else {
+                seasonCountPMS[JSONPath({path: `$..index`, json: child})] = JSONPath({path: `$..leafCount`, json: child})[0];
+                seasonCount++;
+                episodeCount = episodeCount + JSONPath({path: `$..leafCount`, json: child})[0];
+            }
+        }
+        this.Settings.showInfo['Seasons (PMS)'] = seasonCountPMS;
+        this.Settings.showInfo['Episode Count (PMS)'] = episodeCount;
+        this.Settings.showInfo['Season Count (PMS)'] = seasonCount;
+    }
+
     async addRowToTmp( { data }) {
+        if ( this.Settings.levelName == 'Find Missing Episodes'){
+            this.Settings.showInfo = {};
+            let id, ids, attributename;
+            await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
+            if ( this.Settings.showInfo["showOrdering"] == "tmdbAiring" ){
+                // Special level, so we need to get info from tmdb
+                log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
+                ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data });
+                if ( ids.length != 1){
+                    this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                    log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
+                } else {
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
+                    if ( id ){
+                        this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
+                        const TMDBInfo = await tmdb.getTMDBShowInfo({tmdbId: id, title: JSONPath({ path: "$.title", json: data })});
+                        for( attributename in TMDBInfo){
+                            this.Settings.showInfo[attributename] = TMDBInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+                }
+                this.Settings.showInfo["showOrdering"] = "TMDB Airing";
+                this.Settings.showInfo["Status"] = this.Settings.showInfo["TMDBStatus"];
+            } else {
+                // Special level, so we need to get info from tvdb
+                log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
+                ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
+                if ( ids.length != 1){
+                    this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                    log.error(`[ethelper.js] (addRowToTmp) - tvdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
+                } else {
+                    let order;
+                    switch ( this.Settings.showInfo["showOrdering"] ) {
+                        case "aired":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb aired selected for the show named ${title}`);
+                            order = 'official';
+                            this.Settings.showInfo["showOrdering"] = "TVDB Airing";
+                            break;
+                        case "dvd":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb dvd selected for the show named ${title}`);
+                            order = 'dvd';
+                            this.Settings.showInfo["showOrdering"] = "TVDB DVD";
+                            break;
+                        case "absolute":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb absolute selected for the show named ${title}`);
+                            order = 'absolute';
+                            this.Settings.showInfo["showOrdering"] = "TVDB Absolute";
+                            break;
+                    }
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                    // Get TVDB Access Token
+                    if (!this.Settings.tvdbBearer){
+                        this.Settings.tvdbBearer = await tvdb.login();
+                    }
+                    if ( id ){
+                        const showInfo = await tvdb.getTVDBShow( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data }), order: order} );
+                        for( attributename in showInfo){
+                            this.Settings.showInfo[attributename] = showInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+                }
+            }
+        }
         this.Settings.currentItem +=1;
         status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
         log.debug(`[ethelper.js] (addRowToTmp) Start addRowToTmp item ${this.Settings.currentItem} (Switch to Silly log to see contents)`)
@@ -1074,8 +1275,8 @@ const etHelper = new class ETHELPER {
         }
         catch (error)
         {
-            log.error(`We had an exception in ethelper addRowToTmp as ${error}`);
-            log.error(`Fields are name: ${name}, key: ${key}, type: ${type}, subType: ${subType}, subKey: ${subKey}`);
+            log.error(`[ethelper.js] (addRowToTmp) - We had an exception as ${error}`);
+            log.error(`[ethelper.js] (addRowToTmp) - Fields are name: ${name}, key: ${key}, type: ${type}, subType: ${subType}, subKey: ${subKey}`);
         }
         // Remove last internal separator
         str = str.substring(0,str.length-etHelper.intSep.length);
@@ -1105,6 +1306,9 @@ const etHelper = new class ETHELPER {
     }
 
     async forceDownload( { url: url, target: target, title: title } ) {
+        let header = wtutils.PMSHeader;
+        header['X-Plex-Token'] = store.getters.getSelectedServer.accessToken;
+
         const _this = this;
         return new Promise((resolve) => {
             try
@@ -1112,7 +1316,8 @@ const etHelper = new class ETHELPER {
                 _this.isDownloading = true;
                 ipcRenderer.send('downloadFile', {
                     item: url,
-                    filePath: target
+                    filePath: target,
+                    header: header
                 })
             }
             catch (error)
@@ -1160,13 +1365,15 @@ const etHelper = new class ETHELPER {
         // Get status for exporting arts and posters
         const bExportPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Posters.${this.Settings.levelName}`, false);
         const bExportArt = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.Art.${this.Settings.levelName}`, false);
+        const bSeasonPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.SeasonPosters.${this.Settings.levelName}`, false);
+        const bShowPosters = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.ShowPosters.${this.Settings.levelName}`, false);
+        const bShowArt = wtconfig.get(`ET.CustomLevels.${this.Settings.libTypeSec}.ShowArt.${this.Settings.levelName}`, false);
         // Chunck step
         const step = wtconfig.get("PMS.ContainerSize." + this.Settings.libType, 20);
         let size = 0;   // amount of items fetched each time
         let chunck; // placeholder for items fetched
         let chunckItems; // Array of items in the chunck
         this.Settings.element = this.getElement();
-//        let postURI = this.getPostURI();
         // Get the fields for this level
         do  // Walk section in steps
         {
@@ -1192,9 +1399,10 @@ const etHelper = new class ETHELPER {
                     // Let's get the needed row
                     tmpRow = await this.addRowToTmp({ data: chunckItems[item]});
                     if (this.Settings.csvFile){
-                        csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
+                        await csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
                     }
                     if (this.Settings.xlsxFile){
+                        await excel.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
                         console.log('Ged 12-4 We need to exp to XLSX')
                     }
                 }
@@ -1205,7 +1413,7 @@ const etHelper = new class ETHELPER {
                     // Let's get the needed row
                     tmpRow = await this.addRowToTmp({ data: details});
                     if (this.Settings.csvFile){
-                        csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
+                        await csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
                     }
                     if (this.Settings.xlsxFile){
                         console.log('Ged 12-4 We need to exp to XLSX')
@@ -1217,7 +1425,19 @@ const etHelper = new class ETHELPER {
                 }
                 if (bExportArt)
                 {
-                    await this.exportPics( { type: 'arts', data: chunckItems[item] } )
+                    await this.exportPics( { type: 'art', data: chunckItems[item] } )
+                }
+                if (bSeasonPosters)
+                {
+                    await this.exportPics( { type: 'seasonposters', data: chunckItems[item] } )
+                }
+                if (bShowPosters)
+                {
+                    await this.exportPics( { type: 'showposters', data: chunckItems[item] } )
+                }
+                if (bShowArt)
+                {
+                    await this.exportPics( { type: 'showart', data: chunckItems[item] } )
                 }
                 ++this.Settings.count;
                 if ( this.Settings.count >= this.Settings.endItem) {
@@ -1350,63 +1570,245 @@ const etHelper = new class ETHELPER {
         this.Settings.outFile = newFile;
     }
 
-    async exportPics( { type: extype, data: data} ) {
-        let ExpDir, picUrl, resolutions;
-        log.verbose(`[etHelper] (exportPics) Going to export ${extype}`);
-        try
-        {
-            if (extype == 'posters')
-            {
-                picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
-                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
-                ExpDir = path.join(
-                    wtconfig.get('General.ExportPath'),
-                    wtutils.AppName,
-                    'ExportTools', 'Posters');
+    async getExportPicsUrlandFileFileName( { type: extype, data: data, res: res} ) { // Get Art/Poster filename
+        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
+        let title, show, season, seasonNumber, episodeNumber, year;
+        let fileName = '';
+        let ExpDir;
+        if ( wtconfig.get('ET.ExportPostersArtsTree', true)){
+            let filePath;
+            let mediaType = JSONPath({path: '$.type', json: data})[0];
+            switch (mediaType) {
+                case 'episode':
+                    switch (extype) {
+                        case 'posters':
+                            show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
+                            if ( String(seasonNumber).length < 2){
+                                seasonNumber = '0' + seasonNumber;
+                            }
+                            season = `Season ${seasonNumber}`;
+                            episodeNumber = JSONPath({path: '$.index', json: data})[0];
+                            if ( String(episodeNumber).length < 2){
+                                episodeNumber = '0' + episodeNumber;
+                            }
+                            title = `${show} -S${seasonNumber}E${episodeNumber}- ${title}`;
+                            filePath = path.join(show, season);
+                            break;
+                        case 'seasonposters':
+                            show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
+                            if ( String(seasonNumber).length < 2){
+                                seasonNumber = '0' + seasonNumber;
+                            }
+                            season = `Season ${seasonNumber}`;
+                            episodeNumber = JSONPath({path: '$.index', json: data})[0];
+                            if ( String(episodeNumber).length < 2){
+                                episodeNumber = '0' + episodeNumber;
+                            }
+                            title = `Season${seasonNumber}`;
+                            filePath = path.join(show, season);
+                            break;
+                        case 'art':
+                            show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            seasonNumber = await JSONPath({path: '$.parentIndex', json: data})[0];
+                            if ( String(seasonNumber).length < 2){
+                                seasonNumber = '0' + seasonNumber;
+                            }
+                            season = `Season ${seasonNumber}`;
+                            episodeNumber = JSONPath({path: '$.index', json: data})[0];
+                            if ( String(episodeNumber).length < 2){
+                                episodeNumber = '0' + episodeNumber;
+                            }
+                            title = `${show} -S${seasonNumber}E${episodeNumber}- ${title} -art`;
+                            filePath = path.join(show, season);
+                            break;
+                        case 'showposters':
+                            filePath = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = `show`;
+                            break;
+                        case 'showart':
+                            filePath = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                            title = `show -Art`;
+                            break;
+                    }
+                    break;
+                case 'movie':
+                    switch (extype) {
+                        case 'posters':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            year = JSONPath({path: '$.year', json: data})[0];
+                            filePath = `${title} (${year})`;
+                            title = filePath
+                            break;
+                        case 'art':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            year = JSONPath({path: '$.year', json: data})[0];
+                            filePath = `${title} (${year})`;
+                            title = `${filePath} -art`;
+                            break;
+                    }
+                    break;
+                case 'show':
+                    switch (extype) {
+                        case 'posters':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            filePath = title;
+                            break;
+                        case 'art':
+                            title = sanitize(JSONPath({path: '$.title', json: data})[0]);
+                            filePath = title;
+                            title = `${title} -art`;
+                            break;
+                    }
+                    break;
             }
-            else
-            {
-                picUrl = String(JSONPath({path: '$.art', json: data})[0]);
-                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
-                ExpDir = path.join(
-                    wtconfig.get('General.ExportPath'),
-                    wtutils.AppName,
-                    'ExportTools', 'Art');
-            }
+            ExpDir = path.join(
+                wtconfig.get('General.ExportPath'),
+                wtutils.AppName,
+                sanitize(i18n.t('Modules.ET.Name')),
+                sanitize(i18n.t('Modules.ET.ExportPostersArts')),
+                sanitize(i18n.t('Modules.ET.ExportPostersArtsTree')),
+                sanitize(store.getters.getSelectedServer['name']),
+                sanitize(this.Settings.LibName),
+                filePath);
+        } else  {
+            switch (extype) {
+                case 'seasonposters':
+                    show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                    season = sanitize(JSONPath({path: '$.parentTitle', json: data})[0]);
+                    title = `${show}_${season}`;
+                    break;
+                case 'showposters':
+                    show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                    title = `${show}`;
+                    break;
+                case 'showart':
+                    show = sanitize(JSONPath({path: '$.grandparentTitle', json: data})[0]);
+                    title = `${show}`;
+                    break;
+                case 'showart2':
+                    show = sanitize(JSONPath({path: '$.grandparentArt', json: data})[0]);
+                    title = `${show}`;
+                    break;
+                default:
+                    title = String(JSONPath({path: '$.title', json: data})[0]);
+                    title = `${key}_${title.replace(/[/\\?%*:|"<>]/g, ' ').trim()}`;
+                    break;
+                }
+            ExpDir = path.join(
+                wtconfig.get('General.ExportPath'),
+                wtutils.AppName,
+                i18n.t('Modules.ET.Name'),
+                i18n.t('Modules.ET.ExportPostersArts'),
+                i18n.t('Modules.ET.ExportPostersArtsFlat'),
+                extype);
         }
-        catch (error)
-        {
-            log.error(`[etHelper] (exportPics) Exception in exportPics is: ${error}`);
-        }
-        log.verbose(`[etHelper] (exportPics) picUrl is: ${picUrl}`);
-        log.verbose(`[etHelper] (exportPics) resolutions is: ${JSON.stringify(resolutions)}`);
-        log.verbose(`[etHelper] (exportPics) ExpDir is: ${ExpDir}`);
+        // Also create exp dir if it doesn't exists
         // Create export dir
         var fs = require('fs');
         if (!fs.existsSync(ExpDir)){
             fs.mkdirSync(ExpDir, { recursive: true });
         }
-        let key = String(JSONPath({path: '$.ratingKey', json: data})[0]);
+        if ( res ){
+            // Remove whitespace
+            res = res.replace(/\s/g, "");
+            fileName = `${title}_${res}`;
+        } else {
+            fileName = title;
+        }
+        let outFile = path.join(
+            ExpDir,
+            fileName + '.jpg'
+        );
+        log.debug(`[ethelper.js] (getExportPicsUrlandFileFileName) - Outfile is: ${outFile}`);
+        return outFile;
+    }
+
+    async getExportPicsUrlandFile( { type: extype, data: data} ) {
+        const ArtPostersOrigen = wtconfig.get('ET.ArtPostersOrigen', false);
+        let resp = [];
+        let picUrl = '';
+        let entry = {};
+        let resolutions;
+        switch ( extype ) {
+            case 'posters':
+                picUrl = String(JSONPath({path: '$.thumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                break;
+            case 'art':
+                picUrl = String(JSONPath({path: '$.art', json: data})[0]);
+                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
+                break;
+            case 'seasonposters':
+                picUrl = String(JSONPath({path: '$.parentThumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                break;
+            case 'showposters':
+                picUrl = String(JSONPath({path: '$.grandparentThumb', json: data})[0]);
+                resolutions = wtconfig.get('ET.Posters_Dimensions', '75*75').split(',');
+                break;
+            case 'showart':
+                picUrl = String(JSONPath({path: '$.grandparentArt', json: data})[0]);
+                resolutions = wtconfig.get('ET.Art_Dimensions', '75*75').split(',');
+                break;
+        }
+        if ( ArtPostersOrigen ) {  // Export in origen resolution
+            entry['url'] = `${this.Settings.baseURL}${picUrl}`;
+            entry['outFile'] = await this.getExportPicsUrlandFileFileName( { type: extype, data: data} );
+            resp.push(entry);
+        } else {  // Export in defined resolutions
+            for(let res of resolutions) {
+                entry = {};
+                res = res.replace('*', 'x');
+                // Build up pic url
+                const hight = res.split('x')[1].trim();
+                const width = res.split('x')[0].trim();
+                entry['url'] = `${this.Settings.baseURL}/photo/:/transcode?width=${width}&height=${hight}&minSize=1&url=${picUrl}`;
+                log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${entry['url']}`);
+                entry['outFile'] = await this.getExportPicsUrlandFileFileName( { type: extype, data: data, res: res} );
+                resp.push(entry);
+            }
+        }
+        return resp;
+    }
+
+    async exportPics( { type: extype, data: data} ) {
+        let files = await this.getExportPicsUrlandFile( { type: extype, data: data} );
         let title = String(JSONPath({path: '$.title', json: data})[0]);
-        // Get resolutions to export as
-        for(let res of resolutions) {
-            const fileName = key + '_' + title.replace(/[/\\?%*:|"<>]/g, ' ').trim() + '_' + res.trim().replace("*", "x") + '.jpg';
-            let outFile = path.join(
-                ExpDir,
-                fileName
-                );
-            // Build up pic url
-            //const width = res.split('*')[1].trim();
-            const hight = res.split('*')[1].trim();
-            const width = res.split('*')[0].trim();
-            let URL = this.Settings.baseURL + '/photo/:/transcode?width=';
-            URL += width + '&height=' + hight;
-            URL += '&minSize=1&url=';
-            URL += picUrl;
-            log.verbose(`[etHelper] (exportPics) Url for ${extype} is ${URL}`);
-            log.verbose(`[etHelper] (exportPics) Outfile is ${outFile}`);
-            URL += '&X-Plex-Token=' + this.Settings.accessToken;
-            await this.forceDownload( { url:URL, target:outFile, title:title} );
+        for (var idx in files){
+            log.silly(`[ethelper.js] (exportPics) - downloading ${files[idx]['url']} as file ${files[idx]['outFile']} with a title as ${title}`)
+            await this.forceDownload( { url:files[idx]['url'], target:files[idx]['outFile'], title:title} );
+        }
+    }
+
+    async getXLSXHeader(){
+        if ( this.Settings.xlsxHeader ){
+            return;
+        } else {
+            this.Settings.xlsxHeader = [];
+            let allowedHeaders = [];
+            for(const key of this.Settings.fields) {
+                let entry = {};
+                entry['name'] = key;
+                entry['key'] = key;
+                entry['type'] = JSONPath({path: '$.fields.Key.type', json: defFields})[0];
+                allowedHeaders.push(entry);
+            }
+            let sheets = [];
+            let sheet = {};
+            sheet['name'] = 'ET';
+            let rows = {};
+            rows['headerRow'] = 1;
+            rows['allowedHeaders'] = allowedHeaders;
+            sheet['rows'] = rows;
+            sheets.push(sheet);
+            this.Settings.xlsxHeader = {};
+            this.Settings.xlsxHeader['sheets'] = sheets;
+            return;
         }
     }
 
@@ -1430,28 +1832,12 @@ const etHelper = new class ETHELPER {
         {
             // Create XLSX Stream
             if (wtconfig.get("ET.ExpXLSX", false)){
-                //const Excel = require('exceljs');
-                // Open a file stream
-
+                // Get the tmp file name
                 this.Settings.xlsxFile = await etHelper.getFileName({ Type: 'xlsx' });
+                await this.getXLSXHeader();
+                console.log('Ged 17-3-4 Header', this.Settings.xlsxHeader)
 
-                //this.Settings.xlsxStream = fs.createWriteStream(this.Settings.xlsxFile, {flags:'a'});
-                // construct a streaming XLSX workbook writer with styles and shared strings
-                const options = {
-                    filename: this.Settings.xlsxFile,
-                    useStyles: true,
-                    useSharedStrings: true
-                };
-                var streamGed = new Excel.stream.xlsx();
-                streamGed
-
-
-
-
-                this.Settings.xlsxStream = new Excel.stream.xlsx.WorkbookWriter(options);
-
-                // TODO: Add XLS Header
-                // await csv.addHeaderToTmp({ stream: this.Settings.csvStream, item: this.Settings.fields});
+                ExcelWriter
             }
         }
         catch (error){
@@ -1584,7 +1970,7 @@ const etHelper = new class ETHELPER {
         if (!fs.existsSync(targetDir)) {
             fs.mkdirSync(targetDir, { recursive: true });
         }
-        log.info(`etHelper (getFileName) OutFile ET is ${outFileWithPath}`);
+        log.info(`[etHelper.js] (getFileName) - OutFile ET is ${outFileWithPath}`);
         return outFileWithPath;
     }
 
@@ -1815,7 +2201,7 @@ const etHelper = new class ETHELPER {
             }
             Object.keys(levels).forEach(function(key) {
                 // Skip picture export fields
-                if ( !["Export Art", "Export Posters"].includes(levels[key]) )
+                if ( !["Export Art", "Export Show Art", "Export Posters", "Export Season Posters", "Export Show Posters"].includes(levels[key]) )
                 {
                     out.push(levels[key])
                 }

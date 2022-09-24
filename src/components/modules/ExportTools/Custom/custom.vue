@@ -8,7 +8,8 @@
         </div>
         <br>
         <!-- Media type to export -->
-        <b-form-group id="etTypeGroup" v-bind:label="$t('Modules.ET.Custom.SelCustType')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Custom.TT-CustType')">
+        <b-form-group>
+            <WTNGttlabel tt="Modules.ET.Custom.TT-CustType" label="Modules.ET.Custom.SelCustType" />
             <b-form-select
                 style="width: 50%"
                 v-model="selMediaType"
@@ -19,7 +20,8 @@
             </b-form-select>
         </b-form-group>
         <div> <!-- Select Custom Level -->
-            <b-form-group id="etLevelGroup" v-bind:label="$t('Modules.ET.Custom.CustomLevel')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Custom.TT-ETEditLevel')">
+            <b-form-group>
+                <WTNGttlabel tt="Modules.ET.Custom.TT-ETEditLevel" label="Modules.ET.Custom.CustomLevel" />
                 <b-form-select
                     style="width: 50%"
                     class="form-control"
@@ -86,13 +88,15 @@
   import { et } from "../scripts/et";
   import i18n from '../../../../i18n';
   import { wtconfig, dialog } from '../../General/wtutils';
-  import draggable from 'vuedraggable'
+  import draggable from 'vuedraggable';
+  import WTNGttlabel from '../../General/wtng-ttlabel.vue'
 
   const log = require("electron-log");
 
   export default {
     components: {
         draggable,
+        WTNGttlabel
     },
     data() {
         return {
@@ -172,16 +176,31 @@
             log.debug(`Customlevel ${this.selCustLevel} selected`);
             if (this.selCustLevel != 'NewLevel'){
                 // Get fields from config.json file
-                let custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`)
+                let custLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level.${this.selCustLevel}`);
+                // Do we need to export art?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, false) )
+                {
+                    custLevel.push("Export Art");
+                }
+                // Do we need to export show art?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.ShowArt.${this.selCustLevel}`, false) )
+                {
+                    custLevel.push("Export Show Art");
+                }
                 // Do we need to export posters?
                 if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, false) )
                 {
                     custLevel.push("Export Posters");
                 }
-                // Do we need to export art?
-                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, false) )
+                // Do we need to export season posters?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.SeasonPosters.${this.selCustLevel}`, false) )
                 {
-                    custLevel.push("Export Art");
+                    custLevel.push("Export Season Posters");
+                }
+                // Do we need to export show posters?
+                if ( wtconfig.get(`ET.CustomLevels.${this.selMediaType}.ShowPosters.${this.selCustLevel}`, false) )
+                {
+                    custLevel.push("Export Show Posters");
                 }
                 // Add to resultList
                 this.resultList = custLevel.map((name, index) => {
@@ -330,7 +349,10 @@
         saveCustomLevel() {
             let result = []
             let bExportArt = false;
+            let bExportShowArt = false;
             let bExportPosters = false;
+            let bExportSeasonPosters = false;
+            let bExportShowPosters = false;
             for(var k in this.resultList) {
                 if (this.resultList[k].name == 'Export Posters')
                 {
@@ -340,13 +362,28 @@
                 {
                     bExportArt = true;
                 }
+                else if (this.resultList[k].name == 'Export Show Art')
+                {
+                    bExportShowArt = true;
+                }
+                else if (this.resultList[k].name == 'Export Season Posters')
+                {
+                    bExportSeasonPosters = true;
+                }
+                else if (this.resultList[k].name == 'Export Show Posters')
+                {
+                    bExportShowPosters = true;
+                }
                 else
                 {
                     result.push(this.resultList[k].name);
                 }
             }
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Posters.${this.selCustLevel}`, bExportPosters);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.SeasonPosters.${this.selCustLevel}`, bExportSeasonPosters);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.ShowPosters.${this.selCustLevel}`, bExportShowPosters);
             wtconfig.set(`ET.CustomLevels.${this.selMediaType}.Art.${this.selCustLevel}`, bExportArt);
+            wtconfig.set(`ET.CustomLevels.${this.selMediaType}.ShowArt.${this.selCustLevel}`, bExportShowArt);
             // Get current level names
             let curLevel = wtconfig.get(`ET.CustomLevels.${this.selMediaType}.level`);
             // Add new level to JSON

@@ -43,19 +43,14 @@
     </b-input-group>
 
     <b-input-group id="ChReturn" :prepend="$t('Modules.ET.Settings.ChReturn')" class="mt-3">
-      <b-tooltip target="ChReturn" triggers="hover">
-        {{ $t('Modules.ET.Settings.ChReturn_TT') }}
-      </b-tooltip>
       <b-form-input id="ChReturn" name="ChReturn" type="text" class="form-control" v-model="ChReturn" :disabled=false @change="setChReturn()"></b-form-input>
+      <WTNGtt tt="Modules.ET.Settings.ChReturn_TT" size="20px"></WTNGtt>
     </b-input-group>
 
     <b-input-group id="ChNewLine" :prepend="$t('Modules.ET.Settings.ChNewLine')" class="mt-3">
-      <b-tooltip target="ChNewLine" triggers="hover">
-        {{ $t('Modules.ET.Settings.ChNewLine_TT') }}
-      </b-tooltip>
       <b-form-input id="ChNewLine" name="ChNewLine" type="text" class="form-control" v-model="ChNewLine" :disabled=false @change="setChNewLine()"></b-form-input>
+      <WTNGtt tt="Modules.ET.Settings.ChNewLine_TT" size="20px"></WTNGtt>
     </b-input-group>
-
     <br>
     <!-- Buttons -->
     <div class="buttons">
@@ -73,26 +68,30 @@
 
 <script>
   import { wtconfig, wtutils, dialog } from '../../General/wtutils';
+  import WTNGtt from '../../General/wtng-tt.vue'
   import { time } from '../../General/time';
   import i18n from '../../../../i18n';
   //import router from '../../../../router'
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          ChNewLine: wtconfig.get('ET.ChNewLine', '<NEWLINE>'),
-          ChReturn: wtconfig.get('ET.ChReturn', '<RETURN>'),
-          ColumnSep: '',
-          NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),
-          TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),
-          ArraySep: wtconfig.get('ET.ArraySep'),
-          ExportDirVal: wtconfig.get('General.ExportPath', i18n.t('Common.ExportDir')),
-          LocalDateTime: wtconfig.get('General.DateTimeFormat'),
-          LocalDateTimeOptions: time.countries,
-          DateTimeOptions: [ i18n.t("Common.DateTime.Full"), i18n.t("Common.DateTime.Long"), i18n.t("Common.DateTime.Medium"), i18n.t("Common.DateTime.Short")],
-          DateOption: wtconfig.get('General.DateOption'),
-          TimeOption: wtconfig.get('General.TimeOption')
-        };
+    components: {
+            WTNGtt
+        },
+    data() {
+      return {
+        ChNewLine: wtconfig.get('ET.ChNewLine', '<NEWLINE>'),
+        ChReturn: wtconfig.get('ET.ChReturn', '<RETURN>'),
+        ColumnSep: '',
+        NotAvailIndicator: wtconfig.get('ET.NotAvail', 'N/A'),
+        TextQualifierCSV: wtconfig.get('ET.TextQualifierCSV', '"'),
+        ArraySep: wtconfig.get('ET.ArraySep'),
+        ExportDirVal: wtconfig.get('General.ExportPath', i18n.t('Common.ExportDir')),
+        LocalDateTime: wtconfig.get('General.DateTimeFormat'),
+        LocalDateTimeOptions: time.countries,
+        DateTimeOptions: [ i18n.t("Common.DateTime.Full"), i18n.t("Common.DateTime.Long"), i18n.t("Common.DateTime.Medium"), i18n.t("Common.DateTime.Short")],
+        DateOption: wtconfig.get('General.DateOption'),
+        TimeOption: wtconfig.get('General.TimeOption')
+      };
     },
     created() {
       log.info(`[SettingsExport.vue] (created) - SettingsExport Created`);

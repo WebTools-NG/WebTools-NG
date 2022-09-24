@@ -102,7 +102,7 @@ const getAllFiles = function( dirPath, orgDirPath, arrayOfFiles ) {
                     // Force forward slash
                     let lookupPath = path.join(dirPath, curFile).replaceAll('\\', '/');
                     log.silly(`[FindMedia.js] (getAllFiles) - Adding ${lookupPath.slice(orgDirPath.length + 1)}: ${ path.join(dirPath, curFile) }`);
-                    findMedia.filesFound[lookupPath.slice(orgDirPath.length + 1)] = path.join(dirPath, curFile);
+                    findMedia.filesFound[lookupPath.slice(orgDirPath.length + 1).normalize('NFC')] = path.join(dirPath, curFile);
                 }
             }
         })
@@ -140,6 +140,7 @@ const findMedia = new class FINDMEDIA {
         this.csvFile = '';                  // Filename for output file
         this.csvStream;                     // Output stream
         this.settingsIgnoreDirs;            // Directories to ignore
+        this.multiEpisodes = {};            // Json of MultiEpisodes, and their count
     }
 
     // Generate the filename for an export
@@ -342,18 +343,49 @@ const findMedia = new class FINDMEDIA {
                     var files = JSONPath({path: `$..Part[*].file`, json: metaData[parseInt(idxMetaData)]});
                     for (var idxFiles in files){
                         const pmsFile = files[idxFiles].replaceAll('\\', '/');
+                        log.silly(`[FindMedia.js] (scanPMSLibrary) - pmsFile is: ${pmsFile}`);
+                        log.silly(`[FindMedia.js] (scanPMSLibrary) - pmsFile compare: ${this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))}`);
                         if (this.validExt.includes(path.extname(pmsFile).toLowerCase().slice(1))){
                             const libPathFound = this.getLibPath( files[idxFiles] );
-                            var lookup = pmsFile.slice(libPathFound.length + 1);
+                            var lookup = pmsFile.slice(libPathFound.length + 1).normalize('NFC');
+                            log.silly(`[FindMedia.js] (scanPMSLibrary) - lookup is: ${lookup}`);
                             if ( Object.prototype.hasOwnProperty.call(this.filesFound, lookup)) {
-                                // We need to remove from detected files, since we found it
-                                delete this.filesFound[lookup];
+                                // Multi Episode ?
+                                var re = /(s[0-9]{0,}e[0-9]{0,})-(e[0-9]{0,})/gi;
+                                var r  = lookup.match(re);
+                                if (r){
+                                    // Already registred?
+                                    if( Object.prototype.hasOwnProperty.call( this.multiEpisodes, lookup)){
+                                        this.multiEpisodes[lookup] = this.multiEpisodes[lookup] - 1;
+                                        if ( this.multiEpisodes[lookup] == 0){
+                                            // We need to remove from detected files, since we found it
+                                            log.silly(`[FindMedia.js] (scanPMSLibrary) - Removing ${this.filesFound[lookup]}`);
+                                            delete this.filesFound[lookup];
+                                            delete this.multiEpisodes[lookup];
+                                        }
+                                    } else {
+                                        // Add to registration
+                                        re = /(e[0-9]{0,})/i;
+                                        var firstEp = r[0].match(re);
+                                        re = /(-e[0-9]{0,})/i;
+                                        var lastEp = r[0].match(re);
+                                        var amount = parseInt(lastEp[0].slice(2)) - parseInt(firstEp[0].slice(1), 10);
+                                        log.silly(`[FindMedia.js] (scanPMSLibrary) - Registring MultiEpisode ${lookup} with amount ${amount}`);
+                                        this.multiEpisodes[lookup] = amount;
+                                    }
+                                } else {
+                                    // We need to remove from detected files, since we found it
+                                    log.silly(`[FindMedia.js] (scanPMSLibrary) - Removing ${this.filesFound[lookup]}`);
+                                    delete this.filesFound[lookup];
+                                }
                             }
                             else {
                                 // Not found, so only in PMS
                                 let entry = {}
                                 entry['title'] = title;
                                 entry['file'] = files[idxFiles]
+                                log.silly(`[FindMedia.js] (scanPMSLibrary) - Not found, so only in PMS. We add ${JSON.stringify(entry)}`);
+                                log.silly(`[FindMedia.js] (scanPMSLibrary) - filesFound are: ${JSON.stringify(this.filesFound)}`);
                                 this.libFiles.push(entry);
                             }
                         }

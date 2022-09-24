@@ -20,14 +20,13 @@
     <br>
   <div>
     <div class="d-flex align-items-center">    <!-- Select Lib -->
-      <b-form-group id="SelLibGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0">
-        <b-tooltip target="SelLibGroup" triggers="hover">
-          {{ $t('Modules.PMS.FindMedia.TTSelectLibrary') }}
-        </b-tooltip>
+      <b-form-group>
+        <WTNGttlabel tt="Modules.PMS.FindMedia.TTSelectLibrary" label="Modules.ET.optExpType.lblSelectSelection" />
         <b-form-select
           v-model="selLib"
           id="selLib"
           :options="selLibOptions"
+          style="width: auto"
           name="selLib">
         </b-form-select>
       </b-form-group>
@@ -55,20 +54,18 @@
 
 <script>
   import i18n from '../../../../i18n';
-  //import store from '../../../store';
   import { dialog } from '../../General/wtutils';
+  import WTNGttlabel from '../../General/wtng-ttlabel.vue'
   import { pms } from '../../General/pms';
   import { findMedia } from './scripts/FindMedia.js';
   import statusDiv from '../../General/status.vue';
   import { status } from '../../General/status';
 
-
-  i18n
-
   const log = require("electron-log");
   export default {
     components: {
-      statusDiv
+      statusDiv,
+      WTNGttlabel
     },
     data() {
       return {

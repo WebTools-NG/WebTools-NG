@@ -9,16 +9,12 @@
     <b-link id="general" :to="{ path: '/settings/export', query: { return: 'exportsettings' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
     <br>
     <b-input-group id="PosterGrp" :prepend="$t('Modules.ET.Settings.Posters_Dimensions')" class="mt-3">
-        <b-tooltip target="PosterGrp" triggers="hover">
-            {{ $t('Modules.ET.Settings.Posters_Dimensions_TT') }}
-        </b-tooltip>
-        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=false @change="setPosters_Dimensions()"></b-form-input>
+        <b-form-input id="PosterDim" name="PosterDim" type="text" class="form-control" v-model="PosterDim" :disabled=PosterDimDisabled @change="setPosters_Dimensions()"></b-form-input>
+        <WTNGtt tt="Modules.ET.Settings.Posters_Dimensions_TT" size="20px"></WTNGtt>
     </b-input-group>
     <b-input-group id="ArtGrp" :prepend="$t('Modules.ET.Settings.Art_Dimensions')" class="mt-3">
-        <b-tooltip target="ArtGrp" triggers="hover">
-            {{ $t('Modules.ET.Settings.Art_Dimensions_TT') }}
-        </b-tooltip>
-        <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=false @change="setArt_Dimensions()"></b-form-input>
+        <b-form-input id="ArtDim" name="ArtDim" type="text" class="form-control" v-model="ArtDim" :disabled=ArtDimDisabled @change="setArt_Dimensions()"></b-form-input>
+        <WTNGtt tt="Modules.ET.Settings.Art_Dimensions_TT" size="20px"></WTNGtt>
     </b-input-group>
     <b-form-group id="b-form-group">
     <b-form-checkbox-group
@@ -28,16 +24,17 @@
         @change.native="filterTable">
     </b-form-checkbox-group>
     </b-form-group>
-    <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0" v-b-tooltip.hover="$t('Modules.ET.Settings.ttMoviesUseId')">
-            <b-form-select
-                class="form-control"
-                v-model="SelectedMoviesID"
-                id="SelectedMoviesID"
-                :options="SelectedMoviesIDOptions"
-                @change="SelectedMoviesIDChanged"
-                style="width: 50%"
-                name="SugMovieID">
-            </b-form-select>
+    <b-form-group id="etSugMovieID" v-bind:label="$t('Modules.ET.Settings.MoviesUseId')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-form-select
+            class="form-control"
+            v-model="SelectedMoviesID"
+            id="SelectedMoviesID"
+            :options="SelectedMoviesIDOptions"
+            @change="SelectedMoviesIDChanged"
+            style="width: 50%"
+            name="SugMovieID">
+        </b-form-select>
+        <WTNGtt tt="Modules.ET.Settings.ttMoviesUseId" size="20px"></WTNGtt>
     </b-form-group>
     <!-- Buttons -->
     <div class="buttons">
@@ -53,10 +50,14 @@
 
 <script>
     const log = require("electron-log");
-    import {wtutils, wtconfig, dialog} from '../../General/wtutils'
+    import {wtutils, wtconfig, dialog} from '../../General/wtutils';
+    import WTNGtt from '../../General/wtng-tt.vue'
     log, wtutils, wtconfig, dialog
     import i18n from '../../../../i18n'
     export default {
+        components: {
+            WTNGtt
+        },
         created() {
             this.getDefaults();
             // alert('For this version, export to XLSX is currently disabled');
@@ -64,10 +65,14 @@
         },
         data() {
             return {
+                PosterDimDisabled: false,
+                ArtDimDisabled: false,
                 PosterDim: wtconfig.get('ET.Posters_Dimensions', '75*75'),
                 ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
                 cbSelected: [],
                 cbOptions: [
+                    { text: i18n.t('Modules.ET.Settings.ArtPostersOrigen'), value: 'ArtPostersOrigen' },
+                    { text: i18n.t('Modules.ET.Settings.ExportPostersArtsTree'), value: 'ExportPostersArtsTree' },
                     { text: i18n.t('Modules.ET.Settings.ExportToCSV'), value: 'ExpCSV' },
                     { text: i18n.t('Modules.ET.Settings.ExportToExcel'), value: 'ExpXLSX', disabled: true },
                     { text: i18n.t('Modules.ET.Settings.OrgTitleNull'), value: 'OrgTitleNull' },
@@ -75,7 +80,8 @@
                     { text: i18n.t('Modules.ET.Settings.suggestedFileNoExtra'), value: 'suggestedFileNoExtra' },
                     { text: i18n.t('Modules.ET.Settings.suggestedUseOrigenTitle'), value: 'suggestedUseOrigenTitle' },
                     { text: i18n.t('Modules.ET.Settings.NoTimeStamp'), value: 'NoTimeStamp' },
-                    { text: i18n.t('Modules.ET.Settings.NoItemRange'), value: 'NoItemRange' }
+                    { text: i18n.t('Modules.ET.Settings.NoItemRange'), value: 'NoItemRange' },
+                    { text: i18n.t('Modules.ET.Settings.FindMissingNoSpecials'), value: 'noSpecials' }
                 ],
                 SelectedMoviesIDOptions: ['imdb', 'tmdb'],
                 SelectedMoviesID: '',
@@ -92,12 +98,14 @@
                 dialog.ShowMsg( i18n.t("Modules.ET.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), 'For this version, export to XLSX is currently disabled', 'info');
             },
             getDefaults(){
-                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange"];
+                const cbItems = ["ExpCSV","ExpXLSX", "OrgTitleNull", "SortTitleNull", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen", "ExportPostersArtsTree", "noSpecials"];
                 for(let i = 0; i < cbItems.length; i++){
                     if (wtconfig.get("ET." + cbItems[i], false)){
                         this.cbSelected.push(cbItems[i]);
                     }
                 }
+                this.PosterDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
+                this.ArtDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
                 this.SelectedMoviesID = wtconfig.get("ET.SelectedMoviesID", "imdb");
             },
             SelectedMoviesIDChanged(){
@@ -105,9 +113,11 @@
             },
             filterTable(){
                 this.$nextTick(()=>{console.log(this.cbSelected);})
-                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange"]){
+                for( var cbItem of ["ExpCSV","ExpXLSX","OrgTitleNull", "SortTitleNull", "AutoXLSCol", "AutoXLSRow", "suggestedFileNoExtra", "suggestedUseOrigenTitle", "NoTimeStamp", "NoItemRange", "ArtPostersOrigen", "ExportPostersArtsTree", "noSpecials"]){
                     wtconfig.set("ET." + cbItem, (this.cbSelected.includes(cbItem)))
                 }
+                this.PosterDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
+                this.ArtDimDisabled = this.cbSelected.includes('ArtPostersOrigen');
             },
             setPosters_Dimensions: function(){
                 wtconfig.set('ET.Posters_Dimensions', this.PosterDim);
@@ -125,6 +135,12 @@
     }
     #b-form-group{
         margin-top: 20px;
+    }
+    #qmark2222{
+        margin-left:10px;
+    }
+    i.ttqmark{
+        margin-left:10px;
     }
 
 </style>

@@ -1,9 +1,8 @@
 import axios from 'axios';
-
-
+import { wtutils } from '../../components/modules/General/wtutils'
 
 const baseUrl = 'https://api.poeditor.com/v2/'
-const api_token = '5166c4294ff7fb3a82cbdc82958e850e';
+const api_token = wtutils.envVarLocal( 'Key_poeditor' );
 const id = '342617';
 
 let requestBody = {

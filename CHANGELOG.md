@@ -1,6 +1,32 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V1.0.1 ( Not released yet )
+## V1.1.2 ( 20220925 )
+
+**Note**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
+**Changes**:
+
+* [#598 Refactor tvdb rutines](https://github.com/WebTools-NG/WebTools-NG/issues/598) (Internal)
+* [#597 Add PMS Season/EP Count to FindMissing](https://github.com/WebTools-NG/WebTools-NG/issues/597) (Enhancement)
+* [#603 Find Missing Episodes Reorder columns](https://github.com/WebTools-NG/WebTools-NG/issues/603) (Enhancement)
+* [#596 Find missing episodes specials](https://github.com/WebTools-NG/WebTools-NG/issues/596) (Enhancement)
+* [#607 Find Missing Episodes and episodes in the future](https://github.com/WebTools-NG/WebTools-NG/issues/607) (Enhancement)
+
+## V1.1.1 ( 20220917 )
+
+**Note**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
+**Changes**:
+
+* [#573 Add tvdb to find missing episodes](https://github.com/WebTools-NG/WebTools-NG/issues/573) (Enhancement)
+
+## V1.1.0 ( 20220913 )
 
 **Note**: In this version, the following is disabled:
 
@@ -10,6 +36,18 @@
 **Changes**:
 
 * [#547 Add link to Library Map on FM Settings page](https://github.com/WebTools-NG/WebTools-NG/issues/547) (Enhancement)
+* [#552 Export posters and art in original size](https://github.com/WebTools-NG/WebTools-NG/issues/552) (Enhancement)
+* [#550 Export posters for Seasons and Shows](https://github.com/WebTools-NG/WebTools-NG/issues/550) (Enhancement)
+* [#551 Exporting posters and Arts into tree](https://github.com/WebTools-NG/WebTools-NG/issues/551) (Enhancement)
+* [#553 Request Tooltips be replaced with Info or ? icons](https://github.com/WebTools-NG/WebTools-NG/issues/553) (Enhancement)
+* [#561 Find episodes I miss in my library](https://github.com/WebTools-NG/WebTools-NG/issues/561) (Enhancement)
+* [#554 Find Media and extended characters](https://github.com/WebTools-NG/WebTools-NG/issues/554) (Bug)
+* [#570 Find Media and Multi Episodes](https://github.com/WebTools-NG/WebTools-NG/issues/570) (Bug)
+* Added credits to tmdb.org for allowing us to use their API for free (Internal)
+* Added credits to thetvdb.com for allowing us to use their API for free (Internal)
+* [#574 Make secrets work on both Github and local](https://github.com/WebTools-NG/WebTools-NG/issues/574) (Internal)
+* [#583 Update About screen to look better](https://github.com/WebTools-NG/WebTools-NG/issues/583) (Enhancement)
+* [#586 Export Episodes containing Export Season Posters fails to proceed](https://github.com/WebTools-NG/WebTools-NG/issues/586) (Bug)
 
 ## V1.0.0 First Official Release (20220724)
 

@@ -200,38 +200,18 @@
     "Modules": {
         "Download":{
             "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights",
-            "SelSrv": "Select Server",
-            "TT-Server": "Select the server to download from. If a server can't be selected, you have not been granted download rights from it",
-            "ShowQueue": "Show Queue",
-            "Disabled": "Disabled",
-            "mediaInfo": {
-                "mediaInfoTitle": "Media Info",
-                "title": "Title",
-                "file": "Source File",
-                "type": "Type",
-                "status": "Status",
-                "serverID": "Source Server Id",
-                "serverName": "Source Server Name",
-                "libName": "Source Library Name",
-                "sourceUri": "Source Uri",
-                "targetDir": "Target Dir",
-                "size": "Size",
-                "targetFile": "Target File"
-            },
-            "Queue":{
-                "Name": "Download Queue",
-                "Description": "Here you see the items in the download queue, as well as start/stop the queue",
-                "btnStartQueue": "Start Queue",
-                "btnStopQueue": "Stop Queue"
-            }
-
+            "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights"
         },
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
+            "ExportPostersArts": "Posters and Art",
+            "ExportPostersArtsTree": "tree",
+            "ExportPostersArtsFlat": "flat",
             "ErrorServer": "No server",
             "Settings": {
+                "ArtPostersOrigen": "Export Art and Posters in original size",
+                "ExportPostersArtsTree": "Export Art and Posters in a file tree",
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
                 "ArraySep": "Delimiter for multiple info in same field",
@@ -263,7 +243,8 @@
                 "Note": "Note: * Click here for general settings regarding export *",
                 "Return": "Return to @:Modules.ET.Name",
                 "NoTimeStamp": "Don't add a timestamp to export file name",
-                "NoItemRange": "Don't add item range to export file name"
+                "NoItemRange": "Don't add item range to export file name",
+                "FindMissingNoSpecials": "Ignore specials in 'Find missing episodes'"
             },
             "LevelInfo": "Export level determines which data are going to be exported.",
             "SelectLevel": "Select level",
@@ -385,10 +366,17 @@
             "DevCPSO": "Casper (aka CPSO), a Plex community member (CPSO on GitHub)",
             "TranslationBetaTestersTitle": "Translators and Beta Testers",
             "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
-            "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work! And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
             "NavTitle": "About Us",
             "WikiDevelopers": "Wiki was made by:",
-            "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)"
+            "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)",
+            "Credits": "Credits",
+            "API-Credit": "Huge thanks also goes to {0} for providing a beautiful API for free, since we are a non profit project.",
+            "API-SignUp": "Please consider signing up",
+            "API-SignupHere": "here",
+            "POE-Credit": "And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
+            "POE-SignUp": "You can help translating our work",
+            "Plex-Credit": "Many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work!",
+            "PMS-Download": "You can download Plex Media server"
         },
         "GlobalSettings": {
             "Title": "Global Settings",

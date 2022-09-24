@@ -7,15 +7,14 @@
       <h5>{{ $t(`Modules.PMS.ViewState.Description`) }}</h5>
     </div>
     <div class="d-flex align-items-center">
-      <b-form-group id="ViewStateSelSourceUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selSourceUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelSourceUsrGroup">
-        <b-tooltip target="ViewStateSelSourceUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.ViewState.ttSelSourceUsr') }}
-        </b-tooltip>
+      <b-form-group name="ViewStateSelSourceUsrGroup">
+        <WTNGttlabel tt="Modules.PMS.ViewState.ttSelSourceUsr" label="Modules.PMS.ViewState.selSourceUsr" />
         <b-form-select
           v-model="selSrcUsr"
           id="selSrcUsr"
           :options="optselSrcUsr"
           @change="selSrcUsrChanged"
+          style="width: 75%"
           name="selSrcUsr">
         </b-form-select>
       </b-form-group>
@@ -24,15 +23,14 @@
       <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
     </div>
     <div class="d-flex align-items-center">
-      <b-form-group id="ViewStateSelTargetUsrGroup" v-bind:label="$t('Modules.PMS.ViewState.selTargetUsr')" label-size="lg" label-class="font-weight-bold pt-0" name="ViewStateSelTargetUsrGroup">
-        <b-tooltip target="ViewStateSelTargetUsrGroup" triggers="hover">
-          {{ $t('Modules.PMS.ViewState.ttSelTargetUsr') }}
-        </b-tooltip>
+      <b-form-group name="ViewStateSelTargetUsrGroup">
+        <WTNGttlabel tt="Modules.PMS.ViewState.ttSelTargetUsr" label="Modules.PMS.ViewState.selTargetUsr" />
         <b-form-select
           v-model="selTargetUsr"
           @change="selTargetUsrChanged"
           id="selTargetUsr"
           :options="optSelTargetUsr"
+          style="width: 75%"
           name="selTargetUsr">
         </b-form-select>
       </b-form-group>
@@ -74,13 +72,15 @@
   import i18n from '../../../../i18n';
   import store from '../../../../store';
   import { wtconfig } from '../../General/wtutils'
+  import WTNGttlabel from './../../General/wtng-ttlabel.vue'
   import { status } from '../../General/status';
   import { viewstate } from "./scripts/viewstate";
   import statusDiv from '../../General/status.vue'
   const log = require("electron-log");
   export default {
     components: {
-      statusDiv
+      statusDiv,
+      WTNGttlabel
     },
       data() {
         return {

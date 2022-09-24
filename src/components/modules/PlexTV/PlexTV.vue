@@ -9,17 +9,16 @@
     <b-link id="general" :to="{ path: '/settings/export', query: { return: 'plextv' } }">{{ $t("Modules.ET.Settings.Note") }} </b-link>
     <br>
     <div class="d-flex align-items-center">   <!-- Select User -->
-      <b-form-group id="plexTVUsers" v-bind:label="$t('Modules.PlexTV.SelUsr')" label-size="lg" label-class="font-weight-bold pt-0">
+      <b-form-group>
+        <WTNGttlabel tt="Modules.PlexTV.TT-User" label="Modules.PlexTV.SelUsr" />
         <div ref="libSpinner" id="libSpinner" :hidden="selUserWait">
           <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
         </div>
-        <b-tooltip target="plexTVUsers" triggers="hover">
-          {{ $t('Modules.PlexTV.TT-User') }}
-        </b-tooltip>
         <b-form-select
           v-model="selUser"
           id="selUser"
           :options="selUserOptions"
+          style="width: Auto"
           name="selLibrary">
         </b-form-select>
       </b-form-group>
@@ -64,24 +63,28 @@
   import { plextv } from "./scripts/plextv";
   import i18n from '../../../i18n';
   import { wtconfig } from '../General/wtutils';
+  import WTNGttlabel from '../General/wtng-ttlabel.vue';
 
   const log = require("electron-log");
   export default {
-      data() {
-        return {
-          selUserWait: false,
-          selUser: "",
-          selUserOptions: [],
-          selUserDetails: {},
-          usrID: "",
-          usrEmail: "",
-          usrName: "",
-          usrFriendlyName: "",
-          usrRestricted: "",
-          usrThumb: "",
-          usrHome: "",
-          usrStatus: ""
-        };
+    components: {
+            WTNGttlabel
+        },
+    data() {
+      return {
+        selUserWait: false,
+        selUser: "",
+        selUserOptions: [],
+        selUserDetails: {},
+        usrID: "",
+        usrEmail: "",
+        usrName: "",
+        usrFriendlyName: "",
+        usrRestricted: "",
+        usrThumb: "",
+        usrHome: "",
+        usrStatus: ""
+      };
   },
   async created() {
     log.info("PlexTV Created");

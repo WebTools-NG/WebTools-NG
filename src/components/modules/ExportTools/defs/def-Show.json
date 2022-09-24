@@ -71,6 +71,20 @@
                 "TVDB Language (Legacy)",
                 "Updated",
                 "Year"
+            ],
+            "findmissingEp": [
+                "Key",
+                "Title",
+                "Sort Season by",
+                "Link (Cloud)",
+                "Status (Cloud)",
+                "Episode Count (PMS)",
+                "Episode Count (Cloud)",
+                "Season Count (PMS)",
+                "Season Count (Cloud)",
+                "Seasons (PMS)",
+                "Seasons (Cloud)",
+                "Missing"
             ]
         }
     }

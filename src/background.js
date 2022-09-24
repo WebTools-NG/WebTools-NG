@@ -91,13 +91,11 @@ app.on('ready', async () => {
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
-
   }
   // Open system Dialog
   ipcMain.handle('dialog', (event, method, params) => {
     dialog[method](params);
   });
-
   Menu.setApplicationMenu(null)
   createWindow()
 })
@@ -130,6 +128,7 @@ ipcMain.on('downloadFile', function (event, data) {
   axios({
     method: 'GET',
     url: item,
+    headers: data.header,
     responseType: 'stream',
     httpsAgent: agent
   }).then((response) => {
