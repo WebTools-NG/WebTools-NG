@@ -254,7 +254,6 @@ const ptv = new class PTV {
             this.testCon(connections[idx]['uri'], header, clientIdentifier, connections[idx]['local']);
         }
         while (!this.address){
-            console.log('Ged 55', this.address)
             await wtutils.sleep(50)
         }
         return this.address
