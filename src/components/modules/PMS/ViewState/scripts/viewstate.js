@@ -28,7 +28,7 @@ const viewstate = new class ViewState {
         this.genRep = false;
         this.outFile = '',
         this.csvStream,
-        this.headers = '"library","ratingKey","title","viewCount","viewOffset"'
+        this.headers = '"Library","RatingKey","Title","View Count","View Offset","User Ratings"'
     }
 
     async setOwnerStatus( Usr, data ){
@@ -85,23 +85,34 @@ const viewstate = new class ViewState {
     }
 
     async bumpViewCount( media ){
-        const ratingKey = JSONPath({path: `$..ratingKey`, json: media});
-        const title = JSONPath({path: `$..title`, json: media});
-        const viewCount = JSONPath({path: `$..viewCount`, json: media});
-        const viewOffset = JSONPath({path: `$..viewOffset`, json: media});
-        const duration = JSONPath({path: `$..duration`, json: media});
+        const ratingKey = media['ratingKey'];
+        const title = media['title'];
+        const viewCount = media['viewCount'];
+        const duration = media['duration'];
+        const viewOffset = media['viewOffset'];
+        let userRating;
+        if ( media['userRating'] ) {
+            userRating = media['userRating']
+        } else {
+            userRating = wtconfig.get('ET.NotAvail', 'N/A');
+        }
         if ( this.genRep ){
-            let watchTime = await time.convertMsToTime(viewOffset);
-            if ( watchTime === "00:00:00"){
-                watchTime = "";
+            let watchTime;
+            if (viewOffset) {
+                watchTime = await time.convertMsToTime(viewOffset);
+                if ( watchTime === "00:00:00"){
+                    watchTime = "";
+                }
+                else {
+                    watchTime = `"${watchTime}"`
+                }
+            } else {
+                watchTime = wtconfig.get('ET.NotAvail', 'N/A');
             }
-            else {
-                watchTime = `"${watchTime}"`
-            }
-            const row = `"${this.currentLib}",${ratingKey},"${title}",${viewCount},${watchTime}\n`;
+            const row = `"${this.currentLib}",${ratingKey},"${title}",${viewCount},${watchTime},${userRating}\n`;
             this.csvStream.write( row );
         }
-        log.info(`Bumbing viewcount to ${viewCount} for media ${ratingKey}`);
+        log.info(`Bumbing viewcount to ${viewCount} for media ${ratingKey} with a title of: "${title}"`);
         let url = `${store.getters.getSelectedServerAddress}/:/scrobble?identifier=com.plexapp.plugins.library&key=${ratingKey}`;
         // We need to bump viewcount for target user same amount as for SrcUsr
         let header = wtutils.PMSHeader;
@@ -144,6 +155,28 @@ const viewstate = new class ViewState {
                 }
             });
         }
+        // Do we need to also set a user rating?
+        if ( userRating )
+        {
+            if ( userRating != wtconfig.get('ET.NotAvail', 'N/A') ){
+                url = `${store.getters.getSelectedServerAddress}/:/rate?identifier=com.plexapp.plugins.library&key=${ratingKey}&rating=${userRating}`;
+                await axios({
+                    method: 'put',
+                    url: url,
+                    headers: header
+                })
+                    .catch(function (error) {
+                    if (error.response) {
+                        log.error('[viewState.js] (bumpViewCount) viewOffset: ' + JSON.stringify(error.response.data));
+                        alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
+                    } else if (error.request) {
+                        log.error('[viewState.js] (bumpViewCount) viewOffset error: ' + error.request);
+                    } else {
+                        log.error('[viewState.js] (bumpViewCount) viewOffset last error: ' + error.message);
+                    }
+                });
+            }
+        }
         status.updateStatusMsg(status.RevMsgType.TimeElapsed, await time.getTimeElapsed());
     }
 
@@ -180,6 +213,7 @@ const viewstate = new class ViewState {
                         listProcessDetails['viewCount'] = JSONPath({path: `$..viewCount`, json: medias[media]})[0];
                         listProcessDetails['duration'] = JSONPath({path: `$..duration`, json: medias[media]})[0];
                         listProcessDetails['ratingKey'] = JSONPath({path: `$..ratingKey`, json: medias[media]})[0];
+                        listProcessDetails['userRating'] = JSONPath({path: `$..userRating`, json: medias[media]})[0];
                         listProcess[JSONPath({path: `$..ratingKey`, json: medias[media]})[0]] = listProcessDetails;
                         index += 1;
                         this.bumpViewCount( listProcessDetails );
