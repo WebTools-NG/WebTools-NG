@@ -240,6 +240,23 @@ const time = new class Time {
           seconds,
         )}`;
     }
+
+    async convertMsToDateTime(milliseconds) {
+        // Create a new JavaScript Date object based on the timestamp
+        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+        let date, year, month, day, hours, minutes, seconds, result;
+        date = new Date(milliseconds * 1000);
+        year = date.getFullYear().toString();
+        month = await this.padTo2Digits(date.getMonth().toString());
+        day = await this.padTo2Digits(date.getDate().toString());
+        hours = await this.padTo2Digits(date.getHours());
+        minutes = await this.padTo2Digits(date.getMinutes());
+        seconds = await this.padTo2Digits(date.getSeconds());
+        result = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        return result;
+    }
+
+
 }
 
 export { time };

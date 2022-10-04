@@ -44,6 +44,27 @@
 		// For ET, show levels starting with the word 'dev'
 		"showDevLevels": true,
 		// Use your token if you have enabled 2FA instead of the password
-		"X-Plex-Token": "Your Token"
+		"X-Plex-Token": "Your Token",
+		// Below will prefill ET module
+		"ET": {
+			"Prefill": true,
+			"Active": "1",
+			"Settings": {
+				"1": {
+					"Server": "WinTst2",
+					"TypeName": "Movie",
+					"SubTypeName": "Movie",
+					"LibName": "Test local Movies",
+					"Level": "All"
+				},
+				"2": {
+					"Server": "WinTst2",
+					"TypeName": "Show",
+					"SubTypeName": "Show",
+					"LibName": "test TV Shows local drive",
+					"Level": "Find Missing Episodes"
+				}
+			}
+		}
 	}
 }

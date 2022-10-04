@@ -143,28 +143,28 @@
         optExpTypeMain: [
           {
             "text": i18n.t('Modules.ET.optExpType.MainMovie'),
-            "value": et.ETmediaType.Movie
+            "value": etHelper.ETmediaType.Movie
           },
           {
             "text": i18n.t('Modules.ET.optExpType.MainTV'),
-            "value": et.ETmediaType.Show
+            "value": etHelper.ETmediaType.Show
           },
           {
             "text": i18n.t('Modules.ET.optExpType.MainAudio'),
-            "value": et.ETmediaType.Artist
+            "value": etHelper.ETmediaType.Artist
           },
           {
             "text": i18n.t('Modules.ET.optExpType.MainPhoto'),
-            "value": et.ETmediaType.Photo,
+            "value": etHelper.ETmediaType.Photo,
             "disabled": true
           },
           {
             "text": i18n.t('Modules.ET.optExpType.MainPlaylist'),
-            "value": et.ETmediaType.Playlist
+            "value": etHelper.ETmediaType.Playlist
           },
           {
             "text": i18n.t('Modules.ET.optExpType.MainLibrary'),
-            "value": et.ETmediaType.Library
+            "value": etHelper.ETmediaType.Library
           }
         ],
         optExpTypeSec: [],
@@ -220,9 +220,10 @@
       this.selLibraryWait = false;
     },
   },
-  created() {
+  async created() {
     log.info("ET Created");
     this.serverSelected();
+    await this.prefill();
   },
   computed: {
     ETStatus: function(){
@@ -256,6 +257,37 @@
     },
   },
   methods: {
+    // Prefill during Dev
+    async prefill(){
+        if ( wtconfig.get("Developer.ET.Prefill")) {
+          /* We should req. the following in the json under Developer.ET:
+          See docs/dev/Sample conf file...
+          */
+
+          log.debug(`[Export.vue] (created) DEV Mode on: We prefill ET screen`);
+          const active = wtconfig.get("Developer.ET.Active");
+          log.debug(`[Export.vue] (created) Active fill profile is: ${active}`);
+          this.selMediaType = etHelper.ETmediaType[wtconfig.get(`Developer.ET.Settings.${active}.TypeName`)];
+          etHelper.Settings.fileMajor = wtconfig.get(`Developer.ET.Settings.${active}.TypeName`);
+          this.selExpTypeMain = this.selMediaType;
+          // Populate sec types
+          this.optExpTypeSec = et.selSecOption[this.selExpTypeMain];
+          etHelper.Settings.fileMinor = wtconfig.get(`Developer.ET.Settings.${active}.SubTypeName`);
+          etHelper.ETmediaType[this.selMediaType];
+          // Resolve libs and levels
+          await this.getLibs();
+          this.selExpTypeSec = etHelper.ETmediaType[wtconfig.get(`Developer.ET.Settings.${active}.SubTypeName`)];
+          await this.getLevels();
+          this.selLibrary = wtconfig.get(`Developer.ET.Settings.${active}.LibName`);
+          etHelper.Settings.LibName = this.selLibrary;
+          // Get Library key
+          this.selLibrary = this.selLibraryOptions.filter(it => it.text === this.selLibrary)[0]['value'];
+          etHelper.Settings.selLibKey = this.selLibrary;
+          // Levels
+          this.selLevel = this.exportLevels.filter(it => it.text === wtconfig.get(`Developer.ET.Settings.${active}.Level`))[0]['value'];
+          etHelper.Settings.levelName = this.selLevel;
+        }
+    },
     // Show Settings
     showSettings(){
       this.$router.push({ name: 'exportsettings' })
@@ -375,7 +407,7 @@
         default:
           reqType = this.selMediaType
       }
-      reqType = (et.RevETmediaType[reqType]).toString().toLowerCase();
+      reqType = (etHelper.RevETmediaType[reqType]).toString().toLowerCase();
       this.selLibrary = "";
       await this.$store.dispatch('fetchSections')
       const sections = await this.$store.getters.getPmsSections;
@@ -431,9 +463,6 @@
     selExpTypeSecChanged: async function(){
       // Triggers when exp type is changed
       log.verbose(`Secondary export type selected as: ${arguments[0]}`);
-      etHelper.Settings.fileMinor = this.optExpTypeSec.filter(it => it.value === arguments[0])[0]['text'];
-      etHelper.Settings.selType = arguments[0];
-      etHelper.Settings.libTypeSec = arguments[0];
       // Set selMediaType to the type we want, and has to handle exceptions
       switch(arguments[0]) {
         // Set type for episodes to shows

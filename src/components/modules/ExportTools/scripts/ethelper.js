@@ -539,6 +539,485 @@ const etHelper = new class ETHELPER {
         return hash
     }
 
+    async postProcessJSON( {name, val, title="", data} ){
+        log.debug(`[ethelper.js] (postProcessJSON) - Val is: ${JSON.stringify(val)}`);
+        log.debug(`[ethelper.js] (postProcessJSON) - name is: ${name}`);
+        log.debug(`[ethelper.js] (postProcessJSON) - title is: ${title}`);
+        //log.silly(`[ethelper.js] (postProcessJSON) - data is: ${JSON.stringify(data)}`);
+        let retArray = [];
+        let valArray;
+        let guidArr;
+        let x, retVal, start, strStart, result, end;
+        try {
+            switch ( String(name) ){
+                case "Episode Count (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Episode Count (Cloud)']){
+                        retVal = this.Settings.showInfo['Episode Count (Cloud)'];
+                    }
+                    break;
+                case "Episode Count (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Episode Count (PMS)']){
+                        retVal = this.Settings.showInfo['Episode Count (PMS)'];
+                    }
+                    break;
+                case "IMDB ID":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("imdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    retVal = result;
+                    break;
+                case "IMDB ID (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    // Cut off start of string
+                    start = val.indexOf("tt");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    result = strStart.split('?')[0]
+                    retVal = result;
+                    break;
+                case "IMDB Language (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    if (val.indexOf("imdb://") == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    retVal = val.split('=')[1];
+                    if (retVal == 'undefined')
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                    }
+                    break;
+                case "IMDB Link":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    start = val.indexOf("imdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    end = strStart.indexOf(wtconfig.get('ET.ArraySep'));
+                    result = ''
+                    if (end == -1)
+                    { result = strStart.substring(7) }
+                    else
+                    { result = strStart.substring(7, end) }
+                    result = 'https://www.imdb.com/title/' + result;
+                    retVal = result;
+                    break;
+                case "IMDB Link (Legacy)":
+                if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                if (val.indexOf("imdb://") == -1)
+                {
+                    retVal = wtconfig.get('ET.NotAvail');
+                }
+                else
+                {
+                    retVal = 'https://imdb.com/' + val.split('//')[1];
+                    retVal = retVal.split('?')[0];
+                }
+                break;
+                case "Link (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Link (Cloud)']){
+                        retVal = this.Settings.showInfo['Link (Cloud)'];
+                    }
+                    break;
+                case "Missing":
+                    console.log('Ged 44-3 Hit Missing')
+                    retVal = i18n.t('Common.Ok');
+                    if ( this.Settings.showInfo['Episode Count (Cloud)'] != this.Settings.showInfo['Episode Count (PMS)']){
+                        retVal = "Episode mismatch"
+                    }
+                    if (!this.Settings.showInfo['Episode Count (Cloud)']){
+                        retVal = "Guid problem found, please refresh metadata, or sort order not avail at cloud provider"
+                    }
+                    break;
+                case "Original Title":
+                    if (wtconfig.get('ET.OrgTitleNull'))
+                    {
+                        log.debug(`[ethelper.js] (postProcess) We need to override Original Titel, if not avail`);
+                        log.debug(`[ethelper.js] (postProcess) Got Original title as: ${val}`);
+                        log.debug(`[ethelper.js] (postProcess) Alternative might be title as: ${title}`);
+                        // Override with title if not found
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = title;
+                        }
+                        else { retVal = val; }
+                    }
+                    else
+                    {
+                        retVal = val;
+                    }
+                    log.debug(`[ethelper.js] (postProcess) Original Title returned as: ${retVal}`)
+                    break;
+                case "Part File":
+                    valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
+                    for (x=0; x<valArray.length; x++) {
+                        retArray.push(path.basename(valArray[x]));
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '))
+                    break;
+                case "Part File Path":
+                    valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
+                    for (x=0; x<valArray.length; x++) {
+                        retArray.push(path.dirname(valArray[x]));
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
+                    break;
+                case "Part Size":
+                    valArray = val.split(wtconfig.get('ET.ArraySep', ' * '));
+                    for (x=0; x<valArray.length; x++) {
+                        try{
+                            retArray.push(filesize(valArray[x]));
+                        }
+                        catch (error)
+                        {
+                            log.error(`Error getting Part Size was ${error} for ${valArray[x]}`);
+                        }
+                    }
+                    retVal = retArray.join(wtconfig.get('ET.ArraySep', ' * '));
+                    break;
+                case "PMS Media Path":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    var hashes = await this.getHash(data);
+                    var retHash = [];
+                    hashes.forEach(hash => {
+                        retHash.push(path.join('Media', 'localhost', hash[0], hash.slice(1) + '.bundle'));
+                        });
+                    retVal = retHash.join(wtconfig.get('ET.ArraySep', ' * '));
+                    break;
+                case "PMS Metadata Path":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    var libTypeName;
+                    switch ( String(this.RevETmediaType[this.Settings.libTypeSec]) ){
+                        case "Movie":
+                            libTypeName = 'Movies';
+                            break;
+                        case "Show":
+                            libTypeName = 'TV Shows';
+                            break;
+                        case "Episode":
+                            libTypeName = 'TV Shows';
+                            // We need another guid sadly
+                            val = JSONPath({path: '$..grandparentGuid', json: data})[0];
+                            break;
+                        case "Album":
+                            libTypeName = 'Albums';
+                            break;
+                        case "Artist":
+                            libTypeName = 'Artists';
+                            break;
+                    }
+                    var crypto = require('crypto');
+                    var shasum = crypto.createHash('sha1');
+                    shasum.update(val);
+                    var sha1 = shasum.digest('hex');
+                    //var path = require('path');
+                    retVal = path.join('Metadata', libTypeName, sha1[0], sha1.slice(1) + '.bundle');
+                    break;
+                case "Season Count (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Season Count (Cloud)']){
+                        retVal = this.Settings.showInfo['Season Count (Cloud)'];
+                    }
+                    break;
+                case "Season Count (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Season Count (PMS)']){
+                        retVal = this.Settings.showInfo['Season Count (PMS)'];
+                    }
+                    break;
+                case "Seasons (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Seasons (Cloud)']){
+                        retVal = JSON.stringify(this.Settings.showInfo['Seasons (Cloud)']);
+                    }
+                    break;
+                case "Seasons (PMS)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Seasons (PMS)']){
+                        retVal = JSON.stringify(this.Settings.showInfo['Seasons (PMS)']);
+                    }
+                    break;
+                case "Show Prefs Delete episodes after playing":
+                    switch (val){
+                        case "0":
+                            retVal = "Never";
+                            break;
+                        case "1":
+                            retVal = "After a day";
+                            break;
+                        case "7":
+                            retVal = "After a week";
+                            break;
+                        case "100":
+                            retVal = "On next refresh";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Episode ordering":
+                    switch (val){
+                        case wtconfig.get('ET.NotAvail'):
+                            retVal = "Library default";
+                            break;
+                        case "tmdbAiring":
+                            retVal = "The Movie Database (Aired)";
+                            break;
+                        case "aired":
+                            retVal = "TheTVDB (Aired)";
+                            break;
+                        case "dvd":
+                            retVal = "TheTVDB (DVD)";
+                            break;
+                        case "absolute":
+                            retVal = "TheTVDB (Absolute)";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Episode sorting":
+                    switch (val){
+                        case "-1":
+                            retVal = "Library default";
+                            break;
+                        case "0":
+                            retVal = "Oldest first";
+                            break;
+                        case "1":
+                            retVal = "Newest first";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Keep":
+                    switch (val){
+                        case "0":
+                            retVal = "All episodes";
+                            break;
+                        case "5":
+                            retVal = "5 latest episodes";
+                            break;
+                        case "3":
+                            retVal = "3 latest episodes";
+                            break;
+                        case "1":
+                            retVal = "Latest episode";
+                            break;
+                        case "-3":
+                            retVal = "Episodes added in the past 3 days";
+                            break;
+                        case "-7":
+                            retVal = "Episodes added in the past 7 days";
+                            break;
+                        case "-30":
+                            retVal = "Episodes added in the past 30 days";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Metadata language":
+                    retVal = this.MetadataLang[val];
+                    break;
+                case "Show Prefs Seasons":
+                    switch (val){
+                        case "-1":
+                            retVal = "Library default";
+                            break;
+                        case "0":
+                            retVal = "Show";
+                            break;
+                        case "1":
+                            retVal = "Hide";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Show Prefs Use original title":
+                    switch (val){
+                        case "-1":
+                            retVal = "Library default";
+                            break;
+                        case "0":
+                            retVal = "No";
+                            break;
+                        case "1":
+                            retVal = "Yes";
+                            break;
+                        default:
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                    }
+                    break;
+                case "Sort Season by":
+                    retVal = this.Settings.showInfo['showOrdering'];
+                    break;
+                case "Sort title":
+                    if (wtconfig.get('ET.SortTitleNull'))
+                    {
+                        // Override with title if not found
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = title;
+                        }
+                        else {
+                            retVal = val;
+                        }
+                    }
+                    else
+                    {
+                        if (val == 'undefined')
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        else {
+                            retVal = val;
+                        }
+                    }
+                    break;
+                case "Status (Cloud)":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    if ( this.Settings.showInfo['Status (Cloud)']){
+                        retVal = this.Settings.showInfo['Status (Cloud)'];
+                    }
+                    break;
+                case "Suggested File Name":
+                    retVal = await this.getSuggestedFileName( {data: data} );
+                    break;
+                case "Suggested Folder Name":
+                    retVal = await this.getSuggestedFolderName( {data: data} );
+                    break;
+                case "TMDB ID":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tmdb://") )
+                        {
+                            retVal = item.substring(7);
+                        }
+                    }
+                    break;
+                case "TMDB Link":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tmdb://") )
+                        {
+                            const mediaType = JSONPath({path: '$.type', json: data})[0];
+                            if ( mediaType == 'movie'){
+                                retVal = 'https://www.themoviedb.org/movie/' + item.substring(7);
+                            }
+                            else {
+                                retVal = 'https://www.themoviedb.org/tv/' + item.substring(7);
+                            }
+                        }
+                    }
+                    break;
+                case "TVDB ID":
+                    retVal = wtconfig.get('ET.NotAvail');
+                    guidArr = val.split(wtconfig.get('ET.ArraySep'));
+                    for(const item of guidArr) {
+                        if ( item.startsWith("tvdb://") )
+                        {
+                            retVal = item.substring(7);
+                        }
+                    }
+                    break;
+                case "TVDB ID (Legacy)":
+                    if (val == wtconfig.get('ET.NotAvail'))
+                    {
+                        retVal = val;
+                        break;
+                    }
+                    // Cut off start of string
+                    start = val.indexOf("thetvdb://");
+                    if (start == -1)
+                    {
+                        retVal = wtconfig.get('ET.NotAvail');
+                        break;
+                    }
+                    strStart = val.substring(start);
+                    result = strStart.split('?')[0]
+                    retVal = result;
+                    break;
+                case "TVDB Language (Legacy)":
+                        if (val == wtconfig.get('ET.NotAvail'))
+                        {
+                            retVal = val;
+                            break;
+                        }
+                        if (val.indexOf("tvdb://") == -1)
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                            break;
+                        }
+                        retVal = val.split('=')[1];
+                        if (retVal == 'undefined')
+                        {
+                            retVal = wtconfig.get('ET.NotAvail');
+                        }
+                        break;
+                default:
+                    log.error(`[ethelper.js] (postProcessJSON) no hit for: ${name}`)
+                    break;
+            }
+        } catch (error) {
+            retVal = 'ERROR'
+            log.error(`[ethelper.js] (postProcessJSON) - We had an error as: ${error} . So postProcess retVal set to ERROR`);
+        }
+        return await retVal;
+    }
+
     async postProcess( {name, val, title="", data} ){
         log.debug(`[ethelper.js] (postProcess) - Val is: ${JSON.stringify(val)}`);
         log.debug(`[ethelper.js] (postProcess) - name is: ${name}`);
@@ -1078,6 +1557,159 @@ const etHelper = new class ETHELPER {
         this.Settings.showInfo['Season Count (PMS)'] = seasonCount;
     }
 
+    async addRowToTmpJSON( { data }){
+        if ( this.Settings.levelName == 'Find Missing Episodes'){
+            this.Settings.showInfo = {};
+            let id, ids, attributename;
+            await this.getShowOrdering( { "ratingKey": data["ratingKey"] } );
+            if ( this.Settings.showInfo["showOrdering"] == "tmdbAiring" ){
+                // Special level, so we need to get info from tmdb
+                log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tmdb`);
+                ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data });
+                if ( ids.length != 1){
+                    this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                    log.error(`[ethelper.js] (addRowToTmp) - tmdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
+                } else {
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tmdb'))].id", json: data })).substring(7,);
+                    if ( id ){
+                        this.Settings.showInfo["Link (Cloud)"] = `https://www.themoviedb.org/tv/${id}`;
+                        const TMDBInfo = await tmdb.getTMDBShowInfo({tmdbId: id, title: JSONPath({ path: "$.title", json: data })});
+                        for( attributename in TMDBInfo){
+                            this.Settings.showInfo[attributename] = TMDBInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+                }
+                this.Settings.showInfo["showOrdering"] = "TMDB Airing";
+                this.Settings.showInfo["Status"] = this.Settings.showInfo["TMDBStatus"];
+            } else {
+                // Special level, so we need to get info from tvdb
+                log.info(`[ethelper.js] (addRowToTmp) - Level "Find Missing Episodes" selected, so we must contact tvdb`);
+                ids = JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data });
+                if ( ids.length != 1){
+                    this.Settings.showInfo["Link (Cloud)"] = "**** ERROR ****";
+                    log.error(`[ethelper.js] (addRowToTmp) - tvdb guid problem for ${JSONPath({ path: "$.title", json: data })}`);
+                } else {
+                    let order;
+                    switch ( this.Settings.showInfo["showOrdering"] ) {
+                        case "aired":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb aired selected for the show named ${title}`);
+                            order = 'official';
+                            this.Settings.showInfo["showOrdering"] = "TVDB Airing";
+                            break;
+                        case "dvd":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb dvd selected for the show named ${title}`);
+                            order = 'dvd';
+                            this.Settings.showInfo["showOrdering"] = "TVDB DVD";
+                            break;
+                        case "absolute":
+                            log.info(`[ethelper.js] (addRowToTmp) - tvdb absolute selected for the show named ${title}`);
+                            order = 'absolute';
+                            this.Settings.showInfo["showOrdering"] = "TVDB Absolute";
+                            break;
+                    }
+                    id = String(JSONPath({ path: "$.Guid[?(@.id.startsWith('tvdb'))].id", json: data })).substring(7,);
+                    // Get TVDB Access Token
+                    if (!this.Settings.tvdbBearer){
+                        this.Settings.tvdbBearer = await tvdb.login();
+                    }
+                    if ( id ){
+                        const showInfo = await tvdb.getTVDBShow( {tvdbId: id, bearer: this.Settings.tvdbBearer, title: JSONPath({ path: "$.title", json: data }), order: order} );
+                        for( attributename in showInfo){
+                            this.Settings.showInfo[attributename] = showInfo[attributename];
+                        }
+                    } else {
+                        const title = JSONPath({ path: "$.title", json: data });
+                        log.error(`[ethelper.js] (addRowToTmp) - No tmdb guid found for ${title}`);
+                    }
+                }
+            }
+        }
+        let rowEntryJSON;
+        try
+        {
+            const rowArray = [];
+            for (var x=0; x<this.Settings.fields.length; x++) {
+                const rowEntryJSON = {};
+                status.updateStatusMsg( status.RevMsgType.Items, i18n.t('Common.Status.Msg.ProcessItem_0_1', {count: this.Settings.count, total: this.Settings.endItem}));
+                var fieldDef = JSONPath({path: '$.fields.' + this.Settings.fields[x], json: defFields})[0];
+                rowEntryJSON["name"] = this.Settings.fields[x];
+                rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data})[0]);
+                rowEntryJSON["type"] = fieldDef["type"];
+                rowEntryJSON["subType"] = fieldDef["subtype"];
+                rowEntryJSON["subKey"] = fieldDef["subkey"];
+                rowEntryJSON["postProcess"] = fieldDef["postProcess"];
+                // Now we have our row, so we need to check, if it should be altered
+                let tmpValue, tmpArr;
+                switch(rowEntryJSON["type"]) {
+                    case "array":
+                        tmpValue = JSONPath({path: rowEntryJSON["subKey"], json: rowEntryJSON["value"]});
+                        tmpArr = [];
+                        switch(rowEntryJSON["subType"]) {
+                            case "string":
+                                for (const idx in tmpValue){
+                                    tmpArr.push(tmpValue[idx]);
+                                }
+                                break;
+                            case "time":
+                                for (const idx in tmpValue){
+                                    tmpArr.push(await time.convertMsToTime(tmpValue[idx]))
+                                }
+                                break;
+                            default:
+                                log.error(`[ethelper.js] (addRowToTmpJSON) NO ARRAY HIT: ${rowEntryJSON["name"]}`);
+                        }
+                        rowEntryJSON["value"] = tmpArr.join( wtconfig.get('ET.ArraySep', '*'));
+                        break;
+                    case "time":
+                        rowEntryJSON["value"] = await time.convertMsToTime(rowEntryJSON["value"]);
+                        break;
+                    case "datetime":
+                        rowEntryJSON["value"] = await time.convertMsToDateTime(rowEntryJSON["value"]);
+                        break;
+                }
+
+
+                if (fieldDef["postProcess"]){
+                    if ( rowEntryJSON["value"] ){
+                        console.log('Ged 7-3 Need to do post process')
+                        const title = JSONPath({path: String('$.title'), json: data})[0];
+                        log.silly(`[ethelper.js] (addRowToTmpJSON) DoPostProcess needed - Name is: ${rowEntryJSON["name"]} - Title is: ${title} - Val is: ${rowEntryJSON["value"]}`);
+                        rowEntryJSON["value"] = await this.postProcessJSON( {name: rowEntryJSON["name"], val: rowEntryJSON["value"], title: title, data: data} );
+                    }
+                }
+
+/*
+                switch(rowEntryJSON["type"]) {
+
+                    case "array-count":
+                        val = JSONPath({path: String(key), json: data}).length;
+                        break;
+                }
+
+                 */
+
+
+
+
+                // If no value, set to N/A
+                if (!rowEntryJSON["value"]){
+                    rowEntryJSON["value"] = wtconfig.get('ET.NotAvail', 'N/A');
+                }
+                rowArray.push(rowEntryJSON);
+            }
+            return rowArray;
+        }
+        catch (error)
+        {
+            log.error(`[ethelper.js] (addRowToTmpJSON) - We had an exception as ${error}`);
+            log.error(`[ethelper.js] (addRowToTmpJSON) - We managed to get this: ${JSON.stringify(rowEntryJSON)}`);
+            log.error(`[ethelper.js] (addRowToTmpJSON) - Lookup was: ${JSON.stringify(fieldDef)}`);
+        }
+    }
+
     async addRowToTmp( { data }) {
         if ( this.Settings.levelName == 'Find Missing Episodes'){
             this.Settings.showInfo = {};
@@ -1397,9 +2029,9 @@ const etHelper = new class ETHELPER {
                 if (parseInt(this.Settings.call, 10) === 1)
                 {
                     // Let's get the needed row
-                    tmpRow = await this.addRowToTmp({ data: chunckItems[item]});
+                    tmpRow = await this.addRowToTmpJSON({ data: chunckItems[item]});
                     if (this.Settings.csvFile){
-                        await csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
+                        await csv.addJSONRowToTmp({ stream: this.Settings.csvStream, item: tmpRow});
                     }
                     if (this.Settings.xlsxFile){
                         await excel.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
@@ -1411,9 +2043,9 @@ const etHelper = new class ETHELPER {
                     let key = JSONPath({path: '$.key', json: chunckItems[item]});
                     const details = await this.getItemDetails( { key: key });
                     // Let's get the needed row
-                    tmpRow = await this.addRowToTmp({ data: details});
+                    tmpRow = await this.addRowToTmpJSON({ data: details});
                     if (this.Settings.csvFile){
-                        await csv.addRowToTmp({ stream: this.Settings.csvStream, item: tmpRow})
+                        await csv.addJSONRowToTmp({ stream: this.Settings.csvStream, item: tmpRow});
                     }
                     if (this.Settings.xlsxFile){
                         console.log('Ged 12-4 We need to exp to XLSX')

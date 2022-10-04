@@ -144,6 +144,7 @@ const actions = {
     var url = `${wtutils.plexTVApi}v2/users/signin`;
     url = url + '?login=' + require('querystring').escape(payload.username);
     url = url + '&password=' + require('querystring').escape(payload.password);
+    log.info(`[plex.tv.js] (loginToPlex) - UserName is: ${payload.username}`)
     if ( payload.twoFA ){
       url = url + '&verificationCode=' + payload.twoFA
     }
