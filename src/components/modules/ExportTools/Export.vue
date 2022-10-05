@@ -130,7 +130,9 @@
   import statusDiv from '../General/status.vue';
   import { status } from '../General/status';
   import WTNGttlabel from '../General/wtng-ttlabel.vue'
+  //import { ptv } from '../General/plextv';
   const log = require("electron-log");
+  //const {JSONPath} = require('jsonpath-plus');
   export default {
     components: {
       statusDiv,
@@ -262,11 +264,28 @@
         if ( wtconfig.get("Developer.ET.Prefill")) {
           /* We should req. the following in the json under Developer.ET:
           See docs/dev/Sample conf file...
+          KNOWN ISSUE!!!!  Server selector in the header is not updated
           */
-
           log.debug(`[Export.vue] (created) DEV Mode on: We prefill ET screen`);
           const active = wtconfig.get("Developer.ET.Active");
           log.debug(`[Export.vue] (created) Active fill profile is: ${active}`);
+
+/* 
+          // Get servers avail
+          const PMSServers = this.$store.getters.getPlexServers;
+          // Get info for the one we want
+          const selectedServerInfo = JSONPath({path: `$..[?(@.name=="${wtconfig.get(`Developer.ET.Settings.${active}.Server`)}")]`, json: PMSServers})[0];
+          console.log('Ged 889', JSON.stringify(selectedServerInfo))
+          // Get address of the server
+          await ptv.checkServerConnect(selectedServerInfo);
+ 
+
+          // Update store with the info
+          //this.$store.commit("UPDATE_SELECTED_SERVER", JSONPath({path: `$..[?(@.name=="${wtconfig.get(`Developer.ET.Settings.${active}.Server`)}")]`, json: PMSServers})[0]);
+          this.$store.commit("UPDATE_SELECTED_SERVER", selectedServerInfo);
+*/
+
+          // Now populate the form
           this.selMediaType = etHelper.ETmediaType[wtconfig.get(`Developer.ET.Settings.${active}.TypeName`)];
           etHelper.Settings.fileMajor = wtconfig.get(`Developer.ET.Settings.${active}.TypeName`);
           this.selExpTypeMain = this.selMediaType;

@@ -662,7 +662,6 @@ const etHelper = new class ETHELPER {
                     }
                     break;
                 case "Missing":
-                    console.log('Ged 44-3 Hit Missing')
                     retVal = i18n.t('Common.Ok');
                     if ( this.Settings.showInfo['Episode Count (Cloud)'] != this.Settings.showInfo['Episode Count (PMS)']){
                         retVal = "Episode mismatch"
@@ -1637,7 +1636,8 @@ const etHelper = new class ETHELPER {
                 var fieldDef = JSONPath({path: '$.fields.' + this.Settings.fields[x], json: defFields})[0];
                 rowEntryJSON["name"] = this.Settings.fields[x];
                 rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data})[0]);
-                rowEntryJSON["type"] = fieldDef["type"];
+                //rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data}));
+                rowEntryJSON["type"] = String(fieldDef["type"]);
                 rowEntryJSON["subType"] = fieldDef["subtype"];
                 rowEntryJSON["subKey"] = fieldDef["subkey"];
                 rowEntryJSON["postProcess"] = fieldDef["postProcess"];
@@ -1645,12 +1645,12 @@ const etHelper = new class ETHELPER {
                 let tmpValue, tmpArr;
                 switch(rowEntryJSON["type"]) {
                     case "array":
-                        tmpValue = JSONPath({path: rowEntryJSON["subKey"], json: rowEntryJSON["value"]});
                         tmpArr = [];
                         switch(rowEntryJSON["subType"]) {
                             case "string":
-                                for (const idx in tmpValue){
-                                    tmpArr.push(tmpValue[idx]);
+                                rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data}));
+                                for (const idx in rowEntryJSON["value"]){
+                                    tmpArr.push(rowEntryJSON["value"][idx]);
                                 }
                                 break;
                             case "time":
@@ -1674,7 +1674,6 @@ const etHelper = new class ETHELPER {
 
                 if (fieldDef["postProcess"]){
                     if ( rowEntryJSON["value"] ){
-                        console.log('Ged 7-3 Need to do post process')
                         const title = JSONPath({path: String('$.title'), json: data})[0];
                         log.silly(`[ethelper.js] (addRowToTmpJSON) DoPostProcess needed - Name is: ${rowEntryJSON["name"]} - Title is: ${title} - Val is: ${rowEntryJSON["value"]}`);
                         rowEntryJSON["value"] = await this.postProcessJSON( {name: rowEntryJSON["name"], val: rowEntryJSON["value"], title: title, data: data} );
@@ -2475,9 +2474,6 @@ const etHelper = new class ETHELPER {
         catch (error){
             log.error(`[etHelper] (createOutFile) Exception happened when creating xlsx stream as: ${error}`);
         }
-
-
-
 /*
 
         var sectionData, x;

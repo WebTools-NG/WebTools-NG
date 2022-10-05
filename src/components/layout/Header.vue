@@ -26,7 +26,7 @@
     </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto mr-2">
-                <b-img :src="getAvatar()" rounded="circle" alt="Circle image" width="32" height="32" class="m1"></b-img>    
+                <b-img :src="getAvatar()" rounded="circle" alt="Circle image" width="32" height="32" class="m1"></b-img>
         </b-navbar-nav>
 
 
@@ -37,7 +37,7 @@
 
 
 
-<!-- 
+<!--
 <section class="hero is-dark is-small">
 <div class="hero-body">
         <div class="level">
@@ -52,7 +52,7 @@
             </div>
              </div>
                 <div class="level-item">
-                    <div class="select is-dark">                       
+                    <div class="select is-dark">
                         <b-select v-bind:placeholder="$t('Common.SelServer')"
                             v-model="selectedOption"
                             @input="selected">
@@ -64,7 +64,7 @@
                             </option>
                         </b-select>
                     </div>
-                    <b-button id="sync-button" @click="fetchServers" type="is-warning" 
+                    <b-button id="sync-button" @click="fetchServers" type="is-warning"
                         icon-left="fas fa-sync" icon-pack="fas" class="is-pulled-right" >
                     </b-button>
                 </div>
@@ -105,8 +105,8 @@ export default {
             this.active = e;
         },
         selected: function () {
-            log.info(`[Headers.vue] (selected) Selected server: ${this.selectedOption.name}`)
-            ptv.checkServerConnect(this.selectedOption)
+            log.info(`[Headers.vue] (selected) Selected server: ${this.selectedOption.name}`);
+            ptv.checkServerConnect(this.selectedOption);
             this.$store.commit("UPDATE_SELECTED_SERVER", this.selectedOption);
         },
         onChange(event) {
