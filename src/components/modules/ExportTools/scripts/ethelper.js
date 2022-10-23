@@ -1643,6 +1643,7 @@ const etHelper = new class ETHELPER {
                 rowEntryJSON["postProcess"] = fieldDef["postProcess"];
                 // Now we have our row, so we need to check, if it should be altered
                 let tmpValue, tmpArr;
+                //let tmpValue2 = "";
                 switch(rowEntryJSON["type"]) {
                     case "array":
                         tmpArr = [];
@@ -1650,8 +1651,12 @@ const etHelper = new class ETHELPER {
                             case "string":
                                 rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data}));
                                 for (const idx in rowEntryJSON["value"]){
-                                    tmpArr.push(rowEntryJSON["value"][idx]);
+                                    tmpValue = "".join([wtconfig.get('ET.TextQualifierCSV', '"'), rowEntryJSON["value"][idx], wtconfig.get('ET.TextQualifierCSV', '"')], '');
+                                    console.log('Ged 44-3', rowEntryJSON["name"], rowEntryJSON["value"][idx], tmpValue)
+                                    //tmpArr.push(rowEntryJSON["value"][idx]);
+                                    tmpArr.push(tmpValue);
                                 }
+
                                 break;
                             case "time":
                                 for (const idx in tmpValue){
