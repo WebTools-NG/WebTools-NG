@@ -1,5 +1,18 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V1.1.3 ( Not released yet )
+
+**Note**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
+**Changes**:
+
+* [#563 Viewstate copy and User Ratings](https://github.com/WebTools-NG/WebTools-NG/issues/563) (Enhancement)
+* [#610 Viewstate Copy doesn't copy partial viewed offsets](https://github.com/WebTools-NG/WebTools-NG/issues/610) (Bug)
+* [#619 Allow to paste token into login screen](https://github.com/WebTools-NG/WebTools-NG/issues/619) (Enhancement)
+
 ## V1.1.2 ( 20220925 )
 
 **Note**: In this version, the following is disabled:

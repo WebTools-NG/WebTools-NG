@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../../router'
-import {wtutils} from '../../components/modules/General/wtutils'
+import {wtutils, dialog} from '../../components/modules/General/wtutils'
 import i18n from '../../i18n';
 
 const log = require('electron-log');
@@ -92,53 +92,69 @@ const actions = {
   },
   loginToPlex({ commit }, payload){
     log.info("[plextv.js] (loginToPlex) loginToPlex called")
-    var url = `${wtutils.plexTVApi}v2/users/signin`;
-    url = url + '?login=' + require('querystring').escape(payload.username);
-    url = url + '&password=' + require('querystring').escape(payload.password);
-    if ( payload.twoFA ){
-      url = url + '&verificationCode=' + payload.twoFA
-    }
-    axios({
-      method: 'POST',
-      url: url,
-      headers: wtutils.PMSHeader
-    })
-      .then(function (response) {
-        log.debug('[plextv.js] (loginToPlex) loginToPlex: Response from fetchPlexServers recieved')
-        commit('UPDATE_AUTHTOKEN', response.data.authToken)
-        commit('UPDATE_AUTHENTICATED', true)
-        commit('UPDATE_AVATAR', response.data.thumb)
-        commit('UPDATE_PLEXNAME', response.data.username)
-        commit('UPDATE_MeId', response.data.user.id);
-        commit('UPDATE_Features', response.data.user.subscription.features);
-        router.replace({name: "home"});
-    })
-      .catch(function (error) {
-         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          log.error(`[plextv.js] (loginToPlex) status: ${error.response.status}`);
-          log.error(`[plextv.js] (loginToPlex) data: ${JSON.stringify(error.response.data)}`);
-          // alert(error.response.data.message)
-          var data = JSON.stringify(error.response.data);
-          var objectValue = JSON.parse(data);
-          var statusCode = JSON.stringify(objectValue.errors[0].code);
-          log.error(`[plextv.js] (loginToPlex) statusCode: ${statusCode}`);
-          if (statusCode == 1029)
-          {
-            log.error('[plextv.js] (loginToPlex) Missing 2FA code');
-            alert(i18n.t('Common.Login.Missing2FACode'))
-          }
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          log.error('[plextv.js] (loginToPlex) Could not connect to plex.tv');
-          alert(i18n.t('Common.Login.LoginConnectErr'));
+    if (payload.token == ""){
+      var url = `${wtutils.plexTVApi}v2/users/signin`;
+      url = url + '?login=' + require('querystring').escape(payload.username);
+      url = url + '&password=' + require('querystring').escape(payload.password);
+      if ( payload.twoFA ){
+        url = url + '&verificationCode=' + payload.twoFA
+      }
+      axios({
+        method: 'POST',
+        url: url,
+        headers: wtutils.PMSHeader
+      })
+        .then(function (response) {
+          log.debug('[plextv.js] (loginToPlex) loginToPlex: Response from fetchPlexServers recieved')
+          commit('UPDATE_AUTHTOKEN', response.data.authToken)
+          commit('UPDATE_AUTHENTICATED', true)
+          commit('UPDATE_AVATAR', response.data.thumb)
+          commit('UPDATE_PLEXNAME', response.data.username)
+          commit('UPDATE_MeId', response.data.user.id);
+          commit('UPDATE_Features', response.data.user.subscription.features);
+          router.replace({name: "home"});
+      })
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            log.error(`[plextv.js] (loginToPlex) status: ${error.response.status}`);
+            log.error(`[plextv.js] (loginToPlex) data: ${JSON.stringify(error.response.data)}`);
+            // alert(error.response.data.message)
+            var data = JSON.stringify(error.response.data);
+            var objectValue = JSON.parse(data);
+            var statusCode = JSON.stringify(objectValue.errors[0].code);
+            log.error(`[plextv.js] (loginToPlex) statusCode: ${statusCode}`);
+            switch (statusCode){
+              case "1029":
+                log.error('[plextv.js] (loginToPlex) Missing 2FA code');
+                dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t('Common.Login.Missing2FACode'), 'error');
+                break;
+              case "1004":
+                log.error('[plextv.js] (loginToPlex) Missing password');
+                dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t('Common.Login.MissingUsrOrPwd'), 'error');
+                break;
+              default:
+                log.error('[plextv.js] (loginToPlex) Unknown error');
+                dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t('Common.Login.UnknownError'), 'error');
+            }
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            log.error('[plextv.js] (loginToPlex) Could not connect to plex.tv');
+            dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t('Common.Login.LoginConnectErr'), 'error');
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            log.error(`[plextv.js] (loginToPlex) ${error.message}`)
+            dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), error.message, 'error');
+          }})
         } else {
-          // Something happened in setting up the request that triggered an Error
-          log.error(`[plextv.js] (loginToPlex) ${error.message}`)
-        }})
+          // A token was provided
+          this.dispatch('loginToPlexWithToken', {
+            token: payload.token
+            })
+        }
   },
   loginToPlexWithToken({ commit }, payload){
     log.info("[plextv.js] (loginToPlexWithToken) loginToPlex called, using a Token")
@@ -165,7 +181,7 @@ const actions = {
           // that falls out of the range of 2xx
           log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken1: ' + error.response.status);
           log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken2: ' + JSON.stringify(error.response.data));
-          alert(error.response.data.error)
+          dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), error.response.data.error, 'error');
           //this.danger(error.response.status, error.response.data.error);
         } else if (error.request) {
           // The request was made but no response was received
@@ -173,10 +189,11 @@ const actions = {
           // http.ClientRequest in node.js
           // log.error('loginToPlexToken3: ' + JSON.stringify(error.request));
           log.error('[plextv.js] (loginToPlexWithToken) Could not connect to plex.tv with a Token');
-          alert(i18n.t('Common.Login.LoginConnectErrToken'));
+          dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t('Common.Login.LoginConnectErrToken'), 'error');
         } else {
           // Something happened in setting up the request that triggered an Error
-          log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken4: ' + error.message)
+          log.error('[plextv.js] (loginToPlexWithToken) loginToPlexToken4: ' + error.message);
+          dialog.ShowMsg( i18n.t("Common.AppName"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), error.message, 'error');
         }})
   },
   updatingServerAddress({ commit}, status){
