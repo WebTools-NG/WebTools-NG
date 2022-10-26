@@ -11,7 +11,7 @@
             "LangUpdateMsg2": "Please go to Language option and select '{0}'"
         },
         "Language": {
-            "Description": "@:Common.Language.Name allows you to change language of the app",
+            "Description": "@:Common.Language.Name allows you to change language used by this app",
             "Name": "Language",
             "btnForce": "Force download",
             "LangMissing": "My language is missing from above",
@@ -25,7 +25,7 @@
             "LangProcent1": "The number indicates how complete the translation is",
             "LangProcent2": "If not on 100%, then we need your help",
             "LangForce": "What does the '@:Common.Language.btnForce' button do?",
-            "LangForce1": "It updates your translations with the newest version available",
+            "LangForce1": "It updates your translations with the latest version available",
             "Join": "Become a translator"
         },
         "Login": {
@@ -41,15 +41,8 @@
             "twoFA": "2Factor Authentication verification code",
             "twoFAPrompt": "If using 2FA, enter your code here, else leave as blank (optional)",
             "Missing2FACode": "Please enter the verification code",
-            "MissingUsrOrPwd": "We are missing UserName or Password",
-            "UnknownError": "Unknown error",
             "LoginConnectErrToken": "Could not connect to plex.tv with a Token",
-            "LoginConnectErr": "Could not connect to plex.tv",
-            "UseToken": "Use your Plex Token",
-            "TokenPrompt": "Enter your plex.tv Token",
-            "Token": "X-Plex-Token",
-            "TitleUsr": "User",
-            "TitleToken": "Token"
+            "LoginConnectErr": "Could not connect to plex.tv"
         },
         "SelServer": "Select Server",
         "Menu": {
@@ -82,7 +75,7 @@
                 "menuHelp": "Help",
                 "menuForum": "Forums",
                 "menuGithub": "Github",
-                "menuManual": "Manual",
+                "menuManual": "Help Wiki",
                 "menuAbout": "About WebTools",
                 "menuAboutText": {
                     "menuAboutVersion": "Version",
@@ -177,50 +170,41 @@
             "Return": "Return",
             "Global": {
                 "Info": "The global settings are divided into the following:",
-                "ttLibmap": "Define mapped/mounted drives towards your Plex Media Server Libraries",
+                "ttLibmap": "Define mapped/mounted drives for your Plex Media Server Libraries",
                 "ttPMS": "General settings for accessing a Plex Media Server",
                 "ttExport": "Define format for an exported file",
                 "ttGeneral": "Define general settings for @:Common.AppName"
             },
             "General": {
                 "Name": "General Settings",
-                "Description": "@:Common.Settings.General.Name allows you set general preferences for @:Common.AppName"
+                "Description": "@:Common.Settings.General.Name allows you to set general preferences for @:Common.AppName"
             },
             "LibMapping": {
                 "Name": "Library Mapping",
-                "Description": "@:Common.Settings.LibMapping.Name allows you map the defined Library folders path to match a path for this workstation",
+                "Description": "@:Common.Settings.LibMapping.Name allows you to map the defined Library folder paths to match a path for this workstation",
                 "ClickToDefine": "Click to define",
                 "SelectMapDirPath": "Select mapped path",
                 "ttSelectLibrary": "Here you select the library to map"
             },
             "PMS": {
                 "Name": "PMS Settings",
-                "Description": "@:Common.Settings.PMS.Name allows you set preferences for accessing a Plex Media Server"
+                "Description": "@:Common.Settings.PMS.Name allows you to set preferences for accessing a Plex Media Server"
             },
             "Export": {
                 "Name": "Export Settings",
-                "Description": "@:Common.Settings.Export.Name allows you set preferences for exporting a file"
+                "Description": "@:Common.Settings.Export.Name allows you to set preferences for exporting a file"
             }
         }
     },
     "Modules": {
-        "Download":{
-            "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download medias, as well as local assets, from servers where you have been granted download rights"
-        },
         "ET": {
             "Description": "@:Modules.ET.Name allows you to export detail information about the media in your libraries",
             "Name": "ExportTools",
-            "ExportPostersArts": "Posters and Art",
-            "ExportPostersArtsTree": "tree",
-            "ExportPostersArtsFlat": "flat",
             "ErrorServer": "No server",
             "Settings": {
-                "ArtPostersOrigen": "Export Art and Posters in original size",
-                "ExportPostersArtsTree": "Export Art and Posters in a file tree",
                 "Settings": "Settings",
                 "Description": "Here you can define the settings for @:Modules.ET.Name",
-                "ArraySep": "Delimiter for multiple info in same field",
+                "ArraySep": "Delimiter for multiple data in the same field",
                 "ColumnSep": "Delimiter between columns in CSV file (Use 9 for TAB)",
                 "TimeOut": "Timeout when requesting info from PMS in sec (Global setting)",
                 "OrgTitleNull": "Default \"Original Title\" to \"Title\", if empty",
@@ -231,15 +215,15 @@
                 "NotAvailIndicator": "What to use if a field can't be found",
                 "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)",
                 "Posters_Dimensions": "Poster width * height",
-                "Posters_Dimensions_TT": "Poster width*height, If 'Export Posters' is a field in the export. Can be separated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the poster",
+                "Posters_Dimensions_TT": "Enter the Poster width*height for 'Export Posters'. Comma separated values for multiple exports are permitted. E.G. `75*75, 1024*768` Note: dimensions might be altered slightly in order to preserve the aspect ratio of the posters",
                 "Art_Dimensions": "Art width * height",
-                "Art_Dimensions_TT": "Art width*height, If 'Export Art' is a field in the export. Can be seperated by a comma, for multiple exports, like `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art",
+                "Art_Dimensions_TT": "Enter the Art width*height for 'Export Art'. Comma separated values for multiple exports are permitted  E.G. `75*75, 1024*768`. Note: dimensions might be altered slightly in order to preserve the aspect ratio of the art",
                 "ExportToCSV": "Export to csv",
                 "ChReturn": "Replace Return character with",
                 "ChReturn_TT": "Leave blank to not replace",
                 "ChNewLine": "Replace NewLine character with",
                 "ChNewLine_TT": "Leave blank to not replace",
-                "suggestedFileNoExtra": "For suggested filename strip extra info from filenames so only essential info is kept",
+                "suggestedFileNoExtra": "For suggested filename, strip extra info from filenames so only essential info is kept",
                 "suggestedUseOrigenTitle": "When suggesting file or foldername, use original title",
                 "MoviesUseId": "Default Id for suggested folder and filename for movies",
                 "ttMoviesUseId": "If exporting Suggested Filename or Folder for movies, default to selected naming if available. Fallback to IMDB if not",
@@ -250,9 +234,11 @@
                 "Return": "Return to @:Modules.ET.Name",
                 "NoTimeStamp": "Don't add a timestamp to export file name",
                 "NoItemRange": "Don't add item range to export file name",
+                "ArtPostersOrigen": "Export Art and Posters in original size",
+                "ExportPostersArtsTree": "Export Art and Posters in a folder tree",
                 "FindMissingNoSpecials": "Ignore specials in 'Find missing episodes'"
             },
-            "LevelInfo": "Export level determines which data are going to be exported.",
+            "LevelInfo": "Export level determines which data is going to be exported.",
             "SelectLevel": "Select level",
             "BuildInLevels": "*** Built-in levels ***",
             "NoLevelFound": "N/A",
@@ -351,7 +337,7 @@
                 "itemStart": "The starting item (Normally 0)",
                 "itemEnd": "The ending item (Normally the last item in the library)",
                 "startStopDesc": "Here you have the option to define what item to start exporting with,",
-                "startStopDesc2": "as well as what item stop at.",
+                "startStopDesc2": "as well as what item to stop at.",
                 "startStopDesc3": "Use this to split export files into smaller chunks (files) if needed.",
                 "startStopDesc4": "We default to export everything.",
                 "startStopStartingItem": "Item to start with",
@@ -362,7 +348,10 @@
             "ErrorNoOutputFormatMsg": "You need to select an output format in the @:Modules.ET.Name settings, like csv or xlsx",
             "FolderNameOK": "** Folder named correctly **",
             "FileNameOK": "** File named correctly **",
-            "ttSettings": "Settings for @:Modules.ET.Name module"
+            "ttSettings": "Settings for @:Modules.ET.Name module",
+            "ExportPostersArts": "Posters and Art",
+            "ExportPostersArtsTree": "tree",
+            "ExportPostersArtsFlat": "flat"
         },
         "About": {
             "Description": "@:Modules.About.Name",
@@ -372,9 +361,10 @@
             "DevCPSO": "Casper (aka CPSO), a Plex community member (CPSO on GitHub)",
             "TranslationBetaTestersTitle": "Translators and Beta Testers",
             "TranslationBetaTestersText": "A huge thanks goes out to all the people who helped in translating and testing @:Common.AppName",
+            "PlexPoCredits": "And many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work! And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
             "NavTitle": "About Us",
-            "WikiDevelopers": "Wiki was made by:",
-            "Wikitrumpy81": "Andy (aka trumpy81), a Plex community member (trumpy81 on GitHub)",
+            "WikiDevelopers": "The Wiki was developed by:",
+            "Wikitrumpy81": "Andy M (aka trumpy81 on GitHub)",
             "Credits": "Credits",
             "API-Credit": "Huge thanks also goes to {0} for providing a beautiful API for free, since we are a non profit project.",
             "API-SignUp": "Please consider signing up",
@@ -388,12 +378,12 @@
             "Title": "Global Settings",
             "Description": "Here you configure the global settings, which influence all modules",
             "TimeOut": "Timeout when requesting info from PMS in sec",
-            "LogLevelFile": "What file log level to use (Change only if asked by the devs)",
+            "LogLevelFile": "Log level to use (Change only if asked by the devs)",
             "LogLevelConsole": "Console log level (Only used when developing)",
             "LogSize": "Size of logfile, before rollover",
             "RestartNeeded": "When changing this setting, a restart is needed",
             "FactoryReset": "Factory Reset",
-            "FactoryResetWarning": "Factory Reset will reset this app towards how it was when first installed",
+            "FactoryResetWarning": "Factory Reset will reset this app to the defaults, as when first installed",
             "BetaTester": "Subscribe to Beta updates",
             "TTBetaTester": "When selected, you'll be notified when a new beta version is available",
             "Update": "Subscribe to updates (If false, beta updates will also be disabled)",
@@ -401,8 +391,8 @@
             "True": "True",
             "False": "False",
             "FactoryResetConfirmTitle": "Confirm Factory Reset",
-            "FactoryResetConfirmBody": "Doing a Factory Reset will erase all your settings, as it was when first installed",
-            "FactoryResetConfirmBody2": "After doing a Factory Reset, you must start {0} again",
+            "FactoryResetConfirmBody": "Doing a Factory Reset will erase all your settings, as it was when first installed.",
+            "FactoryResetConfirmBody2": "After doing a Factory Reset, you must close and restart {0}",
             "FactoryResetBtnCancel": "Cancel",
             "FactoryResetBtnOk": "Do a Factory Reset",
             "TTContainerSize": "Amount of items to fetch from the server. Warning: Increasing this will add stress to the server",
@@ -422,14 +412,14 @@
         },
         "PMS": {
             "Name": "Plex Media Server",
-            "Description": "@:Modules.PMS.Name modules allows you to manage your server",
+            "Description": "@:Modules.PMS.Name modules allow you to manage your server",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
             "Settings": {
                 "Settings": "Server Settings",
                 "Description": "Here you can define the settings for the selected server",
                 "SelectSettingsSelection": "Select Settings Group",
-                "TTSelectSettingsSelection": "Here you select the group the setting you want to alter is in",
+                "TTSelectSettingsSelection": "Here you select the group that the setting you want to alter is in",
                 "OnlyHidden": "Show only hidden settings",
                 "OnlyAdvanced": "Show only advanced settings",
                 "Undefined": "undefined",
@@ -509,7 +499,7 @@
             "Select": "To use a module select it in the side menu",
             "ViewState": {
                 "Name": "View state Copy",
-                "Description": "@:Modules.PMS.ViewState.Name module allows you to copy a list of seen medias from one user to another user on the same server. Note: It's important, that both users have access to the medias",
+                "Description": "@:Modules.PMS.ViewState.Name module allows you to copy a list of viewed media from one user to another user on the same server. Note: It's important, that both users have access to the media",
                 "selSourceUsr": "Select User to copy from",
                 "ttSelSourceUsr": "Here you select the user you want to copy view states from",
                 "selTargetUsr": "Select User to copy to",
@@ -521,22 +511,22 @@
             },
             "FindMedia": {
                 "Name": "Find Media",
-                "Description": "@:Modules.PMS.FindMedia.Name module allows you search both filesystem and Plex database to locate media missing from either of them",
+                "Description": "@:Modules.PMS.FindMedia.Name module allows you to search both filesystem and Plex database to locate media missing from either of them",
                 "RunTask": "Run",
                 "TTSelectLibrary": "Select library to check for missing media",
                 "MissingMapTitle": "Missing a mapped path",
-                "MissingMapDesc": "One or more defined paths for library is not defined. Goto '@:Common.Menu.Sidebar.Settings.NavTitle' and select '@:Common.Settings.LibMapping.Name' to correct",
+                "MissingMapDesc": "One or more paths for the library are not defined. Goto '@:Common.Menu.Sidebar.Settings.NavTitle' and select '@:Common.Settings.LibMapping.Name' to correct",
                 "ttSettings": "Settings for @:Modules.PMS.FindMedia.Name module",
                 "ScanningFS": "Scanning File System",
                 "ScanningLib": "Scanning Library",
                 "Settings": {
                     "Name": "Find Media Settings",
-                    "Description": "@:Modules.PMS.FindMedia.Name settings allows you to customize how @:Modules.PMS.FindMedia.Name works",
+                    "Description": "@:Modules.PMS.FindMedia.Name settings allow you to customize how @:Modules.PMS.FindMedia.Name works",
                     "Note": "Note: After changing a setting, please restart @:Common.AppName",
                     "Ext": "Comma separated file extensions to look for",
                     "ignoreDirs": "Comma separated list of directories to skip",
                     "Return": "Save & Return",
-                    "Reset": "Reset to factory standard",
+                    "Reset": "Reset to factory defaults",
                     "IgnoreHidden": "Ignore Hidden files/directories on Linux/Mac",
                     "IgnoreExtras": "Ignore local extras",
                     "NoteLibMap": "Note: * Click here for general settings regarding @:Common.Menu.Sidebar.PMS.LibMapping *"
@@ -559,6 +549,10 @@
             "ExportUsr": "Export user to CSV",
             "ExportAllUsr": "Export all users to CSV",
             "UsrFriendlyName": "User friendly name"
+        },
+        "Download": {
+            "Name": "Download",
+            "Description": "The @:Modules.Download.Name module allows you to download media, as well as local assets, from servers where you have been granted download rights"
         }
     }
 }
