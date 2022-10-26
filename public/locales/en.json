@@ -42,7 +42,12 @@
             "twoFAPrompt": "If using 2FA, enter your code here, else leave as blank (optional)",
             "Missing2FACode": "Please enter the verification code",
             "LoginConnectErrToken": "Could not connect to plex.tv with a Token",
-            "LoginConnectErr": "Could not connect to plex.tv"
+            "LoginConnectErr": "Could not connect to plex.tv!",
+            "UseToken": "Use your Plex Token",
+            "TokenPrompt": "Enter your plex.tv Token",
+            "Token": "X-Plex-Token",
+            "TitleUsr": "User",
+            "TitleToken": "Token"
         },
         "SelServer": "Select Server",
         "Menu": {
