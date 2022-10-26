@@ -1,649 +1,493 @@
 {
-    "fields": {
-        "Added":
-            {
+    "fields":{
+        "Added":{
                 "key": "$.addedAt",
                 "call": 1,
                 "type": "datetime"
             },
-        "Agent":
-            {
+        "Agent":{
                 "key": "$.agent",
                 "call": 1,
                 "type": "string"
             },
-        "Album Artist Poster url":
-        {
+        "Album Artist Poster url":{
             "key": "$.parentThumb",
             "call": 1,
             "type": "string"
         },
-        "Album Poster url":
-            {
+        "Album Poster url":{
                 "key": "$.thumb",
                 "call": 1,
                 "type": "string"
             },
-        "Album Title":
-            {
+        "Album Title":{
                 "key": "$.parentTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Album Year":
-        {
+        "Album Year":{
             "key": "$.parentYear",
             "call": 1,
             "type": "string"
         },
-        "Allow Sync":
-        {
+        "Allow Sync":{
             "key": "$.allowSync",
             "call": 1,
             "type": "string"
         },
-        "Art url":
-            {
+        "Art url":{
                 "key": "$.art",
                 "call": 2,
                 "type": "string"
             },
-        "Artist":
-        {
+        "Artist":{
             "key": "$.parentTitle",
             "call": 1,
             "type": "string"
         },
-        "Artist Art url":
-            {
+        "Artist Art url":{
                 "key": "$.grandparentArt",
                 "call": 1,
                 "type": "string"
             },
-        "Artist Poster url":
-            {
+        "Artist Poster url":{
                 "key": "$.grandparentThumb",
                 "call": 1,
                 "type": "string"
             },
-        "Audience Rating":
-            {
+        "Audience Rating":{
                 "key": "audienceRating",
                 "call": 1,
                 "type": "int",
                 "postProcess": false
             },
-        "Audio Stream Album Gain":
-            {
+        "Audio Stream Album Gain":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].albumGain",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "albumGain"
+                "subtype": "string"
             },
-        "Audio Stream Album Peak":
-            {
+        "Audio Stream Album Peak":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].albumPeak",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "albumPeak"
+                "subtype": "string"
             },
-        "Audio Stream Album Range":
-            {
+        "Audio Stream Album Range":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].albumRange",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "albumRange"
+                "subtype": "string"
             },
-        "Audio Stream Audio Channel Layout":
-            {
+        "Audio Stream Audio Channel Layout":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].audioChannelLayout",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "audioChannelLayout"
+                "subtype": "string"
             },
-        "Audio Stream Bit Depth":
-            {
+        "Audio Stream Bit Depth":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].bitDepth",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "bitDepth"
+                "subtype": "string"
             },
-        "Audio Stream Bitrate":
-            {
+        "Audio Stream Bitrate":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].bitrate",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "bitrate"
+                "subtype": "string"
             },
-        "Audio Stream Bitrate Mode":
-            {
+        "Audio Stream Bitrate Mode":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].bitrateMode",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.bitrateMode"
+                "subtype": "string"
             },
-        "Audio Stream Channels":
-            {
+        "Audio Stream Channels":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].channels",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "channels"
+                "subtype": "string"
             },
-        "Audio Stream Codec":
-            {
+        "Audio Stream Codec":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].codec",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "codec"
+                "subtype": "string"
             },
-        "Audio Stream Codec ID":
-            {
+        "Audio Stream Codec ID":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].codecID",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.codecID"
+                "subtype": "string"
             },
-        "Audio Stream Default":
-            {
+        "Audio Stream Default":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].default",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "default"
+                "subtype": "string"
             },
-        "Audio Stream Display Title":
-            {
+        "Audio Stream Display Title":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].displayTitle",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.displayTitle"
+                "subtype": "string"
             },
-        "Audio Stream Duration":
-            {
+        "Audio Stream Duration":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].duration",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.duration"
+                "subtype": "string"
             },
-        "Audio Stream End Ramp":
-            {
+        "Audio Stream End Ramp":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].endRamp",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.endRamp"
+                "subtype": "string"
             },
-        "Audio Stream Extended Display Title":
-            {
+        "Audio Stream Extended Display Title":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].extendedDisplayTitle",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.extendedDisplayTitle"
+                "subtype": "string"
             },
-        "Audio Stream gain":
-            {
+        "Audio Stream gain":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].gain",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.gain"
+                "subtype": "string"
             },
-        "Audio Stream Index":
-            {
+        "Audio Stream Index":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].index",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "index"
+                "subtype": "string"
             },
-        "Audio Stream Language":
-            {
+        "Audio Stream Language":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].language",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "language"
+                "subtype": "string"
             },
-        "Audio Stream Language Code":
-            {
+        "Audio Stream Language Code":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].languageCode",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "languageCode"
+                "subtype": "string"
             },
-        "Audio Stream loudness":
-            {
+        "Audio Stream loudness":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].loudness",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "loudness"
+                "subtype": "string"
             },
-        "Audio Stream LRA":
-            {
+        "Audio Stream LRA":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].lra",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "lra"
+                "subtype": "string"
             },
-        "Audio Stream Peak":
-            {
+        "Audio Stream Peak":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].peak",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.peak"
+                "subtype": "string"
             },
-        "Audio Stream Profile":
-            {
+        "Audio Stream Profile":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].profile",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.profile"
+                "subtype": "string"
             },
-        "Audio Stream Required Bandwidths":
-            {
+        "Audio Stream Required Bandwidths":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].requiredBandwidths",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.requiredBandwidths",
                 "include": "includeBandwidths=1"
             },
-        "Audio Stream Sampling Rate":
-            {
+        "Audio Stream Sampling Rate":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].samplingRate",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.samplingRate"
+                "subtype": "string"
             },
-        "Audio Stream Selected":
-            {
+        "Audio Stream Selected":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].selected",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "selected"
+                "subtype": "string"
             },
-        "Audio Stream Start Ramp":
-            {
+        "Audio Stream Start Ramp":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].startRamp",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.startRamp"
+                "subtype": "string"
             },
-        "Audio Stream Title":
-            {
+        "Audio Stream Title":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)].title",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.title"
+                "subtype": "string"
             },
-        "Audio Track Album No":
-        {
+        "Audio Track Album No":{
             "key": "$.parentIndex",
             "call": 1,
             "type": "string"
         },
-        "Audio Track Artist":
-            {
+        "Audio Track Artist":{
                 "key": "$.grandparentTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Audio Track No":
-        {
+        "Audio Track No":{
             "key": "$.index",
             "call": 1,
             "type": "string"
         },
-        "Chapter Count":
-            {
+        "Chapter Count":{
                 "key": "$..Chapter[*]",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeChapters=1"
             },
-        "Chapter Source":
-            {
+        "Chapter Source":{
                 "key": "$.chapterSource",
                 "call": 2,
                 "type": "string",
                 "include": "includeChapters=1"
             },
-        "Chapter Title":
-            {
+        "Chapter Title":{
                 "key": "$.Chapter[*].tag",
-                "********* GED key": "$.Chapter[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.tag",
                 "include": "includeChapters=1"
             },
-        "Collections":
-            {
+        "Collections":{
                 "key": "$.Collection[*].tag",
-                "********* GED key": "$.Collection[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Content":
-            {
+        "Content":{
                 "key": "$.content",
                 "call": 1,
                 "type": "string"
             },
-        "Content Changed At":
-            {
+        "Content Changed At":{
                 "key": "$.contentChangedAt",
                 "call": 1,
                 "type": "datetime"
             },
-        "Content Rating":
-            {
+        "Content Rating":{
                 "key": "$.contentRating",
                 "call": 1,
                 "type": "string"
             },
-        "Country":
-            {
+        "Country":{
                 "key": "$.Country[*].tag",
-                "********* GED key": "$.Country[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Created At":
-            {
+        "Created At":{
                 "key": "$.createdAt",
                 "call": 1,
                 "type": "datetime"
             },
-        "Created at Accuracy":
-            {
+        "Created at Accuracy":{
                 "key": "$.createdAtAccuracy",
                 "call": 1,
                 "type": "string"
             },
-        "Created at TZOffset":
-            {
+        "Created at TZOffset":{
                 "key": "$.createdAtTZOffset",
                 "call": 1,
                 "type": "time"
             },
-        "Deleted":
-            {
+        "Deleted":{
                 "key": "$.deletedAt",
                 "call": 1,
                 "type": "datetime"
             },
-        "Directors":
-            {
+        "Directors":{
                 "key": "$.Director[*].tag",
-                "********* GED key": "$.Director[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Directory":
-            {
+        "Directory":{
                 "key": "$.directory",
                 "call": 1,
                 "type": "string"
             },
-        "Duration":
-            {
+        "Duration":{
                 "key": "$.duration",
                 "call": 1,
                 "type": "time"
             },
-        "Edition Title":
-            {
+        "Edition Title":{
                 "key": "$.editionTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Episode":
-            {
+        "Episode":{
                 "key": "$.index",
                 "call": 1,
                 "type": "string"
             },
-        "Episode Count (Cloud)":
-            {
+        "Episode Count (Cloud)":{
                 "key": "$.title",
                 "call": 1,
                 "type": "int",
                 "postProcess": true
             },
-        "Episode Count (PMS)": {
+        "Episode Count (PMS)":{
                 "key": "$.title",
                 "call": 1,
                 "type": "int",
                 "postProcess": true
             },
-        "Export Art":
-            {
+        "Export Art":{
                 "key": "$.ratingKey",
                 "call": 1,
                 "type": "string"
             },
-        "Export Show Art":
-            {
+        "Export Show Art":{
                 "key": "$.ratingKey",
                 "call": 1,
                 "type": "string"
             },
-        "Export Posters":
-            {
+        "Export Posters":{
                 "key": "$.ratingKey",
                 "call": 1,
                 "type": "string"
             },
-        "Export Season Posters":
-            {
+        "Export Season Posters":{
                 "key": "$.ratingKey",
                 "call": 1,
                 "type": "string"
             },
-        "Export Show Posters":
-            {
+        "Export Show Posters":{
                 "key": "$.ratingKey",
                 "call": 1,
                 "type": "string"
             },
-        "Extras":
-            {
+        "Extras":{
                 "key": "$.Extras.size",
                 "call": 2,
                 "type": "int",
                 "include": "includeExtras=1"
             },
-        "Extras-behindthescenes":
-            {
+        "Extras-behindthescenes":{
                 "key": "$..Extras.Metadata[?(@.subtype=='behindTheScenes')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-deleted":
-            {
+        "Extras-deleted":{
                 "key": "$..Extras.Metadata[?(@.subtype=='deleted')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-featurette":
-            {
+        "Extras-featurette":{
                 "key": "$..Extras.Metadata[?(@.subtype=='featurette')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-interview":
-            {
+        "Extras-interview":{
                 "key": "$..Extras.Metadata[?(@.subtype=='interview')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-music video":
-            {
+        "Extras-music video":{
                 "key": "$..Extras.Metadata[?(@.subtype=='musicVideo')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-scene":
-            {
+        "Extras-scene":{
                 "key": "$..Extras.Metadata[?(@.subtype=='scene')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-sceneOrSample":
-            {
+        "Extras-sceneOrSample":{
                 "key": "$..Extras.Metadata[?(@.subtype=='sceneOrSample')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-short":
-            {
+        "Extras-short":{
                 "key": "$..Extras.Metadata[?(@.subtype=='short')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "Extras-trailer":
-            {
+        "Extras-trailer":{
                 "key": "$..Extras.Metadata[?(@.subtype=='trailer')].ratingKey",
                 "call": 2,
                 "type": "array-count",
                 "include": "includeExtras=1"
             },
-        "File Path":
-            {
+        "File Path":{
                 "key": "$.Media[0].Part[0].file",
                 "call": 1,
                 "type": "string"
             },
-        "Filters":
-        {
+        "Filters":{
             "key": "$.filters",
             "call": 1,
             "type": "string"
         },
-        "Genre":
-            {
+        "Genre":{
                 "key": "$.Genre[*][0].tag",
-                "********* GED key": "$.Genre[*][0]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Hidden":
-            {
+        "Hidden":{
                 "key": "$.hidden",
                 "call": 1,
                 "type": "string"
             },
-        "IMDB ID (Legacy)":
-            {
+        "IMDB ID (Legacy)":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "IMDB ID":
-            {
+        "IMDB ID":{
                 "key": "$.Guid[*].id",
-                "********* GED key": "$.Guid[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.id",
                 "postProcess": true
             },
-        "IMDB Language (Legacy)":
-            {
+        "IMDB Language (Legacy)":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "IMDB Link (Legacy)":
-            {
+        "IMDB Link (Legacy)":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "IMDB Link":
-            {
+        "IMDB Link":{
                 "key": "$.Guid[*].id",
-                "********* GED key": "$.Guid[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.id",
                 "postProcess": true
             },
-        "Intro Start":
-            {
+        "Intro Start":{
                 "key": "$.Marker[?(@.type=='intro')]",
                 "call": 2,
                 "type": "array",
@@ -651,8 +495,7 @@
                 "subkey": "$.startTimeOffset",
                 "include": "includeMarkers=1"
             },
-        "Intro Stop":
-            {
+        "Intro Stop":{
                 "key": "$.Marker[*]",
                 "call": 2,
                 "type": "array",
@@ -660,1085 +503,895 @@
                 "subkey": "$.endTimeOffset",
                 "include": "includeMarkers=1"
             },
-        "Item Counts":
-            {
+        "Item Counts":{
                 "key": "$.leafCount",
                 "call": 1,
                 "type": "string"
             },
-        "Key":
-            {
+        "Key":{
                 "key": "$.ratingKey",
                 "call": 1,
                 "type": "string"
             },
-        "Language":
-            {
+        "Language":{
                 "key": "$.language",
                 "call": 1,
                 "type": "string"
             },
-        "Last Viewed at":
-            {
+        "Last Viewed at":{
                 "key": "$..lastViewedAt",
                 "call": 2,
                 "type": "datetime"
             },
-        "Labels":
-            {
+        "Labels":{
                 "key": "$.Label[*].tag",
-                "********* GED key": "$.Label[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Library Key":
-            {
+        "Library Key":{
                 "key": "$.key",
                 "call": 1,
                 "type": "string"
             },
-        "Library Poster":
-        {
+        "Library Poster":{
             "key": "$.composite",
             "call": 1,
             "type": "string"
         },
-        "Link (Cloud)":
-        {
+        "Link (Cloud)":{
             "key": "$.title",
             "call": 1,
             "type": "string",
             "postProcess": true
         },
-        "Location":
-            {
+        "Location":{
                 "key": "$.Location[*]",
-                "********* GED key": "$.Location[*].path",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.path"
+                "subtype": "string"
             },
-        "Locked Fields":
-            {
+        "Locked Fields":{
                 "key": "$.Field[*]",
-                "********* GED key": "$.Field[*].name",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.name"
+                "subtype": "string"
             },
-        "Loudness Analysis Version":
-        {
+        "Loudness Analysis Version":{
             "key": "$.loudnessAnalysisVersion",
             "call": 1,
             "type": "string"
         },
-        "Media Aperture": {
+        "Media Aperture":{
                 "key": "$.Media[*].aperture",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.aperture"
+                "subtype": "string"
             },
-        "Media Aspect Ratio": {
+        "Media Aspect Ratio":{
                 "key": "$.Media[*].aspectRatio",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.aspectRatio"
+                "subtype": "string"
             },
-        "Media Audio Channels": {
+        "Media Audio Channels":{
                 "key": "$.Media[*].audioChannels",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.audioChannels"
+                "subtype": "string"
             },
-        "Media Audio Codec": {
+        "Media Audio Codec":{
                 "key": "$.Media[*].audioCodec",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.audioCodec"
+                "subtype": "string"
             },
-        "Media Bitrate": {
+        "Media Bitrate":{
                 "key": "$.Media[*].bitrate",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.bitrate"
+                "subtype": "string"
             },
-        "Media Container": {
+        "Media Container":{
                 "key": "$.Media[*].container",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.container"
+                "subtype": "string"
             },
-        "Media Exposure": {
+        "Media Exposure":{
                 "key": "$.Media[*].exposure",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.exposure"
+                "subtype": "string"
             },
-        "Media Duration": {
+        "Media Duration":{
                 "key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "time",
                 "subkey": "$.duration"
             },
-        "Media Height": {
+        "Media Height":{
                 "key": "$.Media[*].height",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.height"
+                "subtype": "string"
             },
-        "Media Id": {
+        "Media Id":{
                 "key": "$.Media[*].id",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.id"
+                "subtype": "string"
             },
-        "Media Iso": {
+        "Media Iso":{
                 "key": "$.Media[*].iso",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.iso"
+                "subtype": "string"
             },
-        "Media Make": {
+        "Media Make":{
                 "key": "$.Media[*].make",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.make"
+                "subtype": "string"
             },
-        "Media Model": {
+        "Media Model":{
                 "key": "$.Media[*].model",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.model"
+                "subtype": "string"
             },
-        "Media Title": {
+        "Media Title":{
                 "key": "$.Media[*].title",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.title"
+                "subtype": "string"
             },
-        "Media Video Codec": {
+        "Media Video Codec":{
                 "key": "$.Media[*].videoCodec",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.videoCodec"
+                "subtype": "string"
             },
-        "Media Video FrameRate": {
+        "Media Video FrameRate":{
                 "key": "$.Media[*].videoFrameRate",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.videoFrameRate"
+                "subtype": "string"
             },
-        "Media Video Profile": {
+        "Media Video Profile":{
                 "key": "$.Media[*].videoProfile",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.videoProfile"
+                "subtype": "string"
             },
-        "Media Video Resolution": {
+        "Media Video Resolution":{
                 "key": "$.Media[*].videoResolution",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.videoResolution"
+                "subtype": "string"
             },
-        "Media Width": {
+        "Media Width":{
                 "key": "$.Media[*].width",
-                "********* GED key": "$.Media[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.width"
+                "subtype": "string"
             },
-        "MetaData Language": {
+        "MetaData Language":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "MetaDB Link": {
+        "MetaDB Link":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "Missing": {
+        "Missing":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Mood": {
+        "Mood":{
                 "key": "$.Mood[*].tag",
-                "********* GED key": "$.Mood[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Optimized versions": {
+        "Optimized versions":{
                 "key": "$..target",
-                "********* GED key": "$..target",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$."
-
+                "subtype": "string"
             },
-        "Original Title": {
+        "Original Title":{
                 "key": "$..originalTitle",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "Part Accessible": {
+        "Part Accessible":{
                 "key": "$.Media[*].Part[*].accessible",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.accessible",
                 "include": "checkFiles=1"
             },
-        "Part Container": {
+        "Part Container":{
                 "key": "$.Media[*].Part[*].container",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.container"
+                "subtype": "string"
             },
-        "Part Duration": {
+        "Part Duration":{
                 "key": "$..Media[*].Part[?(@.key.startsWith('/library/parts'))].duration",
-                "********* GED key": "$..Media[*].Part[?(@.key.startsWith('/library/parts'))]",
                 "call": 2,
                 "type": "array",
                 "postProcess": false,
-                "subtype": "time",
-                "********* GED subkey": "$.duration"
+                "subtype": "time"
             },
-        "Part Deep Analysis Version": {
+        "Part Deep Analysis Version":{
                 "key": "$.Media[*].Part[*].deepAnalysisVersion",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.deepAnalysisVersion"
+                "subtype": "string"
             },
-        "Part Exists": {
+        "Part Exists":{
                 "key": "$.Media[*].Part[*].exists",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.exists",
                 "include": "checkFiles=1"
             },
-        "Part File": {
+        "Part File":{
                 "key": "$.Media[*].Part[*].file",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
                 "postProcess": true,
-                "subtype": "string",
-                "********* GED subkey": "$.file"
+                "subtype": "string"
             },
-        "Part File Combined": {
+        "Part File Combined":{
                 "key": "$.Media[*].Part[*].file",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.file"
+                "subtype": "string"
             },
-        "Part File Path": {
+        "Part File Path":{
                 "key": "$.Media[*].Part[*].file",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
                 "postProcess": true,
-                "subtype": "string",
-                "********* GED subkey": "$.file"
+                "subtype": "string"
             },
-        "Part has Thumbnail": {
+        "Part has Thumbnail":{
                 "key": "$.Media[*].Part[*].hasThumbnail",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.hasThumbnail"
+                "subtype": "string"
             },
-        "Part Id": {
+        "Part Id":{
                 "key": "$.Media[*].Part[*].id",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.id"
+                "subtype": "string"
             },
-        "Part Indexed": {
+        "Part Indexed":{
                 "key": "$.Media[*].Part[*].indexes",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.indexes"
+                "subtype": "string"
             },
-        "Part Optimized for Streaming": {
+        "Part Optimized for Streaming":{
                 "key": "$.Media[*].Part[*].optimizedForStreaming",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.optimizedForStreaming"
+                "subtype": "string"
             },
-        "Part Orientation": {
+        "Part Orientation":{
                 "key": "$.Media[*].Part[*].orientation",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.orientation"
+                "subtype": "string"
             },
-        "Part Required Bandwidths": {
+        "Part Required Bandwidths":{
                 "key": "$.Media[*].Part[*].requiredBandwidths",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.requiredBandwidths",
                 "include": "includeBandwidths=1"
             },
-        "Part Size": {
+        "Part Size":{
                 "key": "$.Media[*].Part[*].size",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
                 "postProcess": true,
-                "subtype": "string",
-                "********* GED subkey": "$.size"
+                "subtype": "string"
             },
-        "Part Size as Bytes": {
+        "Part Size as Bytes":{
                 "key": "$.Media[*].Part[*].size",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.size"
+                "subtype": "string"
             },
-        "Part Video Profile": {
+        "Part Video Profile":{
                 "key": "$.Media[*].Part[*].videoProfile",
-                "********* GED key": "$.Media[*].Part[*]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.videoProfile"
+                "subtype": "string"
             },
-        "Photo Album Name": {
+        "Photo Album Name":{
                 "key": "$.parentTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Photo Album Poster": {
+        "Photo Album Poster":{
                 "key": "$.parentThumb",
                 "call": 1,
                 "type": "string"
             },
-        "Photo Top Album Art": {
+        "Photo Top Album Art":{
                 "key": "$.grandparentArt",
                 "call": 1,
                 "type": "string"
             },
-        "Photo Top Album Name": {
+        "Photo Top Album Name":{
                 "key": "$.grandparentTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Photo Top Album Poster": {
+        "Photo Top Album Poster":{
                 "key": "$.grandparentThumb",
                 "call": 1,
                 "type": "string"
             },
-        "Playlist Type": {
+        "Playlist Type":{
                 "key": "$.playlistType",
                 "call": 1,
                 "type": "string"
             },
-        "PMS Media Path": {
+        "PMS Media Path":{
             "key": "$.guid",
             "call": 1,
             "type": "string",
             "postProcess": true
         },
-        "PMS Metadata Path": {
+        "PMS Metadata Path":{
                 "key": "$.guid",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Poster url": {
+        "Poster url":{
                 "key": "$.thumb",
                 "call": 2,
                 "type": "string"
             },
-        "Rating": {
+        "Rating":{
                 "key": "$.rating",
                 "call": 1,
                 "type": "int",
                 "postProcess": false
             },
-        "Refreshing": {
+        "Refreshing":{
                 "key": "$.refreshing",
                 "call": 1,
                 "type": "string"
             },
-        "Release Date": {
+        "Release Date":{
                 "key": "$..originallyAvailableAt",
                 "call": 1,
                 "type": "string"
             },
-        "Roles": {
+        "Roles":{
                 "key": "$.Role[*].tag",
-                "********* GED key": "$.Role[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Scanned At": {
+        "Scanned At":{
                 "key": "$.scannedAt",
                 "call": 1,
                 "type": "datetime"
             },
-        "Scanner": {
+        "Scanner":{
                 "key": "$.scanner",
                 "call": 1,
                 "type": "string"
             },
-        "Season": {
+        "Season":{
                 "key": "$.parentIndex",
                 "call": 1,
                 "type": "string"
             },
-        "Season Count (Cloud)": {
+        "Season Count (Cloud)":{
                 "key": "$.title",
                 "call": 1,
                 "type": "int",
                 "postProcess": true
             },
-        "Season Count (PMS)": {
+        "Season Count (PMS)":{
                 "key": "$.title",
                 "call": 1,
                 "type": "int",
                 "postProcess": true
             },
-        "Seasons (Cloud)": {
+        "Seasons (Cloud)":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Seasons (PMS)": {
+        "Seasons (PMS)":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Series Title": {
+        "Series Title":{
                 "key": "$.grandparentTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Show Prefs Delete episodes after playing": {
+        "Show Prefs Delete episodes after playing":{
                 "key": "$..Preferences.Setting[?(@.id=='autoDeletionItemPolicyWatchedLibrary')].value",
                 "call": 2,
                 "type": "int",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Prefs Episode ordering": {
+        "Show Prefs Episode ordering":{
                 "key": "$..Preferences.Setting[?(@.id=='showOrdering')].value",
                 "call": 2,
                 "type": "string",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Prefs Episode sorting": {
+        "Show Prefs Episode sorting":{
                 "key": "$..Preferences.Setting[?(@.id=='episodeSort')].value",
                 "call": 2,
                 "type": "string",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Prefs Keep": {
+        "Show Prefs Keep":{
                 "key": "$..Preferences.Setting[?(@.id=='autoDeletionItemPolicyUnwatchedLibrary')].value",
                 "call": 2,
                 "type": "int",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Prefs Metadata language": {
+        "Show Prefs Metadata language":{
                 "key": "$..Preferences.Setting[?(@.id=='languageOverride')].value",
                 "call": 2,
                 "type": "int",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Prefs Seasons": {
+        "Show Prefs Seasons":{
                 "key": "$..Preferences.Setting[?(@.id=='flattenSeasons')].value",
                 "call": 2,
                 "type": "int",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Prefs Use original title": {
+        "Show Prefs Use original title":{
                 "key": "$..Preferences.Setting[?(@.id=='useOriginalTitle')].value",
                 "call": 2,
                 "type": "int",
                 "include": "includePreferences=1",
                 "postProcess": true
             },
-        "Show Title": {
+        "Show Title":{
                 "key": "$.parentTitle",
                 "call": 1,
                 "type": "string"
             },
-        "Similar": {
+        "Similar":{
                 "key": "$.Similar[*].tag",
-                "********* GED key": "$.Similar[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Smart": {
+        "Smart":{
                 "key": "$.smart",
                 "call": 1,
                 "type": "string"
             },
-        "Sort Season by": {
+        "Sort Season by":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Sort title": {
+        "Sort title":{
                 "key": "$.titleSort",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Status (Cloud)": {
+        "Status (Cloud)":{
             "key": "$.title",
             "call": 1,
             "type": "string",
             "postProcess": true
         },
-        "Studio": {
+        "Studio":{
                 "key": "$.studio",
                 "call": 1,
                 "type": "string"
             },
-        "Style": {
+        "Style":{
                 "key": "$.Style[*].tag",
-                "********* GED key": "$.Style[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Subtitle Stream Codec": {
+        "Subtitle Stream Codec":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].codec",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.codec"
+                "subtype": "string"
             },
-        "Subtitle Stream Codec ID": {
+        "Subtitle Stream Codec ID":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].codecID",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "codecID"
+                "subtype": "string"
             },
-        "Subtitle Stream Default": {
+        "Subtitle Stream Default":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].default",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.default"
+                "subtype": "string"
             },
-        "Subtitle Stream Forced": {
+        "Subtitle Stream Forced":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].forced",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.forced"
+                "subtype": "string"
             },
-        "Subtitle Stream Format": {
+        "Subtitle Stream Format":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].format",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "format"
+                "subtype": "string"
             },
-        "Subtitle Stream Header Compression": {
+        "Subtitle Stream Header Compression":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].headerCompression",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "headerCompression"
+                "subtype": "string"
             },
-        "Subtitle Stream Index": {
+        "Subtitle Stream Index":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].index",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.index"
+                "subtype": "string"
             },
-        "Subtitle Stream Language": {
+        "Subtitle Stream Language":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].language",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.language"
+                "subtype": "string"
             },
-        "Subtitle Stream Language Code": {
+        "Subtitle Stream Language Code":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].languageCode",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.languageCode"
+                "subtype": "string"
             },
-        "Subtitle Stream Required Bandwidths": {
+        "Subtitle Stream Required Bandwidths":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].requiredBandwidths",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "requiredBandwidths",
                 "include": "includeBandwidths=1"
             },
-        "Subtitle Stream Selected": {
+        "Subtitle Stream Selected":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].selected",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "selected"
+                "subtype": "string"
             },
-        "Subtitle Stream Title": {
+        "Subtitle Stream Title":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==3)].title",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==3)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.title"
+                "subtype": "string"
             },
-        "Suggested File Name": {
+        "Suggested File Name":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Suggested Folder Name": {
+        "Suggested Folder Name":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Summary": {
+        "Summary":{
                 "key": "$.summary",
                 "call": 1,
                 "type": "string"
             },
-        "Tagline": {
+        "Tagline":{
                 "key": "tagline",
                 "call": 1,
                 "type": "string"
             },
-        "Title": {
+        "Title":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string"
             },
-        "Track Counts": {
+        "Track Counts":{
                 "key": "$.leafCount",
                 "call": 2,
                 "type": "string"
             },
-        "Type": {
+        "Type":{
                 "key": "$.type",
                 "call": 1,
                 "type": "string"
             },
-        "TVDB ID": {
+        "TVDB ID":{
                 "key": "$.Guid[*].id",
-                "********* GED key": "$.Guid[*]",
                 "call": 1,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.id",
                 "postProcess": true
             },
-        "TVDB ID (Legacy)": {
+        "TVDB ID (Legacy)":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "TVDB Language (Legacy)": {
+        "TVDB Language (Legacy)":{
                 "key": "$.guid",
                 "call": 2,
                 "type": "string",
                 "postProcess": true
             },
-        "TMDB ID": {
+        "TMDB ID":{
                 "key": "$.Guid[*].id",
-                "********* GED key": "$.Guid[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.id",
                 "postProcess": true
             },
-        "TMDB Link": {
+        "TMDB Link":{
                 "key": "$.Guid[*].id",
-                "********* GED key": "$.Guid[*]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "$.id",
                 "postProcess": true
             },
-        "TMDB Status": {
+        "TMDB Status":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "TVDB Status": {
+        "TVDB Status":{
                 "key": "$.title",
                 "call": 1,
                 "type": "string",
                 "postProcess": true
             },
-        "Updated": {
+        "Updated":{
                 "key": "$.updatedAt",
                 "call": 1,
                 "type": "datetime"
             },
-        "User Rating": {
+        "User Rating":{
                 "key": "userRating",
                 "call": 1,
                 "type": "string"
             },
-        "Video Stream Anamorphic": {
+        "Video Stream Anamorphic":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].anamorphic",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "anamorphic"
+                "subtype": "string"
             },
-        "Video Stream Bit Depth": {
+        "Video Stream Bit Depth":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].bitDepth",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "bitDepth"
+                "subtype": "string"
             },
-        "Video Stream Bitrate": {
+        "Video Stream Bitrate":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].bitrate",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "bitrate"
+                "subtype": "string"
             },
-        "Video Stream Cabac": {
+        "Video Stream Cabac":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].cabac",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "cabac"
+                "subtype": "string"
             },
-        "Video Stream Chroma Sub Sampling": {
+        "Video Stream Chroma Sub Sampling":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].chromaSubsampling",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "chromaSubsampling"
+                "subtype": "string"
             },
-        "Video Stream Codec": {
+        "Video Stream Codec":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].codec",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "codec"
+                "subtype": "string"
             },
-        "Video Stream Codec ID": {
+        "Video Stream Codec ID":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].codecID",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "codecID"
+                "subtype": "string"
             },
-        "Video Stream Color Primaries": {
+        "Video Stream Color Primaries":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].colorPrimaries",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "colorPrimaries"
+                "subtype": "string"
             },
-        "Video Stream Color Range": {
+        "Video Stream Color Range":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].colorRange",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "colorRange"
+                "subtype": "string"
             },
-        "Video Stream Color Space": {
+        "Video Stream Color Space":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].colorSpace",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "colorSpace"
+                "subtype": "string"
             },
-        "Video Stream Color Trc": {
+        "Video Stream Color Trc":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].colorTrc",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "colorTrc"
+                "subtype": "string"
             },
-        "Video Stream Default": {
+        "Video Stream Default":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].default",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "default"
+                "subtype": "string"
             },
-        "Video Stream Duration": {
+        "Video Stream Duration":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].duration",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "duration"
+                "subtype": "string"
             },
-        "Video Stream Frame Rate": {
+        "Video Stream Frame Rate":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].frameRate",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "frameRate"
+                "subtype": "string"
             },
-        "Video Stream Frame Rate Mode": {
+        "Video Stream Frame Rate Mode":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].frameRateMode",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "frameRateMode"
+                "subtype": "string"
             },
-        "Video Stream Has Scaling Matrix": {
+        "Video Stream Has Scaling Matrix":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].hasScalingMatrix",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "hasScalingMatrix"
+                "subtype": "string"
             },
-        "Video Stream Height": {
+        "Video Stream Height":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].height",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "height"
+                "subtype": "string"
             },
-        "Video Stream Index": {
+        "Video Stream Index":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].index",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "index"
+                "subtype": "string"
             },
-        "Video Stream Language": {
+        "Video Stream Language":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].language",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "language"
+                "subtype": "string"
             },
-        "Video Stream Language Code": {
+        "Video Stream Language Code":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].languageCode",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "languageCode"
+                "subtype": "string"
             },
-        "Video Stream Level": {
+        "Video Stream Level":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].level",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "level"
+                "subtype": "string"
             },
-        "Video Stream Pixel Aspect Ratio": {
+        "Video Stream Pixel Aspect Ratio":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].pixelAspectRatio",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "pixelAspectRatio"
+                "subtype": "string"
             },
-        "Video Stream Pixel Format": {
+        "Video Stream Pixel Format":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].pixelFormat",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "pixelFormat"
+                "subtype": "string"
             },
-        "Video Stream Profile": {
+        "Video Stream Profile":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].profile",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "profile"
+                "subtype": "string"
             },
-        "Video Stream Ref Frames": {
+        "Video Stream Ref Frames":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].refFrames",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "refFrames"
+                "subtype": "string"
             },
-        "Video Stream Required Bandwidths": {
+        "Video Stream Required Bandwidths":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].requiredBandwidths",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
                 "subtype": "string",
-                "********* GED subkey": "requiredBandwidths",
                 "include": "includeBandwidths=1"
             },
-        "Video Stream Scan Type": {
+        "Video Stream Scan Type":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].scanType",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "scanType"
+                "subtype": "string"
             },
-        "Video Stream Stream Identifier": {
+        "Video Stream Stream Identifier":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].streamIdentifier",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "streamIdentifier"
+                "subtype": "string"
             },
-        "Video Stream Title": {
+        "Video Stream Title":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].title",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "title"
+                "subtype": "string"
             },
-        "Video Stream Width": {
+        "Video Stream Width":{
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].width",
-                "********* GED key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "width"
+                "subtype": "string"
             },
-        "View Count": {
+        "View Count":{
                 "key": "viewCount",
                 "call": 1,
                 "type": "string"
             },
-        "Viewed Tracks": {
+        "Viewed Tracks":{
             "key": "$.viewedLeafCount",
             "call": 1,
             "type": "string"
         },
-        "Writers": {
+        "Writers":{
                 "key": "$.Writer[*].tag",
-                "********* GED key": "$.Writer[*]",
                 "call": 1,
                 "type": "array",
-                "subtype": "string",
-                "********* GED subkey": "$.tag"
+                "subtype": "string"
             },
-        "Year": {
+        "Year":{
                 "key": "$.year",
                 "call": 1,
                 "type": "int"

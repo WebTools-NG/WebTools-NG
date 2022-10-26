@@ -1647,16 +1647,26 @@ const etHelper = new class ETHELPER {
                 switch(rowEntryJSON["type"]) {
                     case "array":
                         tmpArr = [];
+                        tmpValue = '';
+                        
                         switch(rowEntryJSON["subType"]) {
                             case "string":
                                 rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data}));
+                                //tmpValue = wtconfig.get('ET.TextQualifierCSV', '"') + rowEntryJSON["value"].join(wtconfig.get('ET.TextQualifierCSV', '"') + wtconfig.get('ET.ArraySep', '"') + wtconfig.get('ET.TextQualifierCSV', '"')) + wtconfig.get('ET.TextQualifierCSV', '"');
+                                tmpValue = wtconfig.get('ET.TextQualifierCSV', '"') + rowEntryJSON["value"].join(wtconfig.get('ET.ArraySep', '"')) + wtconfig.get('ET.TextQualifierCSV', '"');
+                                
+                                console.log('Ged 44-2-1', tmpValue)
+                                tmpArr.push(tmpValue);
+
+                                /* 
                                 for (const idx in rowEntryJSON["value"]){
+                                    console.log('Ged 44-2-2', rowEntryJSON["value"][idx], idx)
                                     tmpValue = "".join([wtconfig.get('ET.TextQualifierCSV', '"'), rowEntryJSON["value"][idx], wtconfig.get('ET.TextQualifierCSV', '"')], '');
                                     console.log('Ged 44-3', rowEntryJSON["name"], rowEntryJSON["value"][idx], tmpValue)
                                     //tmpArr.push(rowEntryJSON["value"][idx]);
                                     tmpArr.push(tmpValue);
                                 }
-
+ */
                                 break;
                             case "time":
                                 for (const idx in tmpValue){
@@ -1666,7 +1676,10 @@ const etHelper = new class ETHELPER {
                             default:
                                 log.error(`[ethelper.js] (addRowToTmpJSON) NO ARRAY HIT: ${rowEntryJSON["name"]}`);
                         }
-                        rowEntryJSON["value"] = tmpArr.join( wtconfig.get('ET.ArraySep', '*'));
+                        //rowEntryJSON["value"] = tmpArr.join( wtconfig.get('ET.ArraySep', '*'));
+                        rowEntryJSON["value"] = tmpArr
+                        console.log('Ged 77-3 field:', rowEntryJSON["name"], 'Output: ' + rowEntryJSON["value"])
+                        //rowEntryJSON["value"] = 'Ged 445566'
                         break;
                     case "time":
                         rowEntryJSON["value"] = await time.convertMsToTime(rowEntryJSON["value"]);
