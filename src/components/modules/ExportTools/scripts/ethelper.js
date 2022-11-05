@@ -1643,20 +1643,56 @@ const etHelper = new class ETHELPER {
                 rowEntryJSON["postProcess"] = fieldDef["postProcess"];
                 // Now we have our row, so we need to check, if it should be altered
                 let tmpValue, tmpArr;
+                let tmpArr2;
+                //, entry;
                 //let tmpValue2 = "";
                 switch(rowEntryJSON["type"]) {
                     case "array":
+                        console.log('Ged 1-0 We have an array')
                         tmpArr = [];
+                        tmpArr2 = [];
                         tmpValue = '';
+                        //entry = '';
                         
                         switch(rowEntryJSON["subType"]) {
                             case "string":
+                                console.log('Ged 1-1 We have a String array')
+                                //rowEntryJSON["value"] = 'Ged Start'
+                                rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data}));
+
+                                console.log('Ged 1-3-0 Length', tmpArr.length, '* contents *', rowEntryJSON["value"])
+                                break;
+                            case "stringGED":
                                 rowEntryJSON["value"] = (JSONPath({path: fieldDef["key"], json: data}));
                                 //tmpValue = wtconfig.get('ET.TextQualifierCSV', '"') + rowEntryJSON["value"].join(wtconfig.get('ET.TextQualifierCSV', '"') + wtconfig.get('ET.ArraySep', '"') + wtconfig.get('ET.TextQualifierCSV', '"')) + wtconfig.get('ET.TextQualifierCSV', '"');
-                                tmpValue = wtconfig.get('ET.TextQualifierCSV', '"') + rowEntryJSON["value"].join(wtconfig.get('ET.ArraySep', '"')) + wtconfig.get('ET.TextQualifierCSV', '"');
+                                console.log('Ged 66-3', rowEntryJSON["value"].join(wtconfig.get('ET.ArraySep', '"')))
+                                if (rowEntryJSON["value"].join(wtconfig.get('ET.ArraySep', '"')) == '') {
+                                    //tmpValue = wtconfig.get('ET.NotAvail', 'N/A');
+                                    tmpArr.push(wtconfig.get('ET.NotAvail', 'N/A'));
+                                    //tmpValue =  wtconfig.get('ET.TextQualifierCSV', '"') + wtconfig.get('ET.NotAvail', 'N/A') + wtconfig.get('ET.TextQualifierCSV', '"');
+                                } else {
+                                    //tmpValue = wtconfig.get('ET.TextQualifierCSV', '"') + rowEntryJSON["value"].join(wtconfig.get('ET.ArraySep', '"')) + wtconfig.get('ET.TextQualifierCSV', '"');
+                                    console.log('Ged 66-4', rowEntryJSON["value"])
+                                    //tmpValue = rowEntryJSON["value"].join(wtconfig.get('ET.TextQualifierCSV', '"'));
+
+                                    rowEntryJSON["value"].forEach(element => {
+                                        //tmpValue = wtconfig.get('ET.TextQualifierCSV', '"') + element + wtconfig.get('ET.TextQualifierCSV', '"');
+
+                                        console.log('Ged 66-5', element)
+                                        tmpArr2.push(element)
+                                        console.log('Ged 66-5-3', JSON.stringify(tmpArr2))
+                                    });
+
+                                    tmpValue = tmpArr2.join(wtconfig.get('ET.ArraySep', '*'));
+                                    console.log('Ged 66-5-4', tmpValue)
+                                    tmpArr.push(tmpValue);
+                                    
+                        
+                                }
                                 
-                                console.log('Ged 44-2-1', tmpValue)
-                                tmpArr.push(tmpValue);
+                              //  console.log('Ged 44-2-1', JSON.stringify( tmpValue))
+                              //  tmpArr.push(tmpValue);
+                                //tmpArr.push(rowEntryJSON["value"].join(wtconfig.get('ET.ArraySep', '"')));
 
                                 /* 
                                 for (const idx in rowEntryJSON["value"]){
@@ -1666,18 +1702,30 @@ const etHelper = new class ETHELPER {
                                     //tmpArr.push(rowEntryJSON["value"][idx]);
                                     tmpArr.push(tmpValue);
                                 }
+                                
  */
+                                rowEntryJSON["value"] = JSON.stringify(tmpArr);
+                                console.log('Ged 13-3', JSON.stringify(rowEntryJSON["value"]))
                                 break;
                             case "time":
+                                console.log('Ged 88-3', JSON.stringify(tmpValue))
+                                console.log('Ged 88-3-1', JSON.stringify( rowEntryJSON["value"]))
                                 for (const idx in tmpValue){
                                     tmpArr.push(await time.convertMsToTime(tmpValue[idx]))
                                 }
+                                console.log('Ged 88-3-2', tmpArr)
                                 break;
                             default:
                                 log.error(`[ethelper.js] (addRowToTmpJSON) NO ARRAY HIT: ${rowEntryJSON["name"]}`);
                         }
                         //rowEntryJSON["value"] = tmpArr.join( wtconfig.get('ET.ArraySep', '*'));
-                        rowEntryJSON["value"] = tmpArr
+                        //rowEntryJSON["value"] = tmpArr
+                        //rowEntryJSON["value"] = JSON.stringify( tmpArr[0] );
+
+
+                        console.log('Ged 77-3-0 Length', tmpArr.length, '* GEd *', JSON.stringify(tmpArr), '* contents *', JSON.stringify( tmpArr[0]))
+                        
+
                         console.log('Ged 77-3 field:', rowEntryJSON["name"], 'Output: ' + rowEntryJSON["value"])
                         //rowEntryJSON["value"] = 'Ged 445566'
                         break;
@@ -1685,7 +1733,11 @@ const etHelper = new class ETHELPER {
                         rowEntryJSON["value"] = await time.convertMsToTime(rowEntryJSON["value"]);
                         break;
                     case "datetime":
+                        console.log('Ged 2-0', rowEntryJSON["value"])
                         rowEntryJSON["value"] = await time.convertMsToDateTime(rowEntryJSON["value"]);
+                        console.log('Ged 2-1', rowEntryJSON["value"])
+                        rowEntryJSON["value"] = wtconfig.get('ET.TextQualifierCSV', '"') + rowEntryJSON["value"] + wtconfig.get('ET.TextQualifierCSV', '"');
+                        console.log('Ged 2-2', rowEntryJSON["value"])
                         break;
                 }
 
