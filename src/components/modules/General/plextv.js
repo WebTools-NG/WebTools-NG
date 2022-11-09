@@ -10,6 +10,7 @@ const ptv = new class PTV {
         this.resp = null;
         this.allResp = {};
     }
+
     async checkServerOptions(server) {
         log.verbose(`[plextv.js] (checkServerOptions) - Checking address for server: ${server.name}`);
         let PMSAddress = '';
@@ -82,6 +83,7 @@ const ptv = new class PTV {
         store.commit("UPDATE_PLEX_SERVERS", allPMSServer);
         return
     }
+
     async checkServerConnect(server) {
         log.verbose(`[plextv.js] (checkServerConnect) Checking address for server: ${server.name}`);
         // Set WaitState
@@ -146,6 +148,7 @@ const ptv = new class PTV {
         store.commit("UPDATE_PLEX_SELECTED_SERVER_STATUS", false);
         return PMSAddress
     }
+
     async fetchPMSServers(){
         let header = wtutils.PMSHeader;
         header['X-Plex-Token'] = store.getters.getAuthToken;
@@ -190,6 +193,7 @@ const ptv = new class PTV {
         }
     });
     }
+
     async getPMSServers( showNotOwned = false ){
         const PMSServers = await store.getters.getPlexServers;
         let result = [];
@@ -202,6 +206,7 @@ const ptv = new class PTV {
         }
         return result;
     }
+
     testCon( address, header, clientIdentifier, local, owned ){
         axios.get(address, {
             headers: header,
@@ -216,6 +221,7 @@ const ptv = new class PTV {
                         log.verbose(`[plextv.js] (testCon) - Server found as: ${address}`);
                         if (!this.allResp[clientIdentifier]['address']){ // Add if not already present
                             this.allResp[clientIdentifier]['address'] = address;
+                            this.address = address;
                             this.allResp[clientIdentifier]['resp'] = response.data['MediaContainer'];
                             this.allResp[clientIdentifier]['local'] = local;
                             this.allResp[clientIdentifier]['count'] += 1;
@@ -244,8 +250,22 @@ const ptv = new class PTV {
             }
         )
     }
+
     async getValidPMSAddress( clientIdentifier, connections, accessToken)
     {
+        console.log('Ged 54-3', clientIdentifier, connections, accessToken)
+
+        let header = wtutils.PMSHeader;
+        header['X-Plex-Token'] = accessToken;
+
+        for (var idx in connections){
+            console.log('Ged 54-5', connections[idx].uri)
+            console.log('Ged 54-6', connections[idx].local)
+           // this.testCon(connections[idx]['uri'], header, clientIdentifier, connections[idx]['local']);
+        }
+
+
+        /* 
         let header = wtutils.PMSHeader;
         header['X-Plex-Token'] = accessToken;
         for (var idx in connections){
@@ -253,12 +273,22 @@ const ptv = new class PTV {
             this.resp = null;
             this.testCon(connections[idx]['uri'], header, clientIdentifier, connections[idx]['local']);
         }
+
+
+
         while (!this.address){
             console.log('Ged 55', this.address)
+            console.log('Ged 55-3', this.allResp)
+            console.log('Ged 55-4', this.resp)
+
             await wtutils.sleep(50)
-        }
+        } */
+
+
+
         return this.address
     }
+
     async updatePMSInfo( PMS, index, options){  //Update PMS entry with missing info
         log.verbose(`[plextv.js] (updatePMSInfo) - look at server: ${PMS['name']} with an Id of: ${PMS['clientIdentifier']} to update ${options}`);
         // Let's start by setting the header once and for all

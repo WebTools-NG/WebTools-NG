@@ -558,7 +558,29 @@
         },
         "Download": {
             "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download media, as well as local assets, from servers where you have been granted download rights"
+            "Description": "The @:Modules.Download.Name module allows you to download media, as well as local assets, from servers where you have been granted download rights",
+            "Disabled": "Disabled",
+            "SelSrv": "Select server",
+            "ShowQueue": "Show Queue",
+            "mediaInfo": {
+                "title": "Title",
+                "file": "File",
+                "type": "Type",
+                "status": "Status",
+                "size": "Size",
+                "serverID": "Server Id",
+                "serverName": "Server",
+                "libName": "Library",
+                "sourceUri": "Uri",
+                "targetDir": "Target Directory",
+                "targetFile": "Target File"
+            },
+            "Queue": {
+                "btnStartQueue": "Start Queue",
+                "btnStopQueue": "Stop Queue",
+                "Name": "@:Modules.Download.Name Queue",
+                "Description": "Here you see and edit the items queued for download"
+            }
         }
     }
 }

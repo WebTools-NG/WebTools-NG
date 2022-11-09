@@ -52,7 +52,7 @@
   import VueVirtualTable from 'vue-virtual-table';
   import { download } from '../scripts/Download.js';
 
-  
+
 
   const log = require("electron-log");
   export default {
@@ -147,7 +147,7 @@
 
       },
       info(index, row){
-        this.mediaInfo.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.mediaInfoTitle")}: ${row['title']} - ${row['type']}`
+        this.mediaInfo.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")}: ${row['title']} - ${row['type']}`
         this.mediaInfoItems = [];
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.title") }: ${row['title']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.file") } : ${row['file']}` });
