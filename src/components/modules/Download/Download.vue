@@ -171,8 +171,6 @@
   },
   created() {
     log.info(`[${this.PageName}.vue] (created) - ${this.PageName} Created`);
-    console.log('Ged 44-2', JSON.stringify(store.getters.getFeatures))
-
     if ( !store.getters.getFeatures.includes("pass"))
     {
       dialog.ShowMsg( i18n.t("Modules.Download.Name"), i18n.t("Common.Ok"), i18n.t("Common.AppName"), i18n.t("Common.PPReq", [i18n.t("Modules.Download.Name")]), 'info' );
@@ -442,7 +440,6 @@
     },
     // Get a list of servers, that we can download from
     async getValidServers(){
-      console.log('Ged 41-1 validSrvDone', store.getters.getValidSrvDone)
       log.info(`[download.vue] (getValidServers) - Starting`);
       this.isLoading = true;
       if (!store.getters.getValidSrvDone)   // If we haven't got valid address and sync info, update srv list

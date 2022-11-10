@@ -568,7 +568,6 @@
                 "type": "Type",
                 "status": "Status",
                 "size": "Size",
-                "serverID": "Server Id",
                 "serverName": "Server",
                 "libName": "Library",
                 "sourceUri": "Uri",

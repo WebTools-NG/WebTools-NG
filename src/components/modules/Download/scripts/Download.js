@@ -4,8 +4,8 @@ const log = require('electron-log');
 console.log = log.log;
 const fs = require('fs');
 const path = require('path');
+//const controller = new AbortController();
 
-const CancelToken = axios.CancelToken;
 
 
 
@@ -16,7 +16,7 @@ import { ptv } from '../../General/plextv';
 import axios from 'axios';
 import * as stream from 'stream';
 
-fs, path, stream, CancelToken
+fs, path, stream
 
 const download = new class DOWNLOAD {
     constructor() {
@@ -25,6 +25,10 @@ const download = new class DOWNLOAD {
         this.accessToken = null;
         this.queue = null;
         this.downloadProcent = 0;
+        this.controller = null;
+        this.queueRunning = false;
+        this.queueChanged = false;
+        this.lastError = null;
     }
 
     async createOutDir(){  // Force create OutDir
@@ -53,10 +57,7 @@ const download = new class DOWNLOAD {
     }
 
     getFirstEntry(){  // Get first entry in the queue
-        //this.item = null;
         this.item = this.queue[0];
-//        this.accessToken = 
-        console.log('Ged 11-3 item', JSON.stringify(this.item))
     }
 
     removeFirstEntry(){ //Remove first entry from the queue
@@ -88,10 +89,9 @@ const download = new class DOWNLOAD {
         console.log('Ged 88-3-0 Item', JSON.stringify(this.item))
 
         let downloadprocentlog = 1;
-        let cancel;
-        cancel;
 
-
+        this.controller = new AbortController();
+        this.lastError = null;
 
         // item.targetFile
         await axios({
@@ -108,14 +108,20 @@ const download = new class DOWNLOAD {
                         downloadprocentlog = this.downloadProcent;
                     }
                 }
-            }
+            },
+            signal: this.controller.signal
         })
             .then((response) => {
                 log.debug('[Download.js] (downloadItem) Response from downloadItem recieved');
+                log.info(`[Download.js] (downloadItem) - Download completed for file: ${this.item.targetFile}`)
                 log.silly(`downloadItem returned as: ${JSON.stringify(response.data)}`);
             })
             .catch(function (error) {
-            if (error.response) {
+            if (error.code == 'ERR_CANCELED'){
+                log.info(`[Download.js] (downloadItem) - User canceled download of file`);
+                this.lastError = 'Canceled';
+            }
+            else if (error.response) {
                 log.error('[Download.js] (downloadItem) processWatchedList: ' + JSON.stringify(error.response.data));
                 alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
             } else if (error.request) {
@@ -128,19 +134,29 @@ const download = new class DOWNLOAD {
 
     }
 
+    async stopProcess(){ // Abort current download
+        this.queueRunning = false;
+        if (this.controller){
+            this.controller.abort('Queue stopped');
+        }
+    }
+
     async startProcess(){  // Start download Queue
         log.info(`[Download.js] (startProcess) - Starting the download Queue`);
+        this.queueRunning = true;
 
         this.queue = wtconfig.get('Download.Queue');
         this.getFirstEntry();
         console.log('Ged 99-3', JSON.stringify(this.queue))
-        while (this.item){
+        while (this.item && this.queueRunning){
             this.getFirstEntry();
             await this.getSrvInfo();
             await this.createOutDir();
             await this.downloadItem();
-
-            //this.removeFirstEntry();
+            if (!this.lastError){ // Remove from queue if no error
+                this.removeFirstEntry();
+            }
+            this.queueChanged = true;
             console.log('Ged 99-4 Item Downloaded')
 
         }

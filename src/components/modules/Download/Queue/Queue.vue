@@ -98,11 +98,20 @@
     created() {
       log.info(`[Queue.vue] (created) - Download Queue Created`);
       this.GetQueue();
+      console.log('Ged 43-3')
       this.setCreatedStatus();
     },
     watch: {
+      queueChanged: async function(){
+        console.log('Ged 776655 Queue Changed')
+        download.queueChanged = false;
+        this.GetQueue();
+      },
     },
     computed: {
+      queueChanged: function(){
+        return download.queueChanged;
+      }
     },
     methods: {
       up( index ){
@@ -137,14 +146,11 @@
       },
       stopQueue(){
         this.queueRunning = false;
-        console.log('Ged 43-3 Queue stopped')
+        download.stopProcess();
       },
       startQueue(){
         this.queueRunning = true;
         download.startProcess();
-        console.log('Ged 44-3 Queue started')
-
-
       },
       info(index, row){
         this.mediaInfo.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")}: ${row['title']} - ${row['type']}`
@@ -154,12 +160,12 @@
         if ( row['size'] ){
           this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.size") } : ${row['size']}` });
         }
-        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverID") } : ${row['serverID']}` });
-        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverName") } : ${row['serverName']}` });
+        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverID") } : ${row['serverID']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverName") } : ${row['serverName']} (id: ${row['serverID']})` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.libName") } : ${row['libName']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.sourceUri") } : ${row['key']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
-        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetFile") } : ${row['targetFile']}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetFile") } : ${row['targetFile'].slice(0, -4)}` });
         this.$refs['MediaInfo'].show();
       },
       del(index, row){
