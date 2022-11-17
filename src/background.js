@@ -145,3 +145,32 @@ ipcMain.on('downloadFile', function (event, data) {
     event.sender.send('downloadError', error);
   })
 })
+
+ipcMain.on('downloadMedia', function (event, data) {
+  const filePath = data.filePath;
+  const item = data.item;
+  const https = require('https');
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+  axios({
+    method: 'GET',
+    url: item,
+    headers: data.header,
+    responseType: 'stream',
+    httpsAgent: agent
+  }).then((response) => {
+    response.data.pipe(fs.createWriteStream(filePath))
+    response.data.on('end', () => {
+      event.sender.send('downloadMediaEnd');
+    })
+    response.data.on('error', (error) => {
+      log.error(`[background.js] (downloadFile) - Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+      event.sender.send('downloadMediaError', error);
+    })
+  }).catch((error) => {
+    log.error(`[background.js] (downloadFile) - ${item.split('&X-Plex-Token=')[0]}`);
+    event.sender.send('downloadMediaError', error);
+  })
+})
+
