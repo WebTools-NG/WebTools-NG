@@ -100,6 +100,7 @@ const download = new class DOWNLOAD {
           }
         console.log('Ged 1-3-5')
         header['Content-Range'] = rangeStart;
+        header['Accept'] = '*/*';
         // Url to download
         const url = this.item.baseAddress + this.item.key + '?download=1';
 
@@ -122,8 +123,8 @@ const download = new class DOWNLOAD {
             {
                 _this.isDownloading = true;
                 ipcRenderer.send('downloadMedia', {
-                    item: url,
-                    filePath: this.item.targetFile,
+                    url: url,
+                    targetFile: this.item.targetFile,
                     header: header
                 })
             }

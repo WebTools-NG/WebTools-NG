@@ -1,6 +1,7 @@
 'use strict'
 import { app, protocol, BrowserWindow, Menu} from 'electron';
 import { wtutils } from '../src/components/modules/General/wtutils';
+import axios from 'axios';
 
 const log = require('electron-log');
 console.log = log.log;
@@ -115,8 +116,8 @@ if (isDevelopment) {
   }
 }
 
-const axios = require('axios')
-const fs = require('fs')
+//const axios = require('axios');
+const fs = require('fs');
 
 ipcMain.on('downloadFile', function (event, data) {
   const filePath = data.filePath;
@@ -153,14 +154,21 @@ ipcMain.on('downloadMedia', function (event, data) {
   const agent = new https.Agent({
     rejectUnauthorized: false
   });
+
+  filePath, item, agent
+
+  console.log('Ged 12-3 background download start')
+  console.log('Ged 12-4', JSON.stringify(data))
+
+
   axios({
     method: 'GET',
-    url: item,
+    url: data.url,
     headers: data.header,
     responseType: 'stream',
     httpsAgent: agent
   }).then((response) => {
-    response.data.pipe(fs.createWriteStream(filePath))
+    response.data.pipe(fs.createWriteStream(data.targetFile))
     response.data.on('end', () => {
       event.sender.send('downloadMediaEnd');
     })
