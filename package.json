@@ -44,6 +44,7 @@
     "jsonpath-plus": "^4.0.0",
     "levenary": "^1.1.1",
     "minimist": "^1.2.5",
+    "node-abort-controller": "^3.0.1",
     "node-excel-stream": "^1.2.1",
     "node-fetch": "^2.6.1",
     "node-sass": "^7.0.3",

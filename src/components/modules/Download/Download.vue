@@ -3,6 +3,17 @@
     <loading
           :active="isLoading"
         />
+    <div class="float-right">   <!-- Settings button hidden with d-none -->
+      <div class="buttons">
+        <!-- Buttons -->
+        <b-button-group id="settings">
+          <b-tooltip target="settings" triggers="hover">
+              {{ $t(`Modules.${this.PageName}.ttSettings`) }}
+          </b-tooltip>
+          <button class="btn btn-outline-success" @click="showSettings"><i class="fa fa-cog"></i></button>
+        </b-button-group>
+      </div>
+    </div>
     <div>   <!-- Title and desc -->
       <h2>
         {{ $t(`Modules.${this.PageName}.Name`) }}
@@ -179,6 +190,10 @@
     this.getValidServers();
   },
   methods: {
+    // Show Settings
+    showSettings(){
+      this.$router.push({ name: 'exportsettings' })
+    },
     getTargetFile( serverName, libName, mediaDir, file){
       var path = require('path');
       return path.join(wtconfig.get('General.ExportPath'), wtutils.AppName, this.$t('Modules.Download.Name'), serverName, libName, mediaDir, file + '.tmp');

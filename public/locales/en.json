@@ -562,6 +562,7 @@
             "Disabled": "Disabled",
             "SelSrv": "Select server",
             "ShowQueue": "Show Queue",
+            "ttSettings": "Settings for @:Modules.Download.Name module",
             "mediaInfo": {
                 "title": "Title",
                 "file": "File",
@@ -579,6 +580,11 @@
                 "btnStopQueue": "Stop Queue",
                 "Name": "@:Modules.Download.Name Queue",
                 "Description": "Here you see and edit the items queued for download"
+            },
+            "Settings": {
+                "Name": "@:Modules.Download.Name Settings",
+                "Description": "Here you can define the settings for @:Modules.Download.Name"
+
             }
         }
     }

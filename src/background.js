@@ -2,6 +2,7 @@
 import { app, protocol, BrowserWindow, Menu} from 'electron';
 import { wtutils } from '../src/components/modules/General/wtutils';
 import axios from 'axios';
+import { AbortController } from "node-abort-controller";
 
 const log = require('electron-log');
 console.log = log.log;
@@ -16,6 +17,11 @@ import {
 //import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+// An abort Controller for downloads
+let controller = null;
+//let controller = new AbortController();
+controller;
 
 // Bad thing, but need to disable cert checks, since connecting via ip
 // to a cert issued for plex.direct
@@ -147,18 +153,46 @@ ipcMain.on('downloadFile', function (event, data) {
   })
 })
 
+ipcMain.on('downloadMediaAbort', function () {
+  log.info(`[background.js] (downloadMediaAbort) - Aborting download`)
+  if (controller){
+    controller.abort('Queue stopped');
+  }
+})
+
 ipcMain.on('downloadMedia', function (event, data) {
-  const filePath = data.filePath;
   const item = data.item;
   const https = require('https');
+  controller = null;
   const agent = new https.Agent({
     rejectUnauthorized: false
   });
+  let downloadProcent = 0;
+  let downloadprocentlog = 0;
 
-  filePath, item, agent
+  console.log('Ged 12-5', data.header["Range"])
+  let targetStream;
+  if ( data.header["Range"] == 0){
+    targetStream = fs.createWriteStream(data.targetFile);
+  } else {
+    targetStream = fs.createWriteStream(data.targetFile, {flags:'a'});
+  }
+  controller = new AbortController();
 
-  console.log('Ged 12-3 background download start')
-  console.log('Ged 12-4', JSON.stringify(data))
+  const maxrateLimit = 100000000000000;  // Unlimited
+//  const maxrateLimit = 50;  // 50Mb/s
+//  const maxrateLimit = 40;  // 40Mb/s
+//  const maxrateLimit = 30;  // 30Mb/s
+//  const maxrateLimit = 20;  // 20Mb/s
+//  const maxrateLimit = 15;  // 15Mb/s
+//  const maxrateLimit = 10;  // 10Mb/s
+//  const maxrateLimit = 7;  // 7Mb/s
+//  const maxrateLimit = 5;  // 5Mb/s
+//  const maxrateLimit = 3;  // 3Mb/s
+//  const maxrateLimit = 1;  // 1Mb/s 
+
+
+  maxrateLimit
 
 
   axios({
@@ -166,18 +200,43 @@ ipcMain.on('downloadMedia', function (event, data) {
     url: data.url,
     headers: data.header,
     responseType: 'stream',
-    httpsAgent: agent
+    httpsAgent: agent,
+    signal: controller.signal,
+    maxRate: [
+      maxrateLimit * 1024 * 1024 , // upload limit,
+      maxrateLimit * 1024 * 1024 // download limit
+    ],
+      
+    // Send download progress for every 5 %
+    onDownloadProgress: progressEvent => {
+      downloadProcent = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+      //console.log('Ged 887-3 url', data.url, 'completed: ', downloadProcent)
+      if ( downloadProcent % 5 == 0) {
+          if (downloadProcent > downloadprocentlog){
+              //log.info(`[background.js] (downloadMedia) Downloaded file ${data.targetFile} completed procent: ${downloadProcent}`);
+              downloadprocentlog = downloadProcent;
+              event.sender.send('downloadMediaProgress', downloadprocentlog);
+          }
+      }
+  },
   }).then((response) => {
-    response.data.pipe(fs.createWriteStream(data.targetFile))
+    log.info(`[background.js] (downloadMedia) - Download started`);
+    console.log('Ged 887-4', response.headers);
+    response.data.pipe(targetStream);
     response.data.on('end', () => {
+      console.log('Ged 887-5', response.headers);
+      targetStream.end();
       event.sender.send('downloadMediaEnd');
     })
     response.data.on('error', (error) => {
-      log.error(`[background.js] (downloadFile) - Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+      console.log('Ged 887-6', response.headers);
+      //log.error(`[background.js] (downloadFile) - Failed to download ${item.split('&X-Plex-Token=')[0]}`);
+      targetStream.end();
       event.sender.send('downloadMediaError', error);
     })
   }).catch((error) => {
     log.error(`[background.js] (downloadFile) - ${item.split('&X-Plex-Token=')[0]}`);
+    targetStream.end();
     event.sender.send('downloadMediaError', error);
   })
 })

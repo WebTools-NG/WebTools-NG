@@ -70,36 +70,29 @@ const download = new class DOWNLOAD {
 
     async downloadItem(){ // Download the actual item
         log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
-        // Get the header
-        console.log('Ged 1-3-3')
         let header = wtutils.PMSHeader;
         // Add Auth Token
         header['X-Plex-Token'] = this.accessToken;
         // Start by checking, if media is already partially downloaded
         let rangeStart = 0;
-        // Make a stream writer
-        let writer;
-        writer;
-        /* 
-        let options = { 
-            'flags': 'a',
-            'encoding': null,
-            'mode': '0666'
-        } */
-
-        console.log('Ged 1-3-4')
-        console.log('Ged 1-3-4-2', this.item.targetFile)
+        let procenttal = 0;
         if (fs.existsSync(this.item.targetFile)) {
             console.log('Ged 12-3 exists Need to adjust start')
+            var stats = fs.statSync(this.item.targetFile)
+            rangeStart = stats.size;
+            //header['Range'] = `bytes=${rangeStart}-${this.item.size}`;
+            header['Range'] = `bytes=${rangeStart}-`;
+            //"bytes=100-200"
+            procenttal = Math.floor(Math.floor(rangeStart/this.item.size*100)/5)*5;
+            console.log('Ged 12-3-1 procent done', rangeStart, '*', this.item.size, '*', Math.floor(procenttal))
+            //let procenttal5 = Math.floor(Math.floor(procenttal)/5)*5
+            //console.log('Ged 12-3-1-2 procent 5 done', procenttal5)
           } else {
             console.log('Ged 12-3-2 New file')
-            //writer = stream.createWriteStream(this.item.targetFile);
-            writer = fs.createWriteStream(this.item.targetFile);
-
-           // writer = stream.createWriteStream(this.item.targetFile);
           }
         console.log('Ged 1-3-5')
-        header['Content-Range'] = rangeStart;
+        //header['Content-Range'] = rangeStart;
+        //header['Range'] = `${rangeStart}-`;
         header['Accept'] = '*/*';
         // Url to download
         const url = this.item.baseAddress + this.item.key + '?download=1';
@@ -111,12 +104,9 @@ const download = new class DOWNLOAD {
         console.log('Ged 88-3-0 Item', JSON.stringify(this.item))
 
         let downloadprocentlog = 1;
-
         downloadprocentlog;
-
         this.controller = new AbortController();
         this.lastError = null;
-
         const _this = this;
         return new Promise((resolve) => {
             try
@@ -130,26 +120,34 @@ const download = new class DOWNLOAD {
             }
             catch (error)
             {
-                log.error(`etHelper (forceDownload) downloading pic for ${this.item.title} cougth an exception as: ${error}`);
+                log.error(`[Download.js] (downloadItem) downloading ${this.item.targetFile} cougth an exception as: ${error}`);
             }
-
-            ipcRenderer.on('downloadEnd', () => {
+            // Update progress
+            ipcRenderer.on('downloadMediaProgress', (event, procent) => {
+                log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${procent} procent`);
+                console.log('Ged 99-3 calculated procent', procent + Math.floor(procenttal))
+            })
+            ipcRenderer.on('downloadMediaEnd', () => {
                 try
                 {
-                    ipcRenderer.removeAllListeners('downloadEnd');
-                    ipcRenderer.removeAllListeners('downloadError');
+                    log.info(`[Download.js] (downloadItem) - Download finished for ${this.item.targetFile} ok`);
+                    ipcRenderer.removeAllListeners('downloadMediaEnd');
+                    //ipcRenderer.removeAllListeners('downloadError');
+                    ipcRenderer.removeAllListeners('downloadMediaProgress');
+                    // Rename to real file name
+                    const newFile = this.item.targetFile.replace('.tmp', '')
+                    if (fs.existsSync(this.item.targetFile)) {
+                        fs.renameSync(this.item.targetFile, newFile);
+                    }
                     resolve(this.item.targetFile);
                 }
                 catch (error)
                 {
-                    log.error(`etHelper (forceDownload-downloadEnd) downloading pic for "${this.item.title}" caused an exception as: ${error}`);
+                    log.error(`[Download.js] (downloadItem) - downloading "${this.item.title}" caused an exception as: ${error}`);
                 }
             })
-
         })
     }
-
-
 
     async downloadItem1(){ // Download the actual item
         log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
@@ -262,9 +260,11 @@ const download = new class DOWNLOAD {
 
     async stopProcess(){ // Abort current download
         this.queueRunning = false;
-        if (this.controller){
+        ipcRenderer.send('downloadMediaAbort');
+
+        /* if (this.controller){
             this.controller.abort('Queue stopped');
-        }
+        } */
     }
 
     async startProcess(){  // Start download Queue
