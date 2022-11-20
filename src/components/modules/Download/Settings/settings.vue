@@ -7,18 +7,21 @@
       <h5>{{ $t(`Modules.Download.Settings.Description`) }}</h5>
     </div>
     <br>
-    <b-form-group id="downloadMaxBandWidth" v-bind:label="$t('Modules.Download.Settings.DownloadMaxBandWidth')" label-size="lg" label-class="font-weight-bold pt-0">
+    <br>
+    <b-form-group id="grpDownloadMaxBandWidth" v-bind:label="$t('Modules.Download.Settings.DownloadMaxBandWidth')" label-size="lg" label-class="font-weight-bold pt-0">
         <b-form-select
             class="form-control"
-            v-model="SelectedMoviesID"
+            v-model="DownloadMaxBandWidth"
             id="SelectedMoviesID"
             :options="SelectedMoviesIDOptions"
             @change="SelectedMoviesIDChanged"
             style="width: 50%"
             name="SugMovieID">
         </b-form-select>
-        <WTNGtt tt="Modules.ET.Settings.ttMoviesUseId" size="20px"></WTNGtt>
+        <WTNGtt tt="Modules.Download.Settings.ttDownloadMaxBandWidth" size="20px"></WTNGtt>
     </b-form-group>
+    <br>
+    <br>
     <!-- Buttons -->
     <div class="buttons">
         <!-- Buttons -->
@@ -47,14 +50,9 @@
         },
         data() {
             return {
-                PosterDimDisabled: false,
-                ArtDimDisabled: false,
-                PosterDim: wtconfig.get('ET.Posters_Dimensions', '75*75'),
-                ArtDim: wtconfig.get('ET.Art_Dimensions', '75*75'),
+                DownloadMaxBandWidth: '',
                 SelectedMoviesIDOptions: ['imdb', 'tmdb'],
                 SelectedMoviesID: '',
-                SelectedShowsIDOptions: ['tmdb', 'tvdb'],
-                SelectedShowsID: ''
             };
         },
         methods: {

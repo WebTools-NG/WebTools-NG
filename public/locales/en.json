@@ -585,7 +585,8 @@
                 "Name": "@:Modules.Download.Name Settings",
                 "Description": "Here you can define the settings for @:Modules.Download.Name",
                 "Return": "Return to @:Modules.Download.Name",
-                "DownloadMaxBandWidth": "Maximum bandwidth to use"
+                "DownloadMaxBandWidth": "Maximum bandwidth to use",
+                "ttDownloadMaxBandWidth": "Here you select the maximum bandwith to use when downloading. Don't use maximum, unless you wanna loose your friend"
 
             }
         }
