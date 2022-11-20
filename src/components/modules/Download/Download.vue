@@ -23,10 +23,8 @@
     <b-container>
       <b-form-row>
         <b-col> <!-- Select Server -->
-          <b-form-group id="PMSServers" v-bind:label="$t('Modules.Download.SelSrv')" label-size="lg" label-class="font-weight-bold pt-0">
-            <b-tooltip target="PMSServers" triggers="hover">
-              {{ $t('Modules.Download.TT-Server') }}
-            </b-tooltip>
+          <b-form-group id="PMSServers" >
+            <WTNGttlabel tt="Modules.Download.ttServer" label="Modules.Download.SelSrv" />
             <b-form-select
               v-model="selSrv"
               id="selSrv"
@@ -37,13 +35,11 @@
           </b-form-group>
         </b-col>
         <b-col> <!-- Select Library -->
-          <b-form-group id="LibraryGroup" v-bind:label="$t('Modules.ET.optExpType.lblSelectSelection')" label-size="lg" label-class="font-weight-bold pt-0" :disabled=this.LibraryGroupDisabled>
+          <b-form-group id="LibraryGroup" :disabled=this.LibraryGroupDisabled>
+              <WTNGttlabel tt="Modules.Download.ttLibrary" label="Modules.ET.optExpType.lblSelectSelection" />
               <div ref="libSpinner" id="libSpinner" :hidden="selLibraryWait">
                 <b-spinner id="libLoad" class="ml-auto text-danger"></b-spinner>
               </div>
-              <b-tooltip target="LibraryGroup" triggers="hover">
-                {{ $t('Modules.ET.optExpType.ttExpLibrary') }}
-              </b-tooltip>
               <b-form-select
                 v-model="selLibrary"
                 id="selLibrary"
@@ -108,12 +104,14 @@
   import axios from 'axios';
   import Loading from 'vue-loading-overlay';
   import 'vue-loading-overlay/dist/vue-loading.css';
+  import WTNGttlabel from '../General/wtng-ttlabel.vue'
 
   const log = require("electron-log");
   export default {
     components: {
       VueVirtualTable,
-      Loading
+      Loading,
+      WTNGttlabel
     },
     data() {
       return {
@@ -135,7 +133,6 @@
           { prop: 'Added',searchable: true,sortable: true, width: 30 },
           { prop: 'Updated',searchable: true,sortable: true, width: 30 },
           { prop: 'Type', isHidden: true }
-
         ],
         tableData: [],
         tableAttribute: {
@@ -428,8 +425,8 @@
           entry['Title'] = response[x]['title'];
           entry['Type'] = response[x]['type'];
           entry['Released'] = response[x]['originallyAvailableAt'];
-          entry['Added'] = await time.convertEpochToDate(response[x]['addedAt']);
-          entry['Updated'] = await time.convertEpochToDate(response[x]['updatedAt']);
+          entry['Added'] = await time.convertEpochToDateISO(response[x]['addedAt']);
+          entry['Updated'] = await time.convertEpochToDateISO(response[x]['updatedAt']);
           this.tableData.push(entry);
         }
         this.pgbaridx += step;

@@ -155,6 +155,12 @@ const time = new class Time {
         return new Intl.DateTimeFormat(wtconfig.get('General.DateTimeFormat')).format(epoch * 1000);
     }
 
+    async convertEpochToDateISO( epoch )
+    {
+        return new Date(epoch * 1000).toISOString().split('T')[0];
+        //return new Intl.DateTimeFormat(wtconfig.get('General.DateTimeFormat')).format(epoch * 1000);
+    }
+
     async convertToLocalDateTime( datetime ){
         const localFormat = wtconfig.get('General.DateTimeFormat', 'NOTSET');
         if ( localFormat === 'NOTSET'){

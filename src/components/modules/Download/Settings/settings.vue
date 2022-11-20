@@ -12,11 +12,11 @@
         <b-form-select
             class="form-control"
             v-model="DownloadMaxBandWidth"
-            id="SelectedMoviesID"
-            :options="SelectedMoviesIDOptions"
-            @change="SelectedMoviesIDChanged"
+            id="DownloadMaxBandWidth"
+            :options="DownloadMaxBandWidthOptions"
+            @change="DownloadMaxBandWidthChanged"
             style="width: 50%"
-            name="SugMovieID">
+            name="DownloadMaxBandWidth">
         </b-form-select>
         <WTNGtt tt="Modules.Download.Settings.ttDownloadMaxBandWidth" size="20px"></WTNGtt>
     </b-form-group>
@@ -51,8 +51,19 @@
         data() {
             return {
                 DownloadMaxBandWidth: '',
-                SelectedMoviesIDOptions: ['imdb', 'tmdb'],
-                SelectedMoviesID: '',
+                DownloadMaxBandWidthOptions: [
+                    {text: 'Unlimited', value: 100000000000000},  // Unlimited
+                    {text: '50Mb/s', value: 50},
+                    {text: '40Mb/s', value: 40},
+                    {text: '30Mb/s', value: 30},
+                    {text: '20Mb/s', value: 20},
+                    {text: '15Mb/s', value: 15},
+                    {text: '10Mb/s', value: 10},
+                    {text: '7Mb/s', value: 7},
+                    {text: '5Mb/s', value: 5},
+                    {text: '3Mb/s', value: 3},
+                    {text: '1Mb/s', value: 1}
+                ]
             };
         },
         methods: {
@@ -62,10 +73,9 @@
             },
             
 
-            SelectedMoviesIDChanged(){
-                wtconfig.set("ET.SelectedMoviesID", this.SelectedMoviesID);
+            DownloadMaxBandWidthChanged(){
+                wtconfig.set("Download.DownloadMaxBandWidth", this.DownloadMaxBandWidth);
             },
-
         }
     };
 

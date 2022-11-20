@@ -563,6 +563,8 @@
             "SelSrv": "Select server",
             "ShowQueue": "Show Queue",
             "ttSettings": "Settings for @:Modules.Download.Name module",
+            "ttServer": "Select the server to download from",
+            "ttLibrary": "Select the library to download from",
             "mediaInfo": {
                 "title": "Title",
                 "file": "File",

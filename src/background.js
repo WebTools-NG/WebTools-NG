@@ -1,6 +1,6 @@
 'use strict'
 import { app, protocol, BrowserWindow, Menu} from 'electron';
-import { wtutils } from '../src/components/modules/General/wtutils';
+import { wtutils, wtconfig } from '../src/components/modules/General/wtutils';
 import axios from 'axios';
 import { AbortController } from "node-abort-controller";
 
@@ -178,21 +178,7 @@ ipcMain.on('downloadMedia', function (event, data) {
     targetStream = fs.createWriteStream(data.targetFile, {flags:'a'});
   }
   controller = new AbortController();
-
-  const maxrateLimit = 100000000000000;  // Unlimited
-//  const maxrateLimit = 50;  // 50Mb/s
-//  const maxrateLimit = 40;  // 40Mb/s
-//  const maxrateLimit = 30;  // 30Mb/s
-//  const maxrateLimit = 20;  // 20Mb/s
-//  const maxrateLimit = 15;  // 15Mb/s
-//  const maxrateLimit = 10;  // 10Mb/s
-//  const maxrateLimit = 7;  // 7Mb/s
-//  const maxrateLimit = 5;  // 5Mb/s
-//  const maxrateLimit = 3;  // 3Mb/s
-//  const maxrateLimit = 1;  // 1Mb/s 
-
-
-  maxrateLimit
+  const maxrateLimit = wtconfig.get("Download.DownloadMaxBandWidth", 7);
 
 
   axios({
@@ -206,7 +192,6 @@ ipcMain.on('downloadMedia', function (event, data) {
       maxrateLimit * 1024 * 1024 , // upload limit,
       maxrateLimit * 1024 * 1024 // download limit
     ],
-      
     // Send download progress for every 5 %
     onDownloadProgress: progressEvent => {
       downloadProcent = Math.floor(progressEvent.loaded / progressEvent.total * 100);
