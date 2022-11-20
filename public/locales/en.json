@@ -583,7 +583,9 @@
             },
             "Settings": {
                 "Name": "@:Modules.Download.Name Settings",
-                "Description": "Here you can define the settings for @:Modules.Download.Name"
+                "Description": "Here you can define the settings for @:Modules.Download.Name",
+                "Return": "Return to @:Modules.Download.Name",
+                "DownloadMaxBandWidth": "Maximum bandwidth to use"
 
             }
         }

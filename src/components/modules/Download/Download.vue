@@ -192,7 +192,7 @@
   methods: {
     // Show Settings
     showSettings(){
-      this.$router.push({ name: 'exportsettings' })
+      this.$router.push({ name: 'downloadsettings' })
     },
     getTargetFile( serverName, libName, mediaDir, file){
       var path = require('path');
