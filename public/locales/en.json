@@ -558,7 +558,8 @@
         },
         "Download": {
             "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download media, as well as local assets, from servers where you have been granted download rights",
+            "Description": "The @:Modules.Download.Name module allows you to download media.",
+            "Description2": "The server owner must has granted you download rights, and you also need a Plex Pass. When downloading, we respect server owners settings regarding maximum speed, as well as you can limit speed your self in the settings. You can stop/resume a download if needed",
             "Disabled": "Disabled",
             "SelSrv": "Select server",
             "ShowQueue": "Show Queue",

@@ -19,6 +19,7 @@
         {{ $t(`Modules.${this.PageName}.Name`) }}
       </h2>
       <h5>{{ $t(`Modules.${this.PageName}.Description`) }}</h5>
+      <p>{{ $t(`Modules.${this.PageName}.Description2`) }}</p>
     </div>
     <b-container>
       <b-form-row>

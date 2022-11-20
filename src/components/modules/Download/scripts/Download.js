@@ -123,7 +123,14 @@ const download = new class DOWNLOAD {
                 log.error(`[Download.js] (downloadItem) downloading ${this.item.targetFile} cougth an exception as: ${error}`);
             }
             // Update progress
-            ipcRenderer.on('downloadMediaProgress', (event, procent) => {
+
+            ipcRenderer.on('downloadMediaProgress', (event, data) => {
+                log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${data.Procent}%`);
+
+                console.log('Ged 99-3 data', JSON.stringify(data))
+            })
+
+            ipcRenderer.on('downloadMediaProgress1', (event, procent) => {
                 log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${procent} procent`);
                 console.log('Ged 99-3 calculated procent', procent + Math.floor(procenttal))
             })

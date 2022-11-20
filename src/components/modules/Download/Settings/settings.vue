@@ -71,11 +71,12 @@
             Return(){
                 this.$router.push({ name: 'download' })
             },
-            
-
             DownloadMaxBandWidthChanged(){
                 wtconfig.set("Download.DownloadMaxBandWidth", this.DownloadMaxBandWidth);
             },
+            getDefaults(){
+                this.DownloadMaxBandWidth = wtconfig.get("Download.DownloadMaxBandWidth", 7);
+            }
         }
     };
 

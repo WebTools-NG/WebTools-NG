@@ -167,10 +167,6 @@ ipcMain.on('downloadMedia', function (event, data) {
   const agent = new https.Agent({
     rejectUnauthorized: false
   });
-  let downloadProcent = 0;
-  let downloadprocentlog = 0;
-
-  console.log('Ged 12-5', data.header["Range"])
   let targetStream;
   if ( data.header["Range"] == 0){
     targetStream = fs.createWriteStream(data.targetFile);
@@ -194,15 +190,11 @@ ipcMain.on('downloadMedia', function (event, data) {
     ],
     // Send download progress for every 5 %
     onDownloadProgress: progressEvent => {
-      downloadProcent = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-      //console.log('Ged 887-3 url', data.url, 'completed: ', downloadProcent)
-      if ( downloadProcent % 5 == 0) {
-          if (downloadProcent > downloadprocentlog){
-              //log.info(`[background.js] (downloadMedia) Downloaded file ${data.targetFile} completed procent: ${downloadProcent}`);
-              downloadprocentlog = downloadProcent;
-              event.sender.send('downloadMediaProgress', downloadprocentlog);
-          }
-      }
+      const downloadData = {};
+      downloadData['Downloaded'] =  progressEvent.loaded;
+      downloadData['Total'] =  progressEvent.total;
+      downloadData['Procent'] = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+      event.sender.send('downloadMediaProgress', downloadData);
   },
   }).then((response) => {
     log.info(`[background.js] (downloadMedia) - Download started`);
