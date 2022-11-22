@@ -163,7 +163,10 @@
                 "Processing": "Processing",
                 "GatheringLibs": "Gathering libraries to process",
                 "ProcessItem_0_1": "Processing item {count} of {total}",
-                "Finished": "Job finished"
+                "Finished": "Job finished",
+                "Downloading": "Downloading {title}",
+                "Downloaded": "Downloaded {0} bytes of {1}",
+                "Target": "Target file is {file}"
             }
         },
         "DateTime": {

@@ -16,7 +16,12 @@ import {ipcRenderer} from 'electron';
 import { wtconfig, wtutils } from '../../General/wtutils';
 import { ptv } from '../../General/plextv';
 import axios from 'axios';
+import i18n from '../../../../i18n';
+import store from '../../../../store';
+
 //import * as stream from 'stream';
+import status from '../../General/status.js';
+
 
 fs, path, axios
 
@@ -70,6 +75,14 @@ const download = new class DOWNLOAD {
 
     async downloadItem(){ // Download the actual item
         log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
+        console.log('Ged 23-3-0 status', JSON.stringify(store.getters.getStatus))
+        console.log('Ged 23-3-0-1 status')
+        console.log('Ged 23-3-1 status', status.RevMsgType.Info)
+        status.updateStatusMsg( status.RevMsgType.Info, i18n.t('Common.Status.Msg.Downloading', {title: this.item.title}));
+
+        console.log('Ged 23-3-2 status', JSON.stringify(store.getters.getStatus))
+
+
         let header = wtutils.PMSHeader;
         // Add Auth Token
         header['X-Plex-Token'] = this.accessToken;

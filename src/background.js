@@ -173,6 +173,13 @@ ipcMain.on('downloadMedia', function (event, data) {
   } else {
     targetStream = fs.createWriteStream(data.targetFile, {flags:'a'});
   }
+
+  let startbyte = 0;
+  if (data.header["Range"]){
+    startbyte = data.header["Range"].substring(6).slice(0, -1)
+  }
+  console.log('Ged 11-5 startbyte', startbyte)
+
   controller = new AbortController();
   const maxrateLimit = wtconfig.get("Download.DownloadMaxBandWidth", 7);
 
@@ -193,7 +200,10 @@ ipcMain.on('downloadMedia', function (event, data) {
       const downloadData = {};
       downloadData['Downloaded'] =  progressEvent.loaded;
       downloadData['Total'] =  progressEvent.total;
-      downloadData['Procent'] = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+      //downloadData['Procent'] = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+      console.log('Ged 9-3 Total', Number(progressEvent.loaded) + Number(startbyte))
+      downloadData['Procent'] = Math.floor((Number(progressEvent.loaded) + Number(startbyte)) / Number(progressEvent.total) * 100);
+      downloadData['startbyte'] =  startbyte;
       event.sender.send('downloadMediaProgress', downloadData);
   },
   }).then((response) => {

@@ -41,6 +41,8 @@
       </div>
     </div>
     {{ this.queueRunning }}
+    <br>
+    <statusDiv /> <!-- Status Div -->
   </b-container>
 </template>
 
@@ -51,13 +53,17 @@
   //import { pms } from '../../General/pms';
   import VueVirtualTable from 'vue-virtual-table';
   import { download } from '../scripts/Download.js';
+  import statusDiv from '../../General/status.vue';
+
+
 
 
 
   const log = require("electron-log");
   export default {
     components: {
-      VueVirtualTable
+      VueVirtualTable,
+      statusDiv
     },
     data() {
       return {
