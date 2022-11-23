@@ -152,7 +152,9 @@
                     "TimeElapsed": "Time Elapsed",
                     "RunningTime": "Running time",
                     "LibsToProcess": "Libraries to process",
-                    "CurrentLib": "Current Library"
+                    "CurrentLib": "Current Library",
+                    "Downloaded": "Downloaded",
+                    "Downloading": "Downloading"
                 }
             },
             "Msg": {
@@ -164,8 +166,8 @@
                 "GatheringLibs": "Gathering libraries to process",
                 "ProcessItem_0_1": "Processing item {count} of {total}",
                 "Finished": "Job finished",
-                "Downloading": "Downloading {title}",
-                "Downloaded": "Downloaded {0} bytes of {1}",
+                "Downloading": ": {title}",
+                "Downloaded": "{current} bytes of {total}. {procent}% completed",
                 "Target": "Target file is {file}"
             }
         },

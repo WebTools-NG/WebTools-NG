@@ -3,6 +3,8 @@ import { app, protocol, BrowserWindow, Menu} from 'electron';
 import { wtutils, wtconfig } from '../src/components/modules/General/wtutils';
 import axios from 'axios';
 import { AbortController } from "node-abort-controller";
+//import { status } from '../src/components/modules/General/status';
+//import i18n from '../src/i18n';
 
 const log = require('electron-log');
 console.log = log.log;
@@ -161,7 +163,6 @@ ipcMain.on('downloadMediaAbort', function () {
 })
 
 ipcMain.on('downloadMedia', function (event, data) {
-  const item = data.item;
   const https = require('https');
   controller = null;
   const agent = new https.Agent({
@@ -178,8 +179,6 @@ ipcMain.on('downloadMedia', function (event, data) {
   if (data.header["Range"]){
     startbyte = data.header["Range"].substring(6).slice(0, -1)
   }
-  console.log('Ged 11-5 startbyte', startbyte)
-
   controller = new AbortController();
   const maxrateLimit = wtconfig.get("Download.DownloadMaxBandWidth", 7);
 
@@ -195,34 +194,31 @@ ipcMain.on('downloadMedia', function (event, data) {
       maxrateLimit * 1024 * 1024 , // upload limit,
       maxrateLimit * 1024 * 1024 // download limit
     ],
-    // Send download progress for every 5 %
     onDownloadProgress: progressEvent => {
       const downloadData = {};
       downloadData['Downloaded'] =  progressEvent.loaded;
       downloadData['Total'] =  progressEvent.total;
-      //downloadData['Procent'] = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-      console.log('Ged 9-3 Total', Number(progressEvent.loaded) + Number(startbyte))
-      downloadData['Procent'] = Math.floor((Number(progressEvent.loaded) + Number(startbyte)) / Number(progressEvent.total) * 100);
+      if ( data.size ){
+        downloadData['Procent'] = Math.floor((Number(progressEvent.loaded) + Number(startbyte)) / Number(data.size) * 100);
+      } else {
+        downloadData['Procent'] = 100;
+      }
       downloadData['startbyte'] =  startbyte;
       event.sender.send('downloadMediaProgress', downloadData);
   },
   }).then((response) => {
     log.info(`[background.js] (downloadMedia) - Download started`);
-    console.log('Ged 887-4', response.headers);
     response.data.pipe(targetStream);
     response.data.on('end', () => {
-      console.log('Ged 887-5', response.headers);
       targetStream.end();
       event.sender.send('downloadMediaEnd');
     })
     response.data.on('error', (error) => {
-      console.log('Ged 887-6', response.headers);
-      //log.error(`[background.js] (downloadFile) - Failed to download ${item.split('&X-Plex-Token=')[0]}`);
       targetStream.end();
       event.sender.send('downloadMediaError', error);
     })
   }).catch((error) => {
-    log.error(`[background.js] (downloadFile) - ${item.split('&X-Plex-Token=')[0]}`);
+    log.error(`[background.js] (downloadFile) - ${error}`);
     targetStream.end();
     event.sender.send('downloadMediaError', error);
   })

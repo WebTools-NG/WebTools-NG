@@ -55,10 +55,6 @@
   import { download } from '../scripts/Download.js';
   import statusDiv from '../../General/status.vue';
 
-
-
-
-
   const log = require("electron-log");
   export default {
     components: {
@@ -104,19 +100,16 @@
     created() {
       log.info(`[Queue.vue] (created) - Download Queue Created`);
       this.GetQueue();
-      console.log('Ged 43-3')
       this.setCreatedStatus();
     },
     watch: {
-      queueChanged: async function(){
-        console.log('Ged 776655 Queue Changed')
-        download.queueChanged = false;
+      WatchQueue: async function(){
         this.GetQueue();
       },
     },
     computed: {
-      queueChanged: function(){
-        return download.queueChanged;
+      WatchQueue: function(){
+        return this.$store.getters.getQueue
       }
     },
     methods: {
@@ -183,6 +176,8 @@
         log.info(`[Queue.vue] (GetQueue) - Get the queue`);
         this.tableData = wtconfig.get('Download.Queue');
       }
+
+
     }
   }
 

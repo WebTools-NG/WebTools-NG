@@ -4,26 +4,16 @@ const log = require('electron-log');
 console.log = log.log;
 const fs = require('fs');
 const path = require('path');
-//const stream = require('stream')
-//const controller = new AbortController();
-
-
-
 
 import {ipcRenderer} from 'electron';
-
-
 import { wtconfig, wtutils } from '../../General/wtutils';
 import { ptv } from '../../General/plextv';
 import axios from 'axios';
 import i18n from '../../../../i18n';
 import store from '../../../../store';
+import { status } from '../../General/status';
 
-//import * as stream from 'stream';
-import status from '../../General/status.js';
-
-
-fs, path, axios
+path, axios
 
 const download = new class DOWNLOAD {
     constructor() {
@@ -34,7 +24,6 @@ const download = new class DOWNLOAD {
         this.downloadProcent = 0;
         this.controller = null;
         this.queueRunning = false;
-        this.queueChanged = false;
         this.lastError = null;
     }
 
@@ -78,7 +67,6 @@ const download = new class DOWNLOAD {
         console.log('Ged 23-3-0 status', JSON.stringify(store.getters.getStatus))
         console.log('Ged 23-3-0-1 status')
         console.log('Ged 23-3-1 status', status.RevMsgType.Info)
-        status.updateStatusMsg( status.RevMsgType.Info, i18n.t('Common.Status.Msg.Downloading', {title: this.item.title}));
 
         console.log('Ged 23-3-2 status', JSON.stringify(store.getters.getStatus))
 
@@ -116,6 +104,8 @@ const download = new class DOWNLOAD {
 
         console.log('Ged 88-3-0 Item', JSON.stringify(this.item))
 
+        status.updateStatusMsg( status.RevMsgType.Downloading, i18n.t('Common.Status.Msg.Downloading', { title: this.item.title }));
+
         let downloadprocentlog = 1;
         downloadprocentlog;
         this.controller = new AbortController();
@@ -128,7 +118,8 @@ const download = new class DOWNLOAD {
                 ipcRenderer.send('downloadMedia', {
                     url: url,
                     targetFile: this.item.targetFile,
-                    header: header
+                    header: header,
+                    size: this.item.size
                 })
             }
             catch (error)
@@ -136,16 +127,12 @@ const download = new class DOWNLOAD {
                 log.error(`[Download.js] (downloadItem) downloading ${this.item.targetFile} cougth an exception as: ${error}`);
             }
             // Update progress
-
             ipcRenderer.on('downloadMediaProgress', (event, data) => {
                 log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${data.Procent}%`);
+                status.updateStatusMsg( status.RevMsgType.Downloaded, i18n.t('Common.Status.Msg.Downloaded', { current: data.Downloaded, total: data.Total, procent: data.Procent } ));
+
 
                 console.log('Ged 99-3 data', JSON.stringify(data))
-            })
-
-            ipcRenderer.on('downloadMediaProgress1', (event, procent) => {
-                log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${procent} procent`);
-                console.log('Ged 99-3 calculated procent', procent + Math.floor(procenttal))
             })
             ipcRenderer.on('downloadMediaEnd', () => {
                 try
@@ -169,131 +156,20 @@ const download = new class DOWNLOAD {
         })
     }
 
-    async downloadItem1(){ // Download the actual item
-        log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
-        // Get the header
-        console.log('Ged 1-3-3')
-        let header = wtutils.PMSHeader;
-        // Add Auth Token
-        header['X-Plex-Token'] = this.accessToken;
-        // Start by checking, if media is already partially downloaded
-        let rangeStart = 0;
-        // Make a stream writer
-        let writer;
-        writer;
-        /* 
-        let options = { 
-            'flags': 'a',
-            'encoding': null,
-            'mode': '0666'
-        } */
-
-        console.log('Ged 1-3-4')
-        console.log('Ged 1-3-4-2', this.item.targetFile)
-        if (fs.existsSync(this.item.targetFile)) {
-            console.log('Ged 12-3 exists Need to adjust start')
-          } else {
-            console.log('Ged 12-3-2 New file')
-            //writer = stream.createWriteStream(this.item.targetFile);
-            writer = fs.createWriteStream(this.item.targetFile);
-
-           // writer = stream.createWriteStream(this.item.targetFile);
-          }
-        console.log('Ged 1-3-5')
-        header['Content-Range'] = rangeStart;
-        // Url to download
-        const url = this.item.baseAddress + this.item.key + '?download=1';
-
-        console.log('Ged 12-3 url', url)
-        console.log('Ged 12-4 Header', JSON.stringify(header))
-        this.downloadProcent = 0;
-
-        console.log('Ged 88-3-0 Item', JSON.stringify(this.item))
-
-        let downloadprocentlog = 1;
-
-        downloadprocentlog;
-
-        this.controller = new AbortController();
-        this.lastError = null;
-
-
-
-
-        // item.targetFile
-       // const response = await axios({
-        await axios({
-            method: 'get',
-            url: url,
-            headers: header,
-            responseType: 'stream',
-            onDownloadProgress: progressEvent => {
-                this.downloadProcent = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                //console.log('Ged 88-3 url', url, 'completed: ', this.downloadProcent)
-                if ( this.downloadProcent % 5 == 0) {
-                    if (this.downloadProcent > downloadprocentlog){
-                        log.info(`[Download.js] (downloadItem) Downloaded file ${this.item.targetFile} completed procent: ${this.downloadProcent}`);
-                        downloadprocentlog = this.downloadProcent;
-                    }
-                }
-            },
-            signal: this.controller.signal
-        })
-        .then((response) => {
-                response
-                log.debug('[Download.js] (downloadItem) Response from downloadItem recieved');
-                log.info(`[Download.js] (downloadItem) - Download completed for file: ${this.item.targetFile}`)
-                //log.silly(`downloadItem returned as: ${JSON.stringify(response.data)}`);
-                return new Promise((resolve, reject) => {
-                    //writer.write(response.data);
-                    response.data.pipe(writer);
-                    let error = null;
-                    writer.on('error', err => {
-                      error = err;
-                      writer.close();
-                      reject(err);
-                    });
-                    writer.on('close', () => {
-                        if (!error) {
-                          resolve(true);
-                        }
-                        //no need to call the reject here, as it will have been called in the
-                        //'error' stream;
-                    });
-                });
-            })
-            .catch(function (error) {
-            if (error.code == 'ERR_CANCELED'){
-                log.info(`[Download.js] (downloadItem) - User canceled download of file`);
-                this.lastError = 'Canceled';
-            }
-            else if (error.response) {
-                log.error('[Download.js] (downloadItem) processWatchedList: ' + JSON.stringify(error.response.data));
-                alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-            } else if (error.request) {
-                log.error('[Download.js] (downloadItem) error: ' + error.request);
-            } else {
-                log.error('[Download.js] (downloadItem) last error: ' + error.message);
-            }
-        });
-    }
-
     async stopProcess(){ // Abort current download
         this.queueRunning = false;
+        status.clearStatus();
+        status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Idle'));
+        this.queueRunning = true;
         ipcRenderer.send('downloadMediaAbort');
-
-        /* if (this.controller){
-            this.controller.abort('Queue stopped');
-        } */
     }
 
     async startProcess(){  // Start download Queue
         log.info(`[Download.js] (startProcess) - Starting the download Queue`);
+        status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Processing'));
         this.queueRunning = true;
-
         this.queue = wtconfig.get('Download.Queue');
         this.getFirstEntry();
-        console.log('Ged 99-3', JSON.stringify(this.queue))
         while (this.item && this.queueRunning){
             this.getFirstEntry();
             await this.getSrvInfo();
@@ -302,12 +178,10 @@ const download = new class DOWNLOAD {
 
             if (!this.lastError){ // Remove from queue if no error
                 this.removeFirstEntry();
+                // Update timestamp for the queue
+                store.commit("UPDATE_Queue");
             }
-            this.queueChanged = true;
-            console.log('Ged 99-4 Item Downloaded')
-
         }
-
         console.log('Ged 99-5 all done')
     }
 }
