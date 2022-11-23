@@ -1,0 +1,48 @@
+name: Build/release
+
+on:
+  push:
+    branches:
+      - alpha
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+#        os: [macos-latest]
+#        os: [ubuntu-latest, windows-latest]
+#        os: [windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 16.13
+      - name: Install dependencies
+        run: npm install
+      - name: see directory with dependencies
+        run: ls
+      - name: Add TMDB Secret
+        run: echo "${{ secrets.KEY_TMDB }}" > public/locales/.env.local
+        shell: bash
+        env:
+          KEY_TMDB: ${{ secrets.KEY_TMDB }}
+      - name: Add TVDB Secret
+        run: echo "${{ secrets.KEY_TVDB }}" >> public/locales/.env.local
+        shell: bash
+        env:
+          KEY_TVDB: ${{ secrets.KEY_TVDB }}
+      - name: Add POEditor Secret
+        run: echo "${{ secrets.KEY_POEDITOR }}" >> public/locales/.env.local
+        shell: bash
+        env:
+          KEY_POEDITOR: ${{ secrets.KEY_POEDITOR }}
+      - name: Deploy Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run deploy
