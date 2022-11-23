@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../../router'
-import {wtconfig, wtutils, dialog} from '../../components/modules/General/wtutils'
+import {wtutils, dialog} from '../../components/modules/General/wtutils'
 import i18n from '../../i18n';
 
 const log = require('electron-log');
@@ -16,7 +16,8 @@ const state = {
   avatar: '',
   plexname: '',
   users: {},
-  MeId: ''
+  MeId: '',
+  dwnsrv: false
 };
 
 const mutations = {
@@ -50,6 +51,9 @@ const mutations = {
   },
   UPDATE_USERS(state, value){
     state.users = value;
+  },
+  UPDATE_VALID_DWNSRV(state, payload) {
+    state.dwnsrv = payload;
   },
   UPDATE_Features(state, value){
     state.features = value;
@@ -85,59 +89,6 @@ const actions = {
             log.error('fetchUsers: ' + error.message);
       }
     });
-  },
-  fetchPlexServers({ commit, getters }) {
-    let header = wtutils.PMSHeader;
-    header['X-Plex-Token'] = getters.getAuthToken;
-      axios({
-          method: 'get',
-          url: `${wtutils.plexTVApi}v2/resources`,
-          headers: header,
-          params: {
-            'includeHttps' : '1',
-            'includeRelay': '0'
-          }
-        })
-          .then((response) => {
-            let result=[];
-            log.debug('[plextv.js] (fetchPlexServers) Response from fetchPlexServers recieved');
-            const showNotOwned = wtconfig.get('Developer.showNotOwned', false);
-            if (showNotOwned){
-              log.debug('[plextv.js] (fetchPlexServers) fetchPlexServers : See not owned servers as well');
-            }
-            response.data.forEach((req) => {
-              if (showNotOwned){
-                if (req.product == "Plex Media Server") {
-                  let pmsServer = {};
-                  pmsServer['name'] = req.name;
-                  pmsServer['accessToken'] = req.accessToken;
-                  pmsServer['connections'] = req.connections;
-                  pmsServer['clientIdentifier'] = req.clientIdentifier;
-                  result.push(pmsServer);
-                }
-              } else {
-                if (req.owned == true && req.product == "Plex Media Server") {
-                  let pmsServer = {};
-                  pmsServer['name'] = req.name;
-                  pmsServer['accessToken'] = req.accessToken;
-                  pmsServer['connections'] = req.connections;
-                  pmsServer['clientIdentifier'] = req.clientIdentifier
-                  result.push(pmsServer);
-                }
-              }
-            })
-            commit('UPDATE_PLEX_SERVERS', result);
-          })
-          .catch(function (error) {
-            if (error.response) {
-                log.error('fetchPlexServers: ' + error.response.data);
-                alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message);
-            } else if (error.request) {
-                log.error('fetchPlexServers: ' + error.request);
-            } else {
-                log.error('fetchPlexServers: ' + error.message);
-     }
-   });
   },
   loginToPlex({ commit }, payload){
     log.info("[plextv.js] (loginToPlex) loginToPlex called")
@@ -261,8 +212,8 @@ const getters = {
     getSelectedServerAddressUpdateInProgress: state => state.selectedServerAddressUpdateInProgress,
     getSelectedServerToken: state => state.selectedServerToken,
     getUsers: state => state.users,
+    getValidSrvDone: state => state.dwnsrv,
     getFeatures: state => state.features
-,
 };
 
 const serverModule = {

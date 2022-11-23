@@ -14,6 +14,8 @@ const status = new class Status {
             8: i18n.t("Common.Status.Name.Global.CurrentLib"),
             9: i18n.t("Common.Status.Name.Global.Item"),
             10: i18n.t("Common.Status.Name.Global.Items"),
+            11: i18n.t("Common.Status.Name.Global.Downloading"),
+            12: i18n.t("Common.Status.Name.Global.Downloaded"),
             // Time related stuff 201 -> 250
             201: i18n.t("Common.Status.Name.Global.StartTime"),
             202: i18n.t("Common.Status.Name.Global.EndTime"),
@@ -34,7 +36,9 @@ const status = new class Status {
             "RunningTime": 204,
             "CurrentLib": 8,
             "Item": 9,
-            "Items": 10
+            "Items": 10,
+            "Downloading": 11,
+            "Downloaded": 12
         }
     }
 
