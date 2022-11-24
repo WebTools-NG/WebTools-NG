@@ -62,6 +62,18 @@ const download = new class DOWNLOAD {
         console.log('Ged 444-3 Queue now', this.queue)
     }
 
+    formatBytes(bytes, decimals = 2) {
+        if (!+bytes) return '0 Bytes'
+    
+        const k = 1024
+        const dm = decimals < 0 ? 0 : decimals
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    
+        const i = Math.floor(Math.log(bytes) / Math.log(k))
+    
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+    }
+
     async downloadItem(){ // Download the actual item
         log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
         console.log('Ged 23-3-0 status', JSON.stringify(store.getters.getStatus))
@@ -76,24 +88,20 @@ const download = new class DOWNLOAD {
         header['X-Plex-Token'] = this.accessToken;
         // Start by checking, if media is already partially downloaded
         let rangeStart = 0;
-        let procenttal = 0;
+        //let procenttal = 0;
         if (fs.existsSync(this.item.targetFile)) {
-            console.log('Ged 12-3 exists Need to adjust start')
             var stats = fs.statSync(this.item.targetFile)
             rangeStart = stats.size;
+            log.info(`[Download.js] (downloadItem) - Resuming download from ${rangeStart}`);
             //header['Range'] = `bytes=${rangeStart}-${this.item.size}`;
             header['Range'] = `bytes=${rangeStart}-`;
             //"bytes=100-200"
-            procenttal = Math.floor(Math.floor(rangeStart/this.item.size*100)/5)*5;
-            console.log('Ged 12-3-1 procent done', rangeStart, '*', this.item.size, '*', Math.floor(procenttal))
+           // procenttal = Math.floor(Math.floor(rangeStart/this.item.size*100)/5)*5;
+           // console.log('Ged 12-3-1 procent done', rangeStart, '*', this.item.size, '*', Math.floor(procenttal))
             //let procenttal5 = Math.floor(Math.floor(procenttal)/5)*5
             //console.log('Ged 12-3-1-2 procent 5 done', procenttal5)
-          } else {
-            console.log('Ged 12-3-2 New file')
           }
-        console.log('Ged 1-3-5')
-        //header['Content-Range'] = rangeStart;
-        //header['Range'] = `${rangeStart}-`;
+
         header['Accept'] = '*/*';
         // Url to download
         const url = this.item.baseAddress + this.item.key + '?download=1';
@@ -129,10 +137,9 @@ const download = new class DOWNLOAD {
             // Update progress
             ipcRenderer.on('downloadMediaProgress', (event, data) => {
                 log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${data.Procent}%`);
-                status.updateStatusMsg( status.RevMsgType.Downloaded, i18n.t('Common.Status.Msg.Downloaded', { current: data.Downloaded, total: data.Total, procent: data.Procent } ));
-
-
-                console.log('Ged 99-3 data', JSON.stringify(data))
+                const download = `${data.Downloaded} (${this.formatBytes(data.Downloaded)})`;
+                const total = `${data.Total} (${this.formatBytes(data.Total)})`
+                status.updateStatusMsg( status.RevMsgType.Downloaded, i18n.t('Common.Status.Msg.Downloaded', { current: download, total: total, procent: data.Procent } ));
             })
             ipcRenderer.on('downloadMediaEnd', () => {
                 try
