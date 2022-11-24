@@ -38,7 +38,6 @@ const download = new class DOWNLOAD {
         } catch (err) {
             log.error(`[download.js] (createOutDir) - err`)
         }
-        console.log('Ged 13-3 outDir', dirName)
     }
 
     async getSrvInfo(){  // Get download srv info
@@ -47,9 +46,6 @@ const download = new class DOWNLOAD {
       // Find idx of selected server
       let idx = allPMSSrv.map(function(x) {return x.clientIdentifier; }).indexOf(this.item['serverID']);
       this.accessToken = allPMSSrv[idx]['accessToken'];
-      //this.srvAddr = await ptv.checkServerConnect(allPMSSrv[idx]);
-      //this.srvAddr = await ptv.getValidPMSAddress( allPMSSrv[idx]['clientIdentifier'], allPMSSrv[idx]['connections'], this.accessToken)
-      console.log('Ged 56-9 Token', this.accessToken)
     }
 
     getFirstEntry(){  // Get first entry in the queue
@@ -59,7 +55,6 @@ const download = new class DOWNLOAD {
     removeFirstEntry(){ //Remove first entry from the queue
         this.queue.shift();
         wtconfig.set('Download.Queue', this.queue);
-        console.log('Ged 444-3 Queue now', this.queue)
     }
 
     formatBytes(bytes, decimals = 2) {
@@ -76,13 +71,6 @@ const download = new class DOWNLOAD {
 
     async downloadItem(){ // Download the actual item
         log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
-        console.log('Ged 23-3-0 status', JSON.stringify(store.getters.getStatus))
-        console.log('Ged 23-3-0-1 status')
-        console.log('Ged 23-3-1 status', status.RevMsgType.Info)
-
-        console.log('Ged 23-3-2 status', JSON.stringify(store.getters.getStatus))
-
-
         let header = wtutils.PMSHeader;
         // Add Auth Token
         header['X-Plex-Token'] = this.accessToken;
@@ -95,27 +83,14 @@ const download = new class DOWNLOAD {
             log.info(`[Download.js] (downloadItem) - Resuming download from ${rangeStart}`);
             //header['Range'] = `bytes=${rangeStart}-${this.item.size}`;
             header['Range'] = `bytes=${rangeStart}-`;
-            //"bytes=100-200"
-           // procenttal = Math.floor(Math.floor(rangeStart/this.item.size*100)/5)*5;
-           // console.log('Ged 12-3-1 procent done', rangeStart, '*', this.item.size, '*', Math.floor(procenttal))
-            //let procenttal5 = Math.floor(Math.floor(procenttal)/5)*5
-            //console.log('Ged 12-3-1-2 procent 5 done', procenttal5)
           }
 
+        let procentlog = 0;
         header['Accept'] = '*/*';
         // Url to download
         const url = this.item.baseAddress + this.item.key + '?download=1';
-
-        console.log('Ged 12-3 url', url)
-        console.log('Ged 12-4 Header', JSON.stringify(header))
         this.downloadProcent = 0;
-
-        console.log('Ged 88-3-0 Item', JSON.stringify(this.item))
-
         status.updateStatusMsg( status.RevMsgType.Downloading, i18n.t('Common.Status.Msg.Downloading', { title: this.item.title }));
-
-        let downloadprocentlog = 1;
-        downloadprocentlog;
         this.controller = new AbortController();
         this.lastError = null;
         const _this = this;
@@ -136,7 +111,13 @@ const download = new class DOWNLOAD {
             }
             // Update progress
             ipcRenderer.on('downloadMediaProgress', (event, data) => {
-                log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${data.Procent}%`);
+                if ( Number(data.Procent) % 5 == 0) {
+                    if ( procentlog < Number(data.Procent)){
+                        log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${data.Procent}%`);
+                        procentlog = Number(data.Procent);
+                    }
+                  }
+                //log.info(`[Download.js] (downloadItem) - Downloaded file: ${this.item.targetFile}  completed ${data.Procent}%`);
                 const download = `${data.Downloaded} (${this.formatBytes(data.Downloaded)})`;
                 const total = `${data.Total} (${this.formatBytes(data.Total)})`
                 status.updateStatusMsg( status.RevMsgType.Downloaded, i18n.t('Common.Status.Msg.Downloaded', { current: download, total: total, procent: data.Procent } ));
