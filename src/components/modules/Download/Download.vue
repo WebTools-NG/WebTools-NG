@@ -60,6 +60,7 @@
      :data="tableData"
      :bordered="tableAttribute.bordered"
      :minWidth="tableAttribute.minWidth"
+     :height="tableAttribute.height"
      :language="tableAttribute.language">
     </vue-virtual-table>
     <b-modal size="lg" ref="MediaInfo" hide-footer v-bind:title=this.mediaInfoTitle>
@@ -130,14 +131,14 @@
           { prop: 'mediaKey', isHidden: true },
           { prop: 'Key', isHidden: true },
           { prop: 'Title',searchable: true,sortable: true, width: 80 },
-          { prop: 'Released',searchable: true,sortable: true, width: 30 },
-          { prop: 'Added',searchable: true,sortable: true, width: 30 },
-          { prop: 'Updated',searchable: true,sortable: true, width: 30 },
+          { prop: 'Released',searchable: false,sortable: true, width: 30 },
+          { prop: 'Added',searchable: false,sortable: true, width: 30 },
+          { prop: 'Updated',searchable: false,sortable: true, width: 30 },
           { prop: 'Type', isHidden: true }
         ],
         tableData: [],
         tableAttribute: {
-          height: 1000,
+          height: 250,
           itemHeight: 42,
           minWidth: 10,
           selectable: true,
@@ -297,7 +298,7 @@
       this.isLoading = true;
       await this.getMediaInfo(myarg['Key']);
       this.selMediaTitle = myarg['Title'];
-      this.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.mediaInfoTitle")} - ${myarg['Title']}`
+      this.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")} - ${myarg['Title']}`
       // Stop Spinner
       this.isLoading = false;
       this.$refs['MediaInfo'].show();

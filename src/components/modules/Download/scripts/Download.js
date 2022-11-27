@@ -25,6 +25,9 @@ const download = new class DOWNLOAD {
         this.controller = null;
         this.queueRunning = false;
         this.lastError = null;
+        this.downloadError = false;
+        this.queueCount = 0;
+        this.lastErrMsg = ""
     }
 
     async createOutDir(){  // Force create OutDir
@@ -48,7 +51,7 @@ const download = new class DOWNLOAD {
       this.accessToken = allPMSSrv[idx]['accessToken'];
     }
 
-    getFirstEntry(){  // Get first entry in the queue
+    GEDgetFirstEntry(){  // Get first entry in the queue
         this.item = this.queue[0];
     }
 
@@ -57,21 +60,23 @@ const download = new class DOWNLOAD {
         wtconfig.set('Download.Queue', this.queue);
     }
 
+    getNextEntry(){  // Get first entry in the queue
+        this.item = this.queue[this.queueCount];
+    }
+
     formatBytes(bytes, decimals = 2) {
-        if (!+bytes) return '0 Bytes'
-    
-        const k = 1024
-        const dm = decimals < 0 ? 0 : decimals
-        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-    
-        const i = Math.floor(Math.log(bytes) / Math.log(k))
-    
-        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+        if (!+bytes) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
     }
 
     async downloadItem(){ // Download the actual item
         log.info(`[Download.js] (downloadItem) Started download of file: ${this.item.targetFile}`);
         let header = wtutils.PMSHeader;
+        this.downloadError = false;
         // Add Auth Token
         header['X-Plex-Token'] = this.accessToken;
         // Start by checking, if media is already partially downloaded
@@ -127,13 +132,33 @@ const download = new class DOWNLOAD {
                 {
                     log.info(`[Download.js] (downloadItem) - Download finished for ${this.item.targetFile} ok`);
                     ipcRenderer.removeAllListeners('downloadMediaEnd');
-                    //ipcRenderer.removeAllListeners('downloadError');
+                    ipcRenderer.removeAllListeners('downloadMediaError');
                     ipcRenderer.removeAllListeners('downloadMediaProgress');
                     // Rename to real file name
                     const newFile = this.item.targetFile.replace('.tmp', '')
                     if (fs.existsSync(this.item.targetFile)) {
                         fs.renameSync(this.item.targetFile, newFile);
                     }
+                    resolve(this.item.targetFile);
+                }
+                catch (error)
+                {
+                    log.error(`[Download.js] (downloadItem) - downloading "${this.item.title}" caused an exception as: ${error}`);
+                }
+            })
+            ipcRenderer.on('downloadMediaError', (event, data) => {
+                console.log('Ged 13 HELLO')
+                this.downloadError = true;
+                try
+                {
+                    log.error(`[Download.js] (downloadItem) - Download had an error for ${this.item.targetFile}`);
+                    console.log('Ged 99-3', JSON.stringify(data))
+                    this.lastErrMsg = JSON.stringify(data);
+                    //log.error(`[Download.js] (downloadItem) - Error code ${this.item.targetFile}`);
+
+                    ipcRenderer.removeAllListeners('downloadMediaEnd');
+                    ipcRenderer.removeAllListeners('downloadMediaError');
+                    ipcRenderer.removeAllListeners('downloadMediaProgress');
                     resolve(this.item.targetFile);
                 }
                 catch (error)
@@ -149,28 +174,65 @@ const download = new class DOWNLOAD {
         status.clearStatus();
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Idle'));
         this.queueRunning = true;
+        store.commit("UPDATE_QueueStatus", false);
         ipcRenderer.send('downloadMediaAbort');
     }
 
     async startProcess(){  // Start download Queue
         log.info(`[Download.js] (startProcess) - Starting the download Queue`);
+        store.commit("UPDATE_QueueStatus", true);
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Processing'));
         this.queueRunning = true;
+        this.queueCount = 0;
         this.queue = wtconfig.get('Download.Queue');
-        this.getFirstEntry();
+        this.getNextEntry();
+        console.log('Ged 77-3', JSON.stringify(this.item), this.queueRunning)
         while (this.item && this.queueRunning){
-            this.getFirstEntry();
+            
             await this.getSrvInfo();
             await this.createOutDir();
             await this.downloadItem();
+            console.log('Ged 15', this.downloadError, JSON.stringify(this.item))
 
-            if (!this.lastError){ // Remove from queue if no error
+            if (!this.downloadError){ // Remove from queue if no error
                 this.removeFirstEntry();
                 // Update timestamp for the queue
                 store.commit("UPDATE_Queue");
+            } else {
+                // We had an error
+                console.log('Ged 13-3 We had an error')
+                let idx = 0;
+                for (let item of this.queue) {
+                    if (item.hash === this.item.hash) {
+                        console.log('Ged 13-4 found item as', JSON.stringify(item), idx)
+                        if (item.error) {
+                            let error = {};
+                            error = this.queue[idx]["error"];
+                            error[Object.keys(error).length + 1] = this.lastErrMsg;
+                            this.queue[idx]["error"] = error;
+                            wtconfig.set("Download.Queue", this.queue);
+                        } else {
+                           let error = {};
+                           error[1] = this.lastErrMsg;
+                           this.queue[idx]["error"] = error;
+                           wtconfig.set("Download.Queue", this.queue);
+
+                        }
+                        break;
+                    }
+                    idx += 1;
+                }
+
+                //let errCount = wtconfig.get("Download.")
             }
+            this.queueCount += 1;
+            this.getNextEntry();
         }
-        console.log('Ged 99-5 all done')
+        this.queueRunning = false;
+        store.commit("UPDATE_QueueStatus", false);
+        log.info(`[Download.js] (startProcess) - Download completed`);
+        status.clearStatus();
+        status.updateStatusMsg(status.RevMsgType.Status, i18n.t('Common.Status.Msg.Idle'))
     }
 }
 

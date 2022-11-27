@@ -194,6 +194,7 @@ ipcMain.on('downloadMedia', function (event, data) {
       maxrateLimit * 1024 * 1024 , // upload limit,
       maxrateLimit * 1024 * 1024 // download limit
     ],
+    timeout: 2,
     onDownloadProgress: progressEvent => {
       const downloadData = {};
       downloadData['Downloaded'] =  progressEvent.loaded;
@@ -219,8 +220,11 @@ ipcMain.on('downloadMedia', function (event, data) {
     })
   }).catch((error) => {
     log.error(`[background.js] (downloadFile) - ${error}`);
+    event.sender.send('downloadMediaError', error.message);
+    console.log('Ged 88-3', error.code)
+    console.log('Ged 88-3-1', error.message)
+    console.log('Ged 88-3-2', error.stack)
     targetStream.end();
-    event.sender.send('downloadMediaError', error);
   })
 })
 

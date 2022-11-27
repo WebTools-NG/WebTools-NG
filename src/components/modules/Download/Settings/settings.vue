@@ -20,6 +20,18 @@
         </b-form-select>
         <WTNGtt tt="Modules.Download.Settings.ttDownloadMaxBandWidth" size="20px"></WTNGtt>
     </b-form-group>
+    <b-form-group id="grpDownloadMaxErrors" v-bind:label="$t('Modules.Download.Settings.DownloadMaxErrors')" label-size="lg" label-class="font-weight-bold pt-0">
+        <b-form-select
+            class="form-control"
+            v-model="DownloadMaxErrors"
+            id="DownloadMaxErrors"
+            :options="DownloadMaxErrorsOptions"
+            @change="DownloadMaxErrorsChanged"
+            style="width: 50%"
+            name="DownloadMaxErrors">
+        </b-form-select>
+        <WTNGtt tt="Modules.Download.Settings.ttDownloadMaxErrors" size="20px"></WTNGtt>
+    </b-form-group>
     <br>
     <br>
     <!-- Buttons -->
@@ -63,6 +75,15 @@
                     {text: '5Mb/s', value: 5},
                     {text: '3Mb/s', value: 3},
                     {text: '1Mb/s', value: 1}
+                ],
+                DownloadMaxErrors: '',
+                DownloadMaxErrorsOptions: [
+                    {text: '15', value: 15},
+                    {text: '10', value: 10},
+                    {text: '7', value: 7},
+                    {text: '5', value: 5},
+                    {text: '3', value: 3},
+                    {text: '1', value: 1}
                 ]
             };
         },
@@ -74,8 +95,12 @@
             DownloadMaxBandWidthChanged(){
                 wtconfig.set("Download.DownloadMaxBandWidth", this.DownloadMaxBandWidth);
             },
+            DownloadMaxErrorsChanged(){
+                wtconfig.set("Download.DownloadMaxErrors", this.DownloadMaxErrors);
+            },
             getDefaults(){
                 this.DownloadMaxBandWidth = wtconfig.get("Download.DownloadMaxBandWidth", 7);
+                this.DownloadMaxErrors = wtconfig.get("Download.DownloadMaxErrors", 5);
             }
         }
     };

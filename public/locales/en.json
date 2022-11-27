@@ -594,8 +594,9 @@
                 "Description": "Here you can define the settings for @:Modules.Download.Name",
                 "Return": "Return to @:Modules.Download.Name",
                 "DownloadMaxBandWidth": "Maximum bandwidth to use",
-                "ttDownloadMaxBandWidth": "Here you select the maximum bandwith to use when downloading. Don't use maximum, unless you want to lose your friend. Also note, that maximum bandwidth can not exceed what the server owner has set"
-
+                "DownloadMaxErrors": "Maximum errors allowed",
+                "ttDownloadMaxBandWidth": "Here you select the maximum bandwith to use when downloading. Don't use maximum, unless you want to lose your friend. Also note, that maximum bandwidth can not exceed what the server owner has set",
+                "ttDownloadMaxErrors": "Maximum errors allowed before showing a warning"
             }
         }
     }
