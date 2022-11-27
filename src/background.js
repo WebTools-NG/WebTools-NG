@@ -194,7 +194,7 @@ ipcMain.on('downloadMedia', function (event, data) {
       maxrateLimit * 1024 * 1024 , // upload limit,
       maxrateLimit * 1024 * 1024 // download limit
     ],
-    timeout: 2,
+    timeout: this.DownloadTimeout = wtconfig.get("Download.DownloadTimeout", 10000),
     onDownloadProgress: progressEvent => {
       const downloadData = {};
       downloadData['Downloaded'] =  progressEvent.loaded;

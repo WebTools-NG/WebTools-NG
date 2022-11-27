@@ -78,7 +78,8 @@
           { prop: 'libName', isHidden: true },
           { prop: 'mediaDir', isHidden: true },
           { prop: 'size', isHidden: true },
-          { prop: 'targetFile', isHidden: true }
+          { prop: 'targetFile', isHidden: true },
+          { prop: 'errors', isHidden: true },
         ],
         tableData: [],
         tableAttribute: {
@@ -189,6 +190,20 @@
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.sourceUri") } : ${row['key']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetFile") } : ${row['targetFile'].slice(0, -4)}` });
+        let errors = "";
+        //console.log('Ged 99-3', Object.keys(row['error']).length);
+
+        for(var attributename in row['error']){
+          errors = errors + attributename+": "+row['error'][attributename] + '\r\n';
+          console.log(attributename+": "+row['error'][attributename]);
+        }
+
+
+
+        //errors
+        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.errors") } : ${JSON.stringify(row['error'])}` });
+        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.errors") } : ${errors}` });
+
         this.$refs['MediaInfo'].show();
       },
       del(index, row){
