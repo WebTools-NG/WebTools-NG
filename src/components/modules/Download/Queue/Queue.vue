@@ -30,19 +30,29 @@
       </div>
     </b-modal>
     <br>
-    <div class="d-flex mx-auto">  <!-- Buttons -->
-      <div class="buttons d-flex mx-auto">
-        <b-button
-          type="is-primary"
-          @click="btnToggleQueue"
-          variant="success"
-        >
-        {{ this.btnQueueLabel }}</b-button>
-      </div>
+    <div id="buttons" class="text-center"> <!-- Buttons -->
+      <b-button-group >
+          <b-button
+            class="mr-1"
+            type="is-primary"
+            @click="btnToggleQueue"
+            variant="success"
+          >
+            {{ this.btnQueueLabel }}
+          </b-button>
+          <b-button
+            class="mr-1"
+            type="is-primary"
+            @click="btnBackToDownload"
+            variant="success"
+          >
+            {{ this.btnBackToDownloadLabel }}
+          </b-button>
+      </b-button-group>
     </div>
-    <!--{{ download.queueRunning }} -->
+    <!--{{ download.queueRunning }} 
     QueueStatus local: {{ queueRunning }}
-    QueueStatus store: {{ queueStatus }}
+    QueueStatus store: {{ queueStatus }}-->
     <br>
     <statusDiv /> <!-- Status Div -->
   </b-container>
@@ -70,7 +80,7 @@
           { prop: 'title', name: i18n.t('Modules.Download.mediaInfo.title'), searchable: true,sortable: true, width: 80 },
           { prop: 'file', name: i18n.t('Modules.Download.mediaInfo.file'), searchable: false,sortable: true, width: 80 },
           { prop: 'type', name: i18n.t('Modules.Download.mediaInfo.type'), searchable: false,sortable: true, width: 30 },
-          { prop: 'status', name: i18n.t('Modules.Download.mediaInfo.status'), searchable: false,sortable: true, width: 30 },
+          { prop: 'errorInfo', name: i18n.t('Modules.Download.mediaInfo.error'), searchable: false,sortable: true, width: 30 },
           { prop: 'hash', isHidden: true },
           { prop: 'key', isHidden: true },
           { prop: 'serverID', isHidden: true },
@@ -97,7 +107,8 @@
         },
         mediaInfoItems: [],
         queueRunning: null,
-        btnQueueLabel: i18n.t('Modules.Download.Queue.btnStartQueue')
+        btnQueueLabel: i18n.t('Modules.Download.Queue.btnStartQueue'),
+        btnBackToDownloadLabel: i18n.t('Modules.Download.Queue.btnBackToDownloadLabel')
       };
     },
     created() {
@@ -143,17 +154,11 @@
           wtconfig.set('Download.Queue', this.tableData);
         }
       },
-
-/*  
-      setCreatedStatus(){
-        this.queueRunning = wtconfig.get( 'Download.Status', false);
+      btnBackToDownload(){
+        this.$router.push({ name: 'download' })
       },
-
-       */
-
-       btnToggleQueue(){
+      btnToggleQueue(){
         if ( download.queueRunning ){
-          //this.stopQueue();
           download.stopProcess();
           this.btnQueueLabel = i18n.t('Modules.Download.Queue.btnStartQueue');
         }
@@ -162,24 +167,11 @@
           download.startProcess();
           this.btnQueueLabel = i18n.t('Modules.Download.Queue.btnStopQueue');
         }
-        //wtconfig.set('Download.Status', this.queueRunning);
       },
-/* 
-      stopQueue(){
-        this.queueRunning = false;
-        download.stopProcess();
-      },
-       
-      startQueue(){
-        this.queueRunning = true;
-        download.startProcess();
-      },
-      */
-
       info(index, row){
         this.mediaInfo.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")}: ${row['title']} - ${row['type']}`
         this.mediaInfoItems = [];
-        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.title") }: ${row['title']}` });
+        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.title") }: ${row['title']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.file") } : ${row['file']}` });
         if ( row['size'] ){
           this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.size") } : ${row['size']}` });
@@ -188,10 +180,12 @@
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverName") } : ${row['serverName']} (id: ${row['serverID']})` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.libName") } : ${row['libName']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.sourceUri") } : ${row['key']}` });
-        this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
+        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetFile") } : ${row['targetFile'].slice(0, -4)}` });
         let errors = "";
         //console.log('Ged 99-3', Object.keys(row['error']).length);
+
+        console.log('Ged 44-3', JSON.stringify(row['error']))
 
         for(var attributename in row['error']){
           errors = errors + attributename+": "+row['error'][attributename] + '\r\n';
@@ -213,7 +207,32 @@
       },
       GetQueue(){
         log.info(`[Queue.vue] (GetQueue) - Get the queue`);
-        this.tableData = wtconfig.get('Download.Queue');
+        let queueData = wtconfig.get('Download.Queue');
+        const DownloadMaxErrors = wtconfig.get("Download.DownloadMaxErrors", 5);
+        console.log('Ged 10-3 queueData:', JSON.stringify(queueData))
+        for (var idx in queueData){
+          console.log('Ged 10-4', JSON.stringify(queueData[idx]))
+          if(queueData[idx]['error']){
+
+            var count = Object.keys(queueData[idx]['error']).length;
+            console.log('Ged 10-4-3', count)
+            if (count > DownloadMaxErrors){
+              console.log('Ged 10-4-5 count excided')
+              queueData[idx]['errorInfo'] = i18n.t('Modules.Download.Queue.ErrorsAboveLimit');
+            } else {
+              console.log('Ged 10-4-6 count ok')
+              queueData[idx]['errorInfo'] = i18n.t('Common.Ok');
+            }
+          } else {
+            queueData[idx]['errorInfo'] = i18n.t('Common.Ok');
+          }
+          
+        }
+        
+
+
+        console.log('Ged 10-5', JSON.stringify(queueData))
+        this.tableData = queueData;
       }
     }
   }
@@ -223,4 +242,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
+
 </style>

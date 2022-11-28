@@ -575,7 +575,7 @@
                 "title": "Title",
                 "file": "File",
                 "type": "Type",
-                "status": "Status",
+                "error": "Error",
                 "size": "Size",
                 "serverName": "Server",
                 "libName": "Library",
@@ -588,7 +588,9 @@
                 "btnStartQueue": "Start Queue",
                 "btnStopQueue": "Stop Queue",
                 "Name": "@:Modules.Download.Name Queue",
-                "Description": "Here you see and edit the items queued for download"
+                "Description": "Here you see and edit the items queued for download",
+                "ErrorsAboveLimit": "Press Info",
+                "btnBackToDownloadLabel": "Back to download"
             },
             "Settings": {
                 "Name": "@:Modules.Download.Name Settings",

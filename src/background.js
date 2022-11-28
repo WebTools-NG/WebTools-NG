@@ -160,11 +160,12 @@ ipcMain.on('downloadMediaAbort', function () {
   if (controller){
     controller.abort('Queue stopped');
   }
+  controller = null;
 })
 
 ipcMain.on('downloadMedia', function (event, data) {
   const https = require('https');
-  controller = null;
+  this.controller = null;
   const agent = new https.Agent({
     rejectUnauthorized: false
   });

@@ -173,7 +173,7 @@ const download = new class DOWNLOAD {
         this.queueRunning = false;
         status.clearStatus();
         status.updateStatusMsg( status.RevMsgType.Status, i18n.t('Common.Status.Msg.Idle'));
-        this.queueRunning = true;
+        //this.queueRunning = true;
         store.commit("UPDATE_QueueStatus", false);
         ipcRenderer.send('downloadMediaAbort');
     }
