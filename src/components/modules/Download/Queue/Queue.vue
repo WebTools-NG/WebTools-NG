@@ -50,7 +50,7 @@
           </b-button>
       </b-button-group>
     </div>
-    <!--{{ download.queueRunning }} 
+    <!--{{ download.queueRunning }}
     QueueStatus local: {{ queueRunning }}
     QueueStatus store: {{ queueStatus }}-->
     <br>
@@ -171,33 +171,21 @@
       info(index, row){
         this.mediaInfo.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")}: ${row['title']} - ${row['type']}`
         this.mediaInfoItems = [];
-        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.title") }: ${row['title']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.file") } : ${row['file']}` });
         if ( row['size'] ){
           this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.size") } : ${row['size']}` });
         }
-        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverID") } : ${row['serverID']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverName") } : ${row['serverName']} (id: ${row['serverID']})` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.libName") } : ${row['libName']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.sourceUri") } : ${row['key']}` });
-        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetDir") } : ${row['mediaDir']}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.targetFile") } : ${row['targetFile'].slice(0, -4)}` });
         let errors = "";
-        //console.log('Ged 99-3', Object.keys(row['error']).length);
-
-        console.log('Ged 44-3', JSON.stringify(row['error']))
-
         for(var attributename in row['error']){
           errors = errors + attributename+": "+row['error'][attributename] + '\r\n';
           console.log(attributename+": "+row['error'][attributename]);
         }
-
-
-
         //errors
-        //this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.errors") } : ${JSON.stringify(row['error'])}` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.errors") } : ${errors}` });
-
         this.$refs['MediaInfo'].show();
       },
       del(index, row){
@@ -209,29 +197,18 @@
         log.info(`[Queue.vue] (GetQueue) - Get the queue`);
         let queueData = wtconfig.get('Download.Queue');
         const DownloadMaxErrors = wtconfig.get("Download.DownloadMaxErrors", 5);
-        console.log('Ged 10-3 queueData:', JSON.stringify(queueData))
         for (var idx in queueData){
-          console.log('Ged 10-4', JSON.stringify(queueData[idx]))
           if(queueData[idx]['error']){
-
             var count = Object.keys(queueData[idx]['error']).length;
-            console.log('Ged 10-4-3', count)
             if (count > DownloadMaxErrors){
-              console.log('Ged 10-4-5 count excided')
               queueData[idx]['errorInfo'] = i18n.t('Modules.Download.Queue.ErrorsAboveLimit');
             } else {
-              console.log('Ged 10-4-6 count ok')
               queueData[idx]['errorInfo'] = i18n.t('Common.Ok');
             }
           } else {
             queueData[idx]['errorInfo'] = i18n.t('Common.Ok');
           }
-          
         }
-        
-
-
-        console.log('Ged 10-5', JSON.stringify(queueData))
         this.tableData = queueData;
       }
     }
