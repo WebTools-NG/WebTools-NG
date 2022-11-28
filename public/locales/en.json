@@ -575,27 +575,33 @@
                 "title": "Title",
                 "file": "File",
                 "type": "Type",
-                "status": "Status",
+                "error": "Error",
                 "size": "Size",
                 "serverName": "Server",
                 "libName": "Library",
                 "sourceUri": "Uri",
                 "targetDir": "Target Directory",
-                "targetFile": "Target File"
+                "targetFile": "Target File",
+                "errors": "Errors"
             },
             "Queue": {
                 "btnStartQueue": "Start Queue",
                 "btnStopQueue": "Stop Queue",
                 "Name": "@:Modules.Download.Name Queue",
-                "Description": "Here you see and edit the items queued for download"
+                "Description": "Here you see and edit the items queued for download",
+                "ErrorsAboveLimit": "Press Info",
+                "btnBackToDownloadLabel": "Back to download"
             },
             "Settings": {
                 "Name": "@:Modules.Download.Name Settings",
                 "Description": "Here you can define the settings for @:Modules.Download.Name",
                 "Return": "Return to @:Modules.Download.Name",
                 "DownloadMaxBandWidth": "Maximum bandwidth to use",
-                "ttDownloadMaxBandWidth": "Here you select the maximum bandwith to use when downloading. Don't use maximum, unless you wanna loose your friend"
-
+                "DownloadMaxErrors": "Maximum errors allowed",
+                "DownloadTimeout": "Timeout when downloading",
+                "ttDownloadMaxBandWidth": "Here you select the maximum bandwith to use when downloading. Don't use maximum, unless you want to lose your friend. Also note, that maximum bandwidth can not exceed what the server owner has set",
+                "ttDownloadMaxErrors": "Maximum errors allowed before showing a warning",
+                "ttDownloadTimeout": "Timeout in seconds waiting for server response"
             }
         }
     }

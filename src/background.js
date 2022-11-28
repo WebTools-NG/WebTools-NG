@@ -160,11 +160,12 @@ ipcMain.on('downloadMediaAbort', function () {
   if (controller){
     controller.abort('Queue stopped');
   }
+  controller = null;
 })
 
 ipcMain.on('downloadMedia', function (event, data) {
   const https = require('https');
-  controller = null;
+  this.controller = null;
   const agent = new https.Agent({
     rejectUnauthorized: false
   });
@@ -194,6 +195,7 @@ ipcMain.on('downloadMedia', function (event, data) {
       maxrateLimit * 1024 * 1024 , // upload limit,
       maxrateLimit * 1024 * 1024 // download limit
     ],
+    timeout: this.DownloadTimeout = wtconfig.get("Download.DownloadTimeout", 10000),
     onDownloadProgress: progressEvent => {
       const downloadData = {};
       downloadData['Downloaded'] =  progressEvent.loaded;
@@ -219,8 +221,11 @@ ipcMain.on('downloadMedia', function (event, data) {
     })
   }).catch((error) => {
     log.error(`[background.js] (downloadFile) - ${error}`);
+    event.sender.send('downloadMediaError', error.message);
+    console.log('Ged 88-3', error.code)
+    console.log('Ged 88-3-1', error.message)
+    console.log('Ged 88-3-2', error.stack)
     targetStream.end();
-    event.sender.send('downloadMediaError', error);
   })
 })
 
