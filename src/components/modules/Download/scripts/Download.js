@@ -46,13 +46,10 @@ const download = new class DOWNLOAD {
     async getSrvInfo(){  // Get download srv info
       // Get all servers
       let allPMSSrv = await ptv.getPMSServers( true );
+      //store.commit('UPDATE_ServersFound', allPMSSrv);
       // Find idx of selected server
       let idx = allPMSSrv.map(function(x) {return x.clientIdentifier; }).indexOf(this.item['serverID']);
       this.accessToken = allPMSSrv[idx]['accessToken'];
-    }
-
-    GEDgetFirstEntry(){  // Get first entry in the queue
-        this.item = this.queue[0];
     }
 
     removeFirstEntry(){ //Remove first entry from the queue
@@ -147,15 +144,11 @@ const download = new class DOWNLOAD {
                 }
             })
             ipcRenderer.on('downloadMediaError', (event, data) => {
-                console.log('Ged 13 HELLO')
                 this.downloadError = true;
                 try
                 {
                     log.error(`[Download.js] (downloadItem) - Download had an error for ${this.item.targetFile}`);
-                    console.log('Ged 99-3', JSON.stringify(data))
                     this.lastErrMsg = JSON.stringify(data);
-                    //log.error(`[Download.js] (downloadItem) - Error code ${this.item.targetFile}`);
-
                     ipcRenderer.removeAllListeners('downloadMediaEnd');
                     ipcRenderer.removeAllListeners('downloadMediaError');
                     ipcRenderer.removeAllListeners('downloadMediaProgress');
@@ -186,25 +179,19 @@ const download = new class DOWNLOAD {
         this.queueCount = 0;
         this.queue = wtconfig.get('Download.Queue');
         this.getNextEntry();
-        console.log('Ged 77-3', JSON.stringify(this.item), this.queueRunning)
         while (this.item && this.queueRunning){
-            
             await this.getSrvInfo();
             await this.createOutDir();
             await this.downloadItem();
-            console.log('Ged 15', this.downloadError, JSON.stringify(this.item))
-
             if (!this.downloadError){ // Remove from queue if no error
                 this.removeFirstEntry();
                 // Update timestamp for the queue
                 store.commit("UPDATE_Queue");
             } else {
                 // We had an error
-                console.log('Ged 13-3 We had an error')
                 let idx = 0;
                 for (let item of this.queue) {
                     if (item.hash === this.item.hash) {
-                        console.log('Ged 13-4 found item as', JSON.stringify(item), idx)
                         if (item.error) {
                             let error = {};
                             error = this.queue[idx]["error"];

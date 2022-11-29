@@ -222,9 +222,6 @@ ipcMain.on('downloadMedia', function (event, data) {
   }).catch((error) => {
     log.error(`[background.js] (downloadFile) - ${error}`);
     event.sender.send('downloadMediaError', error.message);
-    console.log('Ged 88-3', error.code)
-    console.log('Ged 88-3-1', error.message)
-    console.log('Ged 88-3-2', error.stack)
     targetStream.end();
   })
 })
