@@ -217,7 +217,7 @@
                 "AutoXLSCol": "Autosize column (xlsx only)",
                 "AutoXLSRow": "Autosize row (xlsx only)",
                 "ExportToExcel": "Export to xlsx",
-                "NotAvailIndicator": "What to use if a field can't be found",
+                "NotAvailIndicator": "What to use if a field cannot be found",
                 "QualifierCSV": "Qualifier to use with a text based field for CSV (Use space for none)",
                 "Posters_Dimensions": "Poster width * height",
                 "Posters_Dimensions_TT": "Enter the Poster width*height for 'Export Posters'. Comma separated values for multiple exports are permitted. E.G. `75*75, 1024*768` Note: dimensions might be altered slightly in order to preserve the aspect ratio of the posters",
@@ -375,7 +375,7 @@
             "API-SignUp": "Please consider signing up",
             "API-SignupHere": "here",
             "POE-Credit": "And to our friends at POEditor.com, who provide a free translation site because we are an Open-Source project.",
-            "POE-SignUp": "You can help translating our work",
+            "POE-SignUp": "You can help translate our work",
             "Plex-Credit": "Many thanks to the authors/developers and staff at Plex. We are eternally grateful for your dedication, talent and hard work!",
             "PMS-Download": "You can download Plex Media server"
         },
