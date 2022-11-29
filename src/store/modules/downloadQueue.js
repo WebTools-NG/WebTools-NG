@@ -13,7 +13,8 @@ const state = {
     vListCompleted: false,
     vList: null,
     serversUpdated: null,
-    srvBaseAddress: null
+    srvBaseAddress: null,
+    srvToken: null
 };
 
 const mutations = {
@@ -47,6 +48,9 @@ const mutations = {
     UPDATE_SrvBaseAddress(state, payload) {
       state.srvBaseAddress = payload;
     },
+    UPDATE_SrvToken(state, payload) {
+      state.srvToken = payload;
+    }
   };
 
 const getters = {
@@ -59,7 +63,8 @@ const getters = {
     getVListCompleted: state => state.vListCompleted,
     getVList: state => state.vList,
     getServersUpdated: state => state.serversUpdated,
-    getSrvBaseAddress: state => state.srvBaseAddress
+    getSrvBaseAddress: state => state.srvBaseAddress,
+    getSrvToken: state => state.srvToken
 };
 
 const downloadQueue = {

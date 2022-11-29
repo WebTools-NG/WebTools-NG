@@ -260,7 +260,11 @@
               {
                 // Get Media Dir
                 this.selMediaDir = path.dirname(parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1));  // Returns a dot if not found
-                entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1).slice(this.selMediaDir.length + 1);
+                if ( this.selMediaDir == '.'){
+                  entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1);
+                } else {
+                  entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1).slice(this.selMediaDir.length + 1);
+                }
                 break;
               }
             }
@@ -331,6 +335,7 @@
         this.srvName = allPMSServer[idx]['name'];
         // Get Server Token
         this.srvToken = allPMSServer[idx]['accessToken'];
+        this.$store.commit('UPDATE_SrvToken', this.srvToken);
         // Get Base Address
         this.srvBaseAddress = allPMSServer[idx]['PMSInfo']['address'];
         this.$store.commit('UPDATE_SrvBaseAddress', this.srvBaseAddress);
@@ -473,6 +478,7 @@
       //if (this.$store.getters.getPlexServers) {
       if ( this.$store.getters.getServersUpdated ) {
         this.srvBaseAddress = this.$store.getters.getSrvBaseAddress;
+        this.srvToken = this.$store.getters.getSrvToken;
         for (var idx2 in this.$store.getters.getServersFound){
         //for (var idx2 in this.$store.getters.getPlexServers){
           this.selSrvOptions.push(this.$store.getters.getServersFound[idx2]);
