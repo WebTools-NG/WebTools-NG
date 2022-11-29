@@ -564,7 +564,7 @@
         "Download": {
             "Name": "Download",
             "Description": "The @:Modules.Download.Name module allows you to download media.",
-            "Description2": "The server owner must has granted you download rights, and you also need a Plex Pass. When downloading, we respect server owners settings regarding maximum speed, as well as you can limit speed your self in the settings. You can stop/resume a download if needed",
+            "Description2": "To use this module, the server owner MUST grant you Download rights and you need to have an active Plex Pass. Server owner imposed bandwidth limits are respected. Please be respectful when setting your bandwidth limits in Download settings. You can stop/resume the download/s at any time",
             "Disabled": "Disabled",
             "SelSrv": "Select server",
             "ShowQueue": "Show Queue",

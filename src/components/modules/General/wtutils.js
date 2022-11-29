@@ -271,10 +271,9 @@ const wtutils = new class WTUtils {
         // Update config file with defaults if missing
         log.verbose('[wtutils.js] (UpdateConfigFile) Updating config file');
         // Hide/Show Menu Set to false if enabled for all
-        /* 
         if ( wtconfig.get('Menu.download', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.download', false)
-        } */
+        }
         if ( wtconfig.get('Menu.pmsFindMedia', 'N/A') == 'N/A' ){
             wtconfig.set('Menu.pmsFindMedia', false)
         }
