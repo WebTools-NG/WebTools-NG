@@ -11,6 +11,8 @@
       <h5>{{ $t("Common.Home.Modules") }}</h5>
       <br>
       <dl>
+        <dt>{{ $t("Modules.Download.Name") }}</dt>
+          <dd>* {{ $t("Modules.Download.Description") }} </dd>
         <dt>{{ $t("Modules.ET.Name") }}</dt>
           <dd>* {{ $t("Modules.ET.Description") }} </dd>
         <dt>{{ $t("Modules.PMS.Name") }}</dt>
