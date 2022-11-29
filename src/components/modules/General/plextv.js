@@ -286,6 +286,7 @@ const ptv = new class PTV {
                 log.debug(`[plextv.js] (updatePMSInfo) - Adding ${options[optionIdx]} to PMSInfo with a value of ${result}`)
             }
             store.commit('UPDATE_PLEX_SERVERS', allServers);
+            store.commit('UPDATE_ServersUpdated', true);
         }
     }
 }

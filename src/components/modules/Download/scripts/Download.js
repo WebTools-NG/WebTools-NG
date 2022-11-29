@@ -46,13 +46,10 @@ const download = new class DOWNLOAD {
     async getSrvInfo(){  // Get download srv info
       // Get all servers
       let allPMSSrv = await ptv.getPMSServers( true );
+      //store.commit('UPDATE_ServersFound', allPMSSrv);
       // Find idx of selected server
       let idx = allPMSSrv.map(function(x) {return x.clientIdentifier; }).indexOf(this.item['serverID']);
       this.accessToken = allPMSSrv[idx]['accessToken'];
-    }
-
-    GEDgetFirstEntry(){  // Get first entry in the queue
-        this.item = this.queue[0];
     }
 
     removeFirstEntry(){ //Remove first entry from the queue

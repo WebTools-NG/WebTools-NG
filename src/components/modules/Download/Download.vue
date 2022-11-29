@@ -117,6 +117,7 @@
     },
     data() {
       return {
+        serversFound: false,
         isLoading: false,
         PageName: "Download",
         selSrvOptions: [],
@@ -305,6 +306,12 @@
     },
     async selSrvChanged() {
       if ( this.selSrv ){
+        this.$store.commit('UPDATE_ServerSelected', this.selSrv);
+        this.$store.commit('UPDATE_LibrariesFound', null);
+        this.$store.commit('UPDATE_LibrarySelected', null);
+        this.$store.commit('UPDATE_VListCompleted', false);
+        this.$store.commit('UPDATE_VList', null);
+        this.selLibraryOptions = [];
         this.LibraryGroupDisabled = false;
         // Start spinner
         //this.selLibraryWait = false;
@@ -326,6 +333,7 @@
         this.srvToken = allPMSServer[idx]['accessToken'];
         // Get Base Address
         this.srvBaseAddress = allPMSServer[idx]['PMSInfo']['address'];
+        this.$store.commit('UPDATE_SrvBaseAddress', this.srvBaseAddress);
         // Filter sections to only include whats in this.selMediaType
         for (idx in sections){
           if ( this.selMediaType.includes(sections[idx]['type'])){
@@ -343,6 +351,7 @@
         // Stop spinner
         //this.selLibraryWait = true;
         this.isLoading = false;
+        this.$store.commit('UPDATE_LibrariesFound', this.selLibraryOptions);
         log.debug(`[Download.vue] (selSrvChanged) - Libs avail are: ${JSON.stringify(this.selLibraryOptions)}`)
       }
     },
@@ -397,6 +406,7 @@
       });
     },
     async selLibraryChanged (){
+      this.$store.commit('UPDATE_LibrarySelected', this.selLibrary)
       // Clean out list
       this.tableData = [];
       this.pgbaridx = 0;   // index
@@ -413,6 +423,7 @@
           libType = 4;
           break;
       }
+      this.$store.commit('UPDATE_VList', null);
       // Get allowed steps
       const step = wtconfig.get(`PMS.ContainerSize.${libType}`);
       let gotSize;
@@ -434,6 +445,7 @@
         this.pgbaridx += step;
       } while ( gotSize == step );
       this.pgbarstyle = 'success';
+      this.$store.commit('UPDATE_VList', this.tableData);
     },
     async updateSrvList(){
       log.info(`[download.vue] (updateSrvList) - Start getting valid servers`);
@@ -455,35 +467,66 @@
     // Get a list of servers, that we can download from
     async getValidServers(){
       log.info(`[download.vue] (getValidServers) - Starting`);
-      this.isLoading = true;
-      if (!store.getters.getValidSrvDone)   // If we haven't got valid address and sync info, update srv list
-      {
-        await this.updateSrvList();
-      }
-      log.info(`[download.vue] (getValidServers) - Building CBOptions`);
-      // Get all servers
-      let allPMSSrv = await ptv.getPMSServers( true );
-
-      // Walk each of them, to get the options
-      for (var idx in allPMSSrv){
-        let option = {};
-        if ( allPMSSrv[idx]['PMSInfo'] ){
-          if ( allPMSSrv[idx]['PMSInfo']['allowSync'] === false) {
-            option['disabled'] = true;
-            option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
-          } else {
-            option['text'] = allPMSSrv[idx]['name'];
-          }
-          option['value'] = allPMSSrv[idx]['clientIdentifier'];
-        } else {
-          option['disabled'] = true;
-          option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
+      let allPMSSrv;
+      this.selLibraryOptions = [];
+      //if (this.$store.getters.getServersFound) {
+      //if (this.$store.getters.getPlexServers) {
+      if ( this.$store.getters.getServersUpdated ) {
+        this.srvBaseAddress = this.$store.getters.getSrvBaseAddress;
+        for (var idx2 in this.$store.getters.getServersFound){
+        //for (var idx2 in this.$store.getters.getPlexServers){
+          this.selSrvOptions.push(this.$store.getters.getServersFound[idx2]);
         }
-        option['value'] = allPMSSrv[idx]['clientIdentifier'];
-        this.selSrvOptions.push(option);
+        if ( this.$store.getters.getServerSelected ){
+          this.selSrv = this.$store.getters.getServerSelected;
+          if ( this.$store.getters.getLibrariesFound) {
+            this.selLibraryOptions = [];
+            for ( var idx3 in this.$store.getters.getLibrariesFound){
+              this.selLibraryOptions.push(this.$store.getters.getLibrariesFound[idx3]);
+            }
+            this.LibraryGroupDisabled = false;
+          }
+          if ( this.$store.getters.getLibrarySelected ){
+            this.selLibrary = this.$store.getters.getLibrarySelected;
+            if ( this.$store.getters.getVList ){
+              this.tableData = this.$store.getters.getVList;
+            }
+          }
+        }
+      } else {
+        if ( !this.serversFound ){
+          this.isLoading = true;
+          if (!store.getters.getValidSrvDone)   // If we haven't got valid address and sync info, update srv list
+          {
+            await this.updateSrvList();
+          }
+          log.info(`[download.vue] (getValidServers) - Building CBOptions`);
+          // Get all servers
+          allPMSSrv = await ptv.getPMSServers( true );
+          // Walk each of them, to get the options
+          for (var idx in allPMSSrv){
+            let option = {};
+            if ( allPMSSrv[idx]['PMSInfo'] ){
+              if ( allPMSSrv[idx]['PMSInfo']['allowSync'] === false) {
+                option['disabled'] = true;
+                option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
+              } else {
+                option['text'] = allPMSSrv[idx]['name'];
+              }
+              option['value'] = allPMSSrv[idx]['clientIdentifier'];
+            } else {
+              option['disabled'] = true;
+              option['text'] = `${allPMSSrv[idx]['name']} (${this.$t('Modules.Download.Disabled')})`;
+            }
+            option['value'] = allPMSSrv[idx]['clientIdentifier'];
+            this.selSrvOptions.push(option);
+          }
+          this.pgbarstyle = "success";
+          this.isLoading = false;
+          this.serversFound = true;
+          this.$store.commit('UPDATE_ServersFound', this.selSrvOptions);
+        }
       }
-      this.pgbarstyle = "success";
-      this.isLoading = false;
     }
   },
   watch: {
