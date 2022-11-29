@@ -173,7 +173,7 @@
         this.mediaInfoItems = [];
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.file") } : ${row['file']}` });
         if ( row['size'] ){
-          this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.size") } : ${row['size']}` });
+          this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.size") } : ${row['size']} (${download.formatBytes(row['size'])})` });
         }
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.serverName") } : ${row['serverName']} (id: ${row['serverID']})` });
         this.mediaInfoItems.push({ " ": `${ i18n.t("Modules.Download.mediaInfo.libName") } : ${row['libName']}` });
