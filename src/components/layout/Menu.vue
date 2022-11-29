@@ -42,7 +42,15 @@
                         href: { path: '/download' },
                         title: this.$t("Modules.Download.Name"),
                         hidden: wtutils.hideMenu('download'),
-                        icon: 'fas fa-download'
+                        icon: 'fas fa-download',
+                        child: [
+                            {
+                                href: 'queue',
+                                title: this.$t("Modules.Download.Queue.Name"),
+                                hidden: wtutils.hideMenu('queue'),
+                                icon: 'fa fa-cog'
+                            }
+                        ],
                     },
                     // Export Tools
                     {

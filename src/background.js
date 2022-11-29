@@ -1,6 +1,10 @@
 'use strict'
 import { app, protocol, BrowserWindow, Menu} from 'electron';
-import { wtutils } from '../src/components/modules/General/wtutils';
+import { wtutils, wtconfig } from '../src/components/modules/General/wtutils';
+import axios from 'axios';
+import { AbortController } from "node-abort-controller";
+//import { status } from '../src/components/modules/General/status';
+//import i18n from '../src/i18n';
 
 const log = require('electron-log');
 console.log = log.log;
@@ -15,6 +19,11 @@ import {
 //import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+// An abort Controller for downloads
+let controller = null;
+//let controller = new AbortController();
+controller;
 
 // Bad thing, but need to disable cert checks, since connecting via ip
 // to a cert issued for plex.direct
@@ -115,8 +124,8 @@ if (isDevelopment) {
   }
 }
 
-const axios = require('axios')
-const fs = require('fs')
+//const axios = require('axios');
+const fs = require('fs');
 
 ipcMain.on('downloadFile', function (event, data) {
   const filePath = data.filePath;
@@ -145,3 +154,75 @@ ipcMain.on('downloadFile', function (event, data) {
     event.sender.send('downloadError', error);
   })
 })
+
+ipcMain.on('downloadMediaAbort', function () {
+  log.info(`[background.js] (downloadMediaAbort) - Aborting download`)
+  if (controller){
+    controller.abort('Queue stopped');
+  }
+  controller = null;
+})
+
+ipcMain.on('downloadMedia', function (event, data) {
+  const https = require('https');
+  this.controller = null;
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+  let targetStream;
+  if ( data.header["Range"] == 0){
+    targetStream = fs.createWriteStream(data.targetFile);
+  } else {
+    targetStream = fs.createWriteStream(data.targetFile, {flags:'a'});
+  }
+
+  let startbyte = 0;
+  if (data.header["Range"]){
+    startbyte = data.header["Range"].substring(6).slice(0, -1)
+  }
+  controller = new AbortController();
+  const maxrateLimit = wtconfig.get("Download.DownloadMaxBandWidth", 7);
+
+
+  axios({
+    method: 'GET',
+    url: data.url,
+    headers: data.header,
+    responseType: 'stream',
+    httpsAgent: agent,
+    signal: controller.signal,
+    maxRate: [
+      maxrateLimit * 1024 * 1024 , // upload limit,
+      maxrateLimit * 1024 * 1024 // download limit
+    ],
+    timeout: this.DownloadTimeout = wtconfig.get("Download.DownloadTimeout", 10000),
+    onDownloadProgress: progressEvent => {
+      const downloadData = {};
+      downloadData['Downloaded'] =  progressEvent.loaded;
+      downloadData['Total'] =  progressEvent.total;
+      if ( data.size ){
+        downloadData['Procent'] = Math.floor((Number(progressEvent.loaded) + Number(startbyte)) / Number(data.size) * 100);
+      } else {
+        downloadData['Procent'] = 100;
+      }
+      downloadData['startbyte'] =  startbyte;
+      event.sender.send('downloadMediaProgress', downloadData);
+  },
+  }).then((response) => {
+    log.info(`[background.js] (downloadMedia) - Download started`);
+    response.data.pipe(targetStream);
+    response.data.on('end', () => {
+      targetStream.end();
+      event.sender.send('downloadMediaEnd');
+    })
+    response.data.on('error', (error) => {
+      targetStream.end();
+      event.sender.send('downloadMediaError', error);
+    })
+  }).catch((error) => {
+    log.error(`[background.js] (downloadFile) - ${error}`);
+    event.sender.send('downloadMediaError', error.message);
+    targetStream.end();
+  })
+})
+

@@ -8,6 +8,7 @@ import language from './modules/language';
 import pms from './modules/pms';
 import status from './modules/status';
 import time from './modules/time';
+import downloadQueue from './modules/downloadQueue';
 
 
 Vue.use(Vuex);
@@ -30,7 +31,8 @@ export default new Vuex.Store({
     language,
     pms,
     status,
-    time
+    time,
+    downloadQueue
   },
   plugins: [vuexLocal.plugin]
 })

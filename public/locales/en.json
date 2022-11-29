@@ -137,6 +137,7 @@
         "ErrorNoOutDirTitle": "No output directory defined",
         "ReleaseNoteTitle": "Release Note",
         "Cancel": "Cancel",
+        "PPReq": "{0} needs a valid Plex pass to work",
         "Status": {
             "Name": {
                 "Global": {
@@ -151,7 +152,9 @@
                     "TimeElapsed": "Time Elapsed",
                     "RunningTime": "Running time",
                     "LibsToProcess": "Libraries to process",
-                    "CurrentLib": "Current Library"
+                    "CurrentLib": "Current Library",
+                    "Downloaded": "Downloaded",
+                    "Downloading": "Downloading"
                 }
             },
             "Msg": {
@@ -162,7 +165,10 @@
                 "Processing": "Processing",
                 "GatheringLibs": "Gathering libraries to process",
                 "ProcessItem_0_1": "Processing item {count} of {total}",
-                "Finished": "Job finished"
+                "Finished": "Job finished",
+                "Downloading": ": {title}",
+                "Downloaded": "{current} bytes of {total}. {procent}% completed",
+                "Target": "Target file is {file}"
             }
         },
         "DateTime": {
@@ -557,7 +563,46 @@
         },
         "Download": {
             "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download media, as well as local assets, from servers where you have been granted download rights"
+            "Description": "The @:Modules.Download.Name module allows you to download media.",
+            "Description2": "To use this module, the server owner MUST grant you Download rights and you need to have an active Plex Pass. Server owner imposed bandwidth limits are respected. Please be respectful when setting your bandwidth limits in Download settings. You can stop/resume the download/s at any time",
+            "Disabled": "Disabled",
+            "SelSrv": "Select server",
+            "ShowQueue": "Show Queue",
+            "ttSettings": "Settings for @:Modules.Download.Name module",
+            "ttServer": "Select the server to download from",
+            "ttLibrary": "Select the library to download from",
+            "mediaInfo": {
+                "title": "Title",
+                "file": "File",
+                "type": "Type",
+                "error": "Error",
+                "size": "Size",
+                "serverName": "Server",
+                "libName": "Library",
+                "sourceUri": "Uri",
+                "targetDir": "Target Directory",
+                "targetFile": "Target File",
+                "errors": "Errors"
+            },
+            "Queue": {
+                "btnStartQueue": "Start Queue",
+                "btnStopQueue": "Stop Queue",
+                "Name": "@:Modules.Download.Name Queue",
+                "Description": "Here you see and edit the items queued for download",
+                "ErrorsAboveLimit": "Press Info",
+                "btnBackToDownloadLabel": "Back to download"
+            },
+            "Settings": {
+                "Name": "@:Modules.Download.Name Settings",
+                "Description": "Here you can define the settings for @:Modules.Download.Name",
+                "Return": "Return to @:Modules.Download.Name",
+                "DownloadMaxBandWidth": "Maximum bandwidth to use",
+                "DownloadMaxErrors": "Maximum errors allowed",
+                "DownloadTimeout": "Timeout when downloading",
+                "ttDownloadMaxBandWidth": "Here you select the maximum bandwith to use when downloading. Don't use maximum, unless you want to lose your friend. Also note, that maximum bandwidth can not exceed what the server owner has set",
+                "ttDownloadMaxErrors": "Maximum errors allowed before showing a warning",
+                "ttDownloadTimeout": "Timeout in seconds waiting for server response"
+            }
         }
     }
 }

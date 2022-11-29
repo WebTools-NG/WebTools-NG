@@ -10,7 +10,6 @@ module.exports = {
     },
     electronBuilder: {
       builderOptions: {
-        
         appId: "com.webtools.webtools-ng",
         artifactName: "${productName}-${version}.${env.AppRev}.${ext}",
         directories: {
