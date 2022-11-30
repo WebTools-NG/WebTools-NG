@@ -1414,6 +1414,11 @@
                 "subtype": "string",
                 "subkey": "cabac"
             },
+        "Video Stream Chroma Location": {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].chromaLocation",
+            "call": 2,
+            "type": "string"
+        },
         "Video Stream Chroma Sub Sampling": {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
@@ -1477,6 +1482,46 @@
                 "subtype": "string",
                 "subkey": "duration"
             },
+            "Video Stream DOVI BL compatible ID": {
+                "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIBLCompatID",
+                "call": 2,
+                "type": "string"
+            },
+        "Video Stream DOVI BL Present": {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIBLPresent",
+            "call": 2,
+            "type": "string"
+        },
+        "Video Stream DOVI EL Present": {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIELPresent",
+            "call": 2,
+            "type": "string"
+        },
+        "Video Stream DOVI Level": {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVILevel",
+            "call": 2,
+            "type": "string"
+        },
+        "Video Stream DOVI Present": {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIPresent",
+            "call": 2,
+            "type": "string"
+        },
+        "Video Stream DOVI Profile" : {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIProfile",
+            "call": 2,
+            "type": "string"
+        },
+        "Video Stream DOVI RPU Present" : {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIRPUPresent",
+            "call": 2,
+            "type": "string"
+        },
+        "Video Stream DOVI Version" : {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)].DOVIVersion",
+            "call": 2,
+            "type": "string"
+        },
         "Video Stream Frame Rate": {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==1)]",
                 "call": 2,
