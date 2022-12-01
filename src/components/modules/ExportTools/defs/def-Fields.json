@@ -145,6 +145,14 @@
                 "subtype": "string",
                 "subkey": "codec"
             },
+        "Audio Stream Codec (Human)": {
+            "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",
+            "call": 2,
+            "type": "array",
+            "subtype": "string",
+            "subkey": "$.displayTitle",
+            "postProcess": true
+        },
         "Audio Stream Codec ID":
             {
                 "key": "$.Media[*].Part[*].Stream[?(@.streamType==2)]",

@@ -47,6 +47,7 @@
                 "Audio Stream Channels",
                 "Audio Stream Codec ID",
                 "Audio Stream Codec",
+                "Audio Stream Codec (Human)",
                 "Audio Stream Default",
                 "Audio Stream Display Title",
                 "Audio Stream Duration",

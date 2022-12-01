@@ -552,6 +552,9 @@ const etHelper = new class ETHELPER {
                 case "Audience Rating":
                         retVal = val.substring(0, 3);
                         break;
+                case "Audio Stream Codec (Human)":
+                    retVal = val.match('\\((.*?)\\)')[1];
+                    break;
                 case "Episode Count (Cloud)":
                     retVal = wtconfig.get('ET.NotAvail');
                     if ( this.Settings.showInfo['Episode Count (Cloud)']){
