@@ -741,6 +741,13 @@
                 "subtype": "string",
                 "subkey": "$.bitrate"
             },
+        "Media Channel Identifier": {
+            "key": "$.Media[*]",
+            "call": 2,
+            "type": "array",
+            "subtype": "string",
+            "subkey": "$.channelIdentifier"
+        },
         "Media Container": {
                 "key": "$.Media[*]",
                 "call": 2,
@@ -761,6 +768,41 @@
                 "type": "array",
                 "subtype": "time",
                 "subkey": "$.duration"
+            },
+        "Media Grab Begins At": {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "datetime",
+                "subkey": "$.mediaGrabBeginsAt"
+            },
+        "Media Grab Device": {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.mediaGrabDevice"
+            },
+        "Media Grab Partial Recording": {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.mediaGrabPartialRecording"
+            },
+        "Media Grab Partial Recording Reason": {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.mediaGrabPartialRecordingReason"
+            },
+        "Media Grab Status": {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.mediaGrabStatus"
             },
         "Media Height": {
                 "key": "$.Media[*]",
@@ -796,6 +838,13 @@
                 "type": "array",
                 "subtype": "string",
                 "subkey": "$.model"
+            },
+        "Media Origin": {
+                "key": "$.Media[*]",
+                "call": 2,
+                "type": "array",
+                "subtype": "string",
+                "subkey": "$.origin"
             },
         "Media Title": {
                 "key": "$.Media[*]",
