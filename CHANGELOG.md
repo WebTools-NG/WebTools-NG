@@ -15,6 +15,7 @@
 * [#507 Download Module (Movies)](https://github.com/WebTools-NG/WebTools-NG/issues/507) (Enhancement)
 * [#625 Media Info HDR types in Export](https://github.com/WebTools-NG/WebTools-NG/issues/625) (Enhancement)
 * [#621 ET Audio Display title shorten](https://github.com/WebTools-NG/WebTools-NG/issues/621) (Enhancement)
+* [#622 Export DVR specific tags](https://github.com/WebTools-NG/WebTools-NG/issues/622) (Enhancement)
 
 ## V1.1.2 ( 20220925 )
 
