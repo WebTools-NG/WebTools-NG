@@ -1783,8 +1783,21 @@ const etHelper = new class ETHELPER {
         let files = await this.getExportPicsUrlandFile( { type: extype, data: data} );
         let title = String(JSONPath({path: '$.title', json: data})[0]);
         for (var idx in files){
-            log.silly(`[ethelper.js] (exportPics) - downloading ${files[idx]['url']} as file ${files[idx]['outFile']} with a title as ${title}`)
-            await this.forceDownload( { url:files[idx]['url'], target:files[idx]['outFile'], title:title} );
+            if ( files[idx]['url'].endsWith('undefined')){
+                log.error(`[ethelper.js] (exportPics) - could not find picture for ${files[idx]['outFile']}`)
+                let errorFile = files[idx]['outFile'];
+                errorFile = errorFile.replace('.jpg', '.txt');
+                const fs = require('fs');
+                try {
+                    fs.writeFileSync( errorFile, `etHelper (forceDownload-downloadError) downloading pic for "${title}" was not found`, 'utf-8');
+                }
+                catch(e) {
+                    log.error(`etHelper (forceDownload-downloadError) failed to save error file: ${errorFile}`);
+                }
+            } else {
+                log.silly(`[ethelper.js] (exportPics) - downloading ${files[idx]['url']} as file ${files[idx]['outFile']} with a title as ${title}`)
+                await this.forceDownload( { url:files[idx]['url'], target:files[idx]['outFile'], title:title} );
+            }
         }
     }
 
