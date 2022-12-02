@@ -137,7 +137,6 @@
         "ErrorNoOutDirTitle": "No output directory defined",
         "ReleaseNoteTitle": "Release Note",
         "Cancel": "Cancel",
-        "PPReq": "{0} needs a valid Plex pass to work",
         "Status": {
             "Name": {
                 "Global": {
@@ -205,7 +204,8 @@
                 "Name": "Export Settings",
                 "Description": "@:Common.Settings.Export.Name allows you to set preferences for exporting a file"
             }
-        }
+        },
+        "PPReq": "{0} needs a valid Plex pass to work"
     },
     "Modules": {
         "ET": {
@@ -425,7 +425,7 @@
             "Name": "Plex Media Server",
             "Description": "@:Modules.PMS.Name modules allow you to manage your server",
             "ErrorNoServerSelectedTitle": "No server selected",
-            "ErrorNoServerSelectedMsg": "You need to select a server on the top of the screen",
+            "ErrorNoServerSelectedMsg": "You need to select a server at the top of the window",
             "Settings": {
                 "Settings": "Server Settings",
                 "Description": "Here you can define the settings for the selected server",
@@ -563,8 +563,8 @@
         },
         "Download": {
             "Name": "Download",
-            "Description": "The @:Modules.Download.Name module allows you to download media.",
-            "Description2": "To use this module, the server owner MUST grant you Download rights and you need to have an active Plex Pass. Server owner imposed bandwidth limits are respected. Please be respectful when setting your bandwidth limits in Download settings. You can stop/resume the download/s at any time",
+            "Description": "The @:Modules.Download.Name module allows you to download media and local assets from servers where you have been granted download rights.",
+            "Description2": "You MUST also have an active Plex Pass. Server owner imposed bandwidth limits are respected. You can stop/resume the download/s at any time.",
             "Disabled": "Disabled",
             "SelSrv": "Select server",
             "ShowQueue": "Show Queue",
@@ -594,7 +594,7 @@
             },
             "Settings": {
                 "Name": "@:Modules.Download.Name Settings",
-                "Description": "Here you can define the settings for @:Modules.Download.Name",
+                "Description": "Here you can define the settings for @:Modules.Download.Name, please be respectful and always set the bandwidth limit to the bare minimum.",
                 "Return": "Return to @:Modules.Download.Name",
                 "DownloadMaxBandWidth": "Maximum bandwidth to use",
                 "DownloadMaxErrors": "Maximum errors allowed",
