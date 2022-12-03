@@ -81,7 +81,9 @@
         </template>
       </vue-virtual-table>
     </b-modal>
-    <br>
+    <div class="d-flex justify-content-center flex-nowrap">
+      <p>{{ $t(`Modules.Download.libCount`, [this.LibCount]) }}</p>
+    </div>
     <div class="d-flex mx-auto">
       <div class="buttons d-flex mx-auto"> <!-- Buttons -->
         <b-button
@@ -128,6 +130,7 @@
         selLibrary: "",
         selLibrarySize: null,
         LibraryGroupDisabled: true,
+        LibCount: 0,
         tableConfig: [
           { prop: 'mediaKey', isHidden: true },
           { prop: 'Key', isHidden: true },
@@ -188,6 +191,7 @@
       this.$router.push({ name: 'home' });
     }
     this.getValidServers();
+    this.LibCount = this.tableData.length;
   },
   methods: {
     // Show Settings
@@ -451,6 +455,7 @@
       } while ( gotSize == step );
       this.pgbarstyle = 'success';
       this.$store.commit('UPDATE_VList', this.tableData);
+      this.LibCount = this.tableData.length;
     },
     async updateSrvList(){
       log.info(`[download.vue] (updateSrvList) - Start getting valid servers`);
@@ -538,6 +543,7 @@
   watch: {
   },
   computed: {
+
   }
 };
 </script>
