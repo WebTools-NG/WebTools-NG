@@ -571,6 +571,7 @@
             "ttSettings": "Settings for @:Modules.Download.Name module",
             "ttServer": "Select the server to download from",
             "ttLibrary": "Select the library to download from",
+            "libCount": "There are {0} Media available for download",
             "mediaInfo": {
                 "title": "Title",
                 "file": "File",

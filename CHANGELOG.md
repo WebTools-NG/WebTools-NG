@@ -1,5 +1,16 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
+## V1.2.1 ( NOT RELEASED YET )
+
+**Note**: In this version, the following is disabled:
+
+* Export to xlsx format ([See #331](https://github.com/WebTools-NG/WebTools-NG/issues/331))
+* Photo export
+
+**Changes**:
+
+* [#646 File Count on Download module page](https://github.com/WebTools-NG/WebTools-NG/issues/646) (Enhancement)
+
 ## V1.2.0 ( 20221203 )
 
 **Note**: In this version, the following is disabled:
