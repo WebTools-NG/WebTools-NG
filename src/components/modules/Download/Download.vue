@@ -154,7 +154,8 @@
         MItableConfig: [
           { prop: '_action', name: ' ', actionName: 'actionCommon', width: 10 },
           { prop: 'Key', isHidden: true },
-          { prop: 'File',searchable: false,sortable: false, width: 100 },
+          { prop: 'Title', searchable: false,sortable: false, width: 100 },
+          { prop: 'File', isHidden: true, searchable: false,sortable: false, width: 100 },
           { prop: 'Type',searchable: false,sortable: false, width: 10 },
           { prop: 'Hash',isHidden: true },
           { prop: 'Size', isHidden: true }
@@ -243,7 +244,7 @@
       const url = `${this.srvBaseAddress}/library/metadata/${key}?${this.uriExclude}`;
       let header = wtutils.PMSHeader;
       header['X-Plex-Token'] = this.srvToken;
-      log.debug(`[Download.vue] (getMediaInfo) - Get mediainfo for with url ${url}`);
+      log.debug(`[Download.vue] (getMediaInfo) - Get mediainfo with url ${url}`);
       await axios({
         method: 'get',
         url: url,
@@ -257,6 +258,7 @@
           let entry = {};
           if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(parts[idx]['key']) == -1){
             entry['Key'] = parts[idx]['key'];
+            entry['Title'] = response['data']['MediaContainer']['Metadata'][0]['title'];
             entry['Type'] = response['data']['MediaContainer']['Metadata'][0]['type'];
             entry['Size'] = parts[idx]['size'];
             for (var x in this.selLibrary['location']){
@@ -277,12 +279,14 @@
           // Get media file without ext
           const mFile = path.parse(parts[idx]['file']).name
           for ( x in parts[idx]['Stream']){
-            if (parts[idx]['Stream'][x]['key'] ){
+            if ( parts[idx]['Stream'][x]['key'] ){
               const streamKey = parts[idx]['Stream'][x]['key'];
               if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(streamKey) == -1){
                 entry = {};
                 entry['Key'] = parts[idx]['Stream'][x]['key'];
+                entry['Title'] = `Subtitle (${parts[idx]['Stream'][x]['language']})`;
                 entry['Type'] = parts[idx]['Stream'][x]['format'];
+                entry['Language'] = parts[idx]['Stream'][x]['language'];
                 entry['File'] = `${mFile}.${parts[idx]['Stream'][x]['languageTag']}.${parts[idx]['Stream'][x]['format']}`;
                 this.MItableData.push(entry);     //Add sub
               }
