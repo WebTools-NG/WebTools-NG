@@ -72,18 +72,6 @@
                             }
                         ]
                     },
-                    // Plex.TV
-                    {
-                        href: { path: '/plextv' },
-                        title: this.$t("Modules.PlexTV.Name"),
-                        hidden: wtutils.hideMenu('plextv'),
-                        // icon: 'fas fa-file-export',
-                        icon: {
-                            //adjust element
-                                element: 'img',
-                                attributes: { src: plextvIcon },
-                            }
-                    },
                     // PMS
                     {
                         href: { path: '/pms' },
@@ -127,6 +115,18 @@
                                 icon: 'fas fa-tv',
                             }
                         ]
+                    },
+                    // Plex.TV
+                    {
+                        href: { path: '/plextv' },
+                        title: this.$t("Modules.PlexTV.Name"),
+                        hidden: wtutils.hideMenu('plextv'),
+                        // icon: 'fas fa-file-export',
+                        icon: {
+                            //adjust element
+                                element: 'img',
+                                attributes: { src: plextvIcon },
+                            }
                     },
                     {
                         header: true,
