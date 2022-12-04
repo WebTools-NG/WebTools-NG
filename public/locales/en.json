@@ -423,7 +423,7 @@
         },
         "PMS": {
             "Name": "Plex Media Server",
-            "Description": "@:Modules.PMS.Name modules allow you to manage your server",
+            "Description": "@:Modules.PMS.Name module allows you to manage your server",
             "ErrorNoServerSelectedTitle": "No server selected",
             "ErrorNoServerSelectedMsg": "You need to select a server at the top of the window",
             "Settings": {
