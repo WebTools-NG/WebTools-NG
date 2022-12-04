@@ -284,7 +284,7 @@
               if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(streamKey) == -1){
                 entry = {};
                 entry['Key'] = parts[idx]['Stream'][x]['key'];
-                entry['Title'] = `Subtitle (${parts[idx]['Stream'][x]['language']})`;
+                entry['Title'] = `${i18n.t("Modules.Download.mediaInfo.subtitle")} (${parts[idx]['Stream'][x]['language']})`;
                 entry['Type'] = parts[idx]['Stream'][x]['format'];
                 entry['Language'] = parts[idx]['Stream'][x]['language'];
                 entry['File'] = `${mFile}.${parts[idx]['Stream'][x]['languageTag']}.${parts[idx]['Stream'][x]['format']}`;
