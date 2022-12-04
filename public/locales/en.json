@@ -583,7 +583,8 @@
                 "sourceUri": "Uri",
                 "targetDir": "Target Directory",
                 "targetFile": "Target File",
-                "errors": "Errors"
+                "errors": "Errors",
+                "subtitle": "Subtitle"
             },
             "Queue": {
                 "btnStartQueue": "Start Queue",

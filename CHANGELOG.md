@@ -10,6 +10,7 @@
 **Changes**:
 
 * [#646 File Count on Download module page](https://github.com/WebTools-NG/WebTools-NG/issues/646) (Enhancement)
+* [#647 Download item selection](https://github.com/WebTools-NG/WebTools-NG/issues/647) (Enhancement)
 
 ## V1.2.0 ( 20221203 )
 
