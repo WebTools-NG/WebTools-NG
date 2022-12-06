@@ -92,7 +92,7 @@ const actions = {
   },
   loginToPlex({ commit }, payload){
     log.info("[plextv.js] (loginToPlex) loginToPlex called")
-    if (payload.token == ""){
+    if (payload.token === ""){
       var url = `${wtutils.plexTVApi}v2/users/signin`;
       url = url + '?login=' + require('querystring').escape(payload.username);
       url = url + '&password=' + require('querystring').escape(payload.password);
@@ -105,13 +105,13 @@ const actions = {
         headers: wtutils.PMSHeader
       })
         .then(function (response) {
-          log.debug('[plextv.js] (loginToPlex) loginToPlex: Response from fetchPlexServers recieved')
-          commit('UPDATE_AUTHTOKEN', response.data.authToken)
-          commit('UPDATE_AUTHENTICATED', true)
-          commit('UPDATE_AVATAR', response.data.thumb)
-          commit('UPDATE_PLEXNAME', response.data.username)
-          commit('UPDATE_MeId', response.data.user.id);
-          commit('UPDATE_Features', response.data.user.subscription.features);
+          log.debug('[plextv.js] (loginToPlex) loginToPlex: Response from loginToPlex recieved');
+          commit('UPDATE_AUTHTOKEN', response.data.authToken);
+          commit('UPDATE_AUTHENTICATED', true);
+          commit('UPDATE_AVATAR', response.data.thumb);
+          commit('UPDATE_PLEXNAME', response.data.username);
+          commit('UPDATE_MeId', response.data.id);
+          commit('UPDATE_Features', response.data.subscription.features);
           router.replace({name: "home"});
       })
         .catch(function (error) {
@@ -119,7 +119,7 @@ const actions = {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             log.error(`[plextv.js] (loginToPlex) status: ${error.response.status}`);
-            log.error(`[plextv.js] (loginToPlex) data: ${JSON.stringify(error.response.data)}`);
+            //log.error(`[plextv.js] (loginToPlex) data: ${JSON.stringify(error.response.data)}`);
             // alert(error.response.data.message)
             var data = JSON.stringify(error.response.data);
             var objectValue = JSON.parse(data);
@@ -157,7 +157,7 @@ const actions = {
         }
   },
   loginToPlexWithToken({ commit }, payload){
-    log.info("[plextv.js] (loginToPlexWithToken) loginToPlex called, using a Token")
+    log.info("[plextv.js] (loginToPlexWithToken) loginToPlex called, using a Token");
     let header = wtutils.PMSHeader;
     const url = 'https://plex.tv/users/sign_in.json?X-Plex-Token=' + payload.token;
     axios({
