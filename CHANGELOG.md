@@ -1,6 +1,6 @@
 # ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
 
-## V1.2.1 ( NOT RELEASED YET )
+## V1.2.1 ( 20221206 )
 
 **Note**: In this version, the following is disabled:
 
@@ -12,6 +12,7 @@
 * [#646 File Count on Download module page](https://github.com/WebTools-NG/WebTools-NG/issues/646) (Enhancement)
 * [#647 Download item selection](https://github.com/WebTools-NG/WebTools-NG/issues/647) (Enhancement)
 * [#650 Module order is out of order](https://github.com/WebTools-NG/WebTools-NG/issues/650) (Enhancement)
+* [#656 Using Usr/Pwd to logon gives an error](https://github.com/WebTools-NG/WebTools-NG/issues/656) (Enhancement)
 
 ## V1.2.0 ( 20221203 )
 
