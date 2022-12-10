@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-ng Change log
+# ![Logo](https://github.com/WebTools-NG/WebTools-NG/blob/master/src/assets/WebTools-48x48.png) WebTools-NG Change log
 
 ## V1.2.1 ( 20221206 )
 
