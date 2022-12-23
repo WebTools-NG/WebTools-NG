@@ -17,32 +17,31 @@
 ### Special thanks go to the following:
 
 <a href="https://plex.tv/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="75">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="50">
 </a>
 <br>
-<a href="https://plex.tv/">Plex, for providing the best multimedia server EVER!</a><br>
-You may download Plex Media Server <a href="https://www.plex.tv/en-au/media-server-downloads">Here</a><br>
+<a href="https://plex.tv/">Plex</a>, for providing the best multimedia server EVER!</a><br>
+You may download <a href="https://www.plex.tv/en-au/media-server-downloads">Plex Media Server</a> by clicking on the link.<br>
 <br>
 <a href="https://poeditor.com/">
-    <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="75">
+    <img alt="POEditor" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/poeditor.png" width="50">
 </a>
 <br>
-<a href="https://poeditor.com/">POEditor, for providing translations for free, since we are a non profit Open Source project.</a><br>
-You may sign up to POEditor <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">Here</a><br>
+<a href="https://poeditor.com/">POEditor</a>, for providing translations for free, since we are a non profit Open Source project.</a><br>
+Please sign up to <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">POEditor</a> and translate your language<br>
 <br>
 <a href="https://www.themoviedb.org/">
-    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="75">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="50">
 </a>
 <br>
-<a href="https://www.themoviedb.org/">The Movie Database, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>
-Please consider signing up to the TMDB <a href="https://www.themoviedb.org/signup">Here</a>
+<a href="https://www.themoviedb.org/">The Movie Database</a>, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>
+Please consider signing up to the <a href="https://www.themoviedb.org/signup">TMDB</a>
 <br>
 <br>
 <a href="https://www.thetvdb.com/">
-    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="75">
+    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="50">
 </a>
 <br>
-<a href="https://www.thetvdb.com/">The TV Database, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>   
- Please consider subscribing to the TVDB <a href="https://thetvdb.com/subscribe">Here</a> 
-
+<a href="https://www.thetvdb.com/">The TV Database</a>, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>   
+ Please consider subscribing to the <a href="https://thetvdb.com/subscribe">TVDB</a>.
 
