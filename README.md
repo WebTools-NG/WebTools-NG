@@ -28,14 +28,14 @@ You may download <a href="https://www.plex.tv/en-au/media-server-downloads">Plex
 </a>
 <br>
 <a href="https://poeditor.com/">POEditor</a>, for providing translations for free, since we are a non profit Open Source project.</a><br>
-Please sign up to <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">POEditor</a> and translate your language<br>
+Please sign up to <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">POEditor</a> and translate your language.<br>
 <br>
 <a href="https://www.themoviedb.org/">
     <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="50">
 </a>
 <br>
 <a href="https://www.themoviedb.org/">The Movie Database</a>, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>
-Please consider signing up to the <a href="https://www.themoviedb.org/signup">TMDB</a>
+Please consider signing up to the <a href="https://www.themoviedb.org/signup">TMDB</a>.
 <br>
 <br>
 <a href="https://www.thetvdb.com/">
