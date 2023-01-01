@@ -48,7 +48,7 @@ module.exports = {
   }
 }
 
-chainWebpack: config => {
+config => {
   config.module
       .rule('vue')
       .use('vue-loader')
