@@ -111,6 +111,7 @@
   import WTNGttlabel from '../General/wtng-ttlabel.vue'
 
   const log = require("electron-log");
+  const {JSONPath} = require('jsonpath-plus');
   export default {
     components: {
       VueVirtualTable,
@@ -125,7 +126,7 @@
         selSrvOptions: [],
         selSrv: null,
         selLibraryOptions: [],
-        selMediaType: ['movie'],
+        selMediaType: ['movie', 'show'],
         selLibraryWait: true,
         selLibrary: "",
         selLibrarySize: null,
@@ -305,16 +306,135 @@
         }
       });
     },
+    async getShowSeasonInfo(key){
+      console.log('Ged 10-3 getShowSeasonInfo start')
+      let seasons;
+      seasons
+      const url = `${this.srvBaseAddress}/library/metadata/${key}/children?${this.uriExclude}`;
+      let header = wtutils.PMSHeader;
+      header['X-Plex-Token'] = this.srvToken;
+      log.debug(`[Download.vue] (getShowSeasonInfo) - Get Seasoninfo with url ${url}`);
+      await axios({
+        method: 'get',
+        url: url,
+        headers: header
+      })
+      .then((response) => {
+        log.debug(`[Download.vue] (getShowSeasonInfo) - Response recieved`);
+        console.log('Ged 10-4 Respose', JSON.stringify(response))
+        seasons = JSONPath({path: '$..Metadata', json: response})[0];
+        for (var idx in seasons){
+          let entry = {};
+          entry['Key'] = seasons[idx]['key'];
+          entry['Title'] = seasons[idx]['title'];
+          entry['Type'] = seasons[idx]['type'];
+          this.MItableData.push(entry);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+            log.error(`[Download.vue] (getShowSeasonInfo) - ${error.response.data}`);
+            alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message)
+        } else if (error.request) {
+            log.error(`[Download.vue] (getShowSeasonInfo) - ${error.request}`);
+        } else {
+            log.error(`[Download.vue] (getShowSeasonInfo) - ${error.message}`);
+        }
+      });
+      console.log('Ged 10-5 Respose', JSON.stringify(seasons))
+
+
+    },
+    async getShowMediaInfo(key){
+      console.log('Ged 11-3 getShowMediaInfo start')
+      const url = `${this.srvBaseAddress}/library/metadata/${key}?${this.uriExclude}`;
+      let header = wtutils.PMSHeader;
+      header['X-Plex-Token'] = this.srvToken;
+      log.debug(`[Download.vue] (getShowMediaInfo) - Get mediainfo with url ${url}`);
+      await axios({
+        method: 'get',
+        url: url,
+        headers: header
+      })
+      .then((response) => {
+        log.debug(`[Download.vue] (getShowMediaInfo) - Response recieved`);
+        const parts = response['data']['MediaContainer']['Metadata'][0]['Media'][0]['Part'];
+        var path = require('path');
+        for (var idx in parts){
+          let entry = {};
+          if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(parts[idx]['key']) == -1){
+            entry['Key'] = parts[idx]['key'];
+            entry['Title'] = response['data']['MediaContainer']['Metadata'][0]['title'];
+            entry['Type'] = response['data']['MediaContainer']['Metadata'][0]['type'];
+            entry['Size'] = parts[idx]['size'];
+            for (var x in this.selLibrary['location']){
+              if ( parts[idx]['file'].startsWith( this.selLibrary['location'][x]['path'] ) )
+              {
+                // Get Media Dir
+                this.selMediaDir = path.dirname(parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1));  // Returns a dot if not found
+                if ( this.selMediaDir == '.'){
+                  entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1);
+                } else {
+                  entry['File'] = parts[idx]['file'].slice( this.selLibrary['location'][x]['path'].length + 1).slice(this.selMediaDir.length + 1);
+                }
+                break;
+              }
+            }
+            this.MItableData.push(entry);     //Add media
+          }
+          // Get media file without ext
+          const mFile = path.parse(parts[idx]['file']).name
+          for ( x in parts[idx]['Stream']){
+            if ( parts[idx]['Stream'][x]['key'] ){
+              const streamKey = parts[idx]['Stream'][x]['key'];
+              if ( this.MItableData.map(function(x) {return x.Key; }).indexOf(streamKey) == -1){
+                entry = {};
+                entry['Key'] = parts[idx]['Stream'][x]['key'];
+                entry['Title'] = `${i18n.t("Modules.Download.mediaInfo.subtitle")} (${parts[idx]['Stream'][x]['language']})`;
+                entry['Type'] = parts[idx]['Stream'][x]['format'];
+                entry['Language'] = parts[idx]['Stream'][x]['language'];
+                entry['File'] = `${mFile}.${parts[idx]['Stream'][x]['languageTag']}.${parts[idx]['Stream'][x]['format']}`;
+                this.MItableData.push(entry);     //Add sub
+              }
+            }
+          }
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+            log.error(`[Download.vue] (getShowMediaInfo) - ${error.response.data}`);
+            alert(error.response.data.errors[0].code + " " + error.response.data.errors[0].message)
+        } else if (error.request) {
+            log.error(`[Download.vue] (getShowMediaInfo) - ${error.request}`);
+        } else {
+            log.error(`[Download.vue] (getShowMediaInfo) - ${error.message}`);
+        }
+      });
+    },
     async rowClicked(myarg){
       this.MItableData = [];
       // Start Spinner
       this.isLoading = true;
-      await this.getMediaInfo(myarg['Key']);
-      this.selMediaTitle = myarg['Title'];
-      this.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")} - ${myarg['Title']}`
-      // Stop Spinner
-      this.isLoading = false;
-      this.$refs['MediaInfo'].show();
+      // Get relevant info
+      switch ( this.$store.getters.getLibrarySelected.type ){
+        case 'show':
+          console.log('Ged 12-4 show selected')
+          await this.getShowSeasonInfo(myarg['Key']);
+          this.selMediaTitle = myarg['Title'];
+          this.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")} - ${myarg['Title']}`;
+          // Stop Spinner
+          this.isLoading = false;
+          this.$refs['MediaInfo'].show();
+          break;
+        case 'movie':
+          await this.getMediaInfo(myarg['Key']);
+          this.selMediaTitle = myarg['Title'];
+          this.mediaInfoTitle = `${i18n.t("Modules.Download.mediaInfo.title")} - ${myarg['Title']}`;
+          // Stop Spinner
+          this.isLoading = false;
+          this.$refs['MediaInfo'].show();
+          break;
+      }
     },
     async selSrvChanged() {
       if ( this.selSrv ){
@@ -433,7 +553,7 @@
           libType = 1;
           break;
         case 'show':
-          libType = 4;
+          libType = 2;
           break;
       }
       this.$store.commit('UPDATE_VList', null);

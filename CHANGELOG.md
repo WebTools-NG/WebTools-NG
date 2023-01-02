@@ -10,6 +10,7 @@
 **Changes**:
 
 * [#493 We need Volta to ensure all is running the same version](https://github.com/WebTools-NG/WebTools-NG/issues/493) (Dev)
+* [#631 Download Module for shows](https://github.com/WebTools-NG/WebTools-NG/issues/631) (Enhancement)
 
 ## V1.2.1 ( 20221206 )
 
