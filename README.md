@@ -11,7 +11,7 @@
 
 ### WebTools-NG is designed to help users of Plex Media Server, maintain their server/s and media. The software is free for anyone to download and use.
 
-## For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki).
+## For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) or [Website](https://webtools-ng.github.io/manual/).
 
 
 ### Special thanks go to the following:
