@@ -60,7 +60,6 @@
     "vue-sidebar-menu": "^4.7.4",
     "vue-virtual-table": "^0.2.22",
     "vuedraggable": "^2.24.3",
-    "vuejs-tree": "^3.0.2",
     "vuex": "^3.6.0",
     "vuex-persist": "^2.3.0"
   },
