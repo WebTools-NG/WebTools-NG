@@ -9,7 +9,9 @@
 [![CodeQL](https://github.com/WebTools-NG/WebTools-NG/workflows/CodeQL/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions?query=workflow%3ACodeQL)
 [![Build/release](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml/badge.svg)](https://github.com/WebTools-NG/WebTools-NG/actions/workflows/release.yml)
 
-### WebTools-NG is designed to help users of Plex Media Server, maintain their server/s and media. The software is free for anyone to download and use.
+### WebTools-NG is designed to help users of Plex Media Server, maintain their server/s and media. WebTools-NG will run on any PC/Laptop running Windows, Linux or Mac.
+
+###  The software is free for anyone to download and use.
 
 ## For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) or [Website](https://webtools-ng.github.io/manual/).
 
