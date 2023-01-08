@@ -13,10 +13,10 @@
 
 ###  The software is free for anyone to download and use.
 
-## For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) or [Website](https://webtools-ng.github.io/manual/).
+### For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) or [Website](https://webtools-ng.github.io/manual/).
 
 
-### Special thanks go to the following:
+## Special thanks go to the following:
 
 <a href="https://plex.tv/">
     <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-2022-03.png" width="50">
