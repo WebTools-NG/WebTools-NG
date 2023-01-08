@@ -17,7 +17,7 @@
 ### Special thanks go to the following:
 
 <a href="https://plex.tv/">
-    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/Plex_logo_2022-03.png" width="50">
+    <img alt="Plex" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/plex-logo-2022-03.png" width="50">
 </a>
 <br>
 <a href="https://plex.tv/">Plex</a>, for providing the best multimedia server EVER!</a><br>
@@ -31,7 +31,7 @@ You may download <a href="https://www.plex.tv/en-au/media-server-downloads">Plex
 Please sign up to <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">POEditor</a> and translate WebTools-NG into your language.<br>
 <br>
 <a href="https://www.themoviedb.org/">
-    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TMDB-Full.png" width="50">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/tmdb-full.png" width="50">
 </a>
 <br>
 <a href="https://www.themoviedb.org/">The Movie Database</a>, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>
@@ -39,7 +39,7 @@ Please consider signing up to the <a href="https://www.themoviedb.org/signup">TM
 <br>
 <br>
 <a href="https://www.thetvdb.com/">
-    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/TVDB%20Logo.png" width="50">
+    <img alt="TVDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/tvdb-logo.png" width="50">
 </a>
 <br>
 <a href="https://www.thetvdb.com/">The TV Database</a>, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>   
