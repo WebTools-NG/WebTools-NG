@@ -13,7 +13,7 @@
 
 ###  The software is free for anyone to download and use.
 
-### For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki) or [Website](https://webtools-ng.github.io/manual/).
+### For installation and usage instructions, please see the WebTools-NG [Wiki](https://github.com/WebTools-NG/WebTools-NG/wiki).
 
 
 ## Special thanks go to the following:
