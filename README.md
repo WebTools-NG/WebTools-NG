@@ -33,7 +33,7 @@ You may download <a href="https://www.plex.tv/en-au/media-server-downloads">Plex
 Please sign up to <a href="https://poeditor.com/join/project?hash=yFjdfkDfup">POEditor</a> and translate WebTools-NG into your language.<br>
 <br>
 <a href="https://www.themoviedb.org/">
-    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/tmdb-full.png" width="50">
+    <img alt="TMDB" src="https://github.com/WebTools-NG/WebTools-NG/blob/master/wiki/icons/tmdb-fullsize.png" width="50">
 </a>
 <br>
 <a href="https://www.themoviedb.org/">The Movie Database</a>, for providing a very useful API for free, since we are a non profit Open Source project.</a><br>
